@@ -199,7 +199,7 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.Rol)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.Usuario1)
+            entity.Property(e => e.User)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("Usuario");

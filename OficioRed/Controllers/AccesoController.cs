@@ -6,6 +6,7 @@ using OficioRed.Constants;
 using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Models;
+using OficioRed.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,10 +19,10 @@ public class AccesoController : ControllerBase
 {
     public IConfiguration config;
     public DbOficioRedContext context;
-    public AccesoController(IConfiguration _config, DbOficioRedContext _context)
+    public AccesoController(IConfiguration config, DbOficioRedContext context)
     {
-        config = _config;
-        context = _context;
+        this.config = config;
+        this.context = context;
     }
 
     [HttpGet]
@@ -47,9 +48,19 @@ public class AccesoController : ControllerBase
     }
 
     [HttpPost("register")]
-    public IActionResult Register()
+    public IActionResult Register(RegisterUserDTO registerUserDTO)
     {
-        return Ok("");
+        // Crea el usuario nuevo con sus correpondientes valores
+        var newUser = new Usuario();
+        newUser.User = registerUserDTO.Usuario;
+        newUser.Password = registerUserDTO.Password;
+        newUser.Rol = "cliente";
+        newUser.Fhalta = DateTime.Now;
+
+        context.Usuarios.Add(newUser);
+        context.SaveChanges();
+
+        return Ok("Usuario Registrado!");
     }
 
 
@@ -57,7 +68,7 @@ public class AccesoController : ControllerBase
     private Usuario Authenticate(LoginUserDTO userLogin)
     {
         var currentUser = context.Usuarios
-            .FirstOrDefault(x => x.Usuario1 == userLogin.usuario && x.Password == userLogin.password);
+            .FirstOrDefault(x => x.User == userLogin.Usuario && x.Password == userLogin.Password);
 
         if (currentUser != null)
         {
@@ -76,7 +87,7 @@ public class AccesoController : ControllerBase
         // Crear los claims
         var claims = new[]
         {
-                new Claim(ClaimTypes.NameIdentifier, user.Usuario1),
+                new Claim(ClaimTypes.NameIdentifier, user.User),
                 new Claim(ClaimTypes.Role, user.Rol),
             };
 

@@ -11,21 +11,21 @@ namespace OficioRed.Constants
                new  Usuario
                {
                    IdUsuario = 1,
-                   Usuario1 = "gaston",
+                   User = "gaston",
                    Password="123456",
                    Rol="empleado"
                },
                new  Usuario
                {
                    IdUsuario = 2,
-                   Usuario1 = "tomas",
+                   User = "tomas",
                    Password="123456",
                    Rol="empleado"
                },
               new  Usuario
                {
                    IdUsuario = 3,
-                   Usuario1 = "martin",
+                   User = "martin",
                    Password="123456",
                    Rol="admin"
                }
