@@ -19,6 +19,7 @@ public class AccesoController : ControllerBase
 {
     public IConfiguration config;
     public DbOficioRedContext context;
+
     public AccesoController(IConfiguration config, DbOficioRedContext context)
     {
         this.config = config;
@@ -32,14 +33,14 @@ public class AccesoController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginUserDTO userLogin)
+    public IActionResult Login(LoginDTO userLogin)
     {
         var user = Authenticate(userLogin);
 
         if (user != null)
         {
             // Crear el token
-            var token = Generate(user);
+            var token = GenerateToken(user);
 
             return Ok(token);
         }
@@ -48,7 +49,7 @@ public class AccesoController : ControllerBase
     }
 
     [HttpPost("register")]
-    public IActionResult Register(RegisterUserDTO registerUserDTO)
+    public IActionResult Register(RegisterDTO registerUserDTO)
     {
         // Crea el usuario nuevo con sus correpondientes valores
         var newUser = new Usuario();
@@ -63,9 +64,8 @@ public class AccesoController : ControllerBase
         return Ok("Usuario Registrado!");
     }
 
-
     [NonAction]
-    private Usuario Authenticate(LoginUserDTO userLogin)
+    private Usuario Authenticate(LoginDTO userLogin)
     {
         var currentUser = context.Usuarios
             .FirstOrDefault(x => x.User == userLogin.Usuario && x.Password == userLogin.Password);
@@ -79,7 +79,7 @@ public class AccesoController : ControllerBase
     }
 
     [NonAction]
-    private string Generate(Usuario user)
+    private string GenerateToken(Usuario user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
