@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OficioRed.Context;
+using OficioRed.Dtos;
 using OficioRed.Models;
 using OficioRed.Services;
 
@@ -23,50 +24,85 @@ namespace OficioRed.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var usuarios = _usuarioService.GetAll();
+            try
+            {
+                var usuarios = _usuarioService.GetAll();
 
-            return Ok(usuarios);
+                return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var usuario = _usuarioService.Get(id);
+            try
+            {
+                var usuario = _usuarioService.Get(id);
 
-            return Ok(usuario);
+                return Ok(usuario);
+            }
+            catch (Exception ex) 
+            { 
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public IActionResult Create(Usuario usuario)
         {
-            _usuarioService.Create(usuario);
-
-            return Ok(new
+            try
             {
-                message = "Usuario creado"
-            });
+                _usuarioService.Create(usuario);
+
+                return Ok(new
+                {
+                    message = "Usuario creado"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Usuario usuario) 
+        public IActionResult Update(int id, UpdateUsuarioDTO updateUsuarioDTO) 
         {
-            _usuarioService.Update(id, usuario);
-
-            return Ok(new
+            try
             {
-                message = "Usuario actualizado"
-            });
+                _usuarioService.Update(id, updateUsuarioDTO);
+
+                return Ok(new
+                {
+                    message = "Usuario actualizado"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            _usuarioService.Delete(id);
-
-            return Ok(new
+            try
             {
-                message = "Usuario eliminado"
-            });
+                _usuarioService.Delete(id);
+
+                return Ok(new
+                {
+                    message = "Usuario eliminado"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
         }
     }
 }

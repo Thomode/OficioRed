@@ -2,7 +2,8 @@
 using OficioRed.Helpers;
 using OficioRed.Models;
 using BCrypt.Net;
-
+using OficioRed.Dtos;
+using AutoMapper;
 
 namespace OficioRed.Services;
 
@@ -11,17 +12,19 @@ public interface IUsuarioService
     List<Usuario> GetAll();
     Usuario Get(int id);
     void Create(Usuario usuario);
-    void Update(int id, Usuario usuario); 
+    void Update(int id, UpdateUsuarioDTO usuario); 
     void Delete(int id);
 }
 
 public class UsuarioService: IUsuarioService
 {
     private DbOficioRedContext _context;
+    private IMapper _mapper;
 
-    public UsuarioService(DbOficioRedContext context) 
+    public UsuarioService(DbOficioRedContext context, IMapper mapper) 
     { 
         _context = context;
+        _mapper = mapper;
     }
 
     public List<Usuario> GetAll()
@@ -46,16 +49,19 @@ public class UsuarioService: IUsuarioService
         _context.SaveChanges();
     }
 
-    public void Update(int id, Usuario usuario)
+    public void Update(int id, UpdateUsuarioDTO updateUsuarioDTO)
     {
-        var usuarioEncontrado = GetUsuario(id);
+        var usuario = GetUsuario(id);
+        Console.WriteLine(usuario.ToString);
 
-        if(usuarioEncontrado.User != usuario.User)
+        if(usuario == null)
         {
             throw new AppException("Usuario no existe");
         }
 
-        usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
+        // updateUsuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(updateUsuarioDTO.Password);
+
+        _mapper.Map(updateUsuarioDTO, usuario);
 
         _context.Usuarios.Update(usuario);
         _context.SaveChanges();
