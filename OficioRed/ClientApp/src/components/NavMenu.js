@@ -3,6 +3,8 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import './Login/Login.jsx'
+import './Inicio/Inicio.jsx'
+import './SearchComponent.jsx'
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -31,16 +33,13 @@ export class NavMenu extends Component {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
                 <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/">Inicio</NavLink>
+                </NavItem>
+                <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/login">Iniciar Sesión</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/searchComponent">Buscar Profesional</NavLink>
                 </NavItem>
             </ul>
           </Collapse>

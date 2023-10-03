@@ -12,6 +12,7 @@ export class Layout extends Component {
         <Container tag="main">
           {this.props.children}
         </Container>
+
       </div>
     );
   }

@@ -1,4 +1,4 @@
-/* Provide sufficient contrast against white background */
+/*
 a {
   color: #0366d6;
 }
@@ -15,4 +15,20 @@ code {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+*/
+
+.bg-curso {
+    background-color: #8540f5;
+}
+
+.section {
+    color: #fff;
+    text-shadow: 3px 3px #141010;
+    background-color: #ffb6b9b0;
+    height: 100vh;
+}
+
+.navBg {
+   background-color: #7952b3;
 }
