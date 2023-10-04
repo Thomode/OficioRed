@@ -16,8 +16,6 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -33,8 +31,8 @@ function ResponsiveDrawer(props) {
         setMobileOpen(!mobileOpen);
     };
 
-    const handleClick = () => {
-        navigate('/searchComponent');
+    const handleClickMenu = (ruta) => {
+        navigate(ruta);
     }
 
     const drawer = (
@@ -42,17 +40,30 @@ function ResponsiveDrawer(props) {
             <Toolbar />
             <Divider />
             <List>
-                {['Buscar Profesional', 'Perfil', 'Acerca de nosotros'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton onClick={ handleClick } >
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+            <ListItem disablePadding>
+                    <ListItemButton onClick={() => handleClickMenu('/home')} >
+                        <ListItemIcon>
+                            <MailIcon></MailIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Home" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={() => handleClickMenu('/profesionales')} >
+                        <ListItemIcon>
+                            <MailIcon></MailIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Profesionales" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={() => handleClickMenu('/login')} >
+                        <ListItemIcon>
+                            <MailIcon></MailIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Login" />
+                    </ListItemButton>
+                </ListItem>
             </List>
             <Divider />
         </div>

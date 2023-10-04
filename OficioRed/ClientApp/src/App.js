@@ -1,22 +1,20 @@
-import custom from './custom.css';
 
 import { Routes, Route } from 'react-router-dom';
-
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
+import { Container } from '@mui/material';
 
 function App() {
     return (
-        <div className="App">
-            <Layout>
-                <Routes>
-                    {AppRoutes.map((route, index) => {
-                        const { element, ...rest } = route;
-                        return <Route key={index} {...rest} element={element} />;
-                    })}
-                </Routes>
-            </Layout>             
-        </div>    
+        <Container>
+            <Layout />
+            <Routes>
+                {AppRoutes.map((route, index) => {
+                    const { element, ...rest } = route;
+                    return <Route key={index} {...rest} element={element} />;
+                })}
+            </Routes>
+        </Container>
     );
 }
 

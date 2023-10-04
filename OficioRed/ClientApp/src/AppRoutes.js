@@ -1,19 +1,21 @@
-import { Inicio } from "./components/Inicio/Inicio";
-import { Login } from "./components/Login/Login";
-import { SearchComponent } from "./components/SearchComponent";
+import CardProfesional from "./components/Card";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/Login/LoginPage";
+import { ProfesionalesPage } from "./pages/ProfesionalesPage";
 
 const AppRoutes = [
     {
         index: true,
-        element: <Inicio />
+        path: '/home',
+        element: <HomePage />
     },
     {
-        path: '/Login',
-        element: <Login />
+        path: '/login',
+        element: <LoginPage />
     },
     {
-        path: '/searchComponent',
-        element: <SearchComponent />
+        path: '/profesionales',
+        element: <ProfesionalesPage />
     },
 ];
 

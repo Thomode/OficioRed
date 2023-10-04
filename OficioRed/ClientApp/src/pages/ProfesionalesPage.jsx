@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 
-const SearchComponent = () => {
+export const ProfesionalesPage = () => {
 
     // setear los hooks useState
     const [ users, setUsers ] = useState([]);
@@ -73,5 +73,3 @@ const SearchComponent = () => {
         </div>
     )
 }
-
-export { SearchComponent };
