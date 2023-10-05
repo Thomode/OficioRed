@@ -10,5 +10,8 @@ public class AutoMapperProfile: Profile
     {
         // UpdateUsuarioDTO -> Usuario
         CreateMap<UpdateUsuarioDTO, Usuario>();
+
+        // OficoDTO -> Oficio
+        CreateMap<OficioDTO, Oficio>();
     }
 }

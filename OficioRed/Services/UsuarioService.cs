@@ -52,7 +52,6 @@ public class UsuarioService: IUsuarioService
     public void Update(int id, UpdateUsuarioDTO updateUsuarioDTO)
     {
         var usuario = GetUsuario(id);
-        Console.WriteLine(usuario.ToString);
 
         if(usuario == null)
         {
