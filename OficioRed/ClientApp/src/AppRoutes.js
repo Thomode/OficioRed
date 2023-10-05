@@ -3,6 +3,7 @@ import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/Login/LoginPage";
 import { ProfesionalesPage } from "./pages/ProfesionalesPage";
 import { DashboardPage } from "./pages/Dashboard/Dashboard";
+import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
 
 const AppRoutes = [
     {
@@ -22,6 +23,10 @@ const AppRoutes = [
         path: '/dashboard',
         element: <DashboardPage />
     },
+    {
+        path: '/usuario',
+        element: <UsuarioAdminPage/>
+    }
 ];
 
 export default AppRoutes;

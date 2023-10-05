@@ -8,9 +8,8 @@ using OficioRed.Services;
 
 namespace OficioRed.Controllers
 {
-
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
 
     public class UsuarioController : ControllerBase
     {

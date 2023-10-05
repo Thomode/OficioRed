@@ -14,6 +14,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
@@ -72,6 +73,15 @@ function ResponsiveDrawer(props) {
                         <ListItemText primary="Panel de Administrador" />
                     </ListItemButton>
                 </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={() => handleClickMenu('/usuario')} >
+                        <ListItemIcon>
+                            <PersonIcon></PersonIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Usuarios" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding></ListItem>
             </List>
             <Divider />
         </div>
