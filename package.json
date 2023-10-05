@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "react-hook-form": "^7.47.0"
+    "bootstrap": "^5.3.2",
+    "react-hook-form": "^7.47.0",
+    "reactstrap": "^9.2.0"
   }
 }
