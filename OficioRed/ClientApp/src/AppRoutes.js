@@ -24,7 +24,7 @@ const AppRoutes = [
         element: <DashboardPage />
     },
     {
-        path: '/usuario',
+        path: '/usuarios',
         element: <UsuarioAdminPage/>
     }
 ];

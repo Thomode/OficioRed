@@ -1,5 +1,5 @@
 import React from 'react';
-import ResponsiveDrawer from './layouts/NavBarLateral';
+import ResponsiveDrawer from '../layouts/NavBarLateral';
 
 export function Layout() {
   return (

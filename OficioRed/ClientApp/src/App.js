@@ -1,19 +1,21 @@
 
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Router, Switch } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
 import { Container } from '@mui/material';
+import { ResponsiveDrawer } from './layouts/ResponsiveDrawer';
 
 function App() {
     return (
         <Container>
-            <Layout />
-            <Routes>
-                {AppRoutes.map((route, index) => {
-                    const { element, ...rest } = route;
-                    return <Route key={index} {...rest} element={element} />;
-                })}
-            </Routes>
+            <ResponsiveDrawer>
+                <Routes>
+                    {AppRoutes.map((route, index) => {
+                        const { element, ...rest } = route;
+                        return <Route key={index} {...rest} element={element} />
+                    })}
+                </Routes>
+            </ResponsiveDrawer>
         </Container>
     );
 }
