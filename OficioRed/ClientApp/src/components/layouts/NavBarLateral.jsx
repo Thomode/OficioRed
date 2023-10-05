@@ -64,6 +64,14 @@ function ResponsiveDrawer(props) {
                         <ListItemText primary="Login" />
                     </ListItemButton>
                 </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={() => handleClickMenu('/dashboard')} >
+                        <ListItemIcon>
+                            <MenuIcon></MenuIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Panel de Administrador" />
+                    </ListItemButton>
+                </ListItem>
             </List>
             <Divider />
         </div>
