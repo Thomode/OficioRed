@@ -1,11 +1,10 @@
 import React from 'react';
-import ResponsiveDrawer from '../layouts/NavBarLateral';
+import MiniDrawer from '../layouts/NavBarLateral';
 
 export function Layout() {
-  return (
-    <div>
-      <ResponsiveDrawer />
-    </div>
-  )
+    return (
+        <div>
+            <MiniDrawer />
+        </div>
+    )
 }
-
