@@ -5,7 +5,7 @@ const login = async  (usuario, password) => {
         usuario: usuario,
         password: password
     })
-
+    console.log(res)
     return res
 }
 
