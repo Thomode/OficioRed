@@ -97,7 +97,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     })
 );
 
-export default function MiniDrawer() {
+export function NavBarLateral({children}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -185,7 +185,7 @@ export default function MiniDrawer() {
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
                 <Typography paragraph>
-                    {/* Contenido de la página principal */}
+                    {children}
                 </Typography>
             </Box>
         </Box>

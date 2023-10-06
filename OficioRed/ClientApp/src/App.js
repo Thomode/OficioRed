@@ -2,9 +2,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
-import { Layout } from './components/Layout';
 import { Container, CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
 import backgroundImage from './assets/armarios-formas-geometricas.jpg'; // Reemplaza con la ruta de tu imagen
+import { NavBarLateral } from './layouts/NavBarLateral';
 
 // Crea un tema personalizado (opcional)
 const theme = createTheme();
@@ -24,15 +24,16 @@ function App() {
                     flexDirection: 'column',
                 }}
             >
-                <Layout />
-                <Container>
-                    <Routes>
-                        {AppRoutes.map((route, index) => {
-                            const { element, ...rest } = route;
-                            return <Route key={index} {...rest} element={element} />;
-                        })}
-                    </Routes>
-                </Container>
+                <NavBarLateral>
+                    <Container>
+                        <Routes>
+                            {AppRoutes.map((route, index) => {
+                                const { element, ...rest } = route;
+                                return <Route key={index} {...rest} element={element} />;
+                            })}
+                        </Routes>
+                    </Container>
+                </NavBarLateral>       
             </Box>
         </ThemeProvider>
     );
