@@ -1,6 +1,6 @@
 import CardProfesional from "./components/Card";
 import { HomePage } from "./pages/HomePage";
-import { LoginPage } from "./pages/Login/LoginPage";
+import { LoginPage } from "./pages/LoginPage";
 import { ProfesionalesPage } from "./pages/ProfesionalesPage";
 import { DashboardPage } from "./pages/Dashboard/Dashboard";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
