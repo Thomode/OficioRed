@@ -1,4 +1,3 @@
-import CardProfesional from "./components/Card";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { ProfesionalesPage } from "./pages/ProfesionalesPage";
