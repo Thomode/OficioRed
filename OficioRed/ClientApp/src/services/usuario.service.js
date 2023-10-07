@@ -1,17 +1,25 @@
 import axios from "axios";
 
-async function getAll (){
+async function getAll() {
     const res = await axios.get("/api/Usuario")
 
     return res.data
 }
 
-const createUsuarioRequest = async (usuario) =>
-    await axios.post('/api/Acceso/register', usuario)
+const create = async (user, password, rol) =>
+    await axios.post('/api/Usuario', {
+        user,
+        password,
+        rol
+    })
+
+const deleteUser = async (id) =>
+    await axios.delete(`/api/Usuario/${id}`)
 
 export const usuarioService = {
     getAll,
-    createUsuarioRequest
+    create,
+    deleteUser
 }
 
 

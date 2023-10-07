@@ -4,9 +4,11 @@ import { usuarioService } from "../services/usuario.service";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 
 export function UsuarioAdminPage() {
   const [usuarios, setUsuarios] = useState([]);
+  const navigate = useNavigate()
 
   async function loadUsuarios() {
     const data = await usuarioService.getAll();
@@ -34,7 +36,7 @@ export function UsuarioAdminPage() {
         }}
       >
         <Grid item xs={6}>
-          <TextField placeholder="Buscar usuario" fullWidth size="small" />
+          <TextField variant="outlined" placeholder="Buscar usuario" fullWidth size="small"/>
         </Grid>
         <Grid item>
           <Button variant="contained" startIcon={<SearchIcon />}>
@@ -42,12 +44,12 @@ export function UsuarioAdminPage() {
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="success" startIcon={<AddIcon />}>
+          <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/usuariosForm')}}>
             Agregar
           </Button>
         </Grid>
       </Grid>
-      <TablaUsuario usuarios={usuarios}></TablaUsuario>
+      <TablaUsuario usuarios={usuarios} loadUsuarios={loadUsuarios}></TablaUsuario>
     </>
   );
 }

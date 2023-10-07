@@ -1,12 +1,27 @@
-import { Grid, Card, Typography, CardContent, TextField, Button } from '@mui/material';
+import { Grid, Card, Typography, CardContent, TextField, Button, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { usuarioService } from '../services/usuario.service';
+import { useNavigate } from 'react-router-dom';
 
 export default function UsuarioForm() {
+    const navigate = useNavigate()
+
     const [usuario, setUsuario] = useState({
         user: '',
         password: '',
+        rol: ''
     });
+
+    const currencies = [
+        {
+            value: 'Cliente',
+            label: 'Cliente',
+        },
+        {
+            value: 'Admin',
+            label: 'Admin',
+        },
+    ];
 
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -14,16 +29,21 @@ export default function UsuarioForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(''); // Limpiar mensajes de error
-        setSuccessMessage(''); // Limpiar mensajes de éxito
+        setSuccessMessage(''); // Limpiar mensajes de exito
 
         try {
-            const response = await usuarioService.createUsuarioRequest(usuario);
-            setSuccessMessage('Usuario creado con éxito'); // Mostrar mensaje de éxito
+            const response = await usuarioService.create(usuario.user, usuario.password, usuario.rol);
+            setSuccessMessage('Usuario creado con exito'); // Mostrar mensaje de exito
+            navigate('/usuarios')
             console.log(response);
         } catch (error) {
             setErrorMessage('Error al crear el usuario'); // Mostrar mensaje de error
             console.error(error);
         }
+    }
+
+    const handleCancelar = () => {
+        navigate('/usuarios')
     }
 
     const handleChange = e => {
@@ -62,8 +82,32 @@ export default function UsuarioForm() {
                                 required // Marcar como campo obligatorio
                             />
 
+                            <TextField
+                                id="outlined-select-currency"
+                                select
+                                label="Select"
+                                defaultValue="Cliente"
+                                helperText="Seleccione el rol"
+                                type="rol"
+                                name="rol"
+                                onChange={handleChange}
+                                InputProps={{ style: { color: 'white' } }}
+                                InputLabelProps={{ style: { color: 'white' } }}
+                                required // Marcar como campo obligatorio
+                            >
+                                {currencies.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+
                             <Button variant='contained' color='primary' type='submit'>
-                                Enviar
+                                Agregar
+                            </Button>
+
+                            <Button variant='contained' color='error' type='button' onClick={handleCancelar}>
+                                Cancelar
                             </Button>
 
                             {errorMessage && (

@@ -3,9 +3,25 @@ import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
+import { usuarioService } from '../services/usuario.service';
+import { useNavigate } from 'react-router-dom';
 
 
-export function ItemUsuario({ usuario }) {
+export function ItemUsuario({ usuario, loadUsuarios }) {
+    const handleEdit = () => {
+        
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            const res = await usuarioService.deleteUser(Number(id))
+            loadUsuarios()
+
+        } catch (error) {
+            console.log('No eliminado')
+        }
+    }
+
     return (
         <TableRow
             key={usuario.idUsuario}
@@ -24,7 +40,7 @@ export function ItemUsuario({ usuario }) {
                 </IconButton>
             </TableCell>
             <TableCell align="right">
-                <IconButton color="warning" size='large'>
+                <IconButton color="warning" size='large' onClick={() => handleDelete(usuario.idUsuario)}>
                     <DeleteIcon></DeleteIcon>
                 </IconButton>
             </TableCell>

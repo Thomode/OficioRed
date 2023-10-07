@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-export function TablaUsuario({ usuarios }) {
+export function TablaUsuario({ usuarios, loadUsuarios }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -24,7 +24,7 @@ export function TablaUsuario({ usuarios }) {
         </TableHead>
         <TableBody>
           {usuarios.map((usuario) => (
-            <ItemUsuario usuario={usuario}></ItemUsuario>
+            <ItemUsuario usuario={usuario} loadUsuarios= {loadUsuarios}></ItemUsuario>
           ))}
         </TableBody>
       </Table>
