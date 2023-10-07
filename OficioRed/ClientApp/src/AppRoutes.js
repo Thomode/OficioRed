@@ -1,6 +1,5 @@
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
-import { ProfesionalesPage } from "./pages/ProfesionalesPage";
 import { DashboardPage } from "./pages/Dashboard/Dashboard";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
 import UsuarioForm from "./components/UsuarioForm";
@@ -16,10 +15,6 @@ export const AppRoutes = [
         element: <LoginPage />
     },
     {
-        path: '/profesionales',
-        element: <ProfesionalesPage />
-    },
-    {
         path: '/dashboard',
         element: <DashboardPage />
     },
@@ -29,6 +24,10 @@ export const AppRoutes = [
     },
     {
         path: '/usuariosForm',
+        element: <UsuarioForm />
+    },
+    {
+        path: '/usuarios/:id/edit',
         element: <UsuarioForm />
     }
 ];

@@ -1,7 +1,6 @@
 ﻿import React from 'react';
 import { Container, Grid } from '@mui/material';
 import CardProfesional from '../components/Card';
-import { Buscador } from '../components/Buscador';
 
 export function HomePage () {
     return (

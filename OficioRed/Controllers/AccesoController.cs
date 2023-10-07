@@ -53,7 +53,7 @@ public class AccesoController : ControllerBase
     {
         // Crea el usuario nuevo con sus correpondientes valores
         var newUser = new Usuario();
-        newUser.User = registerUserDTO.Usuario;
+        newUser.User = registerUserDTO.User;
         newUser.Password = registerUserDTO.Password;
         newUser.Rol = "cliente";
         newUser.Fhalta = DateTime.Now;
@@ -68,7 +68,7 @@ public class AccesoController : ControllerBase
     private Usuario Authenticate(LoginDTO userLogin)
     {
         var currentUser = context.Usuarios
-            .FirstOrDefault(x => x.User == userLogin.Usuario && x.Password == userLogin.Password);
+            .FirstOrDefault(x => x.User == userLogin.User && x.Password == userLogin.Password);
 
         if (currentUser != null)
         {
