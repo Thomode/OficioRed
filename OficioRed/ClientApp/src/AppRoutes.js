@@ -5,7 +5,7 @@ import { DashboardPage } from "./pages/Dashboard/Dashboard";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
 import UsuarioForm from "./components/UsuarioForm";
 
-const AppRoutes = [
+export const AppRoutes = [
     {
         index: true,
         path: '/home',
@@ -32,5 +32,3 @@ const AppRoutes = [
         element: <UsuarioForm />
     }
 ];
-
-export default AppRoutes;

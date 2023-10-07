@@ -1,7 +1,6 @@
 
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
+import { AppRoutes } from './AppRoutes';
 import { Container, CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
 import backgroundImage from './assets/armarios-formas-geometricas.jpg'; // Reemplaza con la ruta de tu imagen
 import { NavBarLateral } from './layouts/NavBarLateral';
@@ -9,7 +8,7 @@ import { NavBarLateral } from './layouts/NavBarLateral';
 // Crea un tema personalizado (opcional)
 const theme = createTheme();
 
-function App() {
+export function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -38,5 +37,3 @@ function App() {
         </ThemeProvider>
     );
 }
-
-export default App;
