@@ -51,11 +51,11 @@ namespace OficioRed.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Usuario usuario)
+        public IActionResult Create(UsuarioDTO usuarioDTO)
         {
             try
             {
-                _usuarioService.Create(usuario);
+                _usuarioService.Create(usuarioDTO);
 
                 return Ok(new
                 {
@@ -69,11 +69,11 @@ namespace OficioRed.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, UpdateUsuarioDTO updateUsuarioDTO) 
+        public IActionResult Update(int id, UsuarioDTO usuarioDTO) 
         {
             try
             {
-                _usuarioService.Update(id, updateUsuarioDTO);
+                _usuarioService.Update(id, usuarioDTO);
 
                 return Ok(new
                 {

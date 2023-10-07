@@ -11,8 +11,8 @@ public interface IUsuarioService
 {
     List<Usuario> GetAll();
     Usuario Get(int id);
-    void Create(Usuario usuario);
-    void Update(int id, UpdateUsuarioDTO usuario); 
+    void Create(UsuarioDTO usuarioDTO);
+    void Update(int id, UsuarioDTO usuario); 
     void Delete(int id);
 }
 
@@ -37,19 +37,23 @@ public class UsuarioService: IUsuarioService
         return GetUsuario(id);
     }
 
-    public void Create(Usuario usuario)
+    public void Create(UsuarioDTO usuarioDTO)
     {
-        if (_context.Usuarios.Any(x => x.User == usuario.User)) {
+        if (_context.Usuarios.Any(x => x.User == usuarioDTO.User)) {
             throw new AppException("Usuario ya registrado");
         }
 
-        usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
+        var usuario = new Usuario();
+        usuario.Fhalta = DateTime.Now;
 
+        // usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
+
+        _mapper.Map(usuarioDTO, usuario);
         _context.Usuarios.Add(usuario);
         _context.SaveChanges();
     }
 
-    public void Update(int id, UpdateUsuarioDTO updateUsuarioDTO)
+    public void Update(int id, UsuarioDTO usuarioDTO)
     {
         var usuario = GetUsuario(id);
 
@@ -60,7 +64,7 @@ public class UsuarioService: IUsuarioService
 
         // updateUsuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(updateUsuarioDTO.Password);
 
-        _mapper.Map(updateUsuarioDTO, usuario);
+        _mapper.Map(usuarioDTO, usuario);
 
         _context.Usuarios.Update(usuario);
         _context.SaveChanges();
