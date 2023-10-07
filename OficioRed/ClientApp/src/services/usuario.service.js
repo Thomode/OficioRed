@@ -6,6 +6,12 @@ async function getAll (){
     return res.data
 }
 
+const createUsuarioRequest = async (usuario) =>
+    await axios.post('/api/Acceso/register', usuario)
+
 export const usuarioService = {
-    getAll
+    getAll,
+    createUsuarioRequest
 }
+
+

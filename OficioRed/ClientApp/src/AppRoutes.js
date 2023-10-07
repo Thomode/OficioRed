@@ -3,6 +3,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { ProfesionalesPage } from "./pages/ProfesionalesPage";
 import { DashboardPage } from "./pages/Dashboard/Dashboard";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
+import UsuarioForm from "./components/UsuarioForm";
 
 const AppRoutes = [
     {
@@ -25,6 +26,10 @@ const AppRoutes = [
     {
         path: '/usuarios',
         element: <UsuarioAdminPage/>
+    },
+    {
+        path: '/usuariosForm',
+        element: <UsuarioForm />
     }
 ];
 
