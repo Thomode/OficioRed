@@ -2,7 +2,6 @@
   Box,
   Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
   Grid,
   IconButton,
@@ -10,7 +9,6 @@
   Link,
   TextField,
   Typography,
-  Alert
 } from "@mui/material";
 
 import { useState } from "react";
@@ -42,13 +40,18 @@ export const LoginPage = () => {
     formState: { errors },
   } = useForm();
 
-
   const onSubmit = async (data) => {
-    console.log(data)
+    console.log(data);
     const res = await accesoService.login(data.usuario, data.password);
-    console.log(res.status)
 
+    // Muestro el status de la respuesta y el token por consola
+    console.log(res.status);
     console.log("Token: " + res.data);
+
+    // Guardar token en el localStorage usando useLocalStorage
+    window.localStorage.setItem("token", res.data);
+    // Muestro que se guardo correctamente
+    alert("Se guardo el token correctamente");
   };
 
   const [isSignup, setIsSignup] = useState(false);
