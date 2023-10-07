@@ -4,13 +4,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import { usuarioService } from '../services/usuario.service';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate} from 'react-router-dom';
 
 export function ItemUsuario({ usuario, loadUsuarios }) {
-    const handleEdit = () => {
-        
-    }
+    const navigate = useNavigate()
 
     const handleDelete = async (id) => {
         try {
@@ -35,7 +32,7 @@ export function ItemUsuario({ usuario, loadUsuarios }) {
             <TableCell align="right">{usuario.rol}</TableCell>
             <TableCell align="right">{usuario.fhalta}</TableCell>
             <TableCell align="right">
-                <IconButton color="primary" size='large'>
+                <IconButton color="primary" size='large' onClick={() => navigate(`/usuarios/${usuario.idUsuario}/edit`)}>
                     <EditIcon></EditIcon>
                 </IconButton>
             </TableCell>
