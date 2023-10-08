@@ -2,7 +2,9 @@ import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/Dashboard/Dashboard";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
+
 import UsuarioForm from "./components/UsuarioForm";
+
 
 export const AppRoutes = [
     {
@@ -29,5 +31,5 @@ export const AppRoutes = [
     {
         path: '/usuarios/:id/edit',
         element: <UsuarioForm />
-    }
+    },
 ];

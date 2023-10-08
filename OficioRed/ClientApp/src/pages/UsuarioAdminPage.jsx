@@ -2,13 +2,22 @@ import { useEffect, useState } from "react";
 import { TablaUsuario } from "../components/TablaUsuario";
 import { usuarioService } from "../services/usuario.service";
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-
+import  Buscador  from "../components/buscador";
 export function UsuarioAdminPage() {
-  const [usuarios, setUsuarios] = useState([]);
-  const navigate = useNavigate()
+    const handleSearch = async () => {
+        const data = await usuarioService.getAll(); // Obtén todos los usuarios
+        console.log(data)
+        const filteredUsuarios = data.filter((usuario) =>
+            usuario.user.toLowerCase().includes(searchValue.toLowerCase())
+        ); // Filtra los usuarios basados en el texto de búsqueda
+
+        setUsuarios(filteredUsuarios); // Actualiza la lista de usuarios con el resultado de la búsqueda
+    };
+    const [usuarios, setUsuarios] = useState([]);
+    const navigate = useNavigate()
+    const [searchValue, setSearchValue] = useState("");
 
   async function loadUsuarios() {
     const data = await usuarioService.getAll();
@@ -36,12 +45,7 @@ export function UsuarioAdminPage() {
         }}
       >
         <Grid item xs={6}>
-          <TextField variant="outlined" placeholder="Buscar usuario" fullWidth size="small"/>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" startIcon={<SearchIcon />}>
-            Buscar
-          </Button>
+          <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
         </Grid>
         <Grid item>
           <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/usuariosForm')}}>
