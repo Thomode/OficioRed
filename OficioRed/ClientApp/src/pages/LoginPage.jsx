@@ -58,7 +58,7 @@ export const LoginPage = () => {
 
   return (
     <>
-      <Grid container style={{ height: "85vh" }}>
+      <Grid container style={{ height: "85vh"}} >
         <Grid item xs={12} sm={6}>
           <img
             src={imgOficioRed}
@@ -94,6 +94,7 @@ export const LoginPage = () => {
                 ":hover": {
                   boxShadow: "10px 10px 20px #ccc",
                 },
+                backgroundColor: 'white'
               }}
             >
               <Grid container justify="center">
