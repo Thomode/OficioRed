@@ -1,19 +1,17 @@
-﻿import {
+import {
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
   Grid,
   IconButton,
   InputAdornment,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 
@@ -23,18 +21,11 @@ import { AccountCircle, LockRounded } from "@mui/icons-material";
 
 import { set, useForm } from "react-hook-form";
 
-import accesoService from "../services/acceso.service";
 import { useNavigate } from "react-router-dom";
 
-import { useUser } from "../auth/useUser";
+import accesoService from "../services/acceso.service";
 
-export const LoginPage = () => {
-  const navigate = useNavigate();
-  const { login, isLogged } = useUser();
-  useEffect(() => {
-    if (isLogged) navigate("/home");
-  }, [isLogged, navigate]);
-
+export const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -50,8 +41,7 @@ export const LoginPage = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    const res = await accesoService.login(data.usuario, data.password);
-
+    const res = await accesoService.register(data.usuario, data.password);
     // Muestro el status de la respuesta y el token por consola
     console.log(res.status);
     console.log("Token: " + res.data);
@@ -60,10 +50,9 @@ export const LoginPage = () => {
     window.localStorage.setItem("token", res.data);
     // Muestro que se guardo correctamente
     alert("Se guardo el token correctamente");
-
-    // Llamar a la funcion login del useUser
-    login();
   };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -111,7 +100,7 @@ export const LoginPage = () => {
               </Grid>
 
               <Typography variant="h4" padding={3} textAlign="center">
-                Iniciar Sesión
+                Registrarse
               </Typography>
 
               <TextField
@@ -132,7 +121,40 @@ export const LoginPage = () => {
                 }}
                 {...register("usuario", { required: true })}
               />
-
+              <TextField
+                fullWidth
+                required
+                name="nombre"
+                type={"text"}
+                placeholder="Nombre"
+                autoComplete="off"
+                label="Nombre"
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <DriveFileRenameOutlineIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                name="apellido"
+                type={"text"}
+                placeholder="Apellido"
+                autoComplete="off"
+                label="Apellido"
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <DriveFileRenameOutlineIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
               <TextField
                 fullWidth
                 required
@@ -162,37 +184,31 @@ export const LoginPage = () => {
                 }}
                 {...register("password", { required: true })}
               />
-              <FormControlLabel
-                control={<Checkbox defaultChecked />}
-                label="Recordar credenciales"
-              />
 
               <div style={{ height: 20 }} />
 
               <Button
-                endIcon={<LoginOutlinedIcon />}
+                endIcon={<HowToRegOutlinedIcon />}
                 type="submit"
                 variant="contained"
                 color="primary"
                 fullWidth
               >
-                Iniciar Sesión
+                Registrarse
               </Button>
 
               <div style={{ height: 20 }} />
-              <Typography marginBottom={2}>
-                <Link href="#">Olvidaste tu contraseña?</Link>
-              </Typography>
+
               <Button
-                endIcon={<HowToRegOutlinedIcon />}
+                endIcon={<LoginOutlinedIcon />}
                 color="primary"
                 variant="outlined"
-                // Redirigir a la pagina de registro
+                // Redirigir a la pagina de login
                 onClick={() => {
-                  navigate("/signup");
+                  navigate("/login");
                 }}
               >
-                Registrarse
+                Iniciar Sesión
               </Button>
             </Box>
           </form>

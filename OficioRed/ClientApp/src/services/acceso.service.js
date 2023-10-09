@@ -1,16 +1,30 @@
 import axios from "axios"
 
+// Inicio de sesión de usuario
 const login = async  (usuario, password) => {
     const res = await axios.post('/api/Acceso/login', {
-        usuario: usuario,
+        user: usuario,
         password: password
     })
     console.log(res)
     return res
 }
 
+// Registro de usuario
+const register = async  (usuario, nombre, apellido, password) => {
+    const res = await axios.post('/api/Acceso/register', {
+        usuario: usuario,
+        nombre: nombre,
+        apellido: apellido,
+        password: password
+    })
+    console.log(res)
+    return res
+}
+
+// Servicio de acceso
 const accesoService = {
-    login
+    login, register
 }
 
 export default accesoService
