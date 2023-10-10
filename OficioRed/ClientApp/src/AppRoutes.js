@@ -1,15 +1,14 @@
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
-import { DashboardPage } from "./pages/Dashboard/Dashboard";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
 
-import UsuarioForm from "./components/UsuarioForm";
+import UsuarioForm from "./components/Usuario/UsuarioForm";
 
 
 export const AppRoutes = [
     {
-        path: '/home',
+        path: '/',
         element: <HomePage />
     },
     {
@@ -19,10 +18,6 @@ export const AppRoutes = [
     {
         path: '/signup',
         element: <SignupPage />
-    },
-    {
-        path: '/dashboard',
-        element: <DashboardPage />
     },
     {
         path: '/usuarios',

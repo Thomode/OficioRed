@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { usuarioService } from '../services/usuario.service';
+import { usuarioService } from '../../services/usuario.service';
 import { Grid, Card, Typography, CardContent, TextField, Button, MenuItem, Paper, Box } from '@mui/material';
 
 export default function UsuarioForm() {
@@ -19,7 +19,7 @@ export default function UsuarioForm() {
                 try {
                     const data = await hadleGet(params.id);
                     setUsuario(data); // Actualiza el estado "usuario" con los datos del usuario existente
-                    setEditing(true); // Establece la bandera de edición en true
+                    setEditing(true); // Establece la bandera de ediciï¿½n en true
                 } catch (error) {
                     console.error('Error al obtener los datos:', error);
                 }
@@ -58,12 +58,12 @@ export default function UsuarioForm() {
 
         try {
             if (editing) {
-                // Si estamos editando, llama a la función de edición en lugar de creación
+                // Si estamos editando, llama a la funciï¿½n de ediciï¿½n en lugar de creaciï¿½n
                 const response = await usuarioService.update(params.id, usuario.user, usuario.password, usuario.rol);
-                setSuccessMessage('Usuario actualizado con éxito');
+                setSuccessMessage('Usuario actualizado con ï¿½xito');
             } else {
                 const response = await usuarioService.create(usuario.user, usuario.password, usuario.rol);
-                setSuccessMessage('Usuario creado con éxito'); 
+                setSuccessMessage('Usuario creado con ï¿½xito'); 
             }
             navigate('/usuarios');
         } catch (error) {

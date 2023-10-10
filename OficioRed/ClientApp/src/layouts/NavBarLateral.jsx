@@ -163,7 +163,7 @@ export function NavBarLateral({ children }) {
             {
               text: "Home",
               icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/home",
+              route: "/",
             },
             {
               text: "Profesionales",
@@ -189,16 +189,6 @@ export function NavBarLateral({ children }) {
               text: "Iniciar Sesión",
               icon: <LoginIcon sx={{ color: "#FFFFFF" }} />,
               route: "/login",
-            },
-            {
-              text: "Registro",
-              icon: <HowToRegOutlinedIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/signup",
-            },
-            {
-              text: "Panel de Administrador",
-              icon: <MenuIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/dashboard",
             },
             {
               text: "Usuarios",

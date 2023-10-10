@@ -3,7 +3,7 @@ import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
-import { usuarioService } from '../services/usuario.service';
+import { usuarioService } from '../../services/usuario.service';
 import { useNavigate} from 'react-router-dom';
 
 export function ItemUsuario({ usuario, loadUsuarios }) {
