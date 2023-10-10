@@ -20,6 +20,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import WorkIcon from "@mui/icons-material/Work";
 import UserIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
+import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate } from "react-router-dom";
 import logoOficio from "../assets/logo-oficiored.png";
 
@@ -167,11 +168,25 @@ export function NavBarLateral({ children }) {
             },
             {
               text: "Profesionales",
-              icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
+              icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
               route: "/profesionales",
             },
-
-            // Verifico si el usuario esta logueado para mostrar el menu
+            !isLogged && {
+              text: "Iniciar Sesión",
+              icon: <LoginIcon sx={{ color: "#FFFFFF" }} />,
+              route: "/login",
+            },
+            {
+              text: "Usuarios",
+              icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
+              route: "/usuarios",
+                      },
+            {
+              text: "Oficios",
+              icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
+              route: "/oficios",
+                      },
+                        // Verifico si el usuario esta logueado para mostrar el menu
             isLogged && {
               text: "Mi Perfil",
               icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
@@ -184,16 +199,6 @@ export function NavBarLateral({ children }) {
               icon: <ExitToApp sx={{ color: "#FFFFFF" }} />,
               route: "/login",
               onClick: logout,
-            },
-            !isLogged && {
-              text: "Iniciar Sesión",
-              icon: <LoginIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/login",
-            },
-            {
-              text: "Usuarios",
-              icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/usuarios",
             },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: "block" }}>

@@ -1,31 +1,32 @@
 ﻿import React from 'react';
-import { Container, Grid } from '@mui/material';
-import CardProfesional from '../components/Card';
+import { Container, Box } from '@mui/material';
+import ProductCategories from '../components/Inicio/ProductCategories';
+import ProductHero from '../components/Inicio/ProductHero';
+import ProductValues from '../components/Inicio/ProductValues';
+import ProductHowItWorks from '../components/Inicio/ProductHowItWorks';
+import withRoot from '../components/Inicio/withRoot';
 
-export function HomePage () {
+function HomePage() {
+    const componentSpacing = {
+        marginBottom: 10, // Puedes ajustar el valor según tu preferencia.
+    };
+
     return (
         <Container>
-
-            <Grid container>
-                <Grid item xs={12} sm={6} md={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <CardProfesional />
-                </Grid>
-            </Grid>
+            <Box sx={componentSpacing}>
+                <ProductHero />
+            </Box>
+            <Box sx={componentSpacing}>
+                <ProductValues />
+            </Box>
+            <Box sx={componentSpacing}>
+                <ProductCategories />
+            </Box>
+            <Box sx={componentSpacing}>
+                <ProductHowItWorks />
+            </Box>
         </Container>
     );
 }
+
+export default withRoot(HomePage);
