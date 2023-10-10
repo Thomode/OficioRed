@@ -6,6 +6,7 @@ using OficioRed.Constants;
 using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Models;
+using OficioRed.Services;
 using OficioRed.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,30 +18,38 @@ namespace OficioRed.Controllers;
 [ApiController]
 public class AccesoController : ControllerBase
 {
-    public IConfiguration config;
-    public DbOficioRedContext context;
+    private DbOficioRedContext _context;
+    private IAccesoService _accesoService;
 
-    public AccesoController(IConfiguration config, DbOficioRedContext context)
+
+    public AccesoController(DbOficioRedContext context, IAccesoService accesoService)
     {
-        this.config = config;
-        this.context = context;
+        _context = context;
+        _accesoService = accesoService;
     }
 
     [HttpGet]
     public IActionResult GetUser()
     {
-        return Ok(GetCurrentUsuario());
+        var sesion = _accesoService.GetCurrentUsuario();
+
+        if (sesion != null)
+        {
+            return Ok(sesion);
+        }
+
+        return BadRequest("Sesion no encontrada");
     }
 
     [HttpPost("login")]
     public IActionResult Login(LoginDTO userLogin)
     {
-        var user = Authenticate(userLogin);
+        var user = _accesoService.Authenticate(userLogin);
 
         if (user != null)
         {
             // Crear el token
-            var token = GenerateToken(user);
+            var token = _accesoService.GenerateToken(user);
 
             return Ok(token);
         }
@@ -58,65 +67,9 @@ public class AccesoController : ControllerBase
         newUser.Rol = "cliente";
         newUser.Fhalta = DateTime.Now;
 
-        context.Usuarios.Add(newUser);
-        context.SaveChanges();
+        _context.Usuarios.Add(newUser);
+        _context.SaveChanges();
 
         return Ok("Usuario Registrado!");
-    }
-
-    [NonAction]
-    private Usuario Authenticate(LoginDTO userLogin)
-    {
-        var currentUser = context.Usuarios
-            .FirstOrDefault(x => x.User == userLogin.User && x.Password == userLogin.Password);
-
-        if (currentUser != null)
-        {
-            return currentUser;
-        }
-
-        return null;
-    }
-
-    [NonAction]
-    private string GenerateToken(Usuario user)
-    {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        // Crear los claims
-        var claims = new[]
-        {
-                new Claim(ClaimTypes.NameIdentifier, user.User),
-                new Claim(ClaimTypes.Role, user.Rol),
-            };
-
-        // Crear el token
-        var token = new JwtSecurityToken(
-            config["Jwt:Issuer"],
-            config["Jwt:Audience"],
-            claims,
-            expires: DateTime.Now.AddMinutes(60),
-            signingCredentials: credentials);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    [NonAction]
-    private dynamic GetCurrentUsuario()
-    {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-        if (identity != null)
-        {
-            var userClains = identity.Claims;
-
-            return new
-            {
-                usuario = userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                rol = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
-            };
-        }
-        return null;
     }
 }

@@ -17,6 +17,9 @@ builder.Services.AddSwaggerGen();
 // Agregando automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+// Agregando HttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
 // Agregando CORS
 builder.Services.AddCors(options =>
 {
@@ -53,7 +56,7 @@ builder.Services.AddDbContext<DbOficioRedContext>(options =>
 // Agregando los services
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IOficioService, OficioService>();
-
+builder.Services.AddScoped<IAccesoService, AccesoService>();
 
 var app = builder.Build();
 
