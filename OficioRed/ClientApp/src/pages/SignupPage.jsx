@@ -205,7 +205,7 @@ export const SignupPage = () => {
                 variant="outlined"
                 // Redirigir a la pagina de login
                 onClick={() => {
-                  navigate("/login");
+                  navigate("/");
                 }}
               >
                 Iniciar Sesión

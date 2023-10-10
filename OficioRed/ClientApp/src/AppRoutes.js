@@ -10,7 +10,7 @@ import UsuarioForm from "./components/Usuario/UsuarioForm";
 
 export const AppRoutes = [
     {
-        path: '/',
+        path: '/home',
         element: <HomePage />
     },
     {
@@ -18,7 +18,7 @@ export const AppRoutes = [
         element: <ProfesionalPage />
     },
     {
-        path: '/login',
+        path: '/',
         element: <LoginPage />
     },
     {

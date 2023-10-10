@@ -108,7 +108,7 @@ export function NavBarLateral({ children }) {
   const { isLogged, logout } = useUser();
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -118,7 +118,7 @@ export function NavBarLateral({ children }) {
     setOpen(false);
   };
 
-  const navigate = useNavigate(); // Cambia history a navigate
+  const navigate = useNavigate();
 
   const handleClickMenu = (ruta) => {
     navigate(ruta);
@@ -164,7 +164,7 @@ export function NavBarLateral({ children }) {
             {
               text: "Home",
               icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/",
+              route: "/home",
             },
             {
               text: "Profesionales",
@@ -174,7 +174,7 @@ export function NavBarLateral({ children }) {
             !isLogged && {
               text: "Iniciar Sesión",
               icon: <LoginIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/login",
+              route: "/",
             },
             {
               text: "Usuarios",
@@ -197,7 +197,7 @@ export function NavBarLateral({ children }) {
             isLogged && {
               text: "Cerrar Sesión",
               icon: <ExitToApp sx={{ color: "#FFFFFF" }} />,
-              route: "/login",
+              route: "/",
               onClick: logout,
             },
           ].map((item) => (
