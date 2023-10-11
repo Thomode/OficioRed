@@ -30,10 +30,10 @@ public class AccesoService: IAccesoService
         _contextAccessor = contextAccessor;
     }
 
-    public Usuario? Authenticate(LoginDTO userLogin)
+    public Usuario? Authenticate(LoginDTO loginDto)
     {
         var currentUser = _context.Usuarios
-            .FirstOrDefault(x => x.User == userLogin.User && x.Password == userLogin.Password);
+            .FirstOrDefault(x => x.User == loginDto.User && x.Password == loginDto.Password);
 
         if (currentUser != null)
         {

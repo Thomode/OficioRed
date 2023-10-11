@@ -13,5 +13,8 @@ public class AutoMapperProfile: Profile
 
         // OficoDTO -> Oficio
         CreateMap<OficioDTO, Oficio>();
+
+        // InteresadoDTO -> Interesado
+        CreateMap<InteresadoDTO, Interesado>();
     }
 }

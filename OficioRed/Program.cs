@@ -57,6 +57,7 @@ builder.Services.AddDbContext<DbOficioRedContext>(options =>
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IOficioService, OficioService>();
 builder.Services.AddScoped<IAccesoService, AccesoService>();
+builder.Services.AddScoped<IInteresadoService, InteresadoService>();
 
 var app = builder.Build();
 

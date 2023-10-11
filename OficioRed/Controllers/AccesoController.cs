@@ -1,16 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using OficioRed.Constants;
+﻿using Microsoft.AspNetCore.Mvc;
 using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Models;
 using OficioRed.Services;
-using OficioRed.Utils;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace OficioRed.Controllers;
 
