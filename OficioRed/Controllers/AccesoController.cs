@@ -7,6 +7,7 @@ using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Models;
 using OficioRed.Utils;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -88,7 +89,7 @@ public class AccesoController : ControllerBase
         var claims = new[]
         {
                 new Claim(ClaimTypes.NameIdentifier, user.User),
-                new Claim(ClaimTypes.Role, user.Rol),
+                new Claim(ClaimTypes.Role, user.Rol),               
             };
 
         // Crear el token
@@ -115,6 +116,7 @@ public class AccesoController : ControllerBase
             {
                 usuario = userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
                 rol = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
+                
             };
         }
         return null;

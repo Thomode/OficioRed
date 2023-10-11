@@ -10,5 +10,7 @@ public class AutoMapperProfile: Profile
     {
         // UpdateUsuarioDTO -> Usuario
         CreateMap<UpdateUsuarioDTO, Usuario>();
+
+        CreateMap<InteresadoDTO,Interesado>();
     }
 }
