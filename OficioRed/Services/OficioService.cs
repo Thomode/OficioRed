@@ -99,6 +99,11 @@ public class OficioService : IOficioService
     {
         var oficio = getOficio(id);
 
+        if (_context.Oficios.Any(e => e.Nombre == oficioDTO.Nombre))
+        {
+            throw new AppException("Nombre de oficio ya registrado");
+        }
+
         if (oficio == null)
         {
             throw new AppException("Es oficio no existe");
