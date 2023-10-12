@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TablaUsuario } from "../components/Usuario/TablaUsuario";
 import { usuarioService } from "../services/usuario.service";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Grid, TextField, Typography , Card, CardContent} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import  Buscador  from "../components/buscador";
@@ -32,28 +32,32 @@ export function UsuarioAdminPage() {
 
   return (
     <>
-      <Typography variant="h4" marginBottom={2}>
-        Usuarios
-      </Typography>
-      <Grid
-        container
-        spacing={3}
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{
-          marginBottom: "10px",
-        }}
-      >
-        <Grid item xs={6}>
-          <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/usuariosForm')}}>
-            Agregar
-          </Button>
-        </Grid>
-      </Grid>
-      <TablaUsuario usuarios={usuarios} loadUsuarios={loadUsuarios}></TablaUsuario>
+          <Card>
+              <CardContent>
+                  <Typography variant="h4" marginBottom={2}>
+                      Usuarios
+                  </Typography>
+                  <Grid
+                      container
+                      spacing={3}
+                      alignItems="center"
+                      justifyContent="space-between"
+                      sx={{
+                          marginBottom: "10px",
+                      }}
+                  >
+                      <Grid item xs={6}>
+                          <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
+                      </Grid>
+                      <Grid item>
+                          <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/usuariosForm') }}>
+                              Agregar
+                          </Button>
+                      </Grid>
+                  </Grid>
+                  <TablaUsuario usuarios={usuarios} loadUsuarios={loadUsuarios}></TablaUsuario>
+              </CardContent>
+          </Card>
     </>
   );
 }

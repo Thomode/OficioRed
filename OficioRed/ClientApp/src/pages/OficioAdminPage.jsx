@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TablaOficio } from "../components/Oficio/TablaOficio";
 import { oficioService } from "../services/oficio.service";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Grid, TextField, Typography, Card, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import Buscador from "../components/buscador";
@@ -31,28 +31,32 @@ export function OficioAdminPage() {
 
     return (
         <>
-            <Typography variant="h4" marginBottom={2}>
-                Oficio
-            </Typography>
-            <Grid
-                container
-                spacing={3}
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{
-                    marginBottom: "10px",
-                }}
-            >
-                <Grid item xs={6}>
-                    <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/OficioForm') }}>
-                        Agregar
-                    </Button>
-                </Grid>
-            </Grid>
-            <TablaOficio oficios={oficios} loadOficios={loadOficios}></TablaOficio>
+            <Card>
+                <CardContent>
+                    <Typography variant="h4" marginBottom={2}>
+                        Oficio
+                    </Typography>
+                    <Grid
+                        container
+                        spacing={3}
+                        alignItems="center"
+                        justifyContent="space-between"
+                        sx={{
+                            marginBottom: "10px",
+                        }}
+                    >
+                        <Grid item xs={6}>
+                            <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/OficioForm') }}>
+                                Agregar
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <TablaOficio oficios={oficios} loadOficios={loadOficios}></TablaOficio>
+                </CardContent>
+            </Card>
         </>
     );
 }
