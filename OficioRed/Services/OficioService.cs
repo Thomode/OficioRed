@@ -37,8 +37,25 @@ public class OficioService : IOficioService
         oficio.Nombre = oficioDTO.Nombre; 
         oficio.Fhalta = DateTime.Now;
 
-        _context.Oficios.Add(oficio);
-        _context.SaveChanges();
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Oficios.Add(oficio);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al crear el oficio.", ex);
+
+            }
+        }
     }
 
     public void Delete(int id)
@@ -46,8 +63,26 @@ public class OficioService : IOficioService
         var oficio = getOficio(id);
 
         oficio.Fhbaja = DateTime.Now;
-        _context.Oficios.Remove(oficio);
-        _context.SaveChanges();
+        
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Oficios.Update(oficio);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al eliminar el oficio.", ex);
+
+            }
+        }
     }
 
     public Oficio Get(int id)
@@ -71,8 +106,24 @@ public class OficioService : IOficioService
 
         _mapper.Map(oficioDTO, oficio);
 
-        _context.Oficios.Update(oficio);
-        _context.SaveChanges();
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Oficios.Update(oficio);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al actualizar el oficio.", ex);
+            }
+        }
     }
 
     private Oficio getOficio(int id)

@@ -49,8 +49,25 @@ public class UsuarioService: IUsuarioService
         // usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
 
         _mapper.Map(usuarioDTO, usuario);
-        _context.Usuarios.Add(usuario);
-        _context.SaveChanges();
+        
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Usuarios.Add(usuario);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al crear el usuario.", ex);
+            }
+        }
     }
 
     public void Update(int id, UsuarioDTO usuarioDTO)
@@ -66,8 +83,24 @@ public class UsuarioService: IUsuarioService
 
         _mapper.Map(usuarioDTO, usuario);
 
-        _context.Usuarios.Update(usuario);
-        _context.SaveChanges();
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Usuarios.Update(usuario);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al actualizar el usuario.", ex);
+            }
+        }
     }
 
     public void Delete(int id)
@@ -75,9 +108,25 @@ public class UsuarioService: IUsuarioService
         var usuario = GetUsuario(id);
     
         usuario.Fhbaja = DateTime.Now;
-        _context.Usuarios.Update(usuario);
-        _context.SaveChanges();
-        
+
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Usuarios.Update(usuario);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al eliminar el usuario.", ex);
+            }
+        }
     }
 
     private Usuario GetUsuario(int id)

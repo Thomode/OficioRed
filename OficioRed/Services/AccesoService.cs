@@ -51,9 +51,9 @@ public class AccesoService: IAccesoService
         // Crear los claims
         var claims = new[]
         {
-                new Claim("Id", user.IdUsuario.ToString()),
-                new Claim("User", user.User),
-                new Claim("Rol", user.Rol),
+                new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()),
+                new Claim(ClaimTypes.Name, user.User),
+                new Claim(ClaimTypes.Role, user.Rol),
             };
 
         // Crear el token
@@ -76,9 +76,9 @@ public class AccesoService: IAccesoService
             var userClains = identity.Claims;
 
             var sesion = new SesionDTO();
-            sesion.Id = int.Parse(userClains.FirstOrDefault(o => o.Type == "Id")?.Value);
-            sesion.User = userClains.FirstOrDefault(o => o.Type == "User")?.Value;
-            sesion.Rol = userClains.FirstOrDefault(o => o.Type == "Rol")?.Value;
+            sesion.Id = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value);
+            sesion.User = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value;
+            sesion.Rol = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value;
 
             return sesion;      
         }
