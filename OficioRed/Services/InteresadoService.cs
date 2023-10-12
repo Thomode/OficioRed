@@ -48,8 +48,24 @@ public class InteresadoService : IInteresadoService
 
         _mapper.Map(interesadoDTO, interesado);
 
-        _context.Interesados.Add(interesado);
-        _context.SaveChanges();
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Interesados.Add(interesado);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al crear el interesado.", ex);
+            }
+        }
     }
 
     public void Delete(int id)
@@ -57,8 +73,26 @@ public class InteresadoService : IInteresadoService
         var interesado = getInteresado(id);
 
         interesado.Fhbaja = DateTime.Now;
-        _context.Interesados.Remove(interesado);
-        _context.SaveChanges();
+
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Interesados.Remove(interesado);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al eliminar el interesado.", ex);
+
+            }
+        }
     }
 
     public Interesado Get(int id)
@@ -82,8 +116,25 @@ public class InteresadoService : IInteresadoService
 
         _mapper.Map(interesadoDTO, interesado);
 
-        _context.Interesados.Update(interesado);
-        _context.SaveChanges();
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Interesados.Update(interesado);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al actualizar el interesado.", ex);
+
+            }
+        }
     }
 
     private Interesado? getInteresado(int id)

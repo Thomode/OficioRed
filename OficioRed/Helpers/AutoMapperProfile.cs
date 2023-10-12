@@ -16,5 +16,8 @@ public class AutoMapperProfile: Profile
 
         // InteresadoDTO -> Interesado
         CreateMap<InteresadoDTO, Interesado>();
+
+        // ProfesionalDTO -> Profesional
+        CreateMap<ProfesionalDTO, Profesional>();
     }
 }
