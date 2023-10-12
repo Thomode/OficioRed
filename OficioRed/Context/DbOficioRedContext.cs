@@ -23,7 +23,7 @@ public partial class DbOficioRedContext : DbContext
 
     public virtual DbSet<OficioProfesion> OficioProfesions { get; set; }
 
-    public virtual DbSet<Profesional> Profesionals { get; set; }
+    public virtual DbSet<Profesional> Profesionales { get; set; }
 
     public virtual DbSet<Rating> Ratings { get; set; }
 

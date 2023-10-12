@@ -39,7 +39,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Agregando la base de datos
 builder.Services.AddDbContext<DbOficioRedContext>(options =>
-
     options.UseSqlServer(builder.Configuration.GetConnectionString("Conexion"))
 );
 
@@ -48,10 +47,9 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IInteresadoService, InteresadoService>();
 builder.Services.AddScoped<IContactoService, ContactoService>();
 builder.Services.AddScoped<IAccesoServicio, AccesoServicio>();
+builder.Services.AddScoped<IProfesionalService, ProfesionalService>(); // Agregando el servicio de Profesional
 
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

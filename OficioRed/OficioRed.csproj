@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\ProfesionalServicie.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\src\assets\" />
     <Folder Include="ClientApp\src\pages\" />
   </ItemGroup>

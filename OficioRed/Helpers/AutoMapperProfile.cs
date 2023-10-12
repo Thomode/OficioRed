@@ -12,5 +12,7 @@ public class AutoMapperProfile: Profile
         CreateMap<UpdateUsuarioDTO, Usuario>();
 
         CreateMap<InteresadoDTO,Interesado>();
+
+        CreateMap<ProfesionalDTO, Profesional>();
     }
 }
