@@ -12,20 +12,18 @@
 } from "@mui/material";
 
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
+import { AccountCircle, LockRounded } from "@mui/icons-material";
 
 import imgOficioRed from "../assets/arregloHogar.jpeg";
 import logo from "../assets/Logo1_Recorte.png";
-import { AccountCircle, LockRounded } from "@mui/icons-material";
-
-import { set, useForm } from "react-hook-form";
-
 import accesoService from "../services/acceso.service";
-import { useNavigate } from "react-router-dom";
-
 import { useUser } from "../auth/useUser";
 
 export const LoginPage = () => {
@@ -60,9 +58,6 @@ export const LoginPage = () => {
     window.localStorage.setItem("token", res.data);
     // Muestro que se guardo correctamente
     alert("Se guardo el token correctamente");
-
-    // Llamar a la funcion login del useUser
-    login();
   };
 
   return (
@@ -106,14 +101,17 @@ export const LoginPage = () => {
                 backgroundColor: "white",
               }}
             >
+              {/*--------------- IMAGEN LOGO ---------------*/}
               <Grid container justify="center">
                 <img src={logo} width={350} alt="logo" />
               </Grid>
 
+              {/*--------------- TÍTULO ---------------*/}
               <Typography variant="h4" padding={3} textAlign="center">
                 Iniciar Sesión
               </Typography>
 
+              {/*--------------- Campo USUARIO ---------------*/}
               <TextField
                 fullWidth
                 required
@@ -133,6 +131,7 @@ export const LoginPage = () => {
                 {...register("usuario", { required: true })}
               />
 
+              {/*--------------- Campo CONTRASEÑA ---------------*/}
               <TextField
                 fullWidth
                 required
@@ -162,6 +161,8 @@ export const LoginPage = () => {
                 }}
                 {...register("password", { required: true })}
               />
+
+              {/*--------------- Checkbox para recordar credenciales ---------------*/}
               <FormControlLabel
                 control={<Checkbox defaultChecked />}
                 label="Recordar credenciales"
@@ -169,6 +170,7 @@ export const LoginPage = () => {
 
               <div style={{ height: 20 }} />
 
+              {/*--------------- Botón Iniciar Sesión ---------------*/}
               <Button
                 endIcon={<LoginOutlinedIcon />}
                 type="submit"
@@ -180,9 +182,13 @@ export const LoginPage = () => {
               </Button>
 
               <div style={{ height: 20 }} />
+
+              {/*---------- Link si olvidó la contraseña ----------*/}
               <Typography marginBottom={2}>
                 <Link href="#">Olvidaste tu contraseña?</Link>
               </Typography>
+
+              {/*--------------- Botón Registrarse ---------------*/}
               <Button
                 endIcon={<HowToRegOutlinedIcon />}
                 color="primary"

@@ -20,7 +20,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import WorkIcon from "@mui/icons-material/Work";
 import UserIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
 import { Link, useNavigate } from "react-router-dom";
 import logoOficio from "../assets/logo-oficiored.png";
 
@@ -103,9 +103,16 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+const logout = () => {
+  // Eliminar el token del localStorage
+  window.localStorage.removeItem("token");
+  // Muestro que se elimino correctamente
+  alert("Se elimino el token correctamente");
+};
+
 export function NavBarLateral({ children }) {
-  // Verifico si el usuario esta logueado
-  const { isLogged, logout } = useUser();
+  // Verifico si existe el token para ver si está logueado
+  const isLogged = !!window.localStorage.getItem("token");
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -171,34 +178,31 @@ export function NavBarLateral({ children }) {
               icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
               route: "/profesionales",
             },
-            !isLogged && {
-              text: "Iniciar Sesión",
-              icon: <LoginIcon sx={{ color: "#FFFFFF" }} />,
+            {
+              text: isLogged ? "Cerrar Sesión" : "Iniciar Sesión",
+              icon: isLogged ? (
+                <ExitToApp sx={{ color: "#FFFFFF" }} />
+              ) : (
+                <LoginIcon sx={{ color: "#FFFFFF" }} />
+              ),
               route: "/",
+              onClick: isLogged ? logout() : null,
             },
             {
               text: "Usuarios",
               icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
               route: "/usuarios",
-                      },
+            },
             {
               text: "Oficios",
               icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
               route: "/oficios",
-                      },
-                        // Verifico si el usuario esta logueado para mostrar el menu
+            },
+            // Verifico si el usuario esta logueado para mostrar el menu
             isLogged && {
               text: "Mi Perfil",
               icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
               route: "/perfil",
-            },
-
-            // Verifico si el usuario esta logueado para mostrar el cierre de sesion o iniciar sesion
-            isLogged && {
-              text: "Cerrar Sesión",
-              icon: <ExitToApp sx={{ color: "#FFFFFF" }} />,
-              route: "/",
-              onClick: logout,
             },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
@@ -223,7 +227,7 @@ export function NavBarLateral({ children }) {
                   primary={item.text}
                   sx={{
                     opacity: open ? 1 : 0,
-                    color: "white", // Cambia el color del texto a blanco
+                    color: "white",
                   }}
                 />
               </ListItemButton>
