@@ -156,12 +156,12 @@ export function NavBarLateral({ children }) {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+              <DrawerHeader>
+                  <IconButton onClick={handleDrawerClose} >
             {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
+                          <ChevronRightIcon sx={{ color: "#FFFFFF"} } />
             ) : (
-              <ChevronLeftIcon />
+                              <ChevronLeftIcon sx={{ color: "#FFFFFF" }} />
             )}
           </IconButton>
         </DrawerHeader>

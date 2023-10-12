@@ -74,6 +74,11 @@ public class UsuarioService: IUsuarioService
     {
         var usuario = GetUsuario(id);
 
+        if (_context.Usuarios.Any(e => e.User == usuarioDTO.User))
+        {
+            throw new AppException("Nombre de usuario ya existe");
+        }
+
         if(usuario == null)
         {
             throw new AppException("Usuario no existe");
