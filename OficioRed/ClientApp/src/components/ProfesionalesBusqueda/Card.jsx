@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { Card, CardMedia, CardContent, CardActions, Button, Typography, IconButton, Grid, Box } from '@mui/material';
-import imagenProfesional from '../assets/profile.png';
+import imagenProfesional from '../../assets/profile.png';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 

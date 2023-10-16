@@ -59,7 +59,7 @@ export default function ProductHero() {
                         variant="outlined"
                         size="large"
                         style={buttonStyle}
-                        onClick={() => navigate(`/signup`)}
+                        onClick={() => navigate(`/profesionales`)}
                     >
                         COMIENZA LA BÚSQUEDA
                     </Button>
