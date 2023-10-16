@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Button, Grid, Paper } from "@mui/material"; // Importamos Paper de MUI
+import { TextField, Button, Grid} from "@mui/material"; // Importamos Paper de MUI
 import SearchIcon from "@mui/icons-material/Search";
 
 function Buscador({ searchValue, setSearchValue, handleSearch }) {
@@ -17,13 +17,15 @@ function Buscador({ searchValue, setSearchValue, handleSearch }) {
                     />
                 </Grid>
                 <Grid item>
-                    <Button
-                        variant="contained"
-                        startIcon={<SearchIcon />}
-                        onClick={handleSearch}
-                    >
-                        Buscar
-                    </Button>
+                <Button
+                    variant="contained"
+                    startIcon={<SearchIcon />}
+                    onClick={handleSearch}
+                    style={{ backgroundColor: '#1b325f'}}
+                >
+                    Buscar
+                </Button>
+
                 </Grid>
             </Grid>
     );

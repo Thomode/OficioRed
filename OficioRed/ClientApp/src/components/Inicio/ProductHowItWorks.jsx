@@ -64,7 +64,7 @@ function ProductHowItWorks() {
                     <Grid container spacing={5}>
                         <Grid item xs={12} md={4}>
                             <Box sx={item}>
-                                <Box sx={number}>1.</Box>
+                                <Box sx={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>1.</Box>
                                 <Box
                                     component="img"
                                     src= {ImagenIngreso}
@@ -78,7 +78,7 @@ function ProductHowItWorks() {
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Box sx={item}>
-                                <Box sx={number}>2.</Box>
+                                <Box sx={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>2.</Box>
                                 <Box
                                     component="img"
                                     src= {ImagenBusquedayComparacion}
@@ -92,7 +92,7 @@ function ProductHowItWorks() {
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Box sx={item}>
-                                <Box sx={number}>3.</Box>
+                                <Box sx={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>3.</Box>
                                 <Box
                                     component="img"
                                     src={ImagenContactar}
@@ -111,7 +111,7 @@ function ProductHowItWorks() {
                     variant="contained"
                     component="a"
                     style={{ backgroundColor: '#1b325f', color: 'white', marginTop: 8 }}
-                    onClick={() => navigate(`/signup`)}
+                    onClick={() => navigate(`/profesionales`)}
                 >
                     INGRESA
                 </Button>
