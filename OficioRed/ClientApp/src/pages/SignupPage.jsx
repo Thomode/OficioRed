@@ -32,27 +32,20 @@ export const SignupPage = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  const navigate = useNavigate();
   // Hook useForm
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
 
   const onSubmit = async (data) => {
     console.log(data);
-    const res = await accesoService.register(data.usuario, data.password);
-    // Muestro el status de la respuesta y el token por consola
-    console.log(res.status);
-    console.log("Token: " + res.data);
-
-    // Guardar token en el localStorage usando useLocalStorage
-    window.localStorage.setItem("token", res.data);
-    // Muestro que se guardo correctamente
-    alert("Se guardo el token correctamente");
+    // Redirigir a la pagina de login cuando toque el boton de registrarse
+    navigate("/");
   };
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -119,7 +112,21 @@ export const SignupPage = () => {
                     </InputAdornment>
                   ),
                 }}
-                {...register("usuario", { required: true })}
+                {...register("usuario", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                })}
+                error={!!errors.usuario} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                helperText={
+                  errors.usuario?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.usuario?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.usuario?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : ""
+                }
               />
               <TextField
                 fullWidth
@@ -137,7 +144,27 @@ export const SignupPage = () => {
                     </InputAdornment>
                   ),
                 }}
+                {...register("nombre", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  // Patron que acepte solo letras y espacios
+                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                })}
+                error={!!errors.nombre} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                helperText={
+                  errors.nombre?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.nombre?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.nombre?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.apellido?.type === "pattern"
+                    ? "Solo se permiten letras y espacios"
+                    : ""
+                }
               />
+
               <TextField
                 fullWidth
                 required
@@ -154,6 +181,25 @@ export const SignupPage = () => {
                     </InputAdornment>
                   ),
                 }}
+                {...register("apellido", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  // Patron que acepte solo letras, acento y espacios
+                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                })}
+                error={!!errors.apellido} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                helperText={
+                  errors.apellido?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.apellido?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.apellido?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.apellido?.type === "pattern"
+                    ? "Solo se permiten letras y espacios"
+                    : ""
+                }
               />
               <TextField
                 fullWidth
@@ -182,7 +228,66 @@ export const SignupPage = () => {
                     </InputAdornment>
                   ),
                 }}
-                {...register("password", { required: true })}
+                {...register("password", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
+                })}
+                error={!!errors.password} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                helperText={
+                  errors.password?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.password?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.password?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.password?.type === "pattern"
+                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                    : ""
+                }
+              />
+
+              <TextField
+                fullWidth
+                required
+                name="confirmPassword"
+                placeholder="Confirmar Contraseña"
+                autoComplete="off"
+                type={showPassword ? "text" : "password"}
+                label="Confirmar Contraseña"
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment>
+                      <LockRounded />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? (
+                          <RemoveRedEyeRoundedIcon fontSize="small" />
+                        ) : (
+                          <VisibilityOffRoundedIcon fontSize="small" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                {...register("confirmPassword", {
+                  required: true,
+                  validate: (value) => value === watch("password"),
+                })}
+                error={!!errors.confirmPassword} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                helperText={
+                  errors.confirmPassword?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.confirmPassword?.type === "validate"
+                    ? "Las contraseñas no coinciden"
+                    : ""
+                }
               />
 
               <div style={{ height: 20 }} />

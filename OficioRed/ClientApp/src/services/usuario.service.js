@@ -35,5 +35,3 @@ export const usuarioService = {
     deleteUser,
     update
 }
-
-

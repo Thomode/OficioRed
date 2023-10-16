@@ -2,6 +2,7 @@
   Box,
   Button,
   Checkbox,
+  Divider,
   FormControlLabel,
   Grid,
   IconButton,
@@ -26,6 +27,9 @@ import logo from "../assets/Logo1_Recorte.png";
 import accesoService from "../services/acceso.service";
 import { useUser } from "../auth/useUser";
 
+// Importo servicio de usuario para obtener datos del rol al loguearse
+import { usuarioService } from "../services/usuario.service";
+
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { login, isLogged } = useUser();
@@ -41,23 +45,52 @@ export const LoginPage = () => {
 
   // Hook useForm
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    register, // Identifica cada input del formulario
+    handleSubmit, // Función que se ejecuta al enviar el formulario
+    formState: { errors }, // Errores del formulario
   } = useForm();
+
+  // useState del usuario encontrado
+  const [usuarioEncontrado, setUsuarioEncontrado] = useState(true);
 
   const onSubmit = async (data) => {
     console.log(data);
     const res = await accesoService.login(data.usuario, data.password);
 
-    // Muestro el status de la respuesta y el token por consola
-    console.log(res.status);
-    console.log("Token: " + res.data);
+    // Verificar el estado de la respuesta
+    if (res.status === 404) {
+      // Si el status es 404, el usuario no existe
+      console.log("Usuario no encontrado");
+      setUsuarioEncontrado(false);
+    } else {
+      // Muestro el status de la respuesta y el token por consola
+      console.log(res.status);
+      console.log("Token: " + res.data);
 
-    // Guardar token en el localStorage usando useLocalStorage
-    window.localStorage.setItem("token", res.data);
-    // Muestro que se guardo correctamente
-    alert("Se guardo el token correctamente");
+      // Guardar token en el localStorage usando useLocalStorage
+      window.localStorage.setItem("token", res.data);
+      // Muestro que se guardo correctamente
+      alert("Se guardo el token correctamente");
+
+      // Redirigir a la página de home
+      navigate("/home");
+
+      // Obtener datos del usuario logueado
+      const resUsuario = await usuarioService.getAll(data.usuario);
+
+      const usuarioBuscado = data.usuario; // Cambia esto al usuario que desees buscar
+
+      const usuarioEncontrado = resUsuario.find(
+        (usuario) => usuario.user === usuarioBuscado
+      );
+
+      if (usuarioEncontrado) {
+        const rolDelUsuario = usuarioEncontrado.rol;
+        console.log(
+          `El rol del usuario ${usuarioBuscado} es: ${rolDelUsuario}`
+        );
+      }
+    }
   };
 
   return (
@@ -128,7 +161,21 @@ export const LoginPage = () => {
                     </InputAdornment>
                   ),
                 }}
-                {...register("usuario", { required: true })}
+                {...register("usuario", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                })}
+                error={!!errors.usuario} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                helperText={
+                  errors.usuario?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.usuario?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.usuario?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : ""
+                }
               />
 
               {/*--------------- Campo CONTRASEÑA ---------------*/}
@@ -159,13 +206,34 @@ export const LoginPage = () => {
                     </InputAdornment>
                   ),
                 }}
-                {...register("password", { required: true })}
+                {...register("password", {
+                  required: true,
+                  minLength: 4,
+                  maxLength: 15,
+                  // patron regular que contenga al menos una letra mayúscula, una minúscula, un número y un caracter especial
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
+                })}
+                error={!!errors.password} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                helperText={
+                  errors.password?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.password?.type === "minLength"
+                    ? "Mínimo 4 caracteres"
+                    : errors.password?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.password?.type === "pattern"
+                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                    : ""
+                }
               />
 
               {/*--------------- Checkbox para recordar credenciales ---------------*/}
               <FormControlLabel
-                control={<Checkbox defaultChecked />}
+                name="recordarCredenciales"
+                control={<Checkbox />}
                 label="Recordar credenciales"
+                {...register("recordarCredenciales")}
               />
 
               <div style={{ height: 20 }} />
