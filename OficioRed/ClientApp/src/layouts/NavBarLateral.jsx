@@ -29,6 +29,9 @@ import { ExitToApp } from "@mui/icons-material";
 
 import { useUser } from "../auth/useUser";
 
+import { PrivateRoutes } from "../guards/routes";
+import { Logout } from "../components/Logout";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -103,12 +106,14 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+/*
 const logout = () => {
   // Eliminar el token del localStorage
   window.localStorage.removeItem("token");
   // Muestro que se elimino correctamente
   alert("Se elimino el token correctamente");
 };
+*/
 
 export function NavBarLateral({ children }) {
   // Verifico si existe el token para ver si está logueado
@@ -156,12 +161,12 @@ export function NavBarLateral({ children }) {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-              <DrawerHeader>
-                  <IconButton onClick={handleDrawerClose} >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
-                          <ChevronRightIcon sx={{ color: "#FFFFFF"} } />
+              <ChevronRightIcon sx={{ color: "#FFFFFF" }} />
             ) : (
-                              <ChevronLeftIcon sx={{ color: "#FFFFFF" }} />
+              <ChevronLeftIcon sx={{ color: "#FFFFFF" }} />
             )}
           </IconButton>
         </DrawerHeader>
@@ -171,12 +176,12 @@ export function NavBarLateral({ children }) {
             {
               text: "Home",
               icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/home",
+              route: PrivateRoutes.HOME,
             },
             {
               text: "Profesionales",
               icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/profesionales",
+              route: PrivateRoutes.PROFESIONALES,
             },
             {
               text: isLogged ? "Cerrar Sesión" : "Iniciar Sesión",
@@ -186,17 +191,22 @@ export function NavBarLateral({ children }) {
                 <LoginIcon sx={{ color: "#FFFFFF" }} />
               ),
               route: "/",
-              onClick: isLogged ? logout() : null,
+              onClick: () => {
+                if (isLogged) {
+                  <Logout />
+                }
+                null;
+              },
             },
             {
               text: "Usuarios",
               icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/usuarios",
+              route: PrivateRoutes.USUARIOS,
             },
             {
               text: "Oficios",
               icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/oficios",
+              route: PrivateRoutes.OFICIOS,
             },
             // Verifico si el usuario esta logueado para mostrar el menu
             isLogged && {

@@ -29,6 +29,7 @@ import { useUser } from "../auth/useUser";
 
 // Importo servicio de usuario para obtener datos del rol al loguearse
 import { usuarioService } from "../services/usuario.service";
+import { PrivateRoutes } from "../guards/routes";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -51,45 +52,39 @@ export const LoginPage = () => {
   } = useForm();
 
   // useState del usuario encontrado
-  const [usuarioEncontrado, setUsuarioEncontrado] = useState(true);
+  const [usuarioEncontrado, setUsuarioEncontrado] = useState(false);
 
   const onSubmit = async (data) => {
     console.log(data);
     const res = await accesoService.login(data.usuario, data.password);
 
-    // Verificar el estado de la respuesta
-    if (res.status === 404) {
-      // Si el status es 404, el usuario no existe
-      console.log("Usuario no encontrado");
-      setUsuarioEncontrado(false);
+    // Muestro el status de la respuesta y el token por consola
+    console.log(res.status);
+    console.log("Token: " + res.data);
+
+    // Guardar token en el localStorage usando useLocalStorage
+    window.localStorage.setItem("token", res.data);
+    // Muestro que se guardo correctamente
+    alert("Se guardo el token correctamente");
+
+    // Redirigir a la página de home
+    navigate(`/${PrivateRoutes.PRIVATE}`, { replace: true });
+
+    // Obtener datos del usuario logueado
+    const resUsuario = await usuarioService.getAll(data.usuario);
+
+    const usuarioBuscado = data.usuario; // Cambia esto al usuario que desees buscar
+
+    // Buscar el usuario en el array de usuarios, si no se encuentra, devuelve mensaje "Usuario no encontrado"
+    const usuarioEncontrado = resUsuario.data.find(
+      (usuario) => usuario.usuario === usuarioBuscado
+    );
+
+    if (usuarioEncontrado) {
+      const rolDelUsuario = usuarioEncontrado.rol;
+      console.log(`El rol del usuario ${usuarioBuscado} es: ${rolDelUsuario}`);
     } else {
-      // Muestro el status de la respuesta y el token por consola
-      console.log(res.status);
-      console.log("Token: " + res.data);
-
-      // Guardar token en el localStorage usando useLocalStorage
-      window.localStorage.setItem("token", res.data);
-      // Muestro que se guardo correctamente
-      alert("Se guardo el token correctamente");
-
-      // Redirigir a la página de home
-      navigate("/home");
-
-      // Obtener datos del usuario logueado
-      const resUsuario = await usuarioService.getAll(data.usuario);
-
-      const usuarioBuscado = data.usuario; // Cambia esto al usuario que desees buscar
-
-      const usuarioEncontrado = resUsuario.find(
-        (usuario) => usuario.user === usuarioBuscado
-      );
-
-      if (usuarioEncontrado) {
-        const rolDelUsuario = usuarioEncontrado.rol;
-        console.log(
-          `El rol del usuario ${usuarioBuscado} es: ${rolDelUsuario}`
-        );
-      }
+      console.log(`Usuario ${usuarioBuscado} no encontrado`);
     }
   };
 

@@ -9,6 +9,23 @@ import UsuarioForm from "./components/Usuario/UsuarioForm";
 
 
 export const AppRoutes = [
+    // Si pone cualquier otra ruta que lo navege a la raiz
+    {
+        path: '*',
+        element: <LoginPage />
+    },
+    {
+        path: '/',
+        element: <LoginPage />
+    },
+    {
+        path: '/login',
+        element: <LoginPage />
+    },
+    {
+        path: '/signup',
+        element: <SignupPage />
+    },
     {
         path: '/home',
         element: <HomePage />
@@ -16,14 +33,6 @@ export const AppRoutes = [
     {
         path: '/profesionales',
         element: <ProfesionalPage />
-    },
-    {
-        path: '/',
-        element: <LoginPage />
-    },
-    {
-        path: '/signup',
-        element: <SignupPage />
     },
     {
         path: '/usuarios',
@@ -48,5 +57,5 @@ export const AppRoutes = [
     {
         path: '/oficios/:id/edit',
         element: <OficioForm />
-    },
+    }
 ];
