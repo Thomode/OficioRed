@@ -115,9 +115,91 @@ const logout = () => {
 };
 */
 
-export function NavBarLateral({ children }) {
+
+
+
+
+export function NavBarLateral({ children, type }) {
   // Verifico si existe el token para ver si está logueado
-  const isLogged = !!window.localStorage.getItem("token");
+ 
+
+  const routesForType = (type) => {
+    const isLogged = !!window.localStorage.getItem("token");
+
+    if (type = "admin") {
+      return [
+        {
+          text: "Usuarios",
+          icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
+          route: "/admin/usuarios",
+        },
+        {
+          text: "Oficios",
+          icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
+          route: "/admin/oficios",
+        },
+        {
+          text: isLogged ? "Cerrar Sesión" : "Iniciar Sesión",
+          icon: isLogged ? (
+            <ExitToApp sx={{ color: "#FFFFFF" }} />
+          ) : (
+            <LoginIcon sx={{ color: "#FFFFFF" }} />
+          ),
+          route: "/",
+          onClick: () => {
+            if (isLogged) {
+              <Logout />
+            }
+          },
+        },
+      ]
+    } else {
+      return [
+        {
+          text: "Home",
+          icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
+          route: PrivateRoutes.HOME,
+        },
+        {
+          text: "Profesionales",
+          icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
+          route: PrivateRoutes.PROFESIONALES,
+        },
+        {
+          text: isLogged ? "Cerrar Sesión" : "Iniciar Sesión",
+          icon: isLogged ? (
+            <ExitToApp sx={{ color: "#FFFFFF" }} />
+          ) : (
+            <LoginIcon sx={{ color: "#FFFFFF" }} />
+          ),
+          route: "/",
+          onClick: () => {
+            if (isLogged) {
+              <Logout />
+            }
+          },
+        },
+        {
+          text: "Usuarios",
+          icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
+          route: PrivateRoutes.USUARIOS,
+        },
+        {
+          text: "Oficios",
+          icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
+          route: PrivateRoutes.OFICIOS,
+        },
+        // Verifico si el usuario esta logueado para mostrar el menu
+        isLogged && {
+          text: "Mi Perfil",
+          icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
+          route: "/perfil",
+        },
+      ]
+    }
+  }
+
+  const routesMenu = routesForType(type)
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -172,49 +254,7 @@ export function NavBarLateral({ children }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {[
-            {
-              text: "Home",
-              icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-              route: PrivateRoutes.HOME,
-            },
-            {
-              text: "Profesionales",
-              icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
-              route: PrivateRoutes.PROFESIONALES,
-            },
-            {
-              text: isLogged ? "Cerrar Sesión" : "Iniciar Sesión",
-              icon: isLogged ? (
-                <ExitToApp sx={{ color: "#FFFFFF" }} />
-              ) : (
-                <LoginIcon sx={{ color: "#FFFFFF" }} />
-              ),
-              route: "/",
-              onClick: () => {
-                if (isLogged) {
-                  <Logout />
-                }
-                null;
-              },
-            },
-            {
-              text: "Usuarios",
-              icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
-              route: PrivateRoutes.USUARIOS,
-            },
-            {
-              text: "Oficios",
-              icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
-              route: PrivateRoutes.OFICIOS,
-            },
-            // Verifico si el usuario esta logueado para mostrar el menu
-            isLogged && {
-              text: "Mi Perfil",
-              icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/perfil",
-            },
-          ].map((item) => (
+          {routesMenu.map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 onClick={() => handleClickMenu(item.route)}

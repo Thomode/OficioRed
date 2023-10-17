@@ -3,6 +3,7 @@ using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Models;
 using OficioRed.Services;
+using Org.BouncyCastle.Bcpg;
 
 namespace OficioRed.Controllers;
 
@@ -23,14 +24,22 @@ public class AccesoController : ControllerBase
     [HttpGet]
     public IActionResult GetUser()
     {
-        var sesion = _accesoService.GetCurrentUsuario();
-
-        if (sesion != null)
+        try
         {
-            return Ok(sesion);
+            var sesion = _accesoService.GetCurrentUsuario();
+
+            if (sesion != null)
+            {
+                return Ok(sesion);
+            }
+
+            return BadRequest("Sesion no encontrada");
         }
 
-        return BadRequest("Sesion no encontrada");
+        catch (Exception ex)
+        {
+            return BadRequest("Sesion no encontrada");
+        }
     }
 
     [HttpPost("login")]
@@ -42,8 +51,13 @@ public class AccesoController : ControllerBase
         {
             // Crear el token
             var token = _accesoService.GenerateToken(user);
+            var tokenResponse = new ResponseToken();
+            tokenResponse.Id = user.IdUsuario;
+            tokenResponse.User = user.User;
+            tokenResponse.Rol = user.Rol;
+            tokenResponse.Token = token;
 
-            return Ok(token);
+            return Ok(tokenResponse);
         }
 
         return NotFound("Usuario no encontrado");

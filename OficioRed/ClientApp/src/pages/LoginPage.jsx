@@ -60,7 +60,7 @@ export const LoginPage = () => {
 
     // Muestro el status de la respuesta y el token por consola
     console.log(res.status);
-    console.log("Token: " + res.data);
+    console.log("Token: ", res.data);
 
     // Guardar token en el localStorage usando useLocalStorage
     window.localStorage.setItem("token", res.data);
@@ -68,7 +68,7 @@ export const LoginPage = () => {
     alert("Se guardo el token correctamente");
 
     // Redirigir a la página de home
-    navigate(`/${PrivateRoutes.PRIVATE}`, { replace: true });
+    navigate("/admin/usuarios", { replace: true });
 
     // Obtener datos del usuario logueado
     const resUsuario = await usuarioService.getAll(data.usuario);
@@ -90,14 +90,7 @@ export const LoginPage = () => {
 
   return (
     <>
-      <Grid container style={{ height: "85vh" }}>
-        <Grid item xs={12} sm={6}>
-          <img
-            src={imgOficioRed}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            alt="ImagenOficioRed"
-          />
-        </Grid>
+      <Grid container style={{ height: "85vh", justifyContent: "center"}}>
         <Grid
           container
           item
@@ -106,7 +99,7 @@ export const LoginPage = () => {
           sm={3}
           alignItems="center"
           direction="column"
-          justifyContent="space-between"
+          
           style={{ padding: 10 }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -166,10 +159,10 @@ export const LoginPage = () => {
                   errors.usuario?.type === "required"
                     ? "Campo obligatorio"
                     : errors.usuario?.type === "minLength"
-                    ? "Mínimo 2 caracteres"
-                    : errors.usuario?.type === "maxLength"
-                    ? "Máximo 15 caracteres"
-                    : ""
+                      ? "Mínimo 2 caracteres"
+                      : errors.usuario?.type === "maxLength"
+                        ? "Máximo 15 caracteres"
+                        : ""
                 }
               />
 
@@ -214,12 +207,12 @@ export const LoginPage = () => {
                   errors.password?.type === "required"
                     ? "Campo obligatorio"
                     : errors.password?.type === "minLength"
-                    ? "Mínimo 4 caracteres"
-                    : errors.password?.type === "maxLength"
-                    ? "Máximo 15 caracteres"
-                    : errors.password?.type === "pattern"
-                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                    : ""
+                      ? "Mínimo 4 caracteres"
+                      : errors.password?.type === "maxLength"
+                        ? "Máximo 15 caracteres"
+                        : errors.password?.type === "pattern"
+                          ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                          : ""
                 }
               />
 

@@ -6,7 +6,7 @@ export function Logout() {
   const logout = () => {
     window.localStorage.removeItem("token");
     alert("Se elimino el token correctamente");
-    navigate(PublicRoutes.LOGIN, { replace: true });
+    navigate("/login", { replace: true });
   };
   return <button onClick={logout}>Logout</button>;
 }
