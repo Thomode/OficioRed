@@ -31,7 +31,7 @@ import { useUser } from "../auth/useUser";
 import { usuarioService } from "../services/usuario.service";
 import { PrivateRoutes } from "../guards/routes";
 
-export const LoginPage = () => {
+export const LoginPage = ({setAcceso}) => {
   const navigate = useNavigate();
   const { login, isLogged } = useUser();
   useEffect(() => {
@@ -60,16 +60,21 @@ export const LoginPage = () => {
 
     // Muestro el status de la respuesta y el token por consola
     console.log(res.status);
-    console.log("Token: ", res.data);
+    console.log("Acceso: ", res.data);
 
     // Guardar token en el localStorage usando useLocalStorage
-    window.localStorage.setItem("token", res.data);
-    // Muestro que se guardo correctamente
-    alert("Se guardo el token correctamente");
-
+    window.localStorage.setItem("acceso", JSON.stringify(res.data));
+    setAcceso(res.data)
     // Redirigir a la página de home
-    navigate("/admin/usuarios", { replace: true });
+    if (res.data.rol === "Admin") {
+      navigate("/admin/usuarios", { replace: true });
+    }
+    else{
+      navigate("/home", { replace: true });
+    }
+    
 
+    /*
     // Obtener datos del usuario logueado
     const resUsuario = await usuarioService.getAll(data.usuario);
 
@@ -86,6 +91,7 @@ export const LoginPage = () => {
     } else {
       console.log(`Usuario ${usuarioBuscado} no encontrado`);
     }
+    */
   };
 
   return (

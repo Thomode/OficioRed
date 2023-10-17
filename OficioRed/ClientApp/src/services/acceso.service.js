@@ -6,7 +6,7 @@ const login = async  (usuario, password) => {
         user: usuario,
         password: password
     })
-    console.log(res)
+
     return res
 }
 
@@ -18,7 +18,7 @@ const register = async  (usuario, nombre, apellido, password) => {
         apellido: apellido,
         password: password
     })
-    console.log(res)
+    
     return res
 }
 

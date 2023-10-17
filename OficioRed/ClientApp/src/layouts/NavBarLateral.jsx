@@ -116,17 +116,14 @@ const logout = () => {
 */
 
 
-
-
-
-export function NavBarLateral({ children, type }) {
+export function NavBarLateral({ children, type, logout }) {
   // Verifico si existe el token para ver si está logueado
- 
+
 
   const routesForType = (type) => {
-    const isLogged = !!window.localStorage.getItem("token");
+    const isLogged = !!window.localStorage.getItem("acces0");
 
-    if (type = "admin") {
+    if (type === "Admin") {
       return [
         {
           text: "Usuarios",
@@ -137,64 +134,20 @@ export function NavBarLateral({ children, type }) {
           text: "Oficios",
           icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
           route: "/admin/oficios",
-        },
-        {
-          text: isLogged ? "Cerrar Sesión" : "Iniciar Sesión",
-          icon: isLogged ? (
-            <ExitToApp sx={{ color: "#FFFFFF" }} />
-          ) : (
-            <LoginIcon sx={{ color: "#FFFFFF" }} />
-          ),
-          route: "/",
-          onClick: () => {
-            if (isLogged) {
-              <Logout />
-            }
-          },
-        },
+        }
       ]
     } else {
       return [
         {
           text: "Home",
           icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-          route: PrivateRoutes.HOME,
+          route: '/home',
         },
         {
           text: "Profesionales",
           icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
-          route: PrivateRoutes.PROFESIONALES,
-        },
-        {
-          text: isLogged ? "Cerrar Sesión" : "Iniciar Sesión",
-          icon: isLogged ? (
-            <ExitToApp sx={{ color: "#FFFFFF" }} />
-          ) : (
-            <LoginIcon sx={{ color: "#FFFFFF" }} />
-          ),
-          route: "/",
-          onClick: () => {
-            if (isLogged) {
-              <Logout />
-            }
-          },
-        },
-        {
-          text: "Usuarios",
-          icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
-          route: PrivateRoutes.USUARIOS,
-        },
-        {
-          text: "Oficios",
-          icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
-          route: PrivateRoutes.OFICIOS,
-        },
-        // Verifico si el usuario esta logueado para mostrar el menu
-        isLogged && {
-          text: "Mi Perfil",
-          icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
-          route: "/perfil",
-        },
+          route: '/profesionales',
+        }
       ]
     }
   }
@@ -217,6 +170,8 @@ export function NavBarLateral({ children, type }) {
   const handleClickMenu = (ruta) => {
     navigate(ruta);
   };
+
+  
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -283,6 +238,33 @@ export function NavBarLateral({ children, type }) {
               </ListItemButton>
             </ListItem>
           ))}
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              onClick={() => logout()}
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <ExitToApp sx={{ color: "#FFFFFF" }} />
+              </ListItemIcon>
+              <ListItemText
+                primary={"Cerrar Sesion"}
+                sx={{
+                  opacity: open ? 1 : 0,
+                  color: "white",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
         {/* Aquí puedes agregar más elementos a tu lista si es necesario */}

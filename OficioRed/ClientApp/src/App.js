@@ -70,89 +70,93 @@ const clientRoutes = [
 ]
 
 export function App() {
-    const [login, setLogin] = useState(false)
-    const [rol, setRol] = useState("")
-    const navigate = useNavigate()
+    const [acceso, setAcceso] = useState(null)
 
-    const loadLogin = async () => {
-        const token = await window.localStorage.getItem("token");
-
-        console.log(token)
-
-        setLogin(false)
-        setRol("")
-
-        if (token != '') {
-            setLogin(true)
-            setRol("Admin")
-            //navigate("/admin/usuarios")
-        }
-
-        console.log(login, rol)
+    const loadAcceso = async () => {
+        const local = window.localStorage.getItem("acceso");
+        const data = JSON.parse(local)
+        setAcceso(data)
+        console.log("acceso", acceso)
     }
 
+    const logout = () => {
+        window.localStorage.removeItem("acceso");
+        setAcceso(null)
+        alert("Se elimino el acceso correctamente");
+        //navigate("/login", { replace: true });
+      };
+
     useEffect(() => {
-        // Obtener el token del localstorage
-
-
-        loadLogin()
+        loadAcceso()
 
     }, [])
 
     return (
         <>
-            <UserContextProvider>
-                <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <Box
-                        component="div"
-                        sx={{
-                            backgroundImage: `url(${backgroundImage})`, // URL de tu imagen de fondo
-                            backgroundSize: 'cover', // Ajusta la imagen al tama?o del contenedor
-                            minHeight: '100vh', // Establece el alto m?nimo para ocupar toda la ventana
-                            width: '100vw', // Establece el ancho m?nimo para ocupar toda la ventana
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Routes>
-                            <Route path='/login' element={<LoginPage />} />
-                            <Route path='*' element={<Navigate to={'/login'} />} />
 
-                            {
-                                adminRoutes.map((route, index) =>
-                                    <Route
-                                        key={index}
-                                        path={route.path}
-                                        element={
-                                            <ProtectedRoute>
-                                                <NavBarLateral type='admin'>{route.element}</NavBarLateral>
-                                            </ProtectedRoute>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Box
+                    component="div"
+                    sx={{
+                        backgroundImage: `url(${backgroundImage})`, // URL de tu imagen de fondo
+                        backgroundSize: 'cover', // Ajusta la imagen al tama?o del contenedor
+                        minHeight: '100vh', // Establece el alto m?nimo para ocupar toda la ventana
+                        width: '100vw', // Establece el ancho m?nimo para ocupar toda la ventana
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <Routes>
+                        <Route path='/login' element={<LoginPage setAcceso={setAcceso} />} />
+                        {
+                            acceso ? (
+                                acceso.rol.includes("Admin") ? (
+                                    <Route path='*' element={<Navigate to={'/admin/usuarios'} />} />
+                                ) :
+                                    <Route path='*' element={<Navigate to={'/home'} />} />
+                            ) : (
+                                <Route path='*' element={<Navigate to={'/login'} />} />
+                            )
+                        }
 
-                                        }
-                                    />
+                        {
+                            adminRoutes.map((route, index) =>
+                                <Route
+                                    key={index}
+                                    path={route.path}
+                                    element={
+                                        <ProtectedRoute
+                                            isAllowed={acceso && acceso.rol.includes("Admin")}
+                                        >
+                                            <NavBarLateral type='Admin' logout={logout}>{route.element}</NavBarLateral>
+                                        </ProtectedRoute>
 
-                                )
-                            }
-                            {
-                                clientRoutes.map((route, index) =>
-                                    <Route
-                                        key={index}
-                                        path={route.path}
-                                        element={
-                                            <ProtectedRoute>
-                                                <NavBarLateral type='client'>{route.element}</NavBarLateral>
-                                            </ProtectedRoute>
+                                    }
+                                />
 
-                                        }
-                                    />
-                                )
-                            }
-                        </Routes>
-                    </Box>
-                </ThemeProvider>
-            </UserContextProvider>
+                            )
+                        }
+                        {
+                            clientRoutes.map((route, index) =>
+                                <Route
+                                    key={index}
+                                    path={route.path}
+                                    element={
+                                        <ProtectedRoute
+                                            isAllowed={acceso && acceso.rol.includes("Cliente")}
+                                        >
+                                            <NavBarLateral type='client' logout={logout}>{route.element}</NavBarLateral>
+                                        </ProtectedRoute>
+
+                                    }
+                                />
+                            )
+                        }
+                    </Routes>
+                </Box>
+            </ThemeProvider>
+
         </>
-
     );
 }
