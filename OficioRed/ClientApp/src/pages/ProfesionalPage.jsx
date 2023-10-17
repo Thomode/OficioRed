@@ -12,10 +12,10 @@ export function ProfesionalPage() {
                 justifyContent="center"
                 alignItems="center"
                 bgcolor="white"
-                borderRadius={10}
                 p={2}
-                mt={2}
+                mt={0}
                 mb={4}
+                style={{ border: '5px solid #1b325f' }}
             >
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -27,33 +27,11 @@ export function ProfesionalPage() {
                 </Grid>
             </Box>
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <CardProfesional />
-                </Grid>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+                    <Grid item xs={12} sm={6} md={4} lg={4} key={item}>
+                        <CardProfesional />
+                    </Grid>
+                ))}
             </Grid>
         </Container>
     );
