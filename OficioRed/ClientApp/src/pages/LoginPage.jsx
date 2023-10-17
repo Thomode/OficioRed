@@ -31,7 +31,7 @@ import { useUser } from "../auth/useUser";
 import { usuarioService } from "../services/usuario.service";
 import { PrivateRoutes } from "../guards/routes";
 
-export const LoginPage = ({setAcceso}) => {
+export const LoginPage = ({ setAcceso }) => {
   const navigate = useNavigate();
   const { login, isLogged } = useUser();
   useEffect(() => {
@@ -62,18 +62,23 @@ export const LoginPage = ({setAcceso}) => {
     console.log(res.status);
     console.log("Acceso: ", res.data);
 
-    // Guardar token en el localStorage usando useLocalStorage
-    window.localStorage.setItem("acceso", JSON.stringify(res.data));
-    setAcceso(res.data)
-    // Redirigir a la página de home
-    if (res.data.rol === "Admin") {
-      navigate("/admin/usuarios", { replace: true });
+    if (res.error === "Usuario no encontrado") {
+      // Muestra el mensaje de "Usuario no encontrado" en el campo usuario
+      setUsuarioEncontrado(true);
+    } else if (res.error) {
+      // Muestra un mensaje genérico para otros errores
+      console.log("Error inesperado: ", res.error);
+    } else {
+      // Guardar token en el localStorage usando useLocalStorage
+      window.localStorage.setItem("acceso", JSON.stringify(res.data));
+      setAcceso(res.data);
+      // Redirigir a la página de home
+      if (res.data.rol === "Admin") {
+        navigate("/admin/usuarios", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
     }
-    else{
-      navigate("/home", { replace: true });
-    }
-    
-
     /*
     // Obtener datos del usuario logueado
     const resUsuario = await usuarioService.getAll(data.usuario);
@@ -96,7 +101,7 @@ export const LoginPage = ({setAcceso}) => {
 
   return (
     <>
-      <Grid container style={{ height: "85vh", justifyContent: "center"}}>
+      <Grid container style={{ height: "85vh", justifyContent: "center" }}>
         <Grid
           container
           item
@@ -105,7 +110,6 @@ export const LoginPage = ({setAcceso}) => {
           sm={3}
           alignItems="center"
           direction="column"
-          
           style={{ padding: 10 }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -159,16 +163,21 @@ export const LoginPage = ({setAcceso}) => {
                   required: true,
                   minLength: 2,
                   maxLength: 15,
+                  usuarioEncontrado: false,
                 })}
                 error={!!errors.usuario} // Agregar la propiedad 'error' para resaltar el campo en caso de error
                 helperText={
-                  errors.usuario?.type === "required"
-                    ? "Campo obligatorio"
-                    : errors.usuario?.type === "minLength"
-                      ? "Mínimo 2 caracteres"
-                      : errors.usuario?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : ""
+                  errors.usuario?.type === "required" ? (
+                    "Campo obligatorio"
+                  ) : errors.usuario?.type === "minLength" ? (
+                    "Mínimo 2 caracteres"
+                  ) : errors.usuario?.type === "maxLength" ? (
+                    "Máximo 15 caracteres"
+                  ) : usuarioEncontrado ? (
+                    <span style={{ color: "red" }}>Usuario no encontrado</span>
+                  ) : (
+                    ""
+                  )
                 }
               />
 
@@ -213,12 +222,12 @@ export const LoginPage = ({setAcceso}) => {
                   errors.password?.type === "required"
                     ? "Campo obligatorio"
                     : errors.password?.type === "minLength"
-                      ? "Mínimo 4 caracteres"
-                      : errors.password?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : errors.password?.type === "pattern"
-                          ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                          : ""
+                    ? "Mínimo 4 caracteres"
+                    : errors.password?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.password?.type === "pattern"
+                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                    : ""
                 }
               />
 
