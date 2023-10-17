@@ -109,6 +109,7 @@ export function App() {
                 >
                     <Routes>
                         <Route path='/login' element={<LoginPage setAcceso={setAcceso} />} />
+                        <Route path='/signup' element={<SignupPage/>}/>
                         {
                             acceso ? (
                                 acceso.rol.includes("Admin") ? (

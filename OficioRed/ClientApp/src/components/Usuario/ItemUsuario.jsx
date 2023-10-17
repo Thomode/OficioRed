@@ -53,7 +53,7 @@ export function ItemUsuario({ usuario, loadUsuarios }) {
             <TableCell align="right">{usuario.rol}</TableCell>
             <TableCell align="right">{usuario.fhalta}</TableCell>
             <TableCell align="right">
-                <IconButton color="primary" size='large' onClick={() => navigate(`/usuarios/${usuario.idUsuario}/edit`)}>
+                <IconButton color="primary" size='large' onClick={() => navigate(`/admin/usuarios/${usuario.idUsuario}/edit`)}>
                     <EditIcon></EditIcon>
                 </IconButton>
             </TableCell>

@@ -50,7 +50,7 @@ export function UsuarioAdminPage() {
                           <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
                       </Grid>
                       <Grid item>
-                          <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/usuariosForm') }}>
+                          <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/admin/usuariosForm') }}>
                               Agregar
                           </Button>
                       </Grid>

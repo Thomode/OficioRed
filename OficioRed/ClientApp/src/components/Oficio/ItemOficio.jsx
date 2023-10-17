@@ -29,7 +29,7 @@ export function ItemOficio({ oficio, loadOficios }) {
             </TableCell>
             <TableCell align="right">{oficio.nombre}</TableCell>
             <TableCell align="right">
-                <IconButton color="primary" size='large' onClick={() => navigate(`/oficios/${oficio.idOficio}/edit`)}>
+                <IconButton color="primary" size='large' onClick={() => navigate(`/admin/oficios/${oficio.idOficio}/edit`)}>
                     <EditIcon></EditIcon>
                 </IconButton>
             </TableCell>

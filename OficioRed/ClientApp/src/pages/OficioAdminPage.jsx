@@ -49,7 +49,7 @@ export function OficioAdminPage() {
                             <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/OficioForm') }}>
+                            <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/admin/oficioForm') }}>
                                 Agregar
                             </Button>
                         </Grid>
