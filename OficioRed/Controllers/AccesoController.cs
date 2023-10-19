@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OficioRed.Context;
 using OficioRed.Dtos;
-using OficioRed.Models;
+using OficioRed.Models2;
 using OficioRed.Services;
 using Org.BouncyCastle.Bcpg;
 
@@ -52,9 +52,8 @@ public class AccesoController : ControllerBase
             // Crear el token
             var token = _accesoService.GenerateToken(user);
             var tokenResponse = new ResponseToken();
-            tokenResponse.Id = user.IdUsuario;
-            tokenResponse.User = user.User;
-            tokenResponse.Rol = user.Rol;
+            tokenResponse.User = user.Usuario1;
+            tokenResponse.IdRol = (int)user.IdRol;
             tokenResponse.Token = token;
 
             return Ok(tokenResponse);
@@ -68,9 +67,9 @@ public class AccesoController : ControllerBase
     {
         // Crea el usuario nuevo con sus correpondientes valores
         var newUser = new Usuario();
-        newUser.User = registerUserDTO.User;
+        newUser.Usuario1 = registerUserDTO.User;
         newUser.Password = registerUserDTO.Password;
-        newUser.Rol = "cliente";
+        newUser.IdRol = registerUserDTO.IdRol;
         newUser.Fhalta = DateTime.Now;
 
         _context.Usuarios.Add(newUser);

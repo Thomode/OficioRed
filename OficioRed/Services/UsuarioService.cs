@@ -1,6 +1,6 @@
 ﻿using OficioRed.Context;
 using OficioRed.Helpers;
-using OficioRed.Models;
+using OficioRed.Models2;
 using BCrypt.Net;
 using OficioRed.Dtos;
 using AutoMapper;
@@ -39,7 +39,7 @@ public class UsuarioService: IUsuarioService
 
     public void Create(UsuarioDTO usuarioDTO)
     {
-        if (_context.Usuarios.Any(x => x.User == usuarioDTO.User)) {
+        if (_context.Usuarios.Any(x => x.Usuario1 == usuarioDTO.User)) {
             throw new AppException("Usuario ya registrado");
         }
 
@@ -74,7 +74,7 @@ public class UsuarioService: IUsuarioService
     {
         var usuario = GetUsuario(id);
 
-        if (_context.Usuarios.Any(e => e.User == usuarioDTO.User))
+        if (_context.Usuarios.Any(e => e.Usuario1 == usuarioDTO.User))
         {
             throw new AppException("Nombre de usuario ya existe");
         }

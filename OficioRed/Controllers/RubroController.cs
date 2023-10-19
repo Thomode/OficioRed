@@ -7,20 +7,20 @@ namespace OficioRed.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OficioController : ControllerBase
+public class RubroController : ControllerBase
 {
-    private IOficioService _oficioService;
+    private IRubroService _rubroService;
 
-    public OficioController(IOficioService oficioService)
+    public RubroController(IRubroService rubroService)
     {
-        _oficioService = oficioService;
+        _rubroService = rubroService;
     }
 
     [HttpGet("{id}")]
     public IActionResult Get(int id) {
         try
         {
-            return Ok(_oficioService.Get(id));
+            return Ok(_rubroService.Get(id));
         }
         catch (Exception ex)
         {
@@ -33,7 +33,7 @@ public class OficioController : ControllerBase
     {
         try
         {
-            return Ok(_oficioService.GetAll());
+            return Ok(_rubroService.GetAll());
         }
         catch (Exception ex)
         {
@@ -46,11 +46,11 @@ public class OficioController : ControllerBase
     {
         try
         {
-            _oficioService.Create(oficioDTO);
+            _rubroService.Create(oficioDTO);
 
             return Ok(new
             {
-                message = "Oficio creado"
+                message = "Rubro creado"
             });
 
         }
@@ -64,11 +64,11 @@ public class OficioController : ControllerBase
     {
         try
         {
-            _oficioService.Update(id, oficioDTO);
+           _rubroService.Update(id, oficioDTO);
 
             return Ok(new
             {
-                message = "Oficio actualizado"
+                message = "Rubro actualizado"
             });
 
         }
@@ -83,11 +83,11 @@ public class OficioController : ControllerBase
     {
         try
         {
-            _oficioService.Delete(id);
+            _rubroService.Delete(id);
 
             return Ok(new
             {
-                message = "Oficio eliminado"
+                message = "Rubro eliminado"
             });
 
         }

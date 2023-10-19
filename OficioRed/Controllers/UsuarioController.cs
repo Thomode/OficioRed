@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OficioRed.Context;
 using OficioRed.Dtos;
-using OficioRed.Models;
 using OficioRed.Services;
 
 namespace OficioRed.Controllers

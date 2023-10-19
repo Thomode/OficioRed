@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using OficioRed.Context;
 using OficioRed.Dtos;
-using OficioRed.Models;
+using OficioRed.Models2;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -33,7 +33,7 @@ public class AccesoService: IAccesoService
     public Usuario? Authenticate(LoginDTO loginDto)
     {
         var currentUser = _context.Usuarios
-            .FirstOrDefault(x => x.User == loginDto.User && x.Password == loginDto.Password);
+            .FirstOrDefault(x => x.Usuario1 == loginDto.User && x.Password == loginDto.Password);
 
         if (currentUser != null)
         {
@@ -52,8 +52,8 @@ public class AccesoService: IAccesoService
         var claims = new[]
         {
                 new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()),
-                new Claim(ClaimTypes.Name, user.User),
-                new Claim(ClaimTypes.Role, user.Rol),
+                new Claim(ClaimTypes.Name, user.Usuario1),
+                new Claim(ClaimTypes.Role, user.IdRol.ToString())
             };
 
         // Crear el token

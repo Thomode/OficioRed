@@ -2,25 +2,25 @@
 using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Helpers;
-using OficioRed.Models;
+using OficioRed.Models2;
 
 namespace OficioRed.Services;
 
-public interface IOficioService
+public interface IRubroService
 {
-    List<Oficio> GetAll();
-    Oficio Get(int id);
+    List<Rubro> GetAll();
+    Rubro Get(int id);
     void Create(OficioDTO oficioDTO);
     void Update(int id, OficioDTO oficioDTO);
     void Delete(int id);
 }
 
-public class OficioService : IOficioService
+public class RubroService : IRubroService
 {
     private DbOficioRedContext _context;
     private IMapper _mapper;
 
-    public OficioService(DbOficioRedContext context, IMapper mapper)
+    public RubroService(DbOficioRedContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -28,21 +28,21 @@ public class OficioService : IOficioService
 
     public void Create(OficioDTO oficioDTO)
     {
-        if(_context.Oficios.Any(e => e.Nombre == oficioDTO.Nombre))
+        if(_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre))
         {
             throw new AppException("Oficio ya registrado");
         }
 
-        var oficio = new Oficio();
-        oficio.Nombre = oficioDTO.Nombre; 
-        oficio.Fhalta = DateTime.Now;
+        var rubro = new Rubro();
+        rubro.Nombre = oficioDTO.Nombre; 
+        rubro.Fhalta = DateTime.Now;
 
         using (var transaction = _context.Database.BeginTransaction())
         {
             try
             {
                 // Realiza tus operaciones de base de datos aquí
-                _context.Oficios.Add(oficio);
+                _context.Rubros.Add(rubro);
                 _context.SaveChanges();
 
                 // Si todo va bien, haz un commit
@@ -52,7 +52,7 @@ public class OficioService : IOficioService
             {
                 // Si ocurre un error, realiza un rollback
                 transaction.Rollback();
-                throw new Exception("Error al crear el oficio.", ex);
+                throw new Exception("Error al crear el rubro.", ex);
 
             }
         }
@@ -60,16 +60,16 @@ public class OficioService : IOficioService
 
     public void Delete(int id)
     {
-        var oficio = getOficio(id);
+        var rubro = getRubro(id);
 
-        oficio.Fhbaja = DateTime.Now;
+        rubro.Fhbaja = DateTime.Now;
         
         using (var transaction = _context.Database.BeginTransaction())
         {
             try
             {
                 // Realiza tus operaciones de base de datos aquí
-                _context.Oficios.Update(oficio);
+                _context.Rubros.Update(rubro);
                 _context.SaveChanges();
 
                 // Si todo va bien, haz un commit
@@ -79,44 +79,44 @@ public class OficioService : IOficioService
             {
                 // Si ocurre un error, realiza un rollback
                 transaction.Rollback();
-                throw new Exception("Error al eliminar el oficio.", ex);
+                throw new Exception("Error al eliminar el rubro.", ex);
 
             }
         }
     }
 
-    public Oficio Get(int id)
+    public Rubro Get(int id)
     {
-        return getOficio(id);
+        return getRubro(id);
     }
 
-    public List<Oficio> GetAll()
+    public List<Rubro> GetAll()
     {
-        return _context.Oficios.Where(e => !e.Fhbaja.HasValue).ToList();
+        return _context.Rubros.Where(e => !e.Fhbaja.HasValue).ToList();
     }
 
     public void Update(int id, OficioDTO oficioDTO)
     {
-        var oficio = getOficio(id);
+        var rubro = getRubro(id);
 
-        if (_context.Oficios.Any(e => e.Nombre == oficioDTO.Nombre))
+        if (_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre))
         {
             throw new AppException("Nombre de oficio ya registrado");
         }
 
-        if (oficio == null)
+        if (rubro == null)
         {
             throw new AppException("Es oficio no existe");
         }
 
-        _mapper.Map(oficioDTO, oficio);
+        _mapper.Map(oficioDTO, rubro);
 
         using (var transaction = _context.Database.BeginTransaction())
         {
             try
             {
                 // Realiza tus operaciones de base de datos aquí
-                _context.Oficios.Update(oficio);
+                _context.Rubros.Update(rubro);
                 _context.SaveChanges();
 
                 // Si todo va bien, haz un commit
@@ -126,20 +126,20 @@ public class OficioService : IOficioService
             {
                 // Si ocurre un error, realiza un rollback
                 transaction.Rollback();
-                throw new Exception("Error al actualizar el oficio.", ex);
+                throw new Exception("Error al actualizar el rubro.", ex);
             }
         }
     }
 
-    private Oficio getOficio(int id)
+    private Rubro getRubro(int id)
     {
-        var oficio = _context.Oficios.Find(id);
+        var rubro = _context.Rubros.Find(id);
 
-        if (oficio == null || oficio.Fhbaja != null)
+        if (rubro == null || rubro.Fhbaja != null)
         {
             throw new KeyNotFoundException("Oficio no encontrado");
         }
 
-        return oficio;
+        return rubro;
     }
 }
