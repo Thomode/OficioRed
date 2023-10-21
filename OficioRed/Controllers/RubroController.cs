@@ -42,7 +42,7 @@ public class RubroController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(OficioDTO oficioDTO)
+    public IActionResult Create(RubroDTO oficioDTO)
     {
         try
         {
@@ -60,7 +60,7 @@ public class RubroController : ControllerBase
         }
     }
     [HttpPut("{id}")]
-    public IActionResult Update(int id, OficioDTO oficioDTO) 
+    public IActionResult Update(int id, RubroDTO oficioDTO) 
     {
         try
         {

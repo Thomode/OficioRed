@@ -21,11 +21,9 @@ public partial class Interesado
 
     public string? FotoPerfil { get; set; }
 
-    public int? IdContacto { get; set; }
-
     public int IdUsuario { get; set; }
 
-    public virtual Contacto? IdContactoNavigation { get; set; }
+    public virtual Direccion? IdDireccionNavigation { get; set; }
 
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 }

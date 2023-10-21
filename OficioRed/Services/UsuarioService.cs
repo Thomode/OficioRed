@@ -1,6 +1,6 @@
 ﻿using OficioRed.Context;
 using OficioRed.Helpers;
-using OficioRed.Models2;
+using OficioRed.Models;
 using BCrypt.Net;
 using OficioRed.Dtos;
 using AutoMapper;
@@ -39,15 +39,14 @@ public class UsuarioService: IUsuarioService
 
     public void Create(UsuarioDTO usuarioDTO)
     {
-        if (_context.Usuarios.Any(x => x.Usuario1 == usuarioDTO.User)) {
+        if (_context.Usuarios.Any(x => x.User == usuarioDTO.User)) {
             throw new AppException("Usuario ya registrado");
         }
 
         var usuario = new Usuario();
+        //usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
         usuario.Fhalta = DateTime.Now;
-
-        // usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
-
+        
         _mapper.Map(usuarioDTO, usuario);
         
         using (var transaction = _context.Database.BeginTransaction())
@@ -74,7 +73,7 @@ public class UsuarioService: IUsuarioService
     {
         var usuario = GetUsuario(id);
 
-        if (_context.Usuarios.Any(e => e.Usuario1 == usuarioDTO.User))
+        if (_context.Usuarios.Any(e => e.User == usuarioDTO.User))
         {
             throw new AppException("Nombre de usuario ya existe");
         }
@@ -84,7 +83,7 @@ public class UsuarioService: IUsuarioService
             throw new AppException("Usuario no existe");
         }
 
-        // updateUsuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(updateUsuarioDTO.Password);
+        usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
 
         _mapper.Map(usuarioDTO, usuario);
 

@@ -1,6 +1,6 @@
 ﻿namespace OficioRed.Dtos
 {
-    public class OficioDTO
+    public class RubroDTO
     {
         public string Nombre { get; set; }
     }

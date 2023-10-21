@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using OficioRed.Models2;
+using OficioRed.Models;
 
 namespace OficioRed.Context;
 
@@ -22,13 +22,13 @@ public partial class DbOficioRedContext : DbContext
 
     public virtual DbSet<Interesado> Interesados { get; set; }
 
-    public virtual DbSet<Localidade> Localidades { get; set; }
+    public virtual DbSet<Localidad> Localidads { get; set; }
 
     public virtual DbSet<Pai> Pais { get; set; }
 
     public virtual DbSet<Profesional> Profesionals { get; set; }
 
-    public virtual DbSet<Provincia> Provincias { get; set; }
+    public virtual DbSet<Provincia> Provincia { get; set; }
 
     public virtual DbSet<Rating> Ratings { get; set; }
 
@@ -52,6 +52,12 @@ public partial class DbOficioRedContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Facebook).IsUnicode(false);
+            entity.Property(e => e.Fhalta)
+                .HasColumnType("datetime")
+                .HasColumnName("FHAlta");
+            entity.Property(e => e.Fhbaja)
+                .HasColumnType("datetime")
+                .HasColumnName("FHBaja");
             entity.Property(e => e.Instagram).IsUnicode(false);
             entity.Property(e => e.Telefono)
                 .HasMaxLength(50)
@@ -60,17 +66,37 @@ public partial class DbOficioRedContext : DbContext
 
         modelBuilder.Entity<Direccion>(entity =>
         {
-            entity.HasKey(e => e.IdDireccion).HasName("PK__Direccio__1F8E0C76B04B7555");
+            entity.HasKey(e => e.IdDireccion).HasName("Direccion_PK");
 
             entity.ToTable("Direccion");
 
-            entity.Property(e => e.Barrio).HasMaxLength(100);
-            entity.Property(e => e.Calle).HasMaxLength(255);
-            entity.Property(e => e.Ciudad).HasMaxLength(100);
-            entity.Property(e => e.CodigoPostal).HasMaxLength(20);
-            entity.Property(e => e.Estado).HasMaxLength(100);
-            entity.Property(e => e.Localidad).HasMaxLength(100);
-            entity.Property(e => e.Pais).HasMaxLength(100);
+            entity.Property(e => e.Barrio)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Calle)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Fhalta)
+                .HasColumnType("datetime")
+                .HasColumnName("FHAlta");
+            entity.Property(e => e.Fhbaja)
+                .HasColumnType("datetime")
+                .HasColumnName("FHBaja");
+
+            entity.HasOne(d => d.IdLocalidadNavigation).WithMany(p => p.Direccions)
+                .HasForeignKey(d => d.IdLocalidad)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Direccion_Localidad");
+
+            entity.HasOne(d => d.IdPaisNavigation).WithMany(p => p.Direccions)
+                .HasForeignKey(d => d.IdPais)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Direccion_Pais");
+
+            entity.HasOne(d => d.IdProvinciaNavigation).WithMany(p => p.Direccions)
+                .HasForeignKey(d => d.IdProvincia)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Direccion_Provincia");
         });
 
         modelBuilder.Entity<Interesado>(entity =>
@@ -96,9 +122,9 @@ public partial class DbOficioRedContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IdContactoNavigation).WithMany(p => p.Interesados)
-                .HasForeignKey(d => d.IdContacto)
-                .HasConstraintName("FK_Interesado_Contacto");
+            entity.HasOne(d => d.IdDireccionNavigation).WithMany(p => p.Interesados)
+                .HasForeignKey(d => d.IdDireccion)
+                .HasConstraintName("FK_Interesado_Direccion");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Interesados)
                 .HasForeignKey(d => d.IdUsuario)
@@ -106,16 +132,17 @@ public partial class DbOficioRedContext : DbContext
                 .HasConstraintName("FK_Interesado_Usuario");
         });
 
-        modelBuilder.Entity<Localidade>(entity =>
+        modelBuilder.Entity<Localidad>(entity =>
         {
             entity.HasKey(e => e.IdLocalidad).HasName("PK__Localida__6E289F428C9FC51C");
 
+            entity.ToTable("Localidad");
+
             entity.Property(e => e.IdLocalidad).ValueGeneratedNever();
             entity.Property(e => e.Nombre).HasMaxLength(100);
-            entity.Property(e => e.ProvinciaId).HasColumnName("ProvinciaID");
 
-            entity.HasOne(d => d.Provincia).WithMany(p => p.Localidades)
-                .HasForeignKey(d => d.ProvinciaId)
+            entity.HasOne(d => d.IdProvinciaNavigation).WithMany(p => p.Localidads)
+                .HasForeignKey(d => d.IdProvincia)
                 .HasConstraintName("FK__Localidad__Provi__73BA3083");
         });
 
@@ -137,6 +164,9 @@ public partial class DbOficioRedContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Descripcion).IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(1)
+                .IsUnicode(false);
             entity.Property(e => e.Fhalta)
                 .HasColumnType("datetime")
                 .HasColumnName("FHAlta");
@@ -146,13 +176,26 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.FotoPerfil)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.IdRubroXprofesional).HasColumnName("IdRubroXProfesional");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
+            entity.HasOne(d => d.IdContactoNavigation).WithMany(p => p.Profesionals)
+                .HasForeignKey(d => d.IdContacto)
+                .HasConstraintName("FK_Profesional_Contacto");
+
             entity.HasOne(d => d.IdDireccionNavigation).WithMany(p => p.Profesionals)
                 .HasForeignKey(d => d.IdDireccion)
                 .HasConstraintName("FK_Profesional_Direccion");
+
+            entity.HasOne(d => d.IdRatingNavigation).WithMany(p => p.Profesionals)
+                .HasForeignKey(d => d.IdRating)
+                .HasConstraintName("Profesional_FK");
+
+            entity.HasOne(d => d.IdRubroXprofesionalNavigation).WithMany(p => p.Profesionals)
+                .HasForeignKey(d => d.IdRubroXprofesional)
+                .HasConstraintName("FK_Profesional_RubroXProfesional");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Profesionals)
                 .HasForeignKey(d => d.IdUsuario)
@@ -166,10 +209,9 @@ public partial class DbOficioRedContext : DbContext
 
             entity.Property(e => e.IdProvincia).ValueGeneratedNever();
             entity.Property(e => e.Nombre).HasMaxLength(100);
-            entity.Property(e => e.PaisId).HasColumnName("PaisID");
 
-            entity.HasOne(d => d.Pais).WithMany(p => p.Provincia)
-                .HasForeignKey(d => d.PaisId)
+            entity.HasOne(d => d.IdPaisNavigation).WithMany(p => p.Provincia)
+                .HasForeignKey(d => d.IdPais)
                 .HasConstraintName("FK__Provincia__PaisI__70DDC3D8");
         });
 
@@ -180,16 +222,29 @@ public partial class DbOficioRedContext : DbContext
             entity.ToTable("Rating");
 
             entity.Property(e => e.Comentario).IsUnicode(false);
+            entity.Property(e => e.Fhalta)
+                .HasColumnType("datetime")
+                .HasColumnName("FHAlta");
+            entity.Property(e => e.Fhbaja)
+                .HasColumnType("datetime")
+                .HasColumnName("FHBaja");
         });
 
         modelBuilder.Entity<Rol>(entity =>
         {
-            entity.HasKey(e => e.IdRol);
+            entity.HasKey(e => e.IdRol).HasName("Rol_PK");
 
             entity.ToTable("Rol");
 
-            entity.Property(e => e.IdRol).ValueGeneratedNever();
-            entity.Property(e => e.Nombre).IsUnicode(false);
+            entity.Property(e => e.Fhalta)
+                .HasColumnType("datetime")
+                .HasColumnName("FHAlta");
+            entity.Property(e => e.Fhbaja)
+                .HasColumnType("datetime")
+                .HasColumnName("FHBaja");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(100)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Rubro>(entity =>
@@ -211,29 +266,34 @@ public partial class DbOficioRedContext : DbContext
 
         modelBuilder.Entity<RubroXprofesional>(entity =>
         {
-            entity.HasKey(e => e.IdRubroXprofesional).HasName("PK__OficioPr__6B0DB91311DDD7D8");
+            entity.HasKey(e => e.IdRubroXprofesional).HasName("RubroXProfesional_PK");
 
             entity.ToTable("RubroXProfesional");
 
-            entity.Property(e => e.IdRubroXprofesional)
-                .ValueGeneratedNever()
-                .HasColumnName("IdRubroXProfesional");
-            entity.Property(e => e.IdRubro).ValueGeneratedOnAdd();
+            entity.Property(e => e.IdRubroXprofesional).HasColumnName("IdRubroXProfesional");
+            entity.Property(e => e.Fhalta)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasColumnName("FHAlta");
+            entity.Property(e => e.Fhbaja)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasColumnName("FHBaja");
 
             entity.HasOne(d => d.IdProfesionalNavigation).WithMany(p => p.RubroXprofesionals)
                 .HasForeignKey(d => d.IdProfesional)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OficioProfesion_Profesional");
+                .HasConstraintName("FK_RubroXProfesional_Profesional");
 
             entity.HasOne(d => d.IdRubroNavigation).WithMany(p => p.RubroXprofesionals)
                 .HasForeignKey(d => d.IdRubro)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OficioProfesion_Oficio");
+                .HasConstraintName("FK_RubroXProfesional_Rubro");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario__5B65BF97BD069F1C");
+            entity.HasKey(e => e.IdUsuario).HasName("Usuario_PK");
 
             entity.ToTable("Usuario");
 
@@ -243,8 +303,18 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.Fhbaja)
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
-            entity.Property(e => e.Password).IsUnicode(false);
-            entity.Property(e => e.Usuario1).IsUnicode(false);
+            entity.Property(e => e.Password)
+                .HasMaxLength(1)
+                .IsUnicode(false);
+            entity.Property(e => e.User)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasColumnName("Usuario");
+
+            entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.IdRol)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Usuario_Rol");
         });
 
         OnModelCreatingPartial(modelBuilder);

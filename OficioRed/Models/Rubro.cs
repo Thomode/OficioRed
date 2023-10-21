@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OficioRed.Models2;
+namespace OficioRed.Models;
 
 public partial class Rubro
 {

@@ -2,7 +2,7 @@
 using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Helpers;
-using OficioRed.Models2;
+using OficioRed.Models;
 
 namespace OficioRed.Services;
 

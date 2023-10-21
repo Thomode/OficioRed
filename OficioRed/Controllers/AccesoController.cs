@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OficioRed.Context;
 using OficioRed.Dtos;
-using OficioRed.Models2;
+using OficioRed.Models;
 using OficioRed.Services;
 using Org.BouncyCastle.Bcpg;
 
@@ -43,17 +43,17 @@ public class AccesoController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginDTO userLogin)
+    public IActionResult Login(LoginDTO loginDTO)
     {
-        var user = _accesoService.Authenticate(userLogin);
+        var usuario = _accesoService.Authenticate(loginDTO);
 
-        if (user != null)
+        if (usuario != null)
         {
             // Crear el token
-            var token = _accesoService.GenerateToken(user);
+            var token = _accesoService.GenerateToken(usuario);
             var tokenResponse = new ResponseToken();
-            tokenResponse.User = user.Usuario1;
-            tokenResponse.IdRol = (int)user.IdRol;
+            tokenResponse.User = usuario.User;
+            tokenResponse.IdRol = usuario.IdRol;
             tokenResponse.Token = token;
 
             return Ok(tokenResponse);
@@ -63,16 +63,17 @@ public class AccesoController : ControllerBase
     }
 
     [HttpPost("register")]
-    public IActionResult Register(RegisterDTO registerUserDTO)
+    public IActionResult Register(RegisterDTO registerDTO)
     {
         // Crea el usuario nuevo con sus correpondientes valores
-        var newUser = new Usuario();
-        newUser.Usuario1 = registerUserDTO.User;
-        newUser.Password = registerUserDTO.Password;
-        newUser.IdRol = registerUserDTO.IdRol;
-        newUser.Fhalta = DateTime.Now;
+        var nuevoUsuario = new Usuario();
+        nuevoUsuario.User = registerDTO.User;
+        nuevoUsuario.Password = registerDTO.Password;
+        nuevoUsuario.IdRol = registerDTO.IdRol;
+        nuevoUsuario.Activo = 1;
+        nuevoUsuario.Fhalta = DateTime.Now;
 
-        _context.Usuarios.Add(newUser);
+        _context.Usuarios.Add(nuevoUsuario);
         _context.SaveChanges();
 
         return Ok("Usuario Registrado!");

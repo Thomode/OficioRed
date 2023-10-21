@@ -11,7 +11,7 @@ public partial class Profesional
 
     public string Apellido { get; set; } = null!;
 
-    public int? IdOficio { get; set; }
+    public int? IdRubroXprofesional { get; set; }
 
     public string? Descripcion { get; set; }
 
@@ -29,13 +29,17 @@ public partial class Profesional
 
     public int IdUsuario { get; set; }
 
+    public string Email { get; set; } = null!;
+
     public virtual Contacto? IdContactoNavigation { get; set; }
 
     public virtual Direccion? IdDireccionNavigation { get; set; }
 
     public virtual Rating? IdRatingNavigation { get; set; }
 
+    public virtual RubroXprofesional? IdRubroXprofesionalNavigation { get; set; }
+
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 
-    public virtual ICollection<OficioProfesion> OficioProfesions { get; set; } = new List<OficioProfesion>();
+    public virtual ICollection<RubroXprofesional> RubroXprofesionals { get; set; } = new List<RubroXprofesional>();
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OficioRed.Dtos;
-using OficioRed.Models2;
+using OficioRed.Models;
 using OficioRed.Services;
 using System;
 using System.Collections.Generic;

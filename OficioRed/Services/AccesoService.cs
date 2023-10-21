@@ -2,7 +2,8 @@
 using Microsoft.IdentityModel.Tokens;
 using OficioRed.Context;
 using OficioRed.Dtos;
-using OficioRed.Models2;
+using OficioRed.Helpers;
+using OficioRed.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -33,7 +34,7 @@ public class AccesoService: IAccesoService
     public Usuario? Authenticate(LoginDTO loginDto)
     {
         var currentUser = _context.Usuarios
-            .FirstOrDefault(x => x.Usuario1 == loginDto.User && x.Password == loginDto.Password);
+            .FirstOrDefault(x => x.User == loginDto.User && x.Password == loginDto.Password);
 
         if (currentUser != null)
         {
@@ -52,7 +53,7 @@ public class AccesoService: IAccesoService
         var claims = new[]
         {
                 new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()),
-                new Claim(ClaimTypes.Name, user.Usuario1),
+                new Claim(ClaimTypes.Name, user.User),
                 new Claim(ClaimTypes.Role, user.IdRol.ToString())
             };
 
@@ -74,11 +75,20 @@ public class AccesoService: IAccesoService
         if (identity != null)
         {
             var userClains = identity.Claims;
-
             var sesion = new SesionDTO();
-            sesion.Id = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value);
-            sesion.User = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value;
-            sesion.Rol = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value;
+
+            try
+            {
+                
+                sesion.Id = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value);
+                sesion.User = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value;
+                sesion.Rol = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value;
+            }
+            catch(Exception ex)
+            {
+                throw new AppException("Error al obtener la sesion actual");
+            }
+            
 
             return sesion;      
         }

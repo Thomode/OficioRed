@@ -11,11 +11,15 @@ public partial class Usuario
 
     public string Password { get; set; } = null!;
 
-    public string Rol { get; set; } = null!;
+    public int IdRol { get; set; }
+
+    public int Activo { get; set; }
 
     public DateTime Fhalta { get; set; }
 
     public DateTime? Fhbaja { get; set; }
+
+    public virtual Rol IdRolNavigation { get; set; } = null!;
 
     public virtual ICollection<Interesado> Interesados { get; set; } = new List<Interesado>();
 

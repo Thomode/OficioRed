@@ -11,8 +11,11 @@ public class AutoMapperProfile: Profile
         // UsuarioDTO -> Usuario
         CreateMap<UsuarioDTO, Usuario>();
 
-        // OficoDTO -> Oficio
-        CreateMap<OficioDTO, Oficio>();
+        // Usuario -> UsuarioResponseDTO
+        CreateMap<Usuario, UsuarioResponseDTO>();
+
+        // RubroDto -> Rubro
+        CreateMap<RubroDTO, Rubro>();
 
         // InteresadoDTO -> Interesado
         CreateMap<InteresadoDTO, Interesado>();

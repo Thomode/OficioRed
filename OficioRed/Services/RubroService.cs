@@ -2,7 +2,7 @@
 using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Helpers;
-using OficioRed.Models2;
+using OficioRed.Models;
 
 namespace OficioRed.Services;
 
@@ -10,8 +10,8 @@ public interface IRubroService
 {
     List<Rubro> GetAll();
     Rubro Get(int id);
-    void Create(OficioDTO oficioDTO);
-    void Update(int id, OficioDTO oficioDTO);
+    void Create(RubroDTO oficioDTO);
+    void Update(int id, RubroDTO oficioDTO);
     void Delete(int id);
 }
 
@@ -26,7 +26,7 @@ public class RubroService : IRubroService
         _mapper = mapper;
     }
 
-    public void Create(OficioDTO oficioDTO)
+    public void Create(RubroDTO oficioDTO)
     {
         if(_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre))
         {
@@ -95,7 +95,7 @@ public class RubroService : IRubroService
         return _context.Rubros.Where(e => !e.Fhbaja.HasValue).ToList();
     }
 
-    public void Update(int id, OficioDTO oficioDTO)
+    public void Update(int id, RubroDTO oficioDTO)
     {
         var rubro = getRubro(id);
 

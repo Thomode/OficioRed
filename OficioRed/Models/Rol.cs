@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace OficioRed.Models;
 
-public partial class Oficio
+public partial class Rol
 {
-    public int IdOficio { get; set; }
+    public int IdRol { get; set; }
 
     public string Nombre { get; set; } = null!;
 
@@ -13,5 +13,5 @@ public partial class Oficio
 
     public DateTime? Fhbaja { get; set; }
 
-    public virtual OficioProfesion? OficioProfesion { get; set; }
+    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

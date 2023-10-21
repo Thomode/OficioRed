@@ -13,5 +13,9 @@ public partial class Rating
 
     public string? Comentario { get; set; }
 
+    public DateTime Fhalta { get; set; }
+
+    public DateTime? Fhbaja { get; set; }
+
     public virtual ICollection<Profesional> Profesionals { get; set; } = new List<Profesional>();
 }
