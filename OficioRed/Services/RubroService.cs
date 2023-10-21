@@ -28,7 +28,7 @@ public class RubroService : IRubroService
 
     public void Create(RubroDTO oficioDTO)
     {
-        if(_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre))
+        if(_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre && e.Fhbaja.HasValue))
         {
             throw new AppException("Oficio ya registrado");
         }
@@ -60,7 +60,7 @@ public class RubroService : IRubroService
 
     public void Delete(int id)
     {
-        var rubro = getRubro(id);
+        var rubro = getRubroById(id);
 
         rubro.Fhbaja = DateTime.Now;
         
@@ -87,7 +87,7 @@ public class RubroService : IRubroService
 
     public Rubro Get(int id)
     {
-        return getRubro(id);
+        return getRubroById(id);
     }
 
     public List<Rubro> GetAll()
@@ -97,7 +97,7 @@ public class RubroService : IRubroService
 
     public void Update(int id, RubroDTO oficioDTO)
     {
-        var rubro = getRubro(id);
+        var rubro = getRubroById(id);
 
         if (_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre))
         {
@@ -131,7 +131,7 @@ public class RubroService : IRubroService
         }
     }
 
-    private Rubro getRubro(int id)
+    private Rubro getRubroById(int id)
     {
         var rubro = _context.Rubros.Find(id);
 

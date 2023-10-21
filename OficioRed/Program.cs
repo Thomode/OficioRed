@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OficioRed.Context;
+using OficioRed.Helpers;
 using OficioRed.Services;
 using System.Text;
 
@@ -59,6 +60,7 @@ builder.Services.AddScoped<IRubroService, RubroService>();
 builder.Services.AddScoped<IAccesoService, AccesoService>();
 builder.Services.AddScoped<IInteresadoService, InteresadoService>();
 builder.Services.AddScoped<IProfesionalService, ProfesionalService>();
+builder.Services.AddScoped<IRolService, RolService>();
 
 var app = builder.Build();
 
@@ -72,6 +74,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("NuevaPolitica");
+
+// global error handler
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseAuthentication();
 

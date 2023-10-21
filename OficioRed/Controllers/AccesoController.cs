@@ -38,44 +38,37 @@ public class AccesoController : ControllerBase
 
         catch (Exception ex)
         {
-            return BadRequest("Sesion no encontrada");
+            return BadRequest(ex.Message);
         }
     }
 
     [HttpPost("login")]
     public IActionResult Login(LoginDTO loginDTO)
     {
-        var usuario = _accesoService.Authenticate(loginDTO);
-
-        if (usuario != null)
+        try
         {
-            // Crear el token
-            var token = _accesoService.GenerateToken(usuario);
-            var tokenResponse = new ResponseToken();
-            tokenResponse.User = usuario.User;
-            tokenResponse.IdRol = usuario.IdRol;
-            tokenResponse.Token = token;
+            var tokenResponse = _accesoService.Login(loginDTO);
 
             return Ok(tokenResponse);
         }
-
-        return NotFound("Usuario no encontrado");
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("register")]
     public IActionResult Register(RegisterDTO registerDTO)
     {
-        // Crea el usuario nuevo con sus correpondientes valores
-        var nuevoUsuario = new Usuario();
-        nuevoUsuario.User = registerDTO.User;
-        nuevoUsuario.Password = registerDTO.Password;
-        nuevoUsuario.IdRol = registerDTO.IdRol;
-        nuevoUsuario.Activo = 1;
-        nuevoUsuario.Fhalta = DateTime.Now;
+        try
+        {
+            _accesoService.Register(registerDTO);
 
-        _context.Usuarios.Add(nuevoUsuario);
-        _context.SaveChanges();
-
-        return Ok("Usuario Registrado!");
+            return Ok("Usuario Registrado");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

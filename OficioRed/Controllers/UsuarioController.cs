@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OficioRed.Context;
@@ -13,10 +14,12 @@ namespace OficioRed.Controllers
     public class UsuarioController : ControllerBase
     {
         private IUsuarioService _usuarioService;
+        private IMapper _mapper;
 
-        public UsuarioController(IUsuarioService usuarioService)
+        public UsuarioController(IUsuarioService usuarioService, IMapper mapper)
         {
             _usuarioService = usuarioService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -25,8 +28,11 @@ namespace OficioRed.Controllers
             try
             {
                 var usuarios = _usuarioService.GetAll();
+                var usuariosMappeado = new List<UsuarioResDTO>();
 
-                return Ok(usuarios);
+                _mapper.Map(usuarios, usuariosMappeado);
+
+                return Ok(usuariosMappeado);
             }
             catch (Exception ex)
             {

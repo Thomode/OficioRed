@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OficioRed.Context;
 using OficioRed.Dtos;
@@ -13,9 +14,11 @@ namespace OficioRed.Services;
 
 public interface IAccesoService
 {
-    public Usuario? Authenticate(LoginDTO userLogin);
-    public string GenerateToken(Usuario user);
-    public SesionDTO? GetCurrentUsuario();
+    ResponseToken Login(LoginDTO loginDTO);
+    void Register(RegisterDTO registerDTO);
+    Usuario? Authenticate(LoginDTO userLogin);
+    string GenerateToken(Usuario user);
+    SesionDTO? GetCurrentUsuario();
 }
 
 public class AccesoService: IAccesoService
@@ -23,22 +26,28 @@ public class AccesoService: IAccesoService
     private DbOficioRedContext _context;
     private IConfiguration _config;
     private IHttpContextAccessor _contextAccessor;
+    private IUsuarioService _usuarioService;
 
-    public AccesoService(DbOficioRedContext context, IConfiguration config, IHttpContextAccessor contextAccessor)
+    public AccesoService(DbOficioRedContext context, IConfiguration config, IHttpContextAccessor contextAccessor, IUsuarioService usuarioService)
     {
         _context = context;
         _config = config;
         _contextAccessor = contextAccessor;
+        _usuarioService = usuarioService;
     }
 
     public Usuario? Authenticate(LoginDTO loginDto)
     {
-        var currentUser = _context.Usuarios
-            .FirstOrDefault(x => x.User == loginDto.User && x.Password == loginDto.Password);
+        var usuario = _context.Usuarios
+            .FirstOrDefault(x => x.User == loginDto.User);
 
-        if (currentUser != null)
+        if (usuario != null)
         {
-            return currentUser;
+            if (usuario.Password != loginDto.Password)
+            {
+                throw new AppException("Password incorrecta");
+            }
+            return usuario;
         }
 
         return null;
@@ -79,7 +88,6 @@ public class AccesoService: IAccesoService
 
             try
             {
-                
                 sesion.Id = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value);
                 sesion.User = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value;
                 sesion.Rol = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value;
@@ -89,10 +97,53 @@ public class AccesoService: IAccesoService
                 throw new AppException("Error al obtener la sesion actual");
             }
             
-
             return sesion;      
         }
 
         return null;
+    }
+
+    public ResponseToken Login(LoginDTO loginDTO)
+    {
+        var usuario = _context.Usuarios
+            .FirstOrDefault(x => x.User == loginDTO.User);
+
+        if (usuario == null)
+        {
+            throw new Exception("Usuario no encontrado");
+        }
+
+        if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, usuario.Password))
+        {
+            throw new Exception("Password incorrecta");
+        }
+
+        // Crear el token
+        var token = GenerateToken(usuario);
+
+        var tokenResponse = new ResponseToken();
+        tokenResponse.Id = usuario.IdUsuario;
+        tokenResponse.User = usuario.User;
+        tokenResponse.IdRol = usuario.IdRol;
+        tokenResponse.Token = token;
+
+        return tokenResponse;
+    }
+
+    public void Register(RegisterDTO registerDTO)
+    {
+        if (registerDTO.IdRol == 2)
+        {
+            throw new AppException("Usuario con ese rol no esta permitido");
+        }
+
+        // Crea el usuario nuevo con sus correpondientes valores
+        var usuarioDto = new UsuarioDTO();
+        usuarioDto.User = registerDTO.User;
+        usuarioDto.Password = registerDTO.Password;
+        usuarioDto.IdRol = registerDTO.IdRol;
+        usuarioDto.Activo = 1;
+
+        _usuarioService.Create(usuarioDto);
     }
 }

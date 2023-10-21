@@ -165,7 +165,7 @@ public partial class DbOficioRedContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.Descripcion).IsUnicode(false);
             entity.Property(e => e.Email)
-                .HasMaxLength(1)
+                .HasMaxLength(150)
                 .IsUnicode(false);
             entity.Property(e => e.Fhalta)
                 .HasColumnType("datetime")
@@ -272,12 +272,10 @@ public partial class DbOficioRedContext : DbContext
 
             entity.Property(e => e.IdRubroXprofesional).HasColumnName("IdRubroXProfesional");
             entity.Property(e => e.Fhalta)
-                .HasMaxLength(1)
-                .IsUnicode(false)
+                .HasColumnType("datetime")
                 .HasColumnName("FHAlta");
             entity.Property(e => e.Fhbaja)
-                .HasMaxLength(1)
-                .IsUnicode(false)
+                .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
 
             entity.HasOne(d => d.IdProfesionalNavigation).WithMany(p => p.RubroXprofesionals)
@@ -304,10 +302,10 @@ public partial class DbOficioRedContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
             entity.Property(e => e.Password)
-                .HasMaxLength(1)
+                .HasMaxLength(150)
                 .IsUnicode(false);
             entity.Property(e => e.User)
-                .HasMaxLength(1)
+                .HasMaxLength(150)
                 .IsUnicode(false)
                 .HasColumnName("Usuario");
 

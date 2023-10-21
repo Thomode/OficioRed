@@ -11,9 +11,9 @@ public partial class RubroXprofesional
 
     public int IdProfesional { get; set; }
 
-    public string Fhalta { get; set; } = null!;
+    public DateTime Fhalta { get; set; } 
 
-    public string? Fhbaja { get; set; }
+    public DateTime? Fhbaja { get; set; }
 
     public virtual Profesional IdProfesionalNavigation { get; set; } = null!;
 

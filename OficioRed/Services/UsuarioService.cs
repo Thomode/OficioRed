@@ -34,7 +34,7 @@ public class UsuarioService: IUsuarioService
 
     public Usuario Get(int id) 
     {
-        return GetUsuario(id);
+        return getUsuarioById(id);
     }
 
     public void Create(UsuarioDTO usuarioDTO)
@@ -44,7 +44,7 @@ public class UsuarioService: IUsuarioService
         }
 
         var usuario = new Usuario();
-        //usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
+        usuarioDTO.Password = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
         usuario.Fhalta = DateTime.Now;
         
         _mapper.Map(usuarioDTO, usuario);
@@ -71,7 +71,7 @@ public class UsuarioService: IUsuarioService
 
     public void Update(int id, UsuarioDTO usuarioDTO)
     {
-        var usuario = GetUsuario(id);
+        var usuario = getUsuarioById(id);
 
         if (_context.Usuarios.Any(e => e.User == usuarioDTO.User))
         {
@@ -109,7 +109,7 @@ public class UsuarioService: IUsuarioService
 
     public void Delete(int id)
     {
-        var usuario = GetUsuario(id);
+        var usuario = getUsuarioById(id);
     
         usuario.Fhbaja = DateTime.Now;
 
@@ -133,11 +133,23 @@ public class UsuarioService: IUsuarioService
         }
     }
 
-    private Usuario GetUsuario(int id)
+    private Usuario getUsuarioById(int id)
     {
         var usuario = _context.Usuarios.Find(id);
 
         if ( usuario == null || usuario.Fhbaja != null )
+        {
+            throw new KeyNotFoundException("Usuario no encontrado");
+        }
+
+        return usuario;
+    }
+
+    private Usuario getUsuarioByUser(string user)
+    {
+        var usuario = _context.Usuarios.FirstOrDefault(e => e.User == user);
+
+        if (usuario == null || usuario.Fhbaja != null)
         {
             throw new KeyNotFoundException("Usuario no encontrado");
         }

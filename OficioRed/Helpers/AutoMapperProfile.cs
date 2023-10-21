@@ -12,7 +12,7 @@ public class AutoMapperProfile: Profile
         CreateMap<UsuarioDTO, Usuario>();
 
         // Usuario -> UsuarioResponseDTO
-        CreateMap<Usuario, UsuarioResponseDTO>();
+        CreateMap<Usuario, UsuarioResDTO>();
 
         // RubroDto -> Rubro
         CreateMap<RubroDTO, Rubro>();
@@ -22,5 +22,7 @@ public class AutoMapperProfile: Profile
 
         // ProfesionalDTO -> Profesional
         CreateMap<ProfesionalDTO, Profesional>();
+
+        CreateMap<Rol, RolResDTO>();
     }
 }
