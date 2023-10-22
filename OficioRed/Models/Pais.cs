@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OficioRed.Models;
 
-public partial class Pai
+public partial class Pais
 {
     public int IdPais { get; set; }
 

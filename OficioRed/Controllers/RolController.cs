@@ -24,7 +24,7 @@ namespace OficioRed.Controllers
             {
                 var roles = _rolService.GetAll();
 
-                var rolesMapeado = new List<RolResDTO>();
+                var rolesMapeado = new List<RolDTO>();
 
                 _mapper.Map(roles, rolesMapeado);
 

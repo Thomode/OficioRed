@@ -23,7 +23,7 @@ public partial class Direccion
 
     public virtual Localidad IdLocalidadNavigation { get; set; } = null!;
 
-    public virtual Pai IdPaisNavigation { get; set; } = null!;
+    public virtual Pais IdPaisNavigation { get; set; } = null!;
 
     public virtual Provincia IdProvinciaNavigation { get; set; } = null!;
 

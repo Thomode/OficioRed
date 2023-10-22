@@ -42,6 +42,11 @@ public class InteresadoService : IInteresadoService
             throw new AppException("Email de interesado ya registrado");
         }
 
+        if(sesion.IdRol != 4)
+        {
+            throw new AppException("El usuario no tiene el rol de interesado");
+        }
+
         var interesado = new Interesado();
         interesado.IdUsuario = sesion.Id;
         interesado.Fhalta = DateTime.Now;
@@ -70,7 +75,12 @@ public class InteresadoService : IInteresadoService
 
     public void Delete(int id)
     {
-        var interesado = getInteresado(id);
+        var interesado = getInteresadoSesion();
+
+        if (interesado == null)
+        {
+            throw new AppException("El Usuario no esta logeado");
+        }
 
         interesado.Fhbaja = DateTime.Now;
 

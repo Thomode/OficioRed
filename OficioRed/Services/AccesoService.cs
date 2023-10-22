@@ -90,7 +90,7 @@ public class AccesoService: IAccesoService
             {
                 sesion.Id = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value);
                 sesion.User = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value;
-                sesion.Rol = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value;
+                sesion.IdRol = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value);
             }
             catch(Exception ex)
             {

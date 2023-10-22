@@ -13,7 +13,7 @@ namespace OficioRed.Services
         List<Profesional> GetAll();
         Profesional Get(int id);
         void Create(ProfesionalDTO profesionalDTO);
-        void Update(int id, ProfesionalDTO profesionalDTO);
+        void Update(ProfesionalDTO profesionalDTO);
         void Delete(int id);
     }
 
@@ -58,6 +58,16 @@ namespace OficioRed.Services
                 throw new AppException("Usuario no logeado");
             }
 
+            if (_context.Profesionals.Any(e => e.Email == profesionalDTO.Email))
+            {
+                throw new AppException("Email de profesional ya registrado");
+            }
+
+            if (sesion.IdRol != 3)
+            {
+                throw new AppException("El usuario no tiene el rol de profesional");
+            }
+
             // crear el objeto profesional con sus datos
             var profesional = new Profesional();
             profesional.IdUsuario = sesion.Id;
@@ -87,7 +97,7 @@ namespace OficioRed.Services
             }
         }
 
-        public void Update(int id, ProfesionalDTO profesionalDTO)
+        public void Update(ProfesionalDTO profesionalDTO)
         {
             var profesional = getProfesionalSesion();
 
@@ -121,10 +131,12 @@ namespace OficioRed.Services
 
         public void Delete(int id)
         {
-            var profesional = _context.Profesionals.Find(id);
+            var profesional = getProfesionalSesion();
 
             if (profesional == null)
-                throw new KeyNotFoundException("Profesional no encontrado");
+            {
+                throw new AppException("El Usuario no esta logeado");
+            }
 
             profesional.Fhbaja = DateTime.Now;
 

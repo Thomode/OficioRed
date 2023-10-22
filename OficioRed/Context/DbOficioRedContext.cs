@@ -24,7 +24,7 @@ public partial class DbOficioRedContext : DbContext
 
     public virtual DbSet<Localidad> Localidads { get; set; }
 
-    public virtual DbSet<Pai> Pais { get; set; }
+    public virtual DbSet<Pais> Pais { get; set; }
 
     public virtual DbSet<Profesional> Profesionals { get; set; }
 
@@ -146,7 +146,7 @@ public partial class DbOficioRedContext : DbContext
                 .HasConstraintName("FK__Localidad__Provi__73BA3083");
         });
 
-        modelBuilder.Entity<Pai>(entity =>
+        modelBuilder.Entity<Pais>(entity =>
         {
             entity.HasKey(e => e.IdPais).HasName("PK__Pais__B501E1A5E6831DEB");
 

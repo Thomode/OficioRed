@@ -65,11 +65,11 @@ namespace OficioRed.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, ProfesionalDTO profesionalDTO)
+        public IActionResult Update(ProfesionalDTO profesionalDTO)
         {
             try
             {
-                _profesionalService.Update(id, profesionalDTO);
+                _profesionalService.Update(profesionalDTO);
 
                 return Ok(new
                 {
