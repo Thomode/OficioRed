@@ -69,31 +69,40 @@ const clientRoutes = [
     },
 ]
 
+const getAcceso = () => {
+    const local = window.localStorage.getItem("acceso");
+    const data = JSON.parse(local)
+
+    return data
+}
+
 export function App() {
-    const [acceso, setAcceso] = useState(null)
+    const [acceso, setAcceso] = useState(getAcceso())
 
-    const loadAcceso = async () => {
-        const local = window.localStorage.getItem("acceso");
-        const data = JSON.parse(local)
-        setAcceso(data)
-        console.log("acceso", acceso)
-    }
-
+    const navigate = useNavigate()
+    
     const logout = () => {
         window.localStorage.removeItem("acceso");
         setAcceso(null)
         alert("Se elimino el acceso correctamente");
-        //navigate("/login", { replace: true });
       };
 
     useEffect(() => {
-        loadAcceso()
+        console.log("acceso:", acceso)
+
+        if (acceso) {
+            if (acceso.idRol === 2) {
+                navigate("/admin/usuarios")
+            }
+            else {
+                navigate("/home")
+            }
+        }
 
     }, [])
 
     return (
         <>
-
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Box
@@ -109,17 +118,9 @@ export function App() {
                 >
                     <Routes>
                         <Route path='/login' element={<LoginPage setAcceso={setAcceso} />} />
-                        <Route path='/signup' element={<SignupPage/>}/>
-                        {
-                            acceso ? (
-                                acceso.rol.includes("Admin") ? (
-                                    <Route path='*' element={<Navigate to={'/admin/usuarios'} />} />
-                                ) :
-                                    <Route path='*' element={<Navigate to={'/home'} />} />
-                            ) : (
-                                <Route path='*' element={<Navigate to={'/login'} />} />
-                            )
-                        }
+                        <Route path='/signup' element={<SignupPage />} />
+                        <Route path='*' element={<Navigate to={'/login'} />} />
+                        
 
                         {
                             adminRoutes.map((route, index) =>
@@ -128,7 +129,7 @@ export function App() {
                                     path={route.path}
                                     element={
                                         <ProtectedRoute
-                                            isAllowed={acceso && acceso.rol.includes("Admin")}
+                                            isAllowed={acceso && acceso.idRol === 2}
                                         >
                                             <NavBarLateral type='Admin' logout={logout}>{route.element}</NavBarLateral>
                                         </ProtectedRoute>
@@ -145,7 +146,7 @@ export function App() {
                                     path={route.path}
                                     element={
                                         <ProtectedRoute
-                                            isAllowed={acceso && acceso.rol.includes("Cliente")}
+                                            isAllowed={acceso && acceso.idRol !== 2}
                                         >
                                             <NavBarLateral type='client' logout={logout}>{route.element}</NavBarLateral>
                                         </ProtectedRoute>
@@ -157,7 +158,6 @@ export function App() {
                     </Routes>
                 </Box>
             </ThemeProvider>
-
         </>
     );
 }

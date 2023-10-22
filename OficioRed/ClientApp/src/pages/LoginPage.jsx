@@ -73,7 +73,7 @@ export const LoginPage = ({ setAcceso }) => {
       window.localStorage.setItem("acceso", JSON.stringify(res.data));
       setAcceso(res.data);
       // Redirigir a la página de home
-      if (res.data.rol === "Admin") {
+      if (res.data.idRol === 2) {
         navigate("/admin/usuarios", { replace: true });
       } else {
         navigate("/home", { replace: true });
@@ -214,8 +214,7 @@ export const LoginPage = ({ setAcceso }) => {
                   minLength: 4,
                   maxLength: 15,
                   // patron regular que contenga al menos una letra mayúscula, una minúscula, un número y un caracter especial
-                  pattern:
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
+                  // pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
                 })}
                 error={!!errors.password} // Agregar la propiedad 'error' para resaltar el campo en caso de error
                 helperText={
@@ -225,8 +224,8 @@ export const LoginPage = ({ setAcceso }) => {
                     ? "Mínimo 4 caracteres"
                     : errors.password?.type === "maxLength"
                     ? "Máximo 15 caracteres"
-                    : errors.password?.type === "pattern"
-                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                    //: errors.password?.type === "pattern"
+                    //? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
                     : ""
                 }
               />
