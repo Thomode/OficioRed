@@ -76,7 +76,7 @@ export function ItemRubro({ rubro, loadRubros }) {
                                 backgroundColor: 'darkred',
                             },
                         }}
-                        onClick={() => handleDelete(rubro.idUsuario)}
+                        onClick={() => handleDelete(rubro.idRubro)}
                     >
                         Confirmar
                     </Button>
