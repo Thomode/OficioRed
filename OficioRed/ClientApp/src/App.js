@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
-import { RoutesWithNotFound } from './utilities/RoutesWithNotFound';
-//import { AppRoutes } from './AppRoutes';
-import { Container, CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
+import { CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
 import backgroundImage from './assets/armarios-formas-geometricas.jpg'; // Reemplaza con la ruta de tu imagen
 import { NavBarLateral } from './layouts/NavBarLateral';
-
-// Importa el contexto de usuario para que este disponible en toda la aplicacion
-import { UserContextProvider } from './auth/UserContext';
-
 // Importo las paginas
 import HomePage from "./pages/Private/HomePage";
 import { SignupPage } from "./pages/SignupPage";
@@ -17,15 +11,10 @@ import { RubroAdminPage } from "./pages/RubroAdminPage";
 import { RubroForm } from "./components/Rubro/RubroForm";
 import { ProfesionalPage } from "./pages/ProfesionalPage";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
-import { PrivateRoutes, PublicRoutes } from './guards/routes';
-import { AuthGuard } from './guards/authGuard';
-import { Suspense } from 'react';
 import { LoginPage } from './pages/LoginPage';
-import { Private } from './pages/Private/Private';
-import { ProtectedRoute, RouteGuard } from './utilities/ProtectedRoute';
-
-//const LoginPage = React.lazy(() => import('./pages/LoginPage'));
-//const Private = React.lazy(() => import('./pages/Private/Private'));
+import { ProtectedRoute } from './utilities/ProtectedRoute';
+import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx'
+import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
 
 
 // Crea un tema personalizado (opcional)
@@ -118,7 +107,9 @@ export function App() {
                 >
                     <Routes>
                         <Route path='/login' element={<LoginPage setAcceso={setAcceso} />} />
-                        <Route path='/signup' element={<SignupPage />} />
+                        <Route path='/signup' element={<SignupPage setAcceso={setAcceso} />} />
+                        <Route path='/profesionalSignup' element={<ProfesionalSignUp setAcceso={setAcceso} />} />
+                        <Route path='/interesadoSignup' element={<InteresadoSignUp setAcceso={setAcceso} />} />
                         <Route path='*' element={<Navigate to={'/login'} />} />
                         
 

@@ -18,15 +18,11 @@ const login = async (usuario, password) => {
         }
     }
 }
-
-
-// Registro de usuario
-const register = async  (usuario, nombre, apellido, password) => {
+const register = async  (usuario, password, idRol) => {
     const res = await axios.post('/api/Acceso/register', {
-        usuario: usuario,
-        nombre: nombre,
-        apellido: apellido,
-        password: password
+        user: usuario,
+        password: password,
+        idRol: idRol
     })
     console.log(res)
     return res

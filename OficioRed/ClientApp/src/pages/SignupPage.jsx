@@ -1,32 +1,45 @@
 import {
   Box,
   Button,
+  FormControl,
   Grid,
   IconButton,
   InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-
-import imgOficioRed from "../assets/arregloHogar.jpeg";
 import logo from "../assets/Logo1_Recorte.png";
 import { AccountCircle, LockRounded } from "@mui/icons-material";
-
+import { rolService } from "../services/rol.service";
 import { set, useForm } from "react-hook-form";
-
 import { useNavigate } from "react-router-dom";
-
 import accesoService from "../services/acceso.service";
 
-export const SignupPage = () => {
+export const SignupPage = ({ setAcceso }) => {
   const [showPassword, setShowPassword] = useState(false);
+
+  // useEffect para guardar los estados
+  const [roles, setRoles] = useState([]);
+
+  // Hook para obtener los roles
+  const cargarRoles = async () => {
+    const data = await rolService.getAll();
+    setRoles(data.data);
+  };
+
+  // Hook useEffect para cargar los roles
+  useEffect(() => {
+    cargarRoles();
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -38,25 +51,33 @@ export const SignupPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // Redirigir a la pagina de login cuando toque el boton de registrarse
-    navigate("/");
+    const res = await accesoService.register(
+      data.user,
+      data.password,
+      data.idRol
+    );
+
+    if (res.status === 200) {
+      const res2 = await accesoService.login(data.user, data.password);
+      window.localStorage.setItem("acceso", JSON.stringify(res2.data));
+      setAcceso(res.data);
+
+      console.log(res2.data.idRol);
+      if (res2.data.idRol === 3) {
+        navigate("/profesionalSignup", { replace: true });
+      }
+      if (res2.data.idRol === 4) {
+        navigate("/interesadoSignup", { replace: true });
+      }
+    }
   };
 
   return (
     <>
-      <Grid container style={{ height: "85vh" }}>
-        <Grid item xs={12} sm={6}>
-          <img
-            src={imgOficioRed}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            alt="ImagenOficioRed"
-          />
-        </Grid>
+      <Grid container style={{ height: "85vh", justifyContent: "center" }}>
         <Grid
           container
           item
@@ -99,9 +120,9 @@ export const SignupPage = () => {
               <TextField
                 fullWidth
                 required
-                name="usuario"
+                name="user"
                 type={"text"}
-                placeholder="Usuario"
+                placeholder="Nombre de Usuario"
                 autoComplete="off"
                 label="Usuario"
                 margin="normal"
@@ -112,12 +133,12 @@ export const SignupPage = () => {
                     </InputAdornment>
                   ),
                 }}
-                {...register("usuario", {
+                {...register("user", {
                   required: true,
                   minLength: 2,
                   maxLength: 15,
                 })}
-                error={!!errors.usuario} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                error={!!errors.usuario}
                 helperText={
                   errors.usuario?.type === "required"
                     ? "Campo obligatorio"
@@ -128,79 +149,7 @@ export const SignupPage = () => {
                     : ""
                 }
               />
-              <TextField
-                fullWidth
-                required
-                name="nombre"
-                type={"text"}
-                placeholder="Nombre"
-                autoComplete="off"
-                label="Nombre"
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <DriveFileRenameOutlineIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                {...register("nombre", {
-                  required: true,
-                  minLength: 2,
-                  maxLength: 15,
-                  // Patron que acepte solo letras y espacios
-                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
-                })}
-                error={!!errors.nombre} // Agregar la propiedad 'error' para resaltar el campo en caso de error
-                helperText={
-                  errors.nombre?.type === "required"
-                    ? "Campo obligatorio"
-                    : errors.nombre?.type === "minLength"
-                    ? "Mínimo 2 caracteres"
-                    : errors.nombre?.type === "maxLength"
-                    ? "Máximo 15 caracteres"
-                    : errors.apellido?.type === "pattern"
-                    ? "Solo se permiten letras y espacios"
-                    : ""
-                }
-              />
 
-              <TextField
-                fullWidth
-                required
-                name="apellido"
-                type={"text"}
-                placeholder="Apellido"
-                autoComplete="off"
-                label="Apellido"
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <DriveFileRenameOutlineIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                {...register("apellido", {
-                  required: true,
-                  minLength: 2,
-                  maxLength: 15,
-                  // Patron que acepte solo letras, acento y espacios
-                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
-                })}
-                error={!!errors.apellido} // Agregar la propiedad 'error' para resaltar el campo en caso de error
-                helperText={
-                  errors.apellido?.type === "required"
-                    ? "Campo obligatorio"
-                    : errors.apellido?.type === "minLength"
-                    ? "Mínimo 2 caracteres"
-                    : errors.apellido?.type === "maxLength"
-                    ? "Máximo 15 caracteres"
-                    : errors.apellido?.type === "pattern"
-                    ? "Solo se permiten letras y espacios"
-                    : ""
-                }
-              />
               <TextField
                 fullWidth
                 required
@@ -249,46 +198,27 @@ export const SignupPage = () => {
                 }
               />
 
-              <TextField
-                fullWidth
-                required
-                name="confirmPassword"
-                placeholder="Confirmar Contraseña"
-                autoComplete="off"
-                type={showPassword ? "text" : "password"}
-                label="Confirmar Contraseña"
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment>
-                      <LockRounded />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={togglePasswordVisibility} edge="end">
-                        {showPassword ? (
-                          <RemoveRedEyeRoundedIcon fontSize="small" />
-                        ) : (
-                          <VisibilityOffRoundedIcon fontSize="small" />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                {...register("confirmPassword", {
-                  required: true,
-                  validate: (value) => value === watch("password"),
-                })}
-                error={!!errors.confirmPassword} // Agregar la propiedad 'error' para resaltar el campo en caso de error
-                helperText={
-                  errors.confirmPassword?.type === "required"
-                    ? "Campo obligatorio"
-                    : errors.confirmPassword?.type === "validate"
-                    ? "Las contraseñas no coinciden"
-                    : ""
-                }
-              />
+              <Box sx={{ width: "100%" }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Tipo de Usuario
+                  </InputLabel>
+                  <Select
+                    fullWidth
+                    label="Tipo de Usuario"
+                    name="idRol"
+                    {...register("idRol", {
+                      required: true,
+                    })}
+                  >
+                    {roles
+                      .filter((e) => e.idRol !== 2)
+                      .map((e) => (
+                        <MenuItem value={e.idRol}>{e.nombre}</MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+              </Box>
 
               <div style={{ height: 20 }} />
 

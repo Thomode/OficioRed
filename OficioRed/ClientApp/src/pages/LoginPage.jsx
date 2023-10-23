@@ -2,7 +2,6 @@
   Box,
   Button,
   Checkbox,
-  Divider,
   FormControlLabel,
   Grid,
   IconButton,
@@ -12,7 +11,7 @@
   Typography,
 } from "@mui/material";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -21,22 +20,11 @@ import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import { AccountCircle, LockRounded } from "@mui/icons-material";
-
-import imgOficioRed from "../assets/arregloHogar.jpeg";
 import logo from "../assets/Logo1_Recorte.png";
 import accesoService from "../services/acceso.service";
-import { useUser } from "../auth/useUser";
-
-// Importo servicio de usuario para obtener datos del rol al loguearse
-import { usuarioService } from "../services/usuario.service";
-import { PrivateRoutes } from "../guards/routes";
 
 export const LoginPage = ({ setAcceso }) => {
   const navigate = useNavigate();
-  const { login, isLogged } = useUser();
-  useEffect(() => {
-    if (isLogged) navigate("/home");
-  }, [isLogged, navigate]);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -44,7 +32,6 @@ export const LoginPage = ({ setAcceso }) => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  // Hook useForm
   const {
     register, // Identifica cada input del formulario
     handleSubmit, // Función que se ejecuta al enviar el formulario
@@ -55,13 +42,7 @@ export const LoginPage = ({ setAcceso }) => {
   const [usuarioEncontrado, setUsuarioEncontrado] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
     const res = await accesoService.login(data.usuario, data.password);
-
-    // Muestro el status de la respuesta y el token por consola
-    console.log(res.status);
-    console.log("Acceso: ", res.data);
-
     if (res.error === "Usuario no encontrado") {
       // Muestra el mensaje de "Usuario no encontrado" en el campo usuario
       setUsuarioEncontrado(true);
@@ -79,24 +60,6 @@ export const LoginPage = ({ setAcceso }) => {
         navigate("/home", { replace: true });
       }
     }
-    /*
-    // Obtener datos del usuario logueado
-    const resUsuario = await usuarioService.getAll(data.usuario);
-
-    const usuarioBuscado = data.usuario; // Cambia esto al usuario que desees buscar
-
-    // Buscar el usuario en el array de usuarios, si no se encuentra, devuelve mensaje "Usuario no encontrado"
-    const usuarioEncontrado = resUsuario.data.find(
-      (usuario) => usuario.usuario === usuarioBuscado
-    );
-
-    if (usuarioEncontrado) {
-      const rolDelUsuario = usuarioEncontrado.rol;
-      console.log(`El rol del usuario ${usuarioBuscado} es: ${rolDelUsuario}`);
-    } else {
-      console.log(`Usuario ${usuarioBuscado} no encontrado`);
-    }
-    */
   };
 
   return (
@@ -224,9 +187,9 @@ export const LoginPage = ({ setAcceso }) => {
                     ? "Mínimo 4 caracteres"
                     : errors.password?.type === "maxLength"
                     ? "Máximo 15 caracteres"
-                    //: errors.password?.type === "pattern"
-                    //? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                    : ""
+                    : //: errors.password?.type === "pattern"
+                      //? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                      ""
                 }
               />
 
