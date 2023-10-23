@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { rubroService } from "../../services/rubro.service"; 
+import { rubroService } from "../../services/rubro.service";
 import {
     Grid,
     Card,
@@ -12,7 +12,19 @@ import {
     Box,
 } from "@mui/material";
 
-export function RubroForm() { 
+const styles = {
+    card: {
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        backgroundColor: 'white',
+        padding: '1rem',
+    },
+    title: {
+        background: '#f0f0f0',
+    },
+};
+
+export function RubroForm() {
     const navigate = useNavigate();
     const params = useParams();
     const [editing, setEditing] = useState(false);
@@ -69,7 +81,7 @@ export function RubroForm() {
     };
 
     const handleCancelar = () => {
-        navigate("admin/rubros");
+        navigate("/admin/rubros");
     };
 
     const handleChange = (e) => {
@@ -84,8 +96,8 @@ export function RubroForm() {
             style={{ height: "100vh" }}
         >
             <Grid item xs={12} sm={8} md={6} lg={4}>
-                <Card elevation={5} sx={{ backgroundColor: "white", padding: "1rem" }}>
-                    <Typography variant="h4" align="center" color="black" gutterBottom>
+                <Card elevation={5} sx={styles.card}>
+                    <Typography variant="h4" align="center" color="#1b325f" gutterBottom sx={styles.title}>
                         {editing ? "Editar Rubro" : "Crear Rubro"}
                     </Typography>
                     <CardContent>

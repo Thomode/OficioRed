@@ -4,7 +4,19 @@ import { usuarioService } from '../../services/usuario.service';
 import { Grid, Card, Typography, CardContent, TextField, Button, MenuItem, Paper, Box } from '@mui/material';
 import axios from 'axios';
 
-export default function UsuarioForm() {
+const styles = {
+    card: {
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        backgroundColor: 'white',
+        padding: '1rem',
+    },
+    title: {
+        background: '#f0f0f0',
+    },
+};
+
+const UsuarioForm = () => {
     const navigate = useNavigate();
     const params = useParams();
     const [editing, setEditing] = useState(false);
@@ -85,8 +97,8 @@ export default function UsuarioForm() {
     return (
         <Grid container alignItems='center' justifyContent='center' style={{ height: '100vh' }}>
             <Grid item xs={12} sm={8} md={6} lg={4}>
-                <Card elevation={5} sx={{ backgroundColor: 'white', padding: '1rem' }}>
-                    <Typography variant='h4' align='center' color='black' gutterBottom>
+                <Card elevation={5} sx={styles.card}>
+                    <Typography variant='h4' align='center' color='#1b325f' gutterBottom sx={styles.title}>
                         {editing ? 'Editar Usuario' : 'Crear Usuario'}
                     </Typography>
                     <CardContent>
@@ -100,8 +112,6 @@ export default function UsuarioForm() {
                                     name='user'
                                     value={usuario.user}
                                     onChange={handleChange}
-                                    InputProps={{ style: { color: 'black', fontSize: '1.2rem' } }}
-                                    InputLabelProps={{ style: { color: 'black', fontSize: '1.2rem' } }}
                                     required
                                 />
 
@@ -114,8 +124,6 @@ export default function UsuarioForm() {
                                     name='password'
                                     value={usuario.password}
                                     onChange={handleChange}
-                                    InputProps={{ style: { color: 'black', fontSize: '1.2rem' } }}
-                                    InputLabelProps={{ style: { color: 'black', fontSize: '1.2rem' } }}
                                     required
                                 />
 
@@ -128,8 +136,6 @@ export default function UsuarioForm() {
                                     value={usuario.idRol}
                                     onChange={handleChange}
                                     name='idRol'
-                                    InputProps={{ style: { color: 'black', fontSize: '1.2rem' } }}
-                                    InputLabelProps={{ style: { color: 'black', fontSize: '1.2rem' } }}
                                     required
                                 >
                                     {roles.map((role) => (
@@ -140,23 +146,23 @@ export default function UsuarioForm() {
                                 </TextField>
 
                                 <Box display="flex" justifyContent="center" marginTop="20px">
-                                    <Button variant='contained' color='primary' type='submit' style={{ marginRight: '10px', fontSize: '1.2rem' }}>
+                                    <Button variant='contained' color='primary' type='submit' style={{ marginRight: '10px' }}>
                                         {editing ? 'Actualizar' : 'Agregar'}
                                     </Button>
 
-                                    <Button variant='contained' color='error' type='button' onClick={handleCancelar} style={{ fontSize: '1.2rem' }}>
+                                    <Button variant='contained' color='error' type='button' onClick={handleCancelar}>
                                         Cancelar
                                     </Button>
                                 </Box>
 
                                 {errorMessage && (
-                                    <Typography variant='body2' color='error' style={{ marginTop: '10px', fontSize: '1.2rem' }}>
+                                    <Typography variant='body2' color='error' style={{ marginTop: '10px' }}>
                                         {errorMessage}
                                     </Typography>
                                 )}
 
                                 {successMessage && (
-                                    <Typography variant='body2' color='success' style={{ marginTop: '10px', fontSize: '1.2rem' }}>
+                                    <Typography variant='body2' color='success' style={{ marginTop: '10px' }}>
                                         {successMessage}
                                     </Typography>
                                 )}
@@ -167,4 +173,6 @@ export default function UsuarioForm() {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default UsuarioForm;
