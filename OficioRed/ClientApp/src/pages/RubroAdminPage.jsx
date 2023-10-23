@@ -1,32 +1,32 @@
 import { useEffect, useState } from "react";
-import { TablaOficio } from "../components/Oficio/TablaOficio";
-import { oficioService } from "../services/oficio.service";
-import { Button, Grid, TextField, Typography, Card, CardContent } from "@mui/material";
+import { TablaRubro } from "../components/Rubro/TablaRubro"; // Importa TablaRubro
+import { rubroService } from "../services/rubro.service"; // Importa rubroService
+import { Button, Grid, Typography, Card, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import Buscador from "../components/buscador";
-export function OficioAdminPage() {
+export function RubroAdminPage() {
     const handleSearch = async () => {
-        const data = await oficioService.getAll(); // Obt?n todos los usuarios
-        console.log(data)
-        const filteredOficios = data.filter((oficio) =>
-            oficio.nombre.toLowerCase().includes(searchValue.toLowerCase())
-        ); // Filtra los usuarios basados en el texto de b?squeda
+        const data = await rubroService.getAll(); 
+        console.log(data);
+        const filteredRubros = data.filter((rubro) =>
+            rubro.nombre.toLowerCase().includes(searchValue.toLowerCase())
+        ); 
 
-        setOficios(filteredOficios); // Actualiza la lista de usuarios con el resultado de la b?squeda
+        setRubros(filteredRubros); 
     };
-    const [oficios, setOficios] = useState([]);
+    const [rubros, setRubros] = useState([]); 
     const navigate = useNavigate()
     const [searchValue, setSearchValue] = useState("");
 
-    async function loadOficios() {
-        const data = await oficioService.getAll();
+    async function loadRubros() {
+        const data = await rubroService.getAll(); 
         console.log(data);
-        setOficios(data);
+        setRubros(data);
     }
 
     useEffect(() => {
-        loadOficios();
+        loadRubros();
     }, []);
 
     return (
@@ -34,7 +34,7 @@ export function OficioAdminPage() {
             <Card>
                 <CardContent>
                     <Typography variant="h4" marginBottom={2}>
-                        Oficio
+                        Rubros
                     </Typography>
                     <Grid
                         container
@@ -49,12 +49,12 @@ export function OficioAdminPage() {
                             <Buscador searchValue={searchValue} setSearchValue={setSearchValue} handleSearch={handleSearch} />
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/admin/oficioForm') }}>
-                                Agregar
+                            <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={() => { navigate('/admin/rubroForm') }}>
+                                Agregar 
                             </Button>
                         </Grid>
                     </Grid>
-                    <TablaOficio oficios={oficios} loadOficios={loadOficios}></TablaOficio>
+                    <TablaRubro rubros={rubros} loadRubros={loadRubros}></TablaRubro> 
                 </CardContent>
             </Card>
         </>

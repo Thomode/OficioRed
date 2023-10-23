@@ -11,8 +11,8 @@ import { SignupPage } from "../SignupPage";
 import { ProfesionalPage } from "../ProfesionalPage";
 import { UsuarioAdminPage } from "../UsuarioAdminPage";
 import UsuarioForm from "../../components/Usuario/UsuarioForm";
-import { OficioAdminPage } from "../OficioAdminPage";
-import { OficioForm } from "../../components/Oficio/OficioForm";
+import { RubroAdminPage } from "../RubroAdminPage";
+import { RubroForm } from "../../components/Rubro/RubroForm";
 import { Logout } from "../../components/Logout";
 //const Dashboard = React.lazy(() => import("./Dashboard"));
 //const HomePage = React.lazy(() => import("./HomePage"));
@@ -31,11 +31,11 @@ export function Private() {
           element={<ProfesionalPage />}
         />
         <Route path={PrivateRoutes.USUARIOS} element={<UsuarioAdminPage />} />
-        <Route path={PrivateRoutes.OFICIOS} element={<OficioAdminPage />} />
+        <Route path={PrivateRoutes.RUBROS} element={<RubroAdminPage />} />
         <Route path="/usuarios/:id/edit" element={<UsuarioForm />} />
 
-        <Route path="/oficioForm" element={<OficioForm />} />
-        <Route path="/oficios/:id/edit" element={<OficioForm />} />
+        <Route path="/rubroForm" element={<RubroForm />} />
+        <Route path="/rubros/:id/edit" element={<RubroForm />} />
       </RoutesWithNotFound>
     </NavBarLateral>
   );

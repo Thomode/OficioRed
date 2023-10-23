@@ -4,7 +4,8 @@ import { usuarioService } from "../services/usuario.service";
 import { Button, Grid, TextField, Typography , Card, CardContent} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import  Buscador  from "../components/buscador";
+import Buscador from "../components/buscador";
+
 export function UsuarioAdminPage() {
     const handleSearch = async () => {
         const data = await usuarioService.getAll(); // Obt�n todos los usuarios

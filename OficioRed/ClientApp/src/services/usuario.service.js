@@ -10,28 +10,34 @@ async function getAll() {
 const get = async (id) =>
     await axios.get(`/api/Usuario/${id}`)
 
-const create = async (user, password, rol) =>
+const create = async (user, password, idRol) =>
     await axios.post('/api/Usuario', {
         user,
         password,
-        rol
+        idRol
     })
 
 const deleteUser = async (id) =>
     await axios.delete(`/api/Usuario/${id}`)
 
-const update = async (id, user, password, rol) =>
+const update = async (id, user, password, idRol) =>
     await axios.put(`/api/Usuario/${id}`, {
         user,
         password,
-        rol
+        idRol
     })
 
+async function getRoles() {
+    const res = await axios.get("/api/Rol")
+
+    return res.data
+}
 
 export const usuarioService = {
     get,
     getAll,
     create,
     deleteUser,
-    update
+    update,
+    getRoles
 }

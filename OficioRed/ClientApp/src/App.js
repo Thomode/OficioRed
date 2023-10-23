@@ -13,8 +13,8 @@ import { UserContextProvider } from './auth/UserContext';
 import HomePage from "./pages/Private/HomePage";
 import { SignupPage } from "./pages/SignupPage";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
-import { OficioAdminPage } from "./pages/OficioAdminPage";
-import { OficioForm } from "./components/Oficio/OficioForm";
+import { RubroAdminPage } from "./pages/RubroAdminPage";
+import { RubroForm } from "./components/Rubro/RubroForm";
 import { ProfesionalPage } from "./pages/ProfesionalPage";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { PrivateRoutes, PublicRoutes } from './guards/routes';
@@ -45,16 +45,16 @@ const adminRoutes = [
         element: <UsuarioForm />
     },
     {
-        path: '/admin/oficios',
-        element: <OficioAdminPage />
+        path: '/admin/rubros',
+        element: <RubroAdminPage />
     },
     {
-        path: '/admin/oficioForm',
-        element: <OficioForm />
+        path: '/admin/rubroForm',
+        element: <RubroForm />
     },
     {
-        path: '/admin/oficios/:id/edit',
-        element: <OficioForm />
+        path: '/admin/rubros/:id/edit',
+        element: <RubroForm />
     }
 ]
 

@@ -131,9 +131,9 @@ export function NavBarLateral({ children, type, logout }) {
           route: "/admin/usuarios",
         },
         {
-          text: "Oficios",
+          text: "Rubros",
           icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
-          route: "/admin/oficios",
+          route: "/admin/rubros",
         }
       ]
     } else {
