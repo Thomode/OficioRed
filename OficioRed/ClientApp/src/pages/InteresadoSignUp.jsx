@@ -95,7 +95,7 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                 <img src={logo} width={350} alt="logo" />
             </Grid>
             <Typography style={titleStyle}>
-                Registro como Profesional
+                Registro como Interesado
             </Typography>
             <TextField
               fullWidth

@@ -24,6 +24,14 @@ import { set, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import accesoService from "../services/acceso.service";
 
+const titleStyle = {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    color: '#1B325F',
+    textAlign: 'center',
+    marginBottom: '20px',
+};
+
 export const SignupPage = ({ setAcceso }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -113,9 +121,9 @@ export const SignupPage = ({ setAcceso }) => {
                 <img src={logo} width={350} alt="logo" />
               </Grid>
 
-              <Typography variant="h4" padding={3} textAlign="center">
-                Registrarse
-              </Typography>
+                <Typography style={titleStyle}>
+                    Registrarse
+                </Typography>
 
               <TextField
                 fullWidth

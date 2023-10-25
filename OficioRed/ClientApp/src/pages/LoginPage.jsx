@@ -23,6 +23,14 @@ import { AccountCircle, LockRounded } from "@mui/icons-material";
 import logo from "../assets/Logo1_Recorte.png";
 import accesoService from "../services/acceso.service";
 
+const titleStyle = {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    color: '#1B325F',
+    textAlign: 'center',
+    marginBottom: '20px',
+};
+
 export const LoginPage = ({ setAcceso }) => {
   const navigate = useNavigate();
 
@@ -101,9 +109,9 @@ export const LoginPage = ({ setAcceso }) => {
               </Grid>
 
               {/*--------------- TÍTULO ---------------*/}
-              <Typography variant="h4" padding={3} textAlign="center">
-                Iniciar Sesión
-              </Typography>
+                <Typography style={titleStyle}>
+                    Iniciar Sesión
+                </Typography>
 
               {/*--------------- Campo USUARIO ---------------*/}
               <TextField
