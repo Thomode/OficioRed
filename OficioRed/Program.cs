@@ -62,6 +62,7 @@ builder.Services.AddScoped<IInteresadoService, InteresadoService>();
 builder.Services.AddScoped<IProfesionalService, ProfesionalService>();
 builder.Services.AddScoped<IRolService, RolService>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -31,7 +31,6 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
       data.fotoPerfil = await convertImageToBase64(data.fotoPerfil[0]);
     }
 
-    // Envia los datos al servidor, incluyendo la imagen convertida a base64
     const res = await profesionalService.registerProfesional(
       data.nombre,
       data.apellido,

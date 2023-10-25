@@ -73,7 +73,6 @@ export function App() {
     const logout = () => {
         window.localStorage.removeItem("acceso");
         setAcceso(null)
-        alert("Se elimino el acceso correctamente");
       };
 
     useEffect(() => {
@@ -106,11 +105,11 @@ export function App() {
                     }}
                 >
                     <Routes>
-                        <Route path='/login' element={<LoginPage setAcceso={setAcceso} />} />
+                        <Route path='/' element={<LoginPage setAcceso={setAcceso} />} />
                         <Route path='/signup' element={<SignupPage setAcceso={setAcceso} />} />
                         <Route path='/profesionalSignup' element={<ProfesionalSignUp setAcceso={setAcceso} />} />
                         <Route path='/interesadoSignup' element={<InteresadoSignUp setAcceso={setAcceso} />} />
-                        <Route path='*' element={<Navigate to={'/login'} />} />
+                        <Route path='*' element={<Navigate to={'/'} />} />
                         
 
                         {

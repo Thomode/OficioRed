@@ -63,7 +63,7 @@ export const SignupPage = ({ setAcceso }) => {
     if (res.status === 200) {
       const res2 = await accesoService.login(data.user, data.password);
       window.localStorage.setItem("acceso", JSON.stringify(res2.data));
-      setAcceso(res.data);
+      setAcceso(res2.data);
 
       console.log(res2.data.idRol);
       if (res2.data.idRol === 3) {

@@ -28,7 +28,6 @@ export const InteresadoSignUp = ({ setAcceso }) => {
       data.fotoPerfil = await convertImageToBase64(data.fotoPerfil[0]);
     }
 
-    // Envia los datos al servidor, incluyendo la imagen convertida a base64
     const res = await interesadoService.registerInteresado(
       data.nombre,
       data.apellido,
