@@ -4,6 +4,15 @@ import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { interesadoService } from "../services/interesado.service";
+import logo from "../assets/Logo1_Recorte.png";
+
+const titleStyle = {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    color: '#1B325F',
+    textAlign: 'center',
+    marginBottom: '20px',
+};
 
 export const InteresadoSignUp = ({ setAcceso }) => {
   const navigate = useNavigate();
@@ -83,8 +92,11 @@ export const InteresadoSignUp = ({ setAcceso }) => {
               backgroundColor: "white",
             }}
           >
-            <Typography variant="h4" padding={3} textAlign="center">
-              Registro como Interesado
+            <Grid container justify="center">
+                <img src={logo} width={350} alt="logo" />
+            </Grid>
+            <Typography style={titleStyle}>
+                Registro como Profesional
             </Typography>
             <TextField
               fullWidth

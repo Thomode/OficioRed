@@ -25,7 +25,7 @@ export default function MultipleSelectCheckmarks() {
 
     useEffect(() => {
         // Realizar una solicitud a la API para obtener la lista de oficios
-        axios.get('/api/Oficio') // Reemplaza '/api/oficios' con la URL correcta de tu API
+        axios.get('/api/Rubro') // Reemplaza '/api/oficios' con la URL correcta de tu API
             .then((response) => {
                 setOffices(response.data); // Actualizar el estado con la lista de oficios
             })

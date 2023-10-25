@@ -3,7 +3,6 @@ import { Container, Grid, Box } from "@mui/material";
 import CardProfesional from "../components/ProfesionalesBusqueda/Card";
 import MultipleSelectCheckmarks from "../components/FiltroRubros";
 import Buscador from "../components/buscador";
-
 export function ProfesionalPage() {
   return (
     <Container>

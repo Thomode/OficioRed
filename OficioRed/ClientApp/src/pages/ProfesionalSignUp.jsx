@@ -4,6 +4,18 @@ import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { profesionalService } from "../services/profesional.service";
+import MultipleSelectCheckmarks from "../components/FiltroRubros";
+import logo from "../assets/Logo1_Recorte.png";
+
+
+const titleStyle = {
+    fontSize: '2.5rem', 
+    fontWeight: 'bold', 
+    color: '#1B325F', 
+    textAlign: 'center', 
+    marginBottom: '20px', 
+};
+
 
 export const ProfesionalSignUp = ({ setAcceso }) => {
   const navigate = useNavigate();
@@ -83,10 +95,13 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
               },
               backgroundColor: "white",
             }}
-          >
-            <Typography variant="h4" padding={3} textAlign="center">
-              Registro como Profesional
-            </Typography>
+                  >
+            <Grid container justify="center">
+             <img src={logo} width={350} alt="logo" />
+             </Grid>
+                      <Typography style={titleStyle}>
+                          Registro como Profesional
+                      </Typography>
             <TextField
               fullWidth
               required
@@ -190,7 +205,8 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                   ? "Máximo 40 caracteres"
                   : ""
               }
-            />
+                      />
+                      <MultipleSelectCheckmarks />
 
             {/* Campo para cargar la foto de perfil 
             <input

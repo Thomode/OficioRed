@@ -52,7 +52,7 @@ export function ItemRubro({ rubro, loadRubros }) {
                     },
                 }}
             >
-                <DialogTitle>Baja de Usuario</DialogTitle>
+                <DialogTitle>Baja de Rubro</DialogTitle>
                 <DialogContent>
                     Apreta en confirmar para eliminar a "{rubro.nombre}"
                 </DialogContent>

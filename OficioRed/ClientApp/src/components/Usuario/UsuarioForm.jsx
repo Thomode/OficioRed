@@ -77,7 +77,7 @@ const UsuarioForm = () => {
                 setSuccessMessage('Usuario actualizado con éxito');
             } else {
                 await usuarioService.create(usuario.user, usuario.password, usuario.idRol);
-                setSuccessMessage('Usuario creado con éxito');
+                setSuccessMessage('Usuario registrado con éxito');
             }
             navigate('/admin/usuarios');
         } catch (error) {
@@ -99,7 +99,7 @@ const UsuarioForm = () => {
             <Grid item xs={12} sm={8} md={6} lg={4}>
                 <Card elevation={5} sx={styles.card}>
                     <Typography variant='h4' align='center' color='#1b325f' gutterBottom sx={styles.title}>
-                        {editing ? 'Editar Usuario' : 'Crear Usuario'}
+                        {editing ? 'Editar Usuario' : 'Registrar Usuario'}
                     </Typography>
                     <CardContent>
                         <Paper elevation={3} style={{ padding: '20px', margin: '20px 0' }}>
