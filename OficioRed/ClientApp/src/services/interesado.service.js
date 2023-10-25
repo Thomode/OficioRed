@@ -7,8 +7,9 @@ const getToken = () => {
     return data?.token
 }
 
+const token = getToken();
 const config = {
-    headers: { Authorization: `Bearer ${ getToken() }` }
+    headers: { Authorization: token ? `Bearer ${token}` : '' }
 };
 
 const registerInteresado = async  (nombre, apellido, email, idDireccion, fotoPerfil) => {
