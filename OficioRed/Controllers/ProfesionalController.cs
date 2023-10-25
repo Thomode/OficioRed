@@ -12,10 +12,12 @@ namespace OficioRed.Controllers
     public class ProfesionalController : ControllerBase
     {
         private readonly IProfesionalService _profesionalService;
+        private readonly IRubroService _rubroService;
 
-        public ProfesionalController(IProfesionalService profesionalService)
+        public ProfesionalController(IProfesionalService profesionalService, IRubroService rubroService)
         {
             _profesionalService = profesionalService;
+            _rubroService = rubroService; 
         }
 
         [HttpGet]
@@ -63,6 +65,23 @@ namespace OficioRed.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("asociar-rubro/{rubroId}")]
+        public IActionResult AsociarRubroAProfesional(int rubroId)
+        {
+            try
+            {
+                // Llama a la función AsociarRubro en el servicio Profesional
+                _profesionalService.AsociarRubro(rubroId);
+
+                return Ok("Rubro asociado al profesional exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPut("{id}")]
         public IActionResult Update(ProfesionalDTO profesionalDTO)
