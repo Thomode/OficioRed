@@ -15,6 +15,7 @@ namespace OficioRed.Services
         void Create(ProfesionalDTO profesionalDTO);
         void Update(ProfesionalDTO profesionalDTO);
         void Delete(int id);
+        void AsociarRubro(int rubroId);
     }
 
     public class ProfesionalService : IProfesionalService
@@ -96,6 +97,60 @@ namespace OficioRed.Services
                 }
             }
         }
+
+        public void AsociarRubro(int rubroId)
+        {
+            var sesion = _accesoService.GetCurrentUsuario();
+
+            if (sesion == null)
+            {
+                throw new AppException("Usuario no logeado");
+            }
+
+            // Buscar al profesional asociado al usuario actual
+            var profesional = _context.Profesionals.FirstOrDefault(e => e.IdUsuario == sesion.Id);
+
+            if (profesional == null)
+            {
+                throw new KeyNotFoundException("Profesional no encontrado");
+            }
+
+            var rubro = _context.Rubros.Find(rubroId); // Asegúrate de tener una tabla 'Rubros' en tu base de datos
+
+            if (rubro == null)
+            {
+                throw new KeyNotFoundException("Rubro no encontrado");
+            }
+
+            // Realizar las validaciones o lógica adicional si es necesario
+
+            var rubroXProfesional = new RubroXprofesional
+            {
+                IdProfesional = profesional.IdProfesional,
+                IdRubro = rubro.IdRubro,
+                Fhalta = DateTime.Now
+            };
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Realiza tus operaciones de base de datos aquí
+                    _context.RubroXprofesionals.Add(rubroXProfesional);
+                    _context.SaveChanges();
+
+                    // Si todo va bien, haz un commit
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    // Si ocurre un error, realiza un rollback
+                    transaction.Rollback();
+                    throw new Exception("Error al asociar el rubro al profesional.", ex);
+                }
+            }
+        }
+
 
         public void Update(ProfesionalDTO profesionalDTO)
         {
