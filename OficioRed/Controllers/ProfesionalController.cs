@@ -4,6 +4,7 @@ using OficioRed.Models;
 using OficioRed.Services;
 using System;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace OficioRed.Controllers
 {
@@ -117,6 +118,27 @@ namespace OficioRed.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> SubirFotoPerfil([FromForm] ArchivoDTO archivoDTO)
+        {         
+            try
+            {
+                Stream image = archivoDTO.Archivo.OpenReadStream();
+                var profesional = await _profesionalService.SubirFotoPerfil(image, archivoDTO.Archivo.FileName);
+
+                return Ok(new
+                {
+                    message = "Foto de Profesional subida",
+                    url = profesional.FotoPerfil
+                });
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }        
         }
     }
 }

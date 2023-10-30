@@ -117,7 +117,9 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.Fhbaja)
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
-            entity.Property(e => e.FotoPerfil).IsUnicode(false);
+            entity.Property(e => e.FotoPerfil)
+                .HasMaxLength(300)
+                .IsUnicode(false);
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -174,7 +176,7 @@ public partial class DbOficioRedContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
             entity.Property(e => e.FotoPerfil)
-                .HasMaxLength(50)
+                .HasMaxLength(300)
                 .IsUnicode(false);
             entity.Property(e => e.IdRubroXprofesional).HasColumnName("IdRubroXProfesional");
             entity.Property(e => e.Nombre)

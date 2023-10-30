@@ -99,4 +99,25 @@ public class InteresadoController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpPost("upload")]
+    public async Task<IActionResult> SubirFotoPerfil([FromForm] ArchivoDTO archivoDTO)
+    {
+        try
+        {
+            Stream image = archivoDTO.Archivo.OpenReadStream();
+            var interesado = await _interesadoService.SubirFotoPerfil(image, archivoDTO.Archivo.FileName);
+
+            return Ok(new
+            {
+                message = "Foto de Interesado subida",
+                url = interesado.FotoPerfil
+            });
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

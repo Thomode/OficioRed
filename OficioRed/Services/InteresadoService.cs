@@ -13,6 +13,7 @@ public interface IInteresadoService
     void Create(InteresadoDTO interesadoDTO);
     void Update(InteresadoDTO interesadoDTO);
     void Delete(int id);
+    Task<Interesado> SubirFotoPerfil(Stream archivo, string nombreFoto);
 }
 
 public class InteresadoService : IInteresadoService
@@ -170,6 +171,43 @@ public class InteresadoService : IInteresadoService
             throw new KeyNotFoundException("Interesado no encontrado");
         }
 
+        return interesado;
+    }
+
+    public async Task<Interesado> SubirFotoPerfil(Stream archivo, string nombreFoto)
+    {
+        var interesado = getInteresadoSesion();
+
+        if (interesado == null)
+        {
+            throw new AppException("El Usuario no esta logeado");
+        }
+
+        var firebaseStorage = new FirebaseStorageManeger();
+
+        string nombre = interesado.IdUsuario + "-" + nombreFoto;
+
+        interesado.FotoPerfil = await firebaseStorage.SubirStorage(archivo, nombre);
+
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                // Realiza tus operaciones de base de datos aquí
+                _context.Interesados.Update(interesado);
+                _context.SaveChanges();
+
+                // Si todo va bien, haz un commit
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error, realiza un rollback
+                transaction.Rollback();
+                throw new Exception("Error al actualizar el interesado.", ex);
+
+            }
+        }
         return interesado;
     }
 }

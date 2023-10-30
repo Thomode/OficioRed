@@ -16,6 +16,7 @@ namespace OficioRed.Services
         void Update(ProfesionalDTO profesionalDTO);
         void Delete(int id);
         void AsociarRubro(int rubroId);
+        Task<Profesional> SubirFotoPerfil(Stream archivo, string nombreFoto);
     }
 
     public class ProfesionalService : IProfesionalService
@@ -228,6 +229,43 @@ namespace OficioRed.Services
                 throw new KeyNotFoundException("Profesional no encontrado");
             }
 
+            return profesional;
+        }
+
+        public async Task<Profesional> SubirFotoPerfil(Stream archivo, string nombreFoto)
+        {
+            var profesional = getProfesionalSesion();
+
+            if (profesional == null)
+            {
+                throw new AppException("El Usuario no esta logeado");
+            }
+
+            var firebaseStorage = new FirebaseStorageManeger();
+
+            string nombre = profesional.IdUsuario + "-" + nombreFoto;
+
+            profesional.FotoPerfil = await firebaseStorage.SubirStorage(archivo, nombre);      
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Realiza tus operaciones de base de datos aquí
+                    _context.Profesionals.Update(profesional);
+                    _context.SaveChanges();
+
+                    // Si todo va bien, haz un commit
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    // Si ocurre un error, realiza un rollback
+                    transaction.Rollback();
+                    throw new Exception("Error al actualizar el profesional.", ex);
+
+                }
+            }
             return profesional;
         }
     }
