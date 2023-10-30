@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
@@ -7,15 +7,13 @@ import { profesionalService } from "../services/profesional.service";
 import MultipleSelectCheckmarks from "../components/FiltroRubros";
 import logo from "../assets/Logo1_Recorte.png";
 
-
 const titleStyle = {
-    fontSize: '2.5rem', 
-    fontWeight: 'bold', 
-    color: '#1B325F', 
-    textAlign: 'center', 
-    marginBottom: '20px', 
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  color: "#1B325F",
+  textAlign: "center",
+  marginBottom: "20px",
 };
-
 
 export const ProfesionalSignUp = ({ setAcceso }) => {
   const navigate = useNavigate();
@@ -25,41 +23,21 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    // Convierte la imagen de perfil a base64 si se ha seleccionado
-    if (data.fotoPerfil) {
-      data.fotoPerfil = await convertImageToBase64(data.fotoPerfil[0]);
-    }
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  const fileSelectedHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const onSubmit = async (data) => {
     const res = await profesionalService.registerProfesional(
       data.nombre,
       data.apellido,
       data.email,
-      //data.fotoPerfil,
       data.descripcion
     );
+    const res2 = await profesionalService.imageUpload(selectedFile);
     navigate("/home");
-  };
-
-  const handleImageChange = (e) => {
-    // Este código maneja la selección de la imagen y la muestra (opcional)
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        console.log("Imagen seleccionada:", reader.result);
-      };
-    }
-  };
-
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result.split(",")[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   };
 
   return (
@@ -94,13 +72,13 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
               },
               backgroundColor: "white",
             }}
-                  >
+          >
             <Grid container justify="center">
-             <img src={logo} width={350} alt="logo" />
-             </Grid>
-                      <Typography style={titleStyle}>
-                          Registro como Profesional
-                      </Typography>
+              <img src={logo} width={350} alt="logo" />
+            </Grid>
+            <Typography style={titleStyle}>
+              Registro como Profesional
+            </Typography>
             <TextField
               fullWidth
               required
@@ -204,17 +182,18 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                   ? "Máximo 40 caracteres"
                   : ""
               }
-                      />
-                      <MultipleSelectCheckmarks />
-
-            {/* Campo para cargar la foto de perfil 
-            <input
-              type="file"
-              accept=".jpg, .jpeg, .png"
-              onChange={handleImageChange}
-              {...register("fotoPerfil")}
             />
-            */}
+
+            <TextField
+              fullWidth
+              type="file"
+              name="fotoPerfil"
+              label="Foto de Perfil"
+              margin="normal"
+              onChange={fileSelectedHandler}
+            />
+
+            <MultipleSelectCheckmarks />
             <div style={{ height: 20 }} />
             <Button
               endIcon={<HowToRegOutlinedIcon />}

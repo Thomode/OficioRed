@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
@@ -7,11 +7,11 @@ import { interesadoService } from "../services/interesado.service";
 import logo from "../assets/Logo1_Recorte.png";
 
 const titleStyle = {
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    color: '#1B325F',
-    textAlign: 'center',
-    marginBottom: '20px',
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  color: "#1B325F",
+  textAlign: "center",
+  marginBottom: "20px",
 };
 
 export const InteresadoSignUp = ({ setAcceso }) => {
@@ -22,40 +22,22 @@ export const InteresadoSignUp = ({ setAcceso }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    // Convierte la imagen de perfil a base64 si se ha seleccionado
-    if (data.fotoPerfil) {
-      data.fotoPerfil = await convertImageToBase64(data.fotoPerfil[0]);
-    }
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  const fileSelectedHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const onSubmit = async (data) => {
     const res = await interesadoService.registerInteresado(
       data.nombre,
       data.apellido,
       data.email
-      //data.fotoPerfil,
     );
+
+    const res2 = await interesadoService.imageUpload(selectedFile);
+
     navigate("/home");
-  };
-
-  const handleImageChange = (e) => {
-    // Este código maneja la selección de la imagen y la muestra (opcional)
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        console.log("Imagen seleccionada:", reader.result);
-      };
-    }
-  };
-
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result.split(",")[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   };
 
   return (
@@ -92,11 +74,9 @@ export const InteresadoSignUp = ({ setAcceso }) => {
             }}
           >
             <Grid container justify="center">
-                <img src={logo} width={350} alt="logo" />
+              <img src={logo} width={350} alt="logo" />
             </Grid>
-            <Typography style={titleStyle}>
-                Registro como Interesado
-            </Typography>
+            <Typography style={titleStyle}>Registro como Interesado</Typography>
             <TextField
               fullWidth
               required
@@ -155,25 +135,11 @@ export const InteresadoSignUp = ({ setAcceso }) => {
             />
             <TextField
               fullWidth
-              required
-              name="email"
-              type={"email"}
-              placeholder="example@email.com"
-              autoComplete="off"
-              label="Email"
+              type="file"
+              name="fotoPerfil"
+              label="Foto de Perfil"
               margin="normal"
-              {...register("email", {
-                required: true,
-                pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              })}
-              error={!!errors.email}
-              helperText={
-                errors.email?.type === "required"
-                  ? "Campo obligatorio"
-                  : errors.email?.type === "pattern"
-                  ? "Coloque un email válido"
-                  : ""
-              }
+              onChange={fileSelectedHandler}
             />
             <div style={{ height: 20 }} />
             <Button

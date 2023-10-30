@@ -31,6 +31,21 @@ const registerProfesional = async  (
     return res
 }
 
+const imageUpload = async (selectedFile) => {
+    const formData = new FormData();
+    formData.append("archivo", selectedFile);
+  
+    const res = await axios
+      .post("/api/Profesional/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: config.headers.Authorization,
+        },
+      })
+    return res;
+};
+
 export const profesionalService = {
-    registerProfesional
+    registerProfesional,
+    imageUpload,
 }
