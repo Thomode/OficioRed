@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { interesadoService } from "../services/interesado.service";
 import logo from "../assets/Logo1_Recorte.png";
+import imagenDefault from "../assets/profile.png";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -13,19 +14,40 @@ const titleStyle = {
   textAlign: "center",
   marginBottom: "20px",
 };
+const imageStyle = {
+  borderRadius: "50%",
+  border: "1px solid #1b325f",
+  width: "100px",
+  height: "100px",
+  objectFit: "cover",
+};
 
 export const InteresadoSignUp = ({ setAcceso }) => {
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const imageRef = useRef(null);
+  const [image, setImage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
 
   const fileSelectedHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setImage(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
   const onSubmit = async (data) => {
@@ -77,6 +99,27 @@ export const InteresadoSignUp = ({ setAcceso }) => {
               <img src={logo} width={350} alt="logo" />
             </Grid>
             <Typography style={titleStyle}>Registro como Interesado</Typography>
+            {image ? (
+              <img
+                src={image}
+                alt="Vista previa de la imagen"
+                style={imageStyle}
+              />
+            ) : (
+              <img
+                src={imagenDefault}
+                alt="Imagen por defecto"
+                style={imageStyle}
+              />
+            )}
+            <TextField
+              fullWidth
+              type="file"
+              ref={imageRef}
+              name="fotoPerfil"
+              margin="normal"
+              onChange={fileSelectedHandler}
+            />
             <TextField
               fullWidth
               required
@@ -133,14 +176,7 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                   : ""
               }
             />
-            <TextField
-              fullWidth
-              type="file"
-              name="fotoPerfil"
-              label="Foto de Perfil"
-              margin="normal"
-              onChange={fileSelectedHandler}
-            />
+
             <div style={{ height: 20 }} />
             <Button
               endIcon={<HowToRegOutlinedIcon />}

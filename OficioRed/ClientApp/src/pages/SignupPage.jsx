@@ -25,11 +25,11 @@ import { useNavigate } from "react-router-dom";
 import accesoService from "../services/acceso.service";
 
 const titleStyle = {
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    color: '#1B325F',
-    textAlign: 'center',
-    marginBottom: '20px',
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  color: "#1B325F",
+  textAlign: "center",
+  marginBottom: "20px",
 };
 
 export const SignupPage = ({ setAcceso }) => {
@@ -121,9 +121,7 @@ export const SignupPage = ({ setAcceso }) => {
                 <img src={logo} width={350} alt="logo" />
               </Grid>
 
-                <Typography style={titleStyle}>
-                    Registrarse
-                </Typography>
+              <Typography style={titleStyle}>Registrarse</Typography>
 
               <TextField
                 fullWidth
@@ -206,7 +204,7 @@ export const SignupPage = ({ setAcceso }) => {
                 }
               />
 
-              <Box sx={{ width: "100%" }}>
+              <Box sx={{ width: "100%" }} marginBottom={2} marginTop={2}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Tipo de Usuario
@@ -228,8 +226,6 @@ export const SignupPage = ({ setAcceso }) => {
                 </FormControl>
               </Box>
 
-              <div style={{ height: 20 }} />
-
               <Button
                 endIcon={<HowToRegOutlinedIcon />}
                 type="submit"
@@ -246,7 +242,6 @@ export const SignupPage = ({ setAcceso }) => {
                 endIcon={<LoginOutlinedIcon />}
                 color="primary"
                 variant="outlined"
-                // Redirigir a la pagina de login
                 onClick={() => {
                   navigate("/login");
                 }}
