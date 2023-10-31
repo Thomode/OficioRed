@@ -24,11 +24,10 @@ export default function MultipleSelectCheckmarks() {
   const [selectedOffices, setSelectedOffices] = useState([]); // Oficios seleccionados
 
   useEffect(() => {
-    // Realizar una solicitud a la API para obtener la lista de oficios
     axios
-      .get("/api/Rubro") // Reemplaza '/api/oficios' con la URL correcta de tu API
+      .get("/api/Rubro")
       .then((response) => {
-        setOffices(response.data); // Actualizar el estado con la lista de oficios
+        setOffices(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener la lista de oficios:", error);
@@ -43,8 +42,10 @@ export default function MultipleSelectCheckmarks() {
     <div>
       <FormControl
         sx={{
-          m: 1,
-          width: { xs: "100%", sm: "300px" },
+            m: 1,
+            width: { xs: "100%", sm: "100%" },
+            paddingRight: { xs: 0, sm: 0 },
+            marginLeft: { xs: 0, sm: 0 },
         }}
       >
         <InputLabel id="demo-multiple-checkbox-label">Rubros</InputLabel>

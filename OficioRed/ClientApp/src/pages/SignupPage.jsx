@@ -190,7 +190,7 @@ export const SignupPage = ({ setAcceso }) => {
                   pattern:
                     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
                 })}
-                error={!!errors.password} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                error={!!errors.password}
                 helperText={
                   errors.password?.type === "required"
                     ? "Campo obligatorio"
