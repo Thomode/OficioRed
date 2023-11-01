@@ -99,7 +99,7 @@ export function App() {
                         backgroundImage: `url(${backgroundImage})`, // URL de tu imagen de fondo
                         backgroundSize: 'cover', // Ajusta la imagen al tama?o del contenedor
                         minHeight: '100vh', // Establece el alto m?nimo para ocupar toda la ventana
-                        width: '100vw', // Establece el ancho m?nimo para ocupar toda la ventana
+                         // Establece el ancho m?nimo para ocupar toda la ventana
                         display: 'flex',
                         flexDirection: 'column',
                     }}

@@ -23,6 +23,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link, useNavigate } from "react-router-dom";
 import logoOficio from "../assets/logo-oficiored.png";
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { ExitToApp } from "@mui/icons-material";
@@ -171,7 +174,20 @@ export function NavBarLateral({ children, type, logout }) {
     navigate(ruta);
   };
 
-  
+    const [auth, setAuth] = React.useState(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleChange = (event) => {
+        setAuth(event.target.checked);
+    };
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -194,7 +210,37 @@ export function NavBarLateral({ children, type, logout }) {
             src={logoOficio}
             alt="Logo"
             style={{ height: 40, width: "auto", borderRadius: 8 }}
-          />
+                  />
+        <div>
+            <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+            >
+                <AccountCircle />
+            </IconButton>
+            <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
+                <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
+            </Menu>
+        </div>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -267,7 +313,6 @@ export function NavBarLateral({ children, type, logout }) {
           </ListItem>
         </List>
         <Divider />
-        {/* Aquí puedes agregar más elementos a tu lista si es necesario */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -276,3 +321,4 @@ export function NavBarLateral({ children, type, logout }) {
     </Box>
   );
 }
+
