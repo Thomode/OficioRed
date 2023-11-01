@@ -54,7 +54,7 @@ export function ItemRubro({ rubro, loadRubros }) {
             >
                 <DialogTitle>Baja de Rubro</DialogTitle>
                 <DialogContent>
-                    Apreta en confirmar para eliminar a "{rubro.nombre}"
+                    Confirmar baja de "{rubro.nombre}"
                 </DialogContent>
                 <DialogActions>
                     <Button

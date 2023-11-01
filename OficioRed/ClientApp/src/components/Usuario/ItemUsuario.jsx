@@ -56,7 +56,7 @@ export function ItemUsuario({ usuario, loadUsuarios }) {
             >
                 <DialogTitle>Baja de Usuario</DialogTitle>
                 <DialogContent>
-                    Apreta en confirmar para eliminar a {usuario.user}
+                    Confirmar baja de {usuario.user}
                 </DialogContent>
                 <DialogActions>
                     <Button
