@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect} from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { profesionalService } from "../services/profesional.service";
-import MultipleSelectCheckmarks from "../components/FiltroRubros";
+import {FiltroRubros} from "../components/FiltroRubros";
 import logo from "../assets/Logo1_Recorte.png";
 import imagenDefault from "../assets/profile.png";
 
@@ -15,6 +15,7 @@ const titleStyle = {
   textAlign: "center",
   marginBottom: "20px",
 };
+
 const imageStyle = {
   borderRadius: "50%",
   border: "1px solid #1b325f",
@@ -24,6 +25,8 @@ const imageStyle = {
 };
 
 export const ProfesionalSignUp = ({ setAcceso }) => {
+  const [rubros, setRubros] = useState([]);
+
   const navigate = useNavigate();
   const {
     register,
@@ -58,9 +61,22 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
       data.email,
       data.descripcion
     );
+    
     const res2 = await profesionalService.imageUpload(selectedFile);
+    
+    rubros.forEach(async (rubro) => {
+      if(rubro.seleccionado){
+        const res3 = await profesionalService.asociarRubro(rubro.idRubro)
+      }
+    })
+
     navigate("/home");
   };
+
+  useEffect(() => {
+    // Lógica adicional después de que el estado ha cambiado
+    console.log('Rubros actualizados:', rubros);
+  }, [rubros]);
 
   return (
     <Grid
@@ -215,7 +231,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                       : ""
                   }
                 />
-                <MultipleSelectCheckmarks sx={{ width: "100%" }} />
+              <FiltroRubros sx={{ width: "100%" }} rubros={rubros} setRubros={setRubros} />
               </Grid>
               <Grid item xs={6}>
                 <TextField

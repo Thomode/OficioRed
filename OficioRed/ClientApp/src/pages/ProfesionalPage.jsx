@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Grid, Box } from "@mui/material";
 import CardProfesional from "../components/ProfesionalesBusqueda/Card";
-import MultipleSelectCheckmarks from "../components/FiltroRubros";
+import {FiltroRubros} from "../components/FiltroRubros";
 import Buscador from "../components/buscador";
 export function ProfesionalPage() {
   return (
@@ -21,7 +21,7 @@ export function ProfesionalPage() {
             <Buscador />
           </Grid>
           <Grid item xs={12}>
-            <MultipleSelectCheckmarks />
+            <FiltroRubros />
           </Grid>
         </Grid>
       </Box>

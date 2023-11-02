@@ -137,7 +137,14 @@ namespace OficioRed.Services
                 try
                 {
                     // Realiza tus operaciones de base de datos aquí
-                    _context.RubroXprofesionals.Add(rubroXProfesional);
+                    _context.RubroXprofesionals.Add(rubroXProfesional);      
+                    _context.SaveChanges();
+
+                    
+                    var rubroXProfesionalSave = _context.RubroXprofesionals.FirstOrDefault(e => e.IdProfesional == profesional.IdProfesional);
+                    
+                    profesional.IdRubroXprofesional = rubroXProfesionalSave.IdRubroXprofesional;
+                    _context.Profesionals.Update(profesional);
                     _context.SaveChanges();
 
                     // Si todo va bien, haz un commit
