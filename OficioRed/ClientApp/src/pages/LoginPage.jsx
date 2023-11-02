@@ -24,11 +24,11 @@ import logo from "../assets/Logo1_Recorte.png";
 import accesoService from "../services/acceso.service";
 
 const titleStyle = {
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    color: '#1B325F',
-    textAlign: 'center',
-    marginBottom: '20px',
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  color: "#1B325F",
+  textAlign: "center",
+  marginBottom: "20px",
 };
 
 export const LoginPage = ({ setAcceso }) => {
@@ -109,9 +109,7 @@ export const LoginPage = ({ setAcceso }) => {
               </Grid>
 
               {/*--------------- TÍTULO ---------------*/}
-                <Typography style={titleStyle}>
-                    Iniciar Sesión
-                </Typography>
+              <Typography style={titleStyle}>Iniciar Sesión</Typography>
 
               {/*--------------- Campo USUARIO ---------------*/}
               <TextField
@@ -136,7 +134,7 @@ export const LoginPage = ({ setAcceso }) => {
                   maxLength: 15,
                   usuarioEncontrado: false,
                 })}
-                error={!!errors.usuario} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                error={!!errors.usuario}
                 helperText={
                   errors.usuario?.type === "required" ? (
                     "Campo obligatorio"

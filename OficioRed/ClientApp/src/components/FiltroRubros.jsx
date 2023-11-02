@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Typography from '@mui/material/Typography';
+import React, { useEffect, useState } from "react";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
-import axios from 'axios';
+import axios from "axios";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -19,40 +18,41 @@ const MenuProps = {
   },
 };
 
-export const FiltroRubros = ({rubros, setRubros}) => {
-  const getRubros = async () => {
-    const res = await axios.get("/api/Rubro")
-    const rubrosLoad = []
+export const FiltroRubros = () => {
+  const [rubros, setRubros] = useState([]); // Initialize rubros as an empty array
 
-    res.data.forEach(rubro => {
-      rubrosLoad.push({
+  const getRubros = async () => {
+    try {
+      const res = await axios.get("/api/Rubro");
+      const rubrosLoad = res.data.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
-        seleccionado: false
-      })
-    });
+        seleccionado: false,
+      }));
+      return rubrosLoad;
+    } catch (error) {
+      console.error("Error fetching rubros:", error);
+      return [];
+    }
+  };
 
-    return rubrosLoad
-  }
   const loadRubros = async () => {
-    setRubros(await getRubros())
-  }
+    const rubrosData = await getRubros();
+    setRubros(rubrosData);
+  };
 
   useEffect(() => {
-    loadRubros()
-  }, [])
+    loadRubros();
+  }, []);
 
   const handleSelectChange = (event) => {
     const selectedRubroIds = event.target.value;
-
-    // Utilizamos la función de retorno de llamada en setRubros
-    setRubros((prevRubros) => {
-      return prevRubros.map((rubro) => ({
+    setRubros((prevRubros) =>
+      prevRubros.map((rubro) => ({
         ...rubro,
         seleccionado: selectedRubroIds.includes(rubro.idRubro),
-      }));
-    });
-
+      }))
+    );
   };
 
   return (
@@ -65,15 +65,22 @@ export const FiltroRubros = ({rubros, setRubros}) => {
           marginLeft: { xs: 0, sm: 0 },
         }}
       >
-        <InputLabel >Rubros</InputLabel>
+        <InputLabel>Rubros</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={rubros.filter((rubro) => rubro.seleccionado).map((rubro) => rubro.idRubro)}
+          value={rubros
+            .filter((rubro) => rubro.seleccionado)
+            .map((rubro) => rubro.idRubro)}
           onChange={handleSelectChange}
           renderValue={(selected) =>
-            selected.map((rubroId) => rubros.find((rubro) => rubro.idRubro === rubroId).nombre).join(', ')
+            selected
+              .map(
+                (rubroId) =>
+                  rubros.find((rubro) => rubro.idRubro === rubroId).nombre
+              )
+              .join(", ")
           }
           MenuProps={MenuProps}
         >

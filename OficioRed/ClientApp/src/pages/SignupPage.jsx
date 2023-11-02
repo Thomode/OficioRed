@@ -24,6 +24,9 @@ import { set, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import accesoService from "../services/acceso.service";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const titleStyle = {
   fontSize: "2.5rem",
   fontWeight: "bold",
@@ -61,7 +64,7 @@ export const SignupPage = ({ setAcceso }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit2 = async (data) => {
     const res = await accesoService.register(
       data.user,
       data.password,
@@ -80,6 +83,40 @@ export const SignupPage = ({ setAcceso }) => {
       if (res2.data.idRol === 4) {
         navigate("/interesadoSignup", { replace: true });
       }
+    } else if (res.status === 400) {
+      toast.error("El nombre de usuario ya está en uso.", {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
+  };
+  const onSubmit = async (data) => {
+    try {
+      const res = await accesoService.register(
+        data.user,
+        data.password,
+        data.idRol
+      );
+
+      if (res.status === 200) {
+        const res2 = await accesoService.login(data.user, data.password);
+        window.localStorage.setItem("acceso", JSON.stringify(res2.data));
+        setAcceso(res2.data);
+
+        console.log(res2.data.idRol);
+        if (res2.data.idRol === 3) {
+          navigate("/profesionalSignup", { replace: true });
+        }
+        if (res2.data.idRol === 4) {
+          navigate("/interesadoSignup", { replace: true });
+        }
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error.response.data);
+      toast.error(error.response.data, {
+        position: "top-right",
+        autoClose: 5000,
+      });
     }
   };
 
@@ -155,6 +192,7 @@ export const SignupPage = ({ setAcceso }) => {
                     : ""
                 }
               />
+              <ToastContainer />
 
               <TextField
                 fullWidth
