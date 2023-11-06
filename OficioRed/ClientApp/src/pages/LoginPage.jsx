@@ -11,6 +11,9 @@
   Typography,
 } from "@mui/material";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -41,32 +44,39 @@ export const LoginPage = ({ setAcceso }) => {
   };
 
   const {
-    register, // Identifica cada input del formulario
-    handleSubmit, // Función que se ejecuta al enviar el formulario
-    formState: { errors }, // Errores del formulario
+    register,
+    handleSubmit,
+    formState: { errors },
   } = useForm();
 
-  // useState del usuario encontrado
   const [usuarioEncontrado, setUsuarioEncontrado] = useState(false);
 
   const onSubmit = async (data) => {
-    const res = await accesoService.login(data.usuario, data.password);
-    if (res.error === "Usuario no encontrado") {
-      // Muestra el mensaje de "Usuario no encontrado" en el campo usuario
-      setUsuarioEncontrado(true);
-    } else if (res.error) {
-      // Muestra un mensaje genérico para otros errores
-      console.log("Error inesperado: ", res.error);
-    } else {
-      // Guardar token en el localStorage usando useLocalStorage
-      window.localStorage.setItem("acceso", JSON.stringify(res.data));
-      setAcceso(res.data);
-      // Redirigir a la página de home
-      if (res.data.idRol === 2) {
-        navigate("/admin/usuarios", { replace: true });
+    try {
+      const res = await accesoService.login(data.usuario, data.password);
+
+      if (res.status === 200) {
+        window.localStorage.setItem("acceso", JSON.stringify(res.data));
+        setAcceso(res.data);
+
+        if (res.data.idRol === 2) {
+          navigate("/admin/usuarios", { replace: true });
+        } else {
+          navigate("/home", { replace: true });
+        }
       } else {
-        navigate("/home", { replace: true });
+        console.error("Error al realizar la solicitud:", res.error);
+        toast.error(res.error, {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error.response.data);
+      toast.error(error.response.data, {
+        position: "top-right",
+        autoClose: 5000,
+      });
     }
   };
 
@@ -110,6 +120,8 @@ export const LoginPage = ({ setAcceso }) => {
 
               {/*--------------- TÍTULO ---------------*/}
               <Typography style={titleStyle}>Iniciar Sesión</Typography>
+
+              <ToastContainer />
 
               {/*--------------- Campo USUARIO ---------------*/}
               <TextField
@@ -232,7 +244,6 @@ export const LoginPage = ({ setAcceso }) => {
                 endIcon={<HowToRegOutlinedIcon />}
                 color="primary"
                 variant="outlined"
-                // Redirigir a la pagina de registro
                 onClick={() => {
                   navigate("/signup");
                 }}

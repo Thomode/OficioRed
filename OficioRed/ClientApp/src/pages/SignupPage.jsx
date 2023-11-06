@@ -20,7 +20,7 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import logo from "../assets/Logo1_Recorte.png";
 import { AccountCircle, LockRounded } from "@mui/icons-material";
 import { rolService } from "../services/rol.service";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import accesoService from "../services/acceso.service";
 
@@ -38,16 +38,13 @@ const titleStyle = {
 export const SignupPage = ({ setAcceso }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  // useEffect para guardar los estados
   const [roles, setRoles] = useState([]);
 
-  // Hook para obtener los roles
   const cargarRoles = async () => {
     const data = await rolService.getAll();
     setRoles(data.data);
   };
 
-  // Hook useEffect para cargar los roles
   useEffect(() => {
     cargarRoles();
   }, []);
@@ -57,39 +54,13 @@ export const SignupPage = ({ setAcceso }) => {
   };
 
   const navigate = useNavigate();
-  // Hook useForm
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit2 = async (data) => {
-    const res = await accesoService.register(
-      data.user,
-      data.password,
-      data.idRol
-    );
-
-    if (res.status === 200) {
-      const res2 = await accesoService.login(data.user, data.password);
-      window.localStorage.setItem("acceso", JSON.stringify(res2.data));
-      setAcceso(res2.data);
-
-      console.log(res2.data.idRol);
-      if (res2.data.idRol === 3) {
-        navigate("/profesionalSignup", { replace: true });
-      }
-      if (res2.data.idRol === 4) {
-        navigate("/interesadoSignup", { replace: true });
-      }
-    } else if (res.status === 400) {
-      toast.error("El nombre de usuario ya está en uso.", {
-        position: "top-right",
-        autoClose: 5000,
-      });
-    }
-  };
   const onSubmit = async (data) => {
     try {
       const res = await accesoService.register(

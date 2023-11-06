@@ -1,12 +1,15 @@
-import React, { useRef, useState, useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { profesionalService } from "../services/profesional.service";
-import {FiltroRubros} from "../components/FiltroRubros";
+import { FiltroRubros } from "../components/FiltroRubros";
 import logo from "../assets/Logo1_Recorte.png";
 import imagenDefault from "../assets/profile.png";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -55,27 +58,61 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const onSubmit = async (data) => {
+    try {
+      const res = await profesionalService.registerProfesional(
+        data.nombre,
+        data.apellido,
+        data.email,
+        data.descripcion
+      );
+      const res2 = await profesionalService.imageUpload(selectedFile);
+
+      if (res.status === 200) {
+        const res3 = await profesionalService.registerProfesional(
+          data.nombre,
+          data.apellido,
+          data.email,
+          data.descripcion
+        );
+        window.localStorage.setItem("acceso", JSON.stringify(res3.data));
+        setAcceso(res3.data);
+      } else {
+        console.error("Error al realizar la solicitud:", res.error);
+        toast.error(res.error, {
+          position: "top-right",
+          autoClose: 5000,
+        });
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error.response.data);
+      toast.error(error.response.data, {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
+  };
+
+  const onSubmit2 = async (data) => {
     const res = await profesionalService.registerProfesional(
       data.nombre,
       data.apellido,
       data.email,
       data.descripcion
     );
-    
+
     const res2 = await profesionalService.imageUpload(selectedFile);
-    
+
     rubros.forEach(async (rubro) => {
-      if(rubro.seleccionado){
-        const res3 = await profesionalService.asociarRubro(rubro.idRubro)
+      if (rubro.seleccionado) {
+        const res3 = await profesionalService.asociarRubro(rubro.idRubro);
       }
-    })
+    });
 
     navigate("/home");
   };
 
   useEffect(() => {
-    // Lógica adicional después de que el estado ha cambiado
-    console.log('Rubros actualizados:', rubros);
+    console.log("Rubros actualizados:", rubros);
   }, [rubros]);
 
   return (
@@ -124,6 +161,9 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
             <Typography style={titleStyle}>
               Registro como Profesional
             </Typography>
+
+            <ToastContainer />
+
             {image ? (
               <img
                 src={image}
@@ -231,7 +271,11 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                       : ""
                   }
                 />
-              <FiltroRubros sx={{ width: "100%" }} rubros={rubros} setRubros={setRubros} />
+                <FiltroRubros
+                  sx={{ width: "100%" }}
+                  rubros={rubros}
+                  setRubros={setRubros}
+                />
               </Grid>
               <Grid item xs={6}>
                 <TextField

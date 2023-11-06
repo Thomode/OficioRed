@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { interesadoService } from "../services/interesado.service";
 import logo from "../assets/Logo1_Recorte.png";
 import imagenDefault from "../assets/profile.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -50,7 +52,7 @@ export const InteresadoSignUp = ({ setAcceso }) => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit2 = async (data) => {
     const res = await interesadoService.registerInteresado(
       data.nombre,
       data.apellido,
@@ -60,6 +62,32 @@ export const InteresadoSignUp = ({ setAcceso }) => {
     const res2 = await interesadoService.imageUpload(selectedFile);
 
     navigate("/home");
+  };
+  const onSubmit = async (data) => {
+    try {
+      const res = await interesadoService.registerInteresado(
+        data.nombre,
+        data.apellido,
+        data.email
+      );
+
+      if (res.status === 200) {
+        const res2 = await interesadoService.imageUpload(selectedFile);
+        navigate("/home", { replace: true });
+      } else {
+        console.error("Error al realizar la solicitud:", res.error);
+        toast.error(res.error, {
+          position: "top-right",
+          autoClose: 5000,
+        });
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error.response.data);
+      toast.error(error.response.data, {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
   };
 
   return (
@@ -99,6 +127,9 @@ export const InteresadoSignUp = ({ setAcceso }) => {
               <img src={logo} width={350} alt="logo" />
             </Grid>
             <Typography style={titleStyle}>Registro como Interesado</Typography>
+
+            <ToastContainer />
+
             {image ? (
               <img
                 src={image}
