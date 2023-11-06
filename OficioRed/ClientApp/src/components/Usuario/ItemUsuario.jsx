@@ -6,6 +6,19 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 export function ItemUsuario({ usuario, loadUsuarios }) {
+    const getRolName = (idRol) => {
+        switch (idRol) {
+            case 2:
+                return 'Admin';
+            case 3:
+                return 'Profesional';
+            case 4:
+                return 'Interesado';
+            default:
+                return 'Desconocido';
+        }
+    };
+
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -28,7 +41,7 @@ export function ItemUsuario({ usuario, loadUsuarios }) {
             <TableCell component="th" scope="row">
                 {usuario.user}
             </TableCell>
-            <TableCell align="right">{usuario.idRol}</TableCell>
+            <TableCell align="right">{getRolName(usuario.idRol)}</TableCell>
             <TableCell align="right">{usuario.fhAlta}</TableCell>
             <TableCell align="right">
                 <IconButton color="primary" size='large' onClick={() => navigate(`/admin/usuarios/${usuario.idUsuario}/edit`)}>
