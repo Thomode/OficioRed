@@ -16,7 +16,7 @@ const config = {
 const registerProfesional = async (
   nombre, apellido, email, descripcion,
   idRubroXprofesional, fotoPerfil, idRating, idContacto) => {
-  console.log(config);
+  
   const res = await axios.post('/api/Profesional', {
     nombre: nombre,
     apellido: apellido,

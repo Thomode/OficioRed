@@ -58,6 +58,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const onSubmit = async (data) => {
+    console.log(data)
     try {
       const res = await profesionalService.registerProfesional(
         data.nombre,
@@ -67,22 +68,14 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
       );
       const res2 = await profesionalService.imageUpload(selectedFile);
 
-      if (res.status === 200) {
-        const res3 = await profesionalService.registerProfesional(
-          data.nombre,
-          data.apellido,
-          data.email,
-          data.descripcion
-        );
-        window.localStorage.setItem("acceso", JSON.stringify(res3.data));
-        setAcceso(res3.data);
-      } else {
-        console.error("Error al realizar la solicitud:", res.error);
-        toast.error(res.error, {
-          position: "top-right",
-          autoClose: 5000,
-        });
-      }
+      rubros.forEach(async (rubro) => {
+        if (rubro.seleccionado) {
+          const res3 = await profesionalService.asociarRubro(rubro.idRubro);
+        }
+      });
+  
+      navigate("/home");
+
     } catch (error) {
       console.error("Error al realizar la solicitud:", error.response.data);
       toast.error(error.response.data, {
@@ -90,25 +83,6 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
         autoClose: 5000,
       });
     }
-  };
-
-  const onSubmit2 = async (data) => {
-    const res = await profesionalService.registerProfesional(
-      data.nombre,
-      data.apellido,
-      data.email,
-      data.descripcion
-    );
-
-    const res2 = await profesionalService.imageUpload(selectedFile);
-
-    rubros.forEach(async (rubro) => {
-      if (rubro.seleccionado) {
-        const res3 = await profesionalService.asociarRubro(rubro.idRubro);
-      }
-    });
-
-    navigate("/home");
   };
 
   useEffect(() => {
