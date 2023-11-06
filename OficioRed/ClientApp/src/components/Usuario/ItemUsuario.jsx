@@ -5,7 +5,7 @@ import { usuarioService } from '../../services/usuario.service';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
-export function ItemUsuario({ usuario, loadUsuarios }) {
+export function ItemUsuario({ usuario, loadUsuarios, index }) {
     const getRolName = (idRol) => {
         switch (idRol) {
             case 2:
@@ -20,7 +20,6 @@ export function ItemUsuario({ usuario, loadUsuarios }) {
     };
 
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
     const handleDelete = async (id) => {
@@ -38,9 +37,8 @@ export function ItemUsuario({ usuario, loadUsuarios }) {
             key={usuario.idUsuario}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
-            <TableCell component="th" scope="row">
-                {usuario.user}
-            </TableCell>
+            <TableCell component="th" scope="row">{index+1}</TableCell>
+            <TableCell component="th" scope="row">{usuario.user}</TableCell>
             <TableCell align="right">{getRolName(usuario.idRol)}</TableCell>
             <TableCell align="right">{usuario.fhAlta}</TableCell>
             <TableCell align="right">
@@ -53,7 +51,7 @@ export function ItemUsuario({ usuario, loadUsuarios }) {
                     <DeleteIcon></DeleteIcon>
                 </IconButton>
             </TableCell>
-            {/* Diálogo de confirmación para eliminar */}
+            {/* Diï¿½logo de confirmaciï¿½n para eliminar */}
             <Dialog
                 open={openDeleteDialog}
                 onClose={() => setOpenDeleteDialog(false)}

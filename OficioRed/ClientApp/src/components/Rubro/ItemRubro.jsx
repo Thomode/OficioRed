@@ -5,7 +5,7 @@ import { rubroService } from '../../services/rubro.service';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
-export function ItemRubro({ rubro, loadRubros }) {
+export function ItemRubro({index, rubro, loadRubros}) {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -20,14 +20,13 @@ export function ItemRubro({ rubro, loadRubros }) {
         setOpenDeleteDialog(false);
     }
 
-
     return (
         <TableRow
             key={rubro.idRubro} 
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
-            <TableCell align="right">{rubro.nombre} 
-            </TableCell>
+            <TableCell align="right">{index+1}</TableCell>
+            <TableCell align="right">{rubro.nombre}</TableCell>
             <TableCell align="right">
                 <IconButton color="primary" size='large' onClick={() => navigate(`/admin/rubros/${rubro.idRubro}/edit`)}> 
                     <EditIcon></EditIcon>
@@ -38,7 +37,7 @@ export function ItemRubro({ rubro, loadRubros }) {
                     <DeleteIcon></DeleteIcon>
                 </IconButton>
             </TableCell>
-            {/* Diálogo de confirmación para eliminar */}
+            {/* Diï¿½logo de confirmaciï¿½n para eliminar */}
             <Dialog
                 open={openDeleteDialog}
                 onClose={() => setOpenDeleteDialog(false)}

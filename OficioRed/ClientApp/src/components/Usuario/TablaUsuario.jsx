@@ -14,7 +14,8 @@ export function TablaUsuario({ usuarios, loadUsuarios }) {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead sx={{ backgroundColor: '#f0f0f0' }}>
                     <TableRow>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Usuarios</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>#</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }}>Usuario</TableCell>
                         <TableCell align="right" sx={{ fontWeight: 'bold' }}>Rol</TableCell>
                         <TableCell align="right" sx={{ fontWeight: 'bold' }}>Fecha de Alta</TableCell>
                         <TableCell align="right" sx={{ fontWeight: 'bold' }}>Editar</TableCell>
@@ -22,8 +23,8 @@ export function TablaUsuario({ usuarios, loadUsuarios }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {usuarios.map((usuario) => (
-                        <ItemUsuario usuario={usuario} loadUsuarios={loadUsuarios}></ItemUsuario>
+                    {usuarios.map((usuario, index) => (
+                        <ItemUsuario index={index} usuario={usuario} loadUsuarios={loadUsuarios}></ItemUsuario>
                     ))}
                 </TableBody>
             </Table>
