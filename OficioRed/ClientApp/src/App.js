@@ -3,7 +3,6 @@ import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
 import { CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
 import backgroundImage from './assets/armarios-formas-geometricas.jpg'; // Reemplaza con la ruta de tu imagen
 import { NavBarLateral } from './layouts/NavBarLateral';
-// Importo las paginas
 import HomePage from "./pages/Private/HomePage";
 import { SignupPage } from "./pages/SignupPage";
 import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
@@ -17,7 +16,6 @@ import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx'
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
 
 
-// Crea un tema personalizado (opcional)
 const theme = createTheme();
 
 const adminRoutes = [

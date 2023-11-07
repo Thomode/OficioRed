@@ -58,7 +58,6 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const onSubmit = async (data) => {
-    console.log(data)
     try {
       const res = await profesionalService.registerProfesional(
         data.nombre,
@@ -73,9 +72,8 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
           const res3 = await profesionalService.asociarRubro(rubro.idRubro);
         }
       });
-  
-      navigate("/home");
 
+      navigate("/home");
     } catch (error) {
       console.error("Error al realizar la solicitud:", error.response.data);
       toast.error(error.response.data, {

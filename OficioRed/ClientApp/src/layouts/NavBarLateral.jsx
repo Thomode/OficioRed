@@ -16,24 +16,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import LoginIcon from "@mui/icons-material/Login";
 import WorkIcon from "@mui/icons-material/Work";
 import UserIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logoOficio from "../assets/logo-oficiored.png";
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { ExitToApp } from "@mui/icons-material";
-
-import { useUser } from "../auth/useUser";
-
-import { PrivateRoutes } from "../guards/routes";
-import { Logout } from "../components/Logout";
 
 const drawerWidth = 240;
 
@@ -63,7 +55,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -83,7 +74,7 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-  backgroundColor: "#1B325F", // Cambia el color de fondo a #1B325F
+  backgroundColor: "#1B325F",
 }));
 
 const Drawer = styled(MuiDrawer, {
@@ -96,33 +87,20 @@ const Drawer = styled(MuiDrawer, {
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": {
-      ...openedMixin(theme), // Establece el estilo del papel cuando el cajón está abierto
-      backgroundColor: "#1B325F", // Cambia el color de fondo a #1B325F
+      ...openedMixin(theme),
+      backgroundColor: "#1B325F",
     },
   }),
   ...(!open && {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": {
-      ...closedMixin(theme), // Establece el estilo del papel cuando el cajón está cerrado
-      backgroundColor: "#1B325F", // Cambia el color de fondo a #1B325F
+      ...closedMixin(theme),
+      backgroundColor: "#1B325F",
     },
   }),
 }));
 
-/*
-const logout = () => {
-  // Eliminar el token del localStorage
-  window.localStorage.removeItem("token");
-  // Muestro que se elimino correctamente
-  alert("Se elimino el token correctamente");
-};
-*/
-
-
 export function NavBarLateral({ children, type, logout }) {
-  // Verifico si existe el token para ver si está logueado
-
-
   const routesForType = (type) => {
     const isLogged = !!window.localStorage.getItem("acces0");
 
@@ -137,25 +115,25 @@ export function NavBarLateral({ children, type, logout }) {
           text: "Rubros",
           icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
           route: "/admin/rubros",
-        }
-      ]
+        },
+      ];
     } else {
       return [
         {
           text: "Home",
           icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-          route: '/home',
+          route: "/home",
         },
         {
           text: "Profesionales",
           icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
-          route: '/profesionales',
-        }
-      ]
+          route: "/profesionales",
+        },
+      ];
     }
-  }
+  };
 
-  const routesMenu = routesForType(type)
+  const routesMenu = routesForType(type);
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -174,20 +152,20 @@ export function NavBarLateral({ children, type, logout }) {
     navigate(ruta);
   };
 
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+  const [auth, setAuth] = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
+  const handleChange = (event) => {
+    setAuth(event.target.checked);
+  };
 
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -210,37 +188,37 @@ export function NavBarLateral({ children, type, logout }) {
             src={logoOficio}
             alt="Logo"
             style={{ height: 40, width: "auto", borderRadius: 8 }}
-                  />
-        <div>
+          />
+          <div>
             <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
             >
-                <AccountCircle />
+              <AccountCircle />
             </IconButton>
             <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
-                <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
+              <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
+              <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
             </Menu>
-        </div>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -321,4 +299,3 @@ export function NavBarLateral({ children, type, logout }) {
     </Box>
   );
 }
-

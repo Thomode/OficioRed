@@ -52,35 +52,17 @@ export const InteresadoSignUp = ({ setAcceso }) => {
     }
   };
 
-  const onSubmit2 = async (data) => {
-    const res = await interesadoService.registerInteresado(
-      data.nombre,
-      data.apellido,
-      data.email
-    );
-
-    const res2 = await interesadoService.imageUpload(selectedFile);
-
-    navigate("/home");
-  };
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const res = await interesadoService.registerInteresado(
         data.nombre,
         data.apellido,
         data.email
       );
+      const res2 = await interesadoService.imageUpload(selectedFile);
 
-      if (res.status === 200) {
-        const res2 = await interesadoService.imageUpload(selectedFile);
-        navigate("/home", { replace: true });
-      } else {
-        console.error("Error al realizar la solicitud:", res.error);
-        toast.error(res.error, {
-          position: "top-right",
-          autoClose: 5000,
-        });
-      }
+      navigate("/home");
     } catch (error) {
       console.error("Error al realizar la solicitud:", error.response.data);
       toast.error(error.response.data, {
@@ -143,14 +125,20 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                 style={imageStyle}
               />
             )}
-            <TextField
+            <Button
+              variant="outlined"
+              component="label"
               fullWidth
-              type="file"
-              ref={imageRef}
-              name="fotoPerfil"
-              margin="normal"
-              onChange={fileSelectedHandler}
-            />
+              style={{ marginTop: "10px" }}
+            >
+              Elegir Foto de Perfil
+              <input
+                type="file"
+                style={{ display: "none", color: "black" }}
+                onChange={fileSelectedHandler}
+                name="fotoPerfil"
+              />
+            </Button>
             <TextField
               fullWidth
               required
@@ -204,6 +192,29 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                   ? "Máximo 15 caracteres"
                   : errors.apellido?.type === "pattern"
                   ? "Solo se permiten letras y espacios"
+                  : ""
+              }
+            />
+
+            <TextField
+              fullWidth
+              required
+              name="email"
+              type={"email"}
+              placeholder="example@email.com"
+              autoComplete="off"
+              label="Email"
+              margin="normal"
+              {...register("email", {
+                required: true,
+                pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
+              })}
+              error={!!errors.email}
+              helperText={
+                errors.email?.type === "required"
+                  ? "Campo obligatorio"
+                  : errors.email?.type === "pattern"
+                  ? "Coloque un email válido"
                   : ""
               }
             />

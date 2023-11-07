@@ -20,17 +20,13 @@ const registerInteresado = async (
   fotoPerfil
 ) => {
   console.log(config);
-  const res = await axios.post(
-    "/api/Interesado",
-    {
+  const res = await axios.post("/api/Interesado",{
       nombre: nombre,
       apellido: apellido,
       email: email,
       idDireccion: null,
       fotoPerfil: "",
-    },
-    config
-  );
+    }, config);
   return res;
 };
 
@@ -45,7 +41,7 @@ const imageUpload = async (selectedFile) => {
         Authorization: config.headers.Authorization,
       },
     })
-    return res;
+  return res;
 };
 
 export const interesadoService = {
