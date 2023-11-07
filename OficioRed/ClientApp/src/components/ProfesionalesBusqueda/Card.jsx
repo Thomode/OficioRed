@@ -11,7 +11,9 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import axios from "axios"; // Si utilizas Axios para hacer las peticiones
+import axios from "axios"; 
+import imagendefault from "../../assets/fotodefault.webp";
+
 
 const cardStyle = {
   maxWidth: 345,
@@ -49,12 +51,12 @@ const CardProfesional = () => {
       {profesionales.map((profesional, index) => (
         <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
           <Card sx={cardStyle}>
-            <CardMedia
-              component="img"
-              alt="profesional"
-              height="240"
-              src={profesional.fotoPerfil}
-            />
+                  <CardMedia
+                      component="img"
+                      alt="profesional"
+                      height="240"
+                      src={profesional.fotoPerfil ? profesional.fotoPerfil : imagendefault}
+                  />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 {`${profesional.nombre} ${profesional.apellido}`}
