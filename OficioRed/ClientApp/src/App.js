@@ -44,10 +44,6 @@ const adminRoutes = [
         path: '/admin/rubros/:id/edit',
         element: <RubroForm />
     },
-    {
-        path: '/:id/miPerfil',
-        element: <MiPerfil />
-    },
 ]
 
 const clientRoutes = [

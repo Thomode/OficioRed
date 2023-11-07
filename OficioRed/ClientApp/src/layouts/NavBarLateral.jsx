@@ -102,203 +102,196 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export function NavBarLateral({ children, type, logout }) {
-  const routesForType = (type) => {
-    const isLogged = !!window.localStorage.getItem("acces0");
+    const routesForType = (type) => {
+        const isLogged = !!window.localStorage.getItem("acces0");
 
-    if (type === "Admin") {
-      return [
-        {
-          text: "Usuarios",
-          icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
-          route: "/admin/usuarios",
-        },
-        {
-          text: "Rubros",
-          icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
-          route: "/admin/rubros",
-        },
-      ];
-    } else {
-      return [
-        {
-          text: "Home",
-          icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-          route: "/home",
-        },
-        {
-          text: "Profesionales",
-          icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
-          route: "/profesionales",
-        },
-      ];
-    }
-  };
+        if (type === "Admin") {
+            return [
+                {
+                    text: "Usuarios",
+                    icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
+                    route: "/admin/usuarios",
+                },
+                {
+                    text: "Rubros",
+                    icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
+                    route: "/admin/rubros",
+                },
+            ];
+        } else {
+            return [
+                {
+                    text: "Home",
+                    icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
+                    route: "/home",
+                },
+                {
+                    text: "Profesionales",
+                    icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
+                    route: "/profesionales",
+                },
+            ];
+        }
+    };
 
-  const routesMenu = routesForType(type);
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(true);
+    const navigate = useNavigate();
 
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    const handleChange = () => {
+        const id = usuarioService.getId();
+        navigate(`/${id}/miPerfil`);
+    };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    const handleChangeLogout = () => {
+        logout();
+    };
 
-  const navigate = useNavigate();
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-  const handleClickMenu = (ruta) => {
-    navigate(ruta);
-  };
-  const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-  const handleChange = () => {
-    const id = usuarioService.getId();
-    navigate(`/${id}/miPerfil`);
-  };
-  const handleChangeLogout = () => {
-    logout();
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <img
-            src={logoOficio}
-            alt="Logo"
-            style={{ height: 40, width: "auto", borderRadius: 8 }}
-          />
-          <div>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleChange}>Mi Perfil</MenuItem>
-              <MenuItem onClick={handleChangeLogout}>Cerrar Sesión</MenuItem>
-            </Menu>
-          </div>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon sx={{ color: "#FFFFFF" }} />
-            ) : (
-              <ChevronLeftIcon sx={{ color: "#FFFFFF" }} />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {routesMenu.map((item) => (
-            <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                onClick={() => handleClickMenu(item.route)}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    color: "white",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              onClick={() => logout()}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <ExitToApp sx={{ color: "#FFFFFF" }} />
-              </ListItemIcon>
-              <ListItemText
-                primary={"Cerrar Sesion"}
-                sx={{
-                  opacity: open ? 1 : 0,
-                  color: "white",
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Divider />
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Typography paragraph>{children}</Typography>
-      </Box>
-    </Box>
-  );
+    return (
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={() => setOpen(!open)}
+                        edge="start"
+                        sx={{
+                            marginRight: 5,
+                            ...(open && { display: "none" }),
+                        }}
+                    >
+                        {open ? <ChevronLeftIcon /> : <MenuIcon />}
+                    </IconButton>
+                    <img
+                        src={logoOficio}
+                        alt="Logo"
+                        style={{ height: 40, width: "auto", borderRadius: 8 }}
+                    />
+                    <div style={{ marginLeft: "auto" }}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: "top",
+                                horizontal: "right",
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "right",
+                            }}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleChange}>Mi Perfil</MenuItem>
+                            <MenuItem onClick={handleChangeLogout}>Cerrar Sesión</MenuItem>
+                        </Menu>
+                    </div>
+                </Toolbar>
+            </AppBar>
+            <Drawer variant="permanent" open={open}>
+                <DrawerHeader>
+                    <IconButton onClick={() => setOpen(!open)}>
+                        {theme.direction === "rtl" ? (
+                            <ChevronRightIcon />
+                        ) : (
+                            <ChevronLeftIcon />
+                        )}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
+                    {routesForType(type).map((item) => (
+                        <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
+                            <ListItemButton
+                                onClick={() => navigate(item.route)}
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? "initial" : "center",
+                                    px: 2.5,
+                                    "&:hover": {
+                                        color: "green",
+                                    },
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : "auto",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={item.text}
+                                    sx={{
+                                        opacity: open ? 1 : 0,
+                                        color: "white",
+                                    }}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                    <ListItem disablePadding sx={{ display: "block" }}>
+                        <ListItemButton
+                            onClick={logout}
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? "initial" : "center",
+                                px: 2.5,
+                                "&:hover": {
+                                    color: "green",
+                                },
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : "auto",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <ExitToApp sx={{ color: "#FFFFFF" }} />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={"Cerrar Sesión"}
+                                sx={{
+                                    opacity: open ? 1 : 0,
+                                    color: "white",
+                                }}
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+                <Divider />
+            </Drawer>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <DrawerHeader />
+                <Typography paragraph>{children}</Typography>
+            </Box>
+        </Box>
+    );
 }
