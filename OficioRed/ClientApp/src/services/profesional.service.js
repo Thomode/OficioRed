@@ -12,7 +12,6 @@ const config = {
   headers: { Authorization: token ? `Bearer ${token}` : '' }
 };
 
-
 const registerProfesional = async (
   nombre, apellido, email, descripcion,
   idRubroXprofesional, fotoPerfil, idRating, idContacto) => {

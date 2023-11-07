@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
 import { CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
-import backgroundImage from './assets/armarios-formas-geometricas.jpg'; // Reemplaza con la ruta de tu imagen
+import backgroundImage from './assets/armarios-formas-geometricas.jpg';
 import { NavBarLateral } from './layouts/NavBarLateral';
 import HomePage from "./pages/Private/HomePage";
 import { SignupPage } from "./pages/SignupPage";
@@ -9,6 +9,7 @@ import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
 import { RubroAdminPage } from "./pages/RubroAdminPage";
 import { RubroForm } from "./components/Rubro/RubroForm";
 import { ProfesionalPage } from "./pages/ProfesionalPage";
+import { MiPerfil } from "./pages/MiPerfil";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
@@ -42,7 +43,11 @@ const adminRoutes = [
     {
         path: '/admin/rubros/:id/edit',
         element: <RubroForm />
-    }
+    },
+    {
+        path: '/:id/miPerfil',
+        element: <MiPerfil />
+    },
 ]
 
 const clientRoutes = [
@@ -53,6 +58,10 @@ const clientRoutes = [
     {
         path: '/profesionales',
         element: <ProfesionalPage />
+    },
+    {
+        path: '/:id/miPerfil',
+        element: <MiPerfil />
     },
 ]
 
@@ -94,10 +103,9 @@ export function App() {
                 <Box
                     component="div"
                     sx={{
-                        backgroundImage: `url(${backgroundImage})`, // URL de tu imagen de fondo
-                        backgroundSize: 'cover', // Ajusta la imagen al tama?o del contenedor
-                        minHeight: '100vh', // Establece el alto m?nimo para ocupar toda la ventana
-                         // Establece el ancho m?nimo para ocupar toda la ventana
+                        backgroundImage: `url(${backgroundImage})`,
+                        backgroundSize: 'cover',
+                        minHeight: '100vh',
                         display: 'flex',
                         flexDirection: 'column',
                     }}

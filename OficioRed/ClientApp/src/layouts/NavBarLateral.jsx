@@ -26,6 +26,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { ExitToApp } from "@mui/icons-material";
+import { usuarioService } from "../services/usuario.service";
 
 const drawerWidth = 240;
 
@@ -151,12 +152,14 @@ export function NavBarLateral({ children, type, logout }) {
   const handleClickMenu = (ruta) => {
     navigate(ruta);
   };
-
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
+  const handleChange = () => {
+    const id = usuarioService.getId();
+    navigate(`/${id}/miPerfil`);
+  };
+  const handleChangeLogout = () => {
+    logout();
   };
 
   const handleMenu = (event) => {
@@ -215,8 +218,8 @@ export function NavBarLateral({ children, type, logout }) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
-              <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
+              <MenuItem onClick={handleChange}>Mi Perfil</MenuItem>
+              <MenuItem onClick={handleChangeLogout}>Cerrar Sesión</MenuItem>
             </Menu>
           </div>
         </Toolbar>

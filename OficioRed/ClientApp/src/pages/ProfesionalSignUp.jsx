@@ -37,7 +37,6 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
     formState: { errors },
   } = useForm();
 
-  const imageRef = useRef(null);
   const [image, setImage] = useState("");
 
   const fileSelectedHandler = (event) => {
@@ -149,6 +148,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                 style={imageStyle}
               />
             )}
+
             <Button
               variant="outlined"
               component="label"
