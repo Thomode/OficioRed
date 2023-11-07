@@ -121,7 +121,7 @@ export const MiPerfil = () => {
             gutterBottom
             sx={styles.title}
           >
-            {editing ? "Editar Usuario" : "Mi Perfil"}
+            Mi Perfil
           </Typography>
           <CardContent>
             <Paper elevation={3} style={{ padding: "20px", margin: "20px 0" }}>
