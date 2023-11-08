@@ -22,7 +22,7 @@ function HomePage() {
       <Box sx={componentSpacing}>
         <ProductCategories />
       </Box>
-      <Box sx={componentSpacing}>
+      <Box>
         <ProductHowItWorks />
       </Box>
     </Container>

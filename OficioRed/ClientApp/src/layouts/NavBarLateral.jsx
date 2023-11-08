@@ -24,86 +24,86 @@ import { useNavigate } from "react-router-dom";
 import logoOficio from "../assets/logo-oficiored.png";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { ExitToApp } from "@mui/icons-material";
 import { usuarioService } from "../services/usuario.service";
+import axios from 'axios';
+import imagendefault from "../assets/fotodefault.webp";
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
+    transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: "hidden",
+    width: `calc(${theme.spacing(7)} + 1px)`,
+    [theme.breakpoints.up("sm")]: {
+        width: `calc(${theme.spacing(8)} + 1px)`,
+    },
 });
 
 const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+    shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
     }),
-  }),
-  backgroundColor: "#1B325F",
+    ...(open && {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(["width", "margin"], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+    backgroundColor: "#1B325F",
 }));
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
+    shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": {
-      ...openedMixin(theme),
-      backgroundColor: "#1B325F",
-    },
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": {
-      ...closedMixin(theme),
-      backgroundColor: "#1B325F",
-    },
-  }),
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+    boxSizing: "border-box",
+    ...(open && {
+        ...openedMixin(theme),
+        "& .MuiDrawer-paper": {
+            ...openedMixin(theme),
+            backgroundColor: "#1B325F",
+        },
+    }),
+    ...(!open && {
+        ...closedMixin(theme),
+        "& .MuiDrawer-paper": {
+            ...closedMixin(theme),
+            backgroundColor: "#1B325F",
+        },
+    }),
 }));
 
 export function NavBarLateral({ children, type, logout }) {
     const routesForType = (type) => {
-        const isLogged = !!window.localStorage.getItem("acces0");
 
         if (type === "Admin") {
             return [
@@ -156,6 +156,60 @@ export function NavBarLateral({ children, type, logout }) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const infoPerfil = async () => {
+        const id = usuarioService.getId();
+        let fotoUsuario = null;
+
+        try {
+            const response = await usuarioService.get(Number(id));
+
+            let profesionalId = null;
+            let interesadoId = null;
+
+            if (response.data.idRol === 3) {
+                const profesionales = await axios.get('/api/Profesional');
+                for (const profesional of profesionales.data) {
+                    if (profesional.idUsuario === id) {
+                        profesionalId = profesional.idProfesional;
+                        break;
+                    }
+                }
+                if (profesionalId) {
+                    const profesionalResponse = await axios.get(`/api/Profesional/${profesionalId}`);
+                    fotoUsuario = profesionalResponse.data.fotoPerfil;
+                }
+            } else if (response.data.idRol === 4) {
+                const interesados = await axios.get('/api/Interesado');
+                for (const interesado of interesados.data) {
+                    if (interesado.idUsuario === id) {
+                        interesadoId = interesado.idInteresado;
+                        break;
+                    }
+                }
+                if (interesadoId) {
+                    const interesadoResponse = await axios.get(`/api/Interesado/${interesadoId}`);
+                    fotoUsuario = interesadoResponse.data.fotoPerfil;
+                }
+            }
+
+            return fotoUsuario;
+        } catch (error) {
+            console.error("Error al obtener los datos:", error);
+            return null;
+        }
+    };
+
+    const [fotoPerfil, setFotoPerfil] = React.useState('');
+
+    React.useEffect(() => {
+        const obtenerFotoPerfil = async () => {
+            const fotoPerfilUrl = await infoPerfil();
+            setFotoPerfil(fotoPerfilUrl);
+        };
+
+        obtenerFotoPerfil();
+    }, []); 
+
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -188,7 +242,16 @@ export function NavBarLateral({ children, type, logout }) {
                             onClick={handleMenu}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            <img
+                                src={fotoPerfil || imagendefault}
+                                alt="Perfil"
+                                style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: '50%',
+                                    border: '2px solid white'
+                                }}
+                            />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -208,6 +271,7 @@ export function NavBarLateral({ children, type, logout }) {
                             <MenuItem onClick={handleChange}>Mi Perfil</MenuItem>
                             <MenuItem onClick={handleChangeLogout}>Cerrar Sesión</MenuItem>
                         </Menu>
+
                     </div>
                 </Toolbar>
             </AppBar>
@@ -232,7 +296,7 @@ export function NavBarLateral({ children, type, logout }) {
                                     justifyContent: open ? "initial" : "center",
                                     px: 2.5,
                                     "&:hover": {
-                                        color: "green",
+                                        color: "#9cc4e4",
                                     },
                                 }}
                             >
@@ -263,7 +327,7 @@ export function NavBarLateral({ children, type, logout }) {
                                 justifyContent: open ? "initial" : "center",
                                 px: 2.5,
                                 "&:hover": {
-                                    color: "green",
+                                    color: "#9cc4e4",
                                 },
                             }}
                         >
