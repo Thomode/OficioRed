@@ -1,21 +1,8 @@
 import axios from "axios"
+import { sesionService } from "../auth/sesion";
 
-const getToken = () => {
-  const local = window.localStorage.getItem("acceso");
-  const data = JSON.parse(local)
-
-  return data?.token
-}
-
-const token = getToken();
-const config = {
-  headers: { Authorization: token ? `Bearer ${token}` : '' }
-};
-
-const registerProfesional = async (
-  nombre, apellido, email, descripcion,
-  idRubroXprofesional, fotoPerfil, idRating, idContacto) => {
-  
+const registerProfesional = async (nombre, apellido, email, descripcion) => {
+  console.log(await sesionService.getConfig())
   const res = await axios.post('/api/Profesional', {
     nombre: nombre,
     apellido: apellido,
@@ -26,13 +13,16 @@ const registerProfesional = async (
     idRating: null,
     idContacto: null,
     idDireccion: null,
-  }, config)
+  }, await sesionService.getConfig())
+
   return res
 }
 
 const imageUpload = async (selectedFile) => {
   const formData = new FormData();
   formData.append("archivo", selectedFile);
+
+  const config = await sesionService.getConfig()
 
   const res = await axios
     .post("/api/Profesional/upload", formData, {
@@ -42,11 +32,10 @@ const imageUpload = async (selectedFile) => {
       },
     })
   return res;
-};
+}
 
 const asociarRubro = async (idRubro) => {
-  const res = await axios.post(`/api/Profesional/asociar-rubro/${idRubro}`, {}, config)
-
+  const res = await axios.post(`/api/Profesional/asociar-rubro/${idRubro}`, {}, await sesionService.getConfig())
   return res
 }
 

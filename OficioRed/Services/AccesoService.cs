@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using OficioRed.Context;
 using OficioRed.Dtos;
@@ -61,10 +62,10 @@ public class AccesoService: IAccesoService
         // Crear los claims
         var claims = new[]
         {
-                new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()),
-                new Claim(ClaimTypes.Name, user.User),
-                new Claim(ClaimTypes.Role, user.IdRol.ToString())
-            };
+            new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()),
+            new Claim(ClaimTypes.Name, user.User),
+            new Claim(ClaimTypes.Role, user.IdRol.ToString())
+        };
 
         // Crear el token
         var token = new JwtSecurityToken(
@@ -80,24 +81,28 @@ public class AccesoService: IAccesoService
     public SesionDTO? GetCurrentUsuario()
     {
         var identity = _contextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-
+        Console.WriteLine(identity);
         if (identity != null)
         {
             var userClains = identity.Claims;
+            Console.WriteLine(userClains);
             var sesion = new SesionDTO();
 
             try
             {
+                Console.WriteLine(userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value);
+                Console.WriteLine(userClains.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value);
+                Console.WriteLine(userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value);
                 sesion.Id = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value);
                 sesion.User = userClains.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value;
                 sesion.IdRol = int.Parse(userClains.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new AppException("Error al obtener la sesion actual");
             }
-            
-            return sesion;      
+
+            return sesion;
         }
 
         return null;

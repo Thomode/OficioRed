@@ -52,8 +52,8 @@ namespace OficioRed.Services
         public void Create(ProfesionalDTO profesionalDTO)
         {
             // Validar datos de entrada (profesionalDTO)
-
             var sesion = _accesoService.GetCurrentUsuario();
+            Console.WriteLine(sesion.ToString());
 
             if(sesion == null)
             {

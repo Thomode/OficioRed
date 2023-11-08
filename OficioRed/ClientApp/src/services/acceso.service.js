@@ -8,8 +8,9 @@ const login = async (usuario, password) => {
             user: usuario,
             password: password
         });
-        console.log(res);
+
         return res;
+        
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return { error: "Usuario no encontrado" };
@@ -24,7 +25,7 @@ const register = async  (usuario, password, idRol) => {
         password: password,
         idRol: idRol
     })
-    console.log(res)
+
     return res
 }
 
