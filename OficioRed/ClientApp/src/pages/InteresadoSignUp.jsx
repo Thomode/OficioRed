@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { interesadoService } from "../services/interesado.service";
 import logo from "../assets/Logo1_Recorte.png";
 import imagenDefault from "../assets/profile.png";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+import { useSnackbar } from "notistack";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -52,6 +52,8 @@ export const InteresadoSignUp = ({ setAcceso }) => {
     }
   };
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const onSubmit = async (data) => {
     console.log(data);
     try {
@@ -63,11 +65,22 @@ export const InteresadoSignUp = ({ setAcceso }) => {
       const res2 = await interesadoService.imageUpload(selectedFile);
 
       navigate("/home");
+      enqueueSnackbar("Registro exitoso", {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
+      });
     } catch (error) {
-      console.error("Error al realizar la solicitud:", error.response.data);
-      toast.error(error.response.data, {
-        position: "top-right",
-        autoClose: 5000,
+      enqueueSnackbar(error.response.data, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
       });
     }
   };
@@ -109,8 +122,6 @@ export const InteresadoSignUp = ({ setAcceso }) => {
               <img src={logo} width={350} alt="logo" />
             </Grid>
             <Typography style={titleStyle}>Registro como Interesado</Typography>
-
-            <ToastContainer />
 
             {image ? (
               <img

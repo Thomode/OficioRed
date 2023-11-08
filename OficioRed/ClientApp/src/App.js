@@ -16,7 +16,6 @@ import { ProtectedRoute } from './utilities/ProtectedRoute';
 import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx'
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
 
-
 const theme = createTheme();
 
 const adminRoutes = [

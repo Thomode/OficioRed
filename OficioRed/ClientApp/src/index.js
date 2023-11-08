@@ -5,11 +5,15 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import './custom.css';
 
+import { SnackbarProvider, useSnackbar } from 'notistack';
+
 const root = createRoot(document.getElementById('root'));
 
 root.render(
   <BrowserRouter>
-    <App />
+    <SnackbarProvider maxSnack={3}>
+      <App />
+    </SnackbarProvider>
   </BrowserRouter>);
 serviceWorkerRegistration.unregister();
 reportWebVitals();

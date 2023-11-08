@@ -1,18 +1,9 @@
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  TableRow,
-  TableCell,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from "@mui/material";
-import { usuarioService } from "../../services/usuario.service";
+import { TableRow, TableCell, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import Swal from "sweetalert2";
+import { usuarioService } from "../../services/usuario.service";
 
 export function ItemUsuario({ usuario, loadUsuarios, index }) {
   const getRolName = (idRol) => {
@@ -29,16 +20,41 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
   };
 
   const navigate = useNavigate();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const handleDelete = async (id) => {
+  const mostrarAlerta = (nombreUsuario) => {
+    Swal.fire({
+      title: `¿Eliminar a ${nombreUsuario}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        eliminarUsuario(usuario.idUsuario);
+      }
+    });
+  };
+
+  const eliminarUsuario = async (id) => {
     try {
       await usuarioService.deleteUser(Number(id));
       loadUsuarios();
+      Swal.fire({
+        title: "Eliminado!",
+        text: "Usuario eliminado de la base de datos",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000,
+      });
     } catch (error) {
-      console.log("No eliminado");
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el usuario",
+        icon: "error",
+      });
     }
-    setOpenDeleteDialog(false);
   };
 
   return (
@@ -67,52 +83,11 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
         <IconButton
           color="warning"
           size="large"
-          onClick={() => setOpenDeleteDialog(true)}
+          onClick={() => mostrarAlerta(usuario.user)}
         >
           <DeleteIcon></DeleteIcon>
         </IconButton>
       </TableCell>
-      <Dialog
-        open={openDeleteDialog}
-        onClose={() => setOpenDeleteDialog(false)}
-        sx={{
-          "& .MuiPaper-root": {
-            borderRadius: "10px", // Personaliza el borde del modal
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Agrega una sombra
-          },
-          "& .MuiDialogTitle-root": {
-            background: "#f0f0f0", // Cambia el color del encabezado del modal
-          },
-        }}
-      >
-        <DialogTitle>Baja de Usuario</DialogTitle>
-        <DialogContent>Confirmar baja de {usuario.user}</DialogContent>
-        <DialogActions>
-          <Button
-            sx={{
-              color: "gray",
-              "&:hover": {
-                color: "black",
-              },
-            }}
-            onClick={() => setOpenDeleteDialog(false)}
-          >
-            Cancelar
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: "red",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "darkred",
-              },
-            }}
-            onClick={() => handleDelete(usuario.idUsuario)}
-          >
-            Confirmar
-          </Button>
-        </DialogActions>
-      </Dialog>
     </TableRow>
   );
 }

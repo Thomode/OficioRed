@@ -11,8 +11,7 @@
   Typography,
 } from "@mui/material";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useSnackbar } from "notistack";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -51,31 +50,36 @@ export const LoginPage = ({ setAcceso }) => {
 
   const [usuarioEncontrado, setUsuarioEncontrado] = useState(false);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const onSubmit = async (data) => {
     try {
       const res = await accesoService.login(data.usuario, data.password);
 
-      if (res.status === 200) {
-        window.localStorage.setItem("acceso", JSON.stringify(res.data));
-        setAcceso(res.data);
+      window.localStorage.setItem("acceso", JSON.stringify(res.data));
+      setAcceso(res.data);
 
-        if (res.data.idRol === 2) {
-          navigate("/admin/usuarios", { replace: true });
-        } else {
-          navigate("/home", { replace: true });
-        }
+      if (res.data.idRol === 2) {
+        navigate("/admin/usuarios", { replace: true });
       } else {
-        console.error("Error al realizar la solicitud:", res.error);
-        toast.error(res.error, {
-          position: "top-right",
-          autoClose: 5000,
-        });
+        navigate("/home", { replace: true });
       }
+      enqueueSnackbar("Bienvenido a OficioRed!", {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
+      });
     } catch (error) {
-      console.error("Error al realizar la solicitud:", error.response.data);
-      toast.error(error.response.data, {
-        position: "top-right",
-        autoClose: 5000,
+      enqueueSnackbar(error.response.data, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
       });
     }
   };
@@ -117,12 +121,8 @@ export const LoginPage = ({ setAcceso }) => {
               <Grid container justify="center">
                 <img src={logo} width={350} alt="logo" />
               </Grid>
-
               {/*--------------- TÍTULO ---------------*/}
               <Typography style={titleStyle}>Iniciar Sesión</Typography>
-
-              <ToastContainer />
-
               {/*--------------- Campo USUARIO ---------------*/}
               <TextField
                 fullWidth
@@ -161,7 +161,6 @@ export const LoginPage = ({ setAcceso }) => {
                   )
                 }
               />
-
               {/*--------------- Campo CONTRASEÑA ---------------*/}
               <TextField
                 fullWidth
@@ -210,7 +209,6 @@ export const LoginPage = ({ setAcceso }) => {
                       ""
                 }
               />
-
               {/*--------------- Checkbox para recordar credenciales ---------------*/}
               <FormControlLabel
                 name="recordarCredenciales"
@@ -218,9 +216,7 @@ export const LoginPage = ({ setAcceso }) => {
                 label="Recordar credenciales"
                 {...register("recordarCredenciales")}
               />
-
               <div style={{ height: 20 }} />
-
               {/*--------------- Botón Iniciar Sesión ---------------*/}
               <Button
                 endIcon={<LoginOutlinedIcon />}
@@ -233,12 +229,10 @@ export const LoginPage = ({ setAcceso }) => {
               </Button>
 
               <div style={{ height: 20 }} />
-
               {/*---------- Link si olvidó la contraseña ----------*/}
               <Typography marginBottom={2}>
                 <Link href="#">Olvidaste tu contraseña?</Link>
               </Typography>
-
               {/*--------------- Botón Registrarse ---------------*/}
               <Button
                 endIcon={<HowToRegOutlinedIcon />}

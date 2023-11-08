@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
@@ -7,9 +7,7 @@ import { profesionalService } from "../services/profesional.service";
 import { FiltroRubros } from "../components/FiltroRubros";
 import logo from "../assets/Logo1_Recorte.png";
 import imagenDefault from "../assets/profile.png";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useSnackbar } from "notistack";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -56,6 +54,8 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const onSubmit = async (data) => {
     try {
       const res = await profesionalService.registerProfesional(
@@ -73,11 +73,22 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
       });
 
       navigate("/home");
+      enqueueSnackbar("Registro exitoso", {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
+      });
     } catch (error) {
-      console.error("Error al realizar la solicitud:", error.response.data);
-      toast.error(error.response.data, {
-        position: "top-right",
-        autoClose: 5000,
+      enqueueSnackbar(error.response.data, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
       });
     }
   };
@@ -132,8 +143,6 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
             <Typography style={titleStyle}>
               Registro como Profesional
             </Typography>
-
-            <ToastContainer />
 
             {image ? (
               <img
@@ -273,7 +282,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                       : errors.descripcion?.type === "minLength"
                       ? "Mínimo 2 caracteres"
                       : errors.descripcion?.type === "maxLength"
-                      ? "Máximo 120 caracteres" // Ajustar el mensaje
+                      ? "Máximo 120 caracteres"
                       : ""
                   }
                 />

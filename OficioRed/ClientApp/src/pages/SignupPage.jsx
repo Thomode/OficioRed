@@ -24,8 +24,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import accesoService from "../services/acceso.service";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useSnackbar } from "notistack";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -61,6 +60,7 @@ export const SignupPage = ({ setAcceso }) => {
     formState: { errors },
   } = useForm();
 
+  const { enqueueSnackbar } = useSnackbar();
   const onSubmit = async (data) => {
     try {
       const res = await accesoService.register(
@@ -74,19 +74,29 @@ export const SignupPage = ({ setAcceso }) => {
         window.localStorage.setItem("acceso", JSON.stringify(res2.data));
         setAcceso(res2.data);
 
-        console.log(res2.data.idRol);
         if (res2.data.idRol === 3) {
           navigate("/profesionalSignup", { replace: true });
         }
         if (res2.data.idRol === 4) {
           navigate("/interesadoSignup", { replace: true });
         }
+        enqueueSnackbar("Registro exitoso", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          autoHideDuration: 2000,
+        });
       }
     } catch (error) {
-      console.error("Error al realizar la solicitud:", error.response.data);
-      toast.error(error.response.data, {
-        position: "top-right",
-        autoClose: 5000,
+      enqueueSnackbar(error.response.data, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
       });
     }
   };
@@ -163,7 +173,6 @@ export const SignupPage = ({ setAcceso }) => {
                     : ""
                 }
               />
-              <ToastContainer />
 
               <TextField
                 fullWidth
