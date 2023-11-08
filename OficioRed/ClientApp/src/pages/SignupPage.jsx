@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
 
 import { useEffect, useState } from "react";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
@@ -101,175 +102,190 @@ export const SignupPage = ({ setAcceso }) => {
     }
   };
 
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
   return (
     <>
-      <Grid container style={{ height: "85vh", justifyContent: "center" }}>
-        <Grid
-          container
-          item
-          xs={12}
-          md={6}
-          sm={3}
-          alignItems="center"
-          direction="column"
-          justifyContent="space-between"
-          style={{ padding: 10 }}
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box
-              display="flex"
-              flexDirection={"column"}
-              maxWidth={400}
-              minWidth={300}
-              alignItems="center"
-              justifyContent={"center"}
-              margin="auto"
-              marginTop={5}
-              padding={3}
-              borderRadius={5}
-              boxShadow={"5px 5px 10px #ccc"}
-              sx={{
-                ":hover": {
-                  boxShadow: "10px 10px 20px #ccc",
-                },
-                backgroundColor: "white",
-              }}
-            >
-              <Grid container justify="center">
-                <img src={logo} width={350} alt="logo" />
-              </Grid>
-
-              <Typography style={titleStyle}>Registrarse</Typography>
-
-              <TextField
-                fullWidth
-                required
-                name="user"
-                type={"text"}
-                placeholder="Nombre de Usuario"
-                autoComplete="off"
-                label="Usuario"
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircle />
-                    </InputAdornment>
-                  ),
+      <div style={backgroundStyle}>
+        <Grid container style={{ height: "85vh", justifyContent: "center" }}>
+          <Grid
+            container
+            item
+            xs={12}
+            md={6}
+            sm={3}
+            alignItems="center"
+            direction="column"
+            justifyContent="space-between"
+            style={{ padding: 10 }}
+          >
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Box
+                display="flex"
+                flexDirection={"column"}
+                maxWidth={400}
+                minWidth={300}
+                alignItems="center"
+                justifyContent={"center"}
+                margin="auto"
+                marginTop={5}
+                padding={3}
+                borderRadius={5}
+                boxShadow={"5px 5px 10px #ccc"}
+                sx={{
+                  ":hover": {
+                    boxShadow: "10px 10px 20px #ccc",
+                  },
+                  backgroundColor: "white",
                 }}
-                {...register("user", {
-                  required: true,
-                  minLength: 2,
-                  maxLength: 15,
-                })}
-                error={!!errors.usuario}
-                helperText={
-                  errors.usuario?.type === "required"
-                    ? "Campo obligatorio"
-                    : errors.usuario?.type === "minLength"
-                    ? "Mínimo 2 caracteres"
-                    : errors.usuario?.type === "maxLength"
-                    ? "Máximo 15 caracteres"
-                    : ""
-                }
-              />
+              >
+                <Grid container justify="center">
+                  <img src={logo} width={350} alt="logo" />
+                </Grid>
 
-              <TextField
-                fullWidth
-                required
-                name="password"
-                placeholder="Contraseña"
-                autoComplete="off"
-                type={showPassword ? "text" : "password"}
-                label="Contraseña"
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment>
-                      <LockRounded />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={togglePasswordVisibility} edge="end">
-                        {showPassword ? (
-                          <RemoveRedEyeRoundedIcon fontSize="small" />
-                        ) : (
-                          <VisibilityOffRoundedIcon fontSize="small" />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                {...register("password", {
-                  required: true,
-                  minLength: 2,
-                  maxLength: 15,
-                  pattern:
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
-                })}
-                error={!!errors.password}
-                helperText={
-                  errors.password?.type === "required"
-                    ? "Campo obligatorio"
-                    : errors.password?.type === "minLength"
-                    ? "Mínimo 2 caracteres"
-                    : errors.password?.type === "maxLength"
-                    ? "Máximo 15 caracteres"
-                    : errors.password?.type === "pattern"
-                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                    : ""
-                }
-              />
+                <Typography style={titleStyle}>Registrarse</Typography>
 
-              <Box sx={{ width: "100%" }} marginBottom={2} marginTop={2}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Tipo de Usuario
-                  </InputLabel>
-                  <Select
-                    fullWidth
-                    label="Tipo de Usuario"
-                    name="idRol"
-                    {...register("idRol", {
-                      required: true,
-                    })}
-                  >
-                    {roles
-                      .filter((e) => e.idRol !== 2)
-                      .map((e) => (
-                        <MenuItem value={e.idRol}>{e.nombre}</MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
+                <TextField
+                  fullWidth
+                  required
+                  name="user"
+                  type={"text"}
+                  placeholder="Nombre de Usuario"
+                  autoComplete="off"
+                  label="Usuario"
+                  margin="normal"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircle />
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("user", {
+                    required: true,
+                    minLength: 2,
+                    maxLength: 15,
+                  })}
+                  error={!!errors.usuario}
+                  helperText={
+                    errors.usuario?.type === "required"
+                      ? "Campo obligatorio"
+                      : errors.usuario?.type === "minLength"
+                      ? "Mínimo 2 caracteres"
+                      : errors.usuario?.type === "maxLength"
+                      ? "Máximo 15 caracteres"
+                      : ""
+                  }
+                />
+
+                <TextField
+                  fullWidth
+                  required
+                  name="password"
+                  placeholder="Contraseña"
+                  autoComplete="off"
+                  type={showPassword ? "text" : "password"}
+                  label="Contraseña"
+                  margin="normal"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <LockRounded />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={togglePasswordVisibility}
+                          edge="end"
+                        >
+                          {showPassword ? (
+                            <RemoveRedEyeRoundedIcon fontSize="small" />
+                          ) : (
+                            <VisibilityOffRoundedIcon fontSize="small" />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("password", {
+                    required: true,
+                    minLength: 2,
+                    maxLength: 15,
+                    pattern:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
+                  })}
+                  error={!!errors.password}
+                  helperText={
+                    errors.password?.type === "required"
+                      ? "Campo obligatorio"
+                      : errors.password?.type === "minLength"
+                      ? "Mínimo 2 caracteres"
+                      : errors.password?.type === "maxLength"
+                      ? "Máximo 15 caracteres"
+                      : errors.password?.type === "pattern"
+                      ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                      : ""
+                  }
+                />
+
+                <Box sx={{ width: "100%" }} marginBottom={2} marginTop={2}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Tipo de Usuario
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      label="Tipo de Usuario"
+                      name="idRol"
+                      {...register("idRol", {
+                        required: true,
+                      })}
+                    >
+                      {roles
+                        .filter((e) => e.idRol !== 2)
+                        .map((e) => (
+                          <MenuItem value={e.idRol}>{e.nombre}</MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                <Button
+                  endIcon={<HowToRegOutlinedIcon />}
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
+                  Registrarse
+                </Button>
+
+                <div style={{ height: 20 }} />
+
+                <Button
+                  endIcon={<LoginOutlinedIcon />}
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  Iniciar Sesión
+                </Button>
               </Box>
-
-              <Button
-                endIcon={<HowToRegOutlinedIcon />}
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Registrarse
-              </Button>
-
-              <div style={{ height: 20 }} />
-
-              <Button
-                endIcon={<LoginOutlinedIcon />}
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                Iniciar Sesión
-              </Button>
-            </Box>
-          </form>
+            </form>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     </>
   );
 };

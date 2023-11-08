@@ -1,31 +1,76 @@
-import {
-  TableRow,
-  TableCell,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from "@mui/material";
+import { TableRow, TableCell, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { rubroService } from "../../services/rubro.service";
-import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 export function ItemRubro({ index, rubro, loadRubros }) {
-  const navigate = useNavigate();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const mostrarAlerta = (nombreRubro) => {
+    Swal.fire({
+      title: `¿Eliminar rubro "${nombreRubro}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        eliminarRubro(rubro.idRubro);
+      }
+    });
+  };
 
-  const handleDelete = async (id) => {
+  const eliminarRubro = async (id) => {
     try {
       await rubroService.deleteRubro(Number(id));
       loadRubros();
+      Swal.fire({
+        title: "Eliminado!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     } catch (error) {
-      console.log("No eliminado");
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el rubro",
+        icon: "error",
+      });
     }
-    setOpenDeleteDialog(false);
+  };
+
+  const actualizarRubro = async (nombreRubro) => {
+    await Swal.fire({
+      title: "Editar Rubro",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      inputValue: nombreRubro,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      showLoaderOnConfirm: true,
+      preConfirm: async (nuevoNombre) => {
+        try {
+          await rubroService.update(rubro.idRubro, nuevoNombre);
+          loadRubros();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Rubro actualizado con éxito",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response.data,
+          });
+        }
+      },
+    });
   };
 
   return (
@@ -39,62 +84,20 @@ export function ItemRubro({ index, rubro, loadRubros }) {
         <IconButton
           color="primary"
           size="large"
-          onClick={() => navigate(`/admin/rubros/${rubro.idRubro}/edit`)}
+          onClick={() => actualizarRubro(rubro.nombre)}
         >
-          <EditIcon></EditIcon>
+          <EditIcon />
         </IconButton>
       </TableCell>
       <TableCell align="right">
         <IconButton
           color="warning"
           size="large"
-          onClick={() => setOpenDeleteDialog(true)}
+          onClick={() => mostrarAlerta(rubro.nombre)}
         >
-          <DeleteIcon></DeleteIcon>
+          <DeleteIcon />
         </IconButton>
       </TableCell>
-      {/* Di�logo de confirmaci�n para eliminar */}
-      <Dialog
-        open={openDeleteDialog}
-        onClose={() => setOpenDeleteDialog(false)}
-        sx={{
-          "& .MuiPaper-root": {
-            borderRadius: "10px", // Personaliza el borde del modal
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Agrega una sombra
-          },
-          "& .MuiDialogTitle-root": {
-            background: "#f0f0f0", // Cambia el color del encabezado del modal
-          },
-        }}
-      >
-        <DialogTitle>Baja de Rubro</DialogTitle>
-        <DialogContent>Confirmar baja de "{rubro.nombre}"</DialogContent>
-        <DialogActions>
-          <Button
-            sx={{
-              color: "gray",
-              "&:hover": {
-                color: "black",
-              },
-            }}
-            onClick={() => setOpenDeleteDialog(false)}
-          >
-            Cancelar
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: "red",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "darkred",
-              },
-            }}
-            onClick={() => handleDelete(rubro.idRubro)}
-          >
-            Confirmar
-          </Button>
-        </DialogActions>
-      </Dialog>
     </TableRow>
   );
 }

@@ -31,8 +31,8 @@ const updateUser = async (id, user, password) => {
     console.log(`Actualizando usuario con ID: ${id}`);
     try {
         const response = await axios.put(`/api/Usuario/${id}`, {
-        user,
-        password,
+            user,
+            password,
         });
         return response.data;
     } catch (error) {

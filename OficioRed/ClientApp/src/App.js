@@ -15,11 +15,15 @@ import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
 import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx'
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
-import { sesionService } from './auth/sesion.js';
+import HomeAdmin from "./pages/Private/HomeAdmin";
 
 const theme = createTheme();
 
 const adminRoutes = [
+    {
+        path: '/admin/home',
+        element: <HomeAdmin/>
+    },
     {
         path: '/admin/usuarios',
         element: <UsuarioAdminPage />
@@ -61,16 +65,26 @@ const clientRoutes = [
     },
 ]
 
+const getAcceso = () => {
+    const local = window.localStorage.getItem("acceso");
+    const data = JSON.parse(local)
+
+    return data
+}
+
 export function App() {
-    const [acceso, setAcceso] = useState(sesionService.getAcceso())
+    const [acceso, setAcceso] = useState(getAcceso())
+
     const navigate = useNavigate()
     
     const logout = () => {
         window.localStorage.removeItem("acceso");
         setAcceso(null)
-    };
+      };
 
     useEffect(() => {
+        console.log("acceso:", acceso)
+
         if (acceso) {
             if (acceso.idRol === 2) {
                 navigate("/admin/usuarios")
@@ -79,22 +93,14 @@ export function App() {
                 navigate("/home")
             }
         }
+
     }, [])
 
     return (
         <>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Box
-                    component="div"
-                    sx={{
-                        backgroundImage: `url(${backgroundImage})`,
-                        backgroundSize: 'cover',
-                        minHeight: '100vh',
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }}
-                >
+                <Box>
                     <Routes>
                         <Route path='/' element={<LoginPage setAcceso={setAcceso} />} />
                         <Route path='/signup' element={<SignupPage setAcceso={setAcceso} />} />

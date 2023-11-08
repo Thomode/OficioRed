@@ -23,7 +23,7 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
 
   const mostrarAlerta = (nombreUsuario) => {
     Swal.fire({
-      title: `¿Eliminar a ${nombreUsuario}?`,
+      title: `¿Eliminar usuario "${nombreUsuario}"?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -43,10 +43,9 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
       loadUsuarios();
       Swal.fire({
         title: "Eliminado!",
-        text: "Usuario eliminado de la base de datos",
         icon: "success",
         showConfirmButton: false,
-        timer: 1000,
+        timer: 2000,
       });
     } catch (error) {
       Swal.fire({

@@ -9,6 +9,8 @@ import imagenDefault from "../assets/profile.png";
 
 import { useSnackbar } from "notistack";
 
+import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
+
 const titleStyle = {
   fontSize: "2.5rem",
   fontWeight: "bold",
@@ -85,164 +87,178 @@ export const InteresadoSignUp = ({ setAcceso }) => {
     }
   };
 
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
   return (
-    <Grid container style={{ height: "85vh", justifyContent: "center" }}>
-      <Grid
-        container
-        item
-        xs={12}
-        md={6}
-        sm={3}
-        alignItems="center"
-        direction="column"
-        justifyContent="space-between"
-        style={{ padding: 10 }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box
-            display="flex"
-            flexDirection={"column"}
-            maxWidth={400}
-            minWidth={300}
-            alignItems="center"
-            justifyContent={"center"}
-            margin="auto"
-            marginTop={5}
-            padding={3}
-            borderRadius={5}
-            boxShadow={"5px 5px 10px #ccc"}
-            sx={{
-              ":hover": {
-                boxShadow: "10px 10px 20px #ccc",
-              },
-              backgroundColor: "white",
-            }}
-          >
-            <Grid container justify="center">
-              <img src={logo} width={350} alt="logo" />
-            </Grid>
-            <Typography style={titleStyle}>Registro como Interesado</Typography>
-
-            {image ? (
-              <img
-                src={image}
-                alt="Vista previa de la imagen"
-                style={imageStyle}
-              />
-            ) : (
-              <img
-                src={imagenDefault}
-                alt="Imagen por defecto"
-                style={imageStyle}
-              />
-            )}
-            <Button
-              variant="outlined"
-              component="label"
-              fullWidth
-              style={{ marginTop: "10px" }}
+    <div style={backgroundStyle}>
+      <Grid container style={{ height: "85vh", justifyContent: "center" }}>
+        <Grid
+          container
+          item
+          xs={12}
+          md={6}
+          sm={3}
+          alignItems="center"
+          direction="column"
+          justifyContent="space-between"
+          style={{ padding: 10 }}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box
+              display="flex"
+              flexDirection={"column"}
+              maxWidth={400}
+              minWidth={300}
+              alignItems="center"
+              justifyContent={"center"}
+              margin="auto"
+              marginTop={5}
+              padding={3}
+              borderRadius={5}
+              boxShadow={"5px 5px 10px #ccc"}
+              sx={{
+                ":hover": {
+                  boxShadow: "10px 10px 20px #ccc",
+                },
+                backgroundColor: "white",
+              }}
             >
-              Elegir Foto de Perfil
-              <input
-                type="file"
-                style={{ display: "none", color: "black" }}
-                onChange={fileSelectedHandler}
-                name="fotoPerfil"
+              <Grid container justify="center">
+                <img src={logo} width={350} alt="logo" />
+              </Grid>
+              <Typography style={titleStyle}>
+                Registro como Interesado
+              </Typography>
+
+              {image ? (
+                <img
+                  src={image}
+                  alt="Vista previa de la imagen"
+                  style={imageStyle}
+                />
+              ) : (
+                <img
+                  src={imagenDefault}
+                  alt="Imagen por defecto"
+                  style={imageStyle}
+                />
+              )}
+              <Button
+                variant="outlined"
+                component="label"
+                fullWidth
+                style={{ marginTop: "10px" }}
+              >
+                Elegir Foto de Perfil
+                <input
+                  type="file"
+                  style={{ display: "none", color: "black" }}
+                  onChange={fileSelectedHandler}
+                  name="fotoPerfil"
+                />
+              </Button>
+              <TextField
+                fullWidth
+                required
+                name="nombre"
+                type={"text"}
+                placeholder="Nombre"
+                autoComplete="off"
+                label="Nombre"
+                margin="normal"
+                {...register("nombre", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                })}
+                error={!!errors.nombre}
+                helperText={
+                  errors.nombre?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.nombre?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.nombre?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.apellido?.type === "pattern"
+                    ? "Solo se permiten letras y espacios"
+                    : ""
+                }
               />
-            </Button>
-            <TextField
-              fullWidth
-              required
-              name="nombre"
-              type={"text"}
-              placeholder="Nombre"
-              autoComplete="off"
-              label="Nombre"
-              margin="normal"
-              {...register("nombre", {
-                required: true,
-                minLength: 2,
-                maxLength: 15,
-                pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
-              })}
-              error={!!errors.nombre}
-              helperText={
-                errors.nombre?.type === "required"
-                  ? "Campo obligatorio"
-                  : errors.nombre?.type === "minLength"
-                  ? "Mínimo 2 caracteres"
-                  : errors.nombre?.type === "maxLength"
-                  ? "Máximo 15 caracteres"
-                  : errors.apellido?.type === "pattern"
-                  ? "Solo se permiten letras y espacios"
-                  : ""
-              }
-            />
-            <TextField
-              fullWidth
-              required
-              name="apellido"
-              type={"text"}
-              placeholder="Apellido"
-              autoComplete="off"
-              label="Apellido"
-              margin="normal"
-              {...register("apellido", {
-                required: true,
-                minLength: 2,
-                maxLength: 15,
-                pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
-              })}
-              error={!!errors.apellido}
-              helperText={
-                errors.apellido?.type === "required"
-                  ? "Campo obligatorio"
-                  : errors.apellido?.type === "minLength"
-                  ? "Mínimo 2 caracteres"
-                  : errors.apellido?.type === "maxLength"
-                  ? "Máximo 15 caracteres"
-                  : errors.apellido?.type === "pattern"
-                  ? "Solo se permiten letras y espacios"
-                  : ""
-              }
-            />
+              <TextField
+                fullWidth
+                required
+                name="apellido"
+                type={"text"}
+                placeholder="Apellido"
+                autoComplete="off"
+                label="Apellido"
+                margin="normal"
+                {...register("apellido", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                })}
+                error={!!errors.apellido}
+                helperText={
+                  errors.apellido?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.apellido?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.apellido?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.apellido?.type === "pattern"
+                    ? "Solo se permiten letras y espacios"
+                    : ""
+                }
+              />
 
-            <TextField
-              fullWidth
-              required
-              name="email"
-              type={"email"}
-              placeholder="example@email.com"
-              autoComplete="off"
-              label="Email"
-              margin="normal"
-              {...register("email", {
-                required: true,
-                pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
-              })}
-              error={!!errors.email}
-              helperText={
-                errors.email?.type === "required"
-                  ? "Campo obligatorio"
-                  : errors.email?.type === "pattern"
-                  ? "Coloque un email válido"
-                  : ""
-              }
-            />
+              <TextField
+                fullWidth
+                required
+                name="email"
+                type={"email"}
+                placeholder="example@email.com"
+                autoComplete="off"
+                label="Email"
+                margin="normal"
+                {...register("email", {
+                  required: true,
+                  pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
+                })}
+                error={!!errors.email}
+                helperText={
+                  errors.email?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.email?.type === "pattern"
+                    ? "Coloque un email válido"
+                    : ""
+                }
+              />
 
-            <div style={{ height: 20 }} />
-            <Button
-              endIcon={<HowToRegOutlinedIcon />}
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
-              Registrarse
-            </Button>
-          </Box>
-        </form>
+              <div style={{ height: 20 }} />
+              <Button
+                endIcon={<HowToRegOutlinedIcon />}
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Registrarse
+              </Button>
+            </Box>
+          </form>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };
