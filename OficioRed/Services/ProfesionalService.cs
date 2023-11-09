@@ -16,6 +16,7 @@ namespace OficioRed.Services
         void Update(ProfesionalDTO profesionalDTO);
         void Delete(int id);
         void AsociarRubro(int rubroId);
+        List<Rubro> GetRubrosForProfesional(int idProfesional);
         Task<Profesional> SubirFotoPerfil(Stream archivo, string nombreFoto);
     }
 
@@ -36,6 +37,7 @@ namespace OficioRed.Services
         {
             return _context.Profesionals.Where(e => !e.Fhbaja.HasValue).ToList();
         }
+
 
         public Profesional Get(int id)
         {
@@ -275,5 +277,16 @@ namespace OficioRed.Services
             }
             return profesional;
         }
+
+        public List<Rubro> GetRubrosForProfesional(int idProfesional)
+        {
+            var rubros = _context.RubroXprofesionals
+                .Where(rp => rp.IdProfesional == idProfesional && rp.Fhbaja == null)
+                .Select(rp => rp.IdRubroNavigation)  
+                .ToList();
+
+            return rubros;
+        }
     }
 }
+    
