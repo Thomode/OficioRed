@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { TablaRubro } from "../components/Rubro/TablaRubro"; // Importa TablaRubro
-import { rubroService } from "../services/rubro.service"; // Importa rubroService
+import { TablaRubro } from "../components/Rubro/TablaRubro";
+import { rubroService } from "../services/rubro.service";
 import { Button, Grid, Typography, Card, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from "react-router-dom";
 import Buscador from "../components/buscador";
+import Swal from "sweetalert2";
+
 export function RubroAdminPage() {
   const handleSearch = async () => {
     const data = await rubroService.getAll();
@@ -16,7 +17,6 @@ export function RubroAdminPage() {
     setRubros(filteredRubros);
   };
   const [rubros, setRubros] = useState([]);
-  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
 
   async function loadRubros() {
@@ -28,6 +28,43 @@ export function RubroAdminPage() {
   useEffect(() => {
     loadRubros();
   }, []);
+
+  const crearRubro = async (nombreRubro) => {
+    await Swal.fire({
+      title: "Agregar Rubro",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      inputValue: nombreRubro,
+      showCancelButton: true,
+      confirmButtonColor: "#1b325f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      showLoaderOnConfirm: true,
+      preConfirm: async (nuevoNombre) => {
+        try {
+          await rubroService.create(nuevoNombre);
+          loadRubros();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Rubro creado con éxito",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response.data,
+          });
+        }
+      },
+    });
+  };
 
   return (
     <>
@@ -57,9 +94,7 @@ export function RubroAdminPage() {
                 variant="contained"
                 color="success"
                 startIcon={<AddIcon />}
-                onClick={() => {
-                  navigate("/admin/rubroForm");
-                }}
+                onClick={() => crearRubro()}
               >
                 Agregar
               </Button>

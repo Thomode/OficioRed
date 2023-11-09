@@ -10,10 +10,11 @@ export function ItemRubro({ index, rubro, loadRubros }) {
       title: `¿Eliminar rubro "${nombreRubro}"?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#1b325f",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
       cancelButtonText: "Cancelar",
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         eliminarRubro(rubro.idRubro);
@@ -49,8 +50,12 @@ export function ItemRubro({ index, rubro, loadRubros }) {
       },
       inputValue: nombreRubro,
       showCancelButton: true,
+      confirmButtonColor: "#1b325f",
+      cancelButtonColor: "#d33",
       confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
       showLoaderOnConfirm: true,
+      reverseButtons: true,
       preConfirm: async (nuevoNombre) => {
         try {
           await rubroService.update(rubro.idRubro, nuevoNombre);
