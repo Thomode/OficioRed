@@ -30,7 +30,7 @@ public class RubroService : IRubroService
     {
         if(_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre && e.Fhbaja.HasValue))
         {
-            throw new AppException("Oficio ya registrado");
+            throw new AppException("Rubro ya registrado");
         }
 
         var rubro = new Rubro();
@@ -137,7 +137,7 @@ public class RubroService : IRubroService
 
         if (rubro == null || rubro.Fhbaja != null)
         {
-            throw new KeyNotFoundException("Oficio no encontrado");
+            throw new KeyNotFoundException("Rubro no encontrado");
         }
 
         return rubro;
