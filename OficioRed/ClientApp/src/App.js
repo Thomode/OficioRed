@@ -10,6 +10,7 @@ import { RubroAdminPage } from "./pages/RubroAdminPage";
 import { RubroForm } from "./components/Rubro/RubroForm";
 import { ProfesionalPage } from "./pages/ProfesionalPage";
 import { MiPerfil } from "./pages/MiPerfil";
+import { PerfilProfesional } from "./pages/PerfilProfesional";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
@@ -62,6 +63,10 @@ const clientRoutes = [
     {
         path: '/:id/miPerfil',
         element: <MiPerfil />
+    },
+    {
+        path: '/:id/PerfilProfesional',
+        element: <PerfilProfesional />
     },
 ]
 

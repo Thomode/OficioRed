@@ -13,10 +13,8 @@ export function ProfesionalPage() {
         bgcolor="white"
         p={2}
         mt={0}
-        mb={4}
-        style={{ border: "5px solid #1b325f" }}
       >
-        <Grid container spacing={2}>
+        <Grid>
           <Grid item xs={12}>
             <Buscador />
           </Grid>
@@ -24,12 +22,14 @@ export function ProfesionalPage() {
             <FiltroRubros />
           </Grid>
         </Grid>
-      </Box>
-      <Grid container spacing={2}>
+          </Box>
+          <Box bgcolor="#9cc4e4">
+              <Grid>
         <Grid>
           <CardProfesional />
         </Grid>
       </Grid>
+      </Box >
     </Container>
   );
 }
