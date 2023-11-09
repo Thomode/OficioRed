@@ -23,6 +23,10 @@ public class AutoMapperProfile: Profile
         // ProfesionalDTO -> Profesional
         CreateMap<ProfesionalDTO, Profesional>();
 
+        // Rol -> RolDTO
         CreateMap<Rol, RolDTO>();
+
+        // ContactoDTO -> Contacto
+        CreateMap<ContactoDTO, Contacto>();
     }
 }

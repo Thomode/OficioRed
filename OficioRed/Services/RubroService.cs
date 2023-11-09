@@ -101,12 +101,12 @@ public class RubroService : IRubroService
 
         if (_context.Rubros.Any(e => e.Nombre == oficioDTO.Nombre))
         {
-            throw new AppException("Nombre de oficio ya registrado");
+            throw new AppException("Nombre de rubro ya registrado");
         }
 
         if (rubro == null)
         {
-            throw new AppException("Es oficio no existe");
+            throw new AppException("Es rubro no existe");
         }
 
         _mapper.Map(oficioDTO, rubro);

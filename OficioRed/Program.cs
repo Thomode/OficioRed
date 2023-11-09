@@ -61,7 +61,7 @@ builder.Services.AddScoped<IAccesoService, AccesoService>();
 builder.Services.AddScoped<IInteresadoService, InteresadoService>();
 builder.Services.AddScoped<IProfesionalService, ProfesionalService>();
 builder.Services.AddScoped<IRolService, RolService>();
-
+builder.Services.AddScoped<IContactoService, ContactoService>();
 
 var app = builder.Build();
 
