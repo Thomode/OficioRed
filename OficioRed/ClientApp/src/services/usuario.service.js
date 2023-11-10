@@ -7,6 +7,12 @@ async function getAll() {
     return res.data
 }
 
+async function getDashboard() {
+    const res = await axios.get("/api/Admin/Dashboard")
+
+    return res.data
+}
+
 const get = async (id) =>
     await axios.get(`/api/Usuario/${id}`)
 
@@ -62,5 +68,6 @@ export const usuarioService = {
     update,
     updateUser,
     getRoles,
-    getId
+    getId,
+    getDashboard
 }

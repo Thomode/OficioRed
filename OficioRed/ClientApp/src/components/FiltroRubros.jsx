@@ -18,9 +18,7 @@ const MenuProps = {
   },
 };
 
-export const FiltroRubros = () => {
-  const [rubros, setRubros] = useState([]); // Initialize rubros as an empty array
-
+export const FiltroRubros = ({rubros, setRubros}) => {
   const getRubros = async () => {
     try {
       const res = await axios.get("/api/Rubro");
@@ -70,12 +68,12 @@ export const FiltroRubros = () => {
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={rubros
+          value={rubros && rubros
             .filter((rubro) => rubro.seleccionado)
             .map((rubro) => rubro.idRubro)}
           onChange={handleSelectChange}
           renderValue={(selected) =>
-            selected
+            selected && selected
               .map(
                 (rubroId) =>
                   rubros.find((rubro) => rubro.idRubro === rubroId).nombre
@@ -84,7 +82,7 @@ export const FiltroRubros = () => {
           }
           MenuProps={MenuProps}
         >
-          {rubros.map((rubro) => (
+          {rubros && rubros.map((rubro) => (
             <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
               <Checkbox checked={rubro.seleccionado} />
               <ListItemText primary={rubro.nombre} />

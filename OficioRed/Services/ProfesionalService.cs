@@ -16,6 +16,7 @@ namespace OficioRed.Services
         void Update(ProfesionalDTO profesionalDTO);
         void Delete(int id);
         void AsociarRubro(int rubroId);
+        List<Rubro> GetRubrosXProfesional(int idProfesional);
         Task<Profesional> SubirFotoPerfil(Stream archivo, string nombreFoto);
     }
 
@@ -36,6 +37,7 @@ namespace OficioRed.Services
         {
             return _context.Profesionals.Where(e => !e.Fhbaja.HasValue).ToList();
         }
+
 
         public Profesional Get(int id)
         {
@@ -101,15 +103,8 @@ namespace OficioRed.Services
 
         public void AsociarRubro(int rubroId)
         {
-            var sesion = _accesoService.GetCurrentUsuario();
-
-            if (sesion == null)
-            {
-                throw new AppException("Usuario no logeado");
-            }
-
             // Buscar al profesional asociado al usuario actual
-            var profesional = _context.Profesionals.FirstOrDefault(e => e.IdUsuario == sesion.Id);
+            var profesional = getProfesionalSesion();
 
             if (profesional == null)
             {
@@ -124,13 +119,12 @@ namespace OficioRed.Services
             }
 
             // Realizar las validaciones o lógica adicional si es necesario
+            var rubroXProfesional = new RubroXprofesional();
 
-            var rubroXProfesional = new RubroXprofesional
-            {
-                IdProfesional = profesional.IdProfesional,
-                IdRubro = rubro.IdRubro,
-                Fhalta = DateTime.Now
-            };
+            rubroXProfesional.IdProfesional = profesional.IdProfesional;
+            rubroXProfesional.IdRubro = rubro.IdRubro;
+            rubroXProfesional.Fhalta = DateTime.Now;
+            
 
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -138,13 +132,6 @@ namespace OficioRed.Services
                 {
                     // Realiza tus operaciones de base de datos aquí
                     _context.RubroXprofesionals.Add(rubroXProfesional);      
-                    _context.SaveChanges();
-
-                    
-                    var rubroXProfesionalSave = _context.RubroXprofesionals.FirstOrDefault(e => e.IdProfesional == profesional.IdProfesional);
-                    
-                    profesional.IdRubroXprofesional = rubroXProfesionalSave.IdRubroXprofesional;
-                    _context.Profesionals.Update(profesional);
                     _context.SaveChanges();
 
                     // Si todo va bien, haz un commit
@@ -275,5 +262,16 @@ namespace OficioRed.Services
             }
             return profesional;
         }
+
+        public List<Rubro> GetRubrosXProfesional(int idProfesional)
+        {
+            var rubros = _context.RubroXprofesionals
+                .Where(rp => rp.IdProfesional == idProfesional && !rp.Fhbaja.HasValue)
+                .Select(rp => rp.IdRubroNavigation)  
+                .ToList();
+
+            return rubros;
+        }
     }
 }
+    

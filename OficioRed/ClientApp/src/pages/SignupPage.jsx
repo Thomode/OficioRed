@@ -38,7 +38,9 @@ const titleStyle = {
 export const SignupPage = ({ setAcceso }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [roles, setRoles] = useState([]);
+    const [roles, setRoles] = useState([]);
+
+    const [selectedRoleId, setSelectedRoleId] = useState(null);
 
   const cargarRoles = async () => {
     const data = await rolService.getAll();
@@ -115,7 +117,7 @@ export const SignupPage = ({ setAcceso }) => {
   return (
     <>
       <div style={backgroundStyle}>
-        <Grid container style={{ height: "85vh", justifyContent: "center" }}>
+        <Grid container style={{ justifyContent: "center" }}>
           <Grid
             container
             item
@@ -142,7 +144,7 @@ export const SignupPage = ({ setAcceso }) => {
                 boxShadow={"5px 5px 10px #ccc"}
                 sx={{
                   ":hover": {
-                    boxShadow: "10px 10px 20px #ccc",
+                    boxShadow: "10px 10px 20px #ccc", 
                   },
                   backgroundColor: "white",
                 }}
@@ -243,20 +245,39 @@ export const SignupPage = ({ setAcceso }) => {
                       Tipo de Usuario
                     </InputLabel>
                     <Select
-                      fullWidth
-                      label="Tipo de Usuario"
-                      name="idRol"
-                      {...register("idRol", {
-                        required: true,
-                      })}
+                        fullWidth
+                        label="Tipo de Usuario"
+                        name="idRol"
+                        {...register("idRol", {
+                            required: true,
+                        })}
+                        onChange={(e) => setSelectedRoleId(e.target.value)}
                     >
-                      {roles
-                        .filter((e) => e.idRol !== 2)
-                        .map((e) => (
-                          <MenuItem value={e.idRol}>{e.nombre}</MenuItem>
-                        ))}
+                        {roles
+                            .filter((e) => e.idRol !== 2)
+                            .map((e) => (
+                                <MenuItem key={e.idRol} value={e.idRol}>
+                                    {e.nombre}
+                                </MenuItem>
+                            ))}
                     </Select>
-                  </FormControl>
+                    </FormControl>
+                                  <Box marginTop={2}>
+                                      {selectedRoleId === 3 && (
+                                          <Typography style={{ fontStyle: 'italic', fontWeight: 'bold', marginTop: '10px', color: '#1b325f'}}>
+                                              Como profesional vas a tener que cargar una mayor cantidad de datos como foto, número de teléfono, email,
+                                              redes sociales, descripción, rubros de servicios a los que te dedicas,etc. Dicha
+                                              información va a ser visible para el resto de las personas de tal manera de que puedan contactarte. 
+                                              A su vez vas a poder ver al resto de profesionales.
+                                          </Typography>
+                                      )}
+                                      {selectedRoleId === 4 && (
+                                          <Typography style={{ fontStyle: 'italic', fontWeight: 'bold', marginTop: '10px', color: '#1b325f' }}>
+                                              Como interesado únicamente vas a ingresar nombre, apellido, email y una foto. Vas a ser capaz de ver a todos
+                                              los profesionales cargados en el sistema y realizar una búsqueda de acuerdo a tus necesidades.
+                                          </Typography>
+                                      )}
+                                  </Box>
                 </Box>
 
                 <Button

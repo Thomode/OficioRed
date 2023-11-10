@@ -67,9 +67,11 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
         data.descripcion
       );
       const res2 = await profesionalService.imageUpload(selectedFile);
-
+      
+      console.log(rubros)
       rubros.forEach(async (rubro) => {
         if (rubro.seleccionado) {
+          console.log(rubro)
           const res3 = await profesionalService.asociarRubro(rubro.idRubro);
         }
       });

@@ -38,7 +38,7 @@ const PerfilProfesional = () => {
     return (
         <Box bgcolor="#9cc4e4" minHeight="100vh" p={5}>
             <Grid container justifyContent="center" spacing={2}>
-                <Grid item xs={12} md={8} lg={6}>
+                <Grid item xs={12} md={8}>
                     <Card>
                         <Box p={2} border="2px solid #1b325f" borderRadius="5px">
                             <Box display="flex" justifyContent="flex-start" alignItems="center" mb={2}>
@@ -99,14 +99,14 @@ const PerfilProfesional = () => {
                                         <Box marginLeft="65px">
                                             <Button
                                                 variant="contained"
-                                                style={{ backgroundColor: "#1b325f", color: "white", marginRight: "8px" }}
+                                                style={{ backgroundColor: "#1b325f", color: "white", marginRight: "8px"}}
                                                 size="small"
                                             >
                                                 Contactar
                                             </Button>
                                             <Button
                                                 variant="contained"
-                                                style={{ backgroundColor: "#f26c4f", color: "white" }}
+                                                style={{ backgroundColor: "#f26c4f", color: "white", marginTop: "8px" }}
                                                 size="small"
                                                 endIcon={<FavoriteIcon />}
                                             >
