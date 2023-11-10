@@ -278,7 +278,7 @@ namespace OficioRed.Services
             return profesional;
         }
 
-        public List<Rubro> GetRubrosForProfesional(int idProfesional)
+        public List<Rubro> GetRubrosXProfesional(int idProfesional)
         {
             var rubros = _context.RubroXprofesionals
                 .Where(rp => rp.IdProfesional == idProfesional && rp.Fhbaja == null)

@@ -180,11 +180,11 @@ namespace OficioRed.Controllers
         }
 
         [HttpGet("{idProfesional}/rubros")]
-        public IActionResult GetRubrosForProfesional(int idProfesional)
+        public IActionResult GetRubrosXProfesional(int idProfesional)
         {
             try
             {
-                var rubros = _profesionalService.GetRubrosForProfesional(idProfesional);
+                var rubros = _profesionalService.GetRubrosXProfesional(idProfesional);
                 return Ok(rubros);
             }
             catch (Exception ex)

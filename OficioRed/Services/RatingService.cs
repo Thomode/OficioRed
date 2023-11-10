@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public interface IRatingService
 {
     void CreateRating(RatingDTO ratingDTO);
-    List<Rating> GetRatingsForProfesional(int idProfesional);
+    List<Rating>GetRatingsForProfesional(int idProfesional);
     double GetAverageRatingForProfesional(int idProfesional);
     void UpdateRating(int idRating, RatingDTO updatedRatingDTO);
 }
