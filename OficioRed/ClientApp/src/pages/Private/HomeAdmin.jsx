@@ -49,6 +49,7 @@ function HomeAdmin() {
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
         WebkitTextStroke: '2px white',
         MozTextStroke: '2px white',
+        marginLeft:'20px'
     };
 
     useEffect(() => {
@@ -61,7 +62,7 @@ function HomeAdmin() {
     return (
         <Container style={{ padding: "20px", backgroundColor: "#9cc4e4", minHeight: "100vh" }}>
             <Typography variant="h2" sx={titleStyle2}>
-                Panel Admin
+                Dashboard
             </Typography>
             <Grid container spacing={3} justifyContent="center">
                 <Grid item xs={12} sm={8} md={3}>

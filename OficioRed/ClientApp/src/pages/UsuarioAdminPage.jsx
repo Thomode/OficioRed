@@ -6,6 +6,15 @@ import AddIcon from "@mui/icons-material/Add";
 import Buscador from "../components/buscador";
 import Swal from "sweetalert2";
 
+const titleStyle2 = {
+    fontSize: '80px',
+    fontWeight: 'bold',
+    color: '#1b325f',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    WebkitTextStroke: '2px white',
+    MozTextStroke: '2px white',
+};
+
 export function UsuarioAdminPage() {
   const handleSearch = async () => {
     const data = await usuarioService.getAll();
@@ -95,9 +104,9 @@ export function UsuarioAdminPage() {
     <>
       <Card>
         <CardContent>
-          <Typography variant="h4" marginBottom={2}>
-            Usuarios
-          </Typography>
+        <Typography variant="h2" sx={titleStyle2}>
+            Administración Usuarios
+        </Typography>
           <Grid
             container
             spacing={3}
