@@ -6,6 +6,8 @@ import Buscador from "../components/buscador";
 import { profesionalService } from "../services/profesional.service";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 export function ProfesionalPage() {
     const handleSearch = async () => {
         const data = await profesionalService.getAll(); // Obtén todos los usuarios
@@ -38,7 +40,7 @@ export function ProfesionalPage() {
         loadProfesionales();
     }, []);
     return (
-        <Container>
+        <Container style={{ backgroundColor: "#9cc4e4", minHeight: "100vh" }}>
             <Box
                 display="flex"
                 justifyContent="center"
@@ -60,14 +62,15 @@ export function ProfesionalPage() {
                     </Grid>
                 </Grid>
             </Box>
-            <Grid container spacing={2} bgcolor="#9cc4e4">
-                <Grid item container spacing={2} mt={2}>
-                    {profesionales.length > 0 ? (
-                        <CardProfesional profesionales={profesionales} />
-                    ) : (
-                        <p>No hay profesionales disponibles</p>
-                    )}
-                </Grid>
+            <Grid container justifyContent="center" alignItems="center" spacing={2} mt={2}>
+                {profesionales.length > 0 ? (
+                    <CardProfesional profesionales={profesionales} />
+                ) : (
+                    <Alert severity="error">
+                        <AlertTitle>Ups!</AlertTitle>
+                        No hay profesionales disponibles.
+                    </Alert>
+                )}
             </Grid>
         </Container>
     );
