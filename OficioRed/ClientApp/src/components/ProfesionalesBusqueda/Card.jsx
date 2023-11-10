@@ -25,6 +25,7 @@ const cardStyle = {
     marginRight: "50px",
     "&:hover": {
         transform: "scale(1.05)",
+        border:""
     },
 };
 
@@ -74,7 +75,7 @@ const CardProfesional = () => {
                             <Grid container alignItems="center" spacing={1}>
                                 <Grid item>
                                     <Button
-                                        variant="outlined"
+                                        variant="contained"
                                         size="small"
                                         style={{ backgroundColor: "#1b325f", color: "white" }}
                                         sx={buttonStyle}
@@ -84,7 +85,7 @@ const CardProfesional = () => {
                                 </Grid>
                                 <Grid item>
                                     <Button
-                                        variant="outlined"
+                                        variant="contained"
                                         size="small"
                                         style={{ backgroundColor: "#f26c4f", color: "white" }}
                                         sx={buttonStyle}

@@ -199,7 +199,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                     {...register("nombre", {
                       required: true,
                       minLength: 2,
-                      maxLength: 15,
+                      maxLength: 20,
                       pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
                     })}
                     error={!!errors.nombre}
@@ -209,7 +209,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                         : errors.nombre?.type === "minLength"
                         ? "Mínimo 2 caracteres"
                         : errors.nombre?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
+                        ? "Máximo 20 caracteres"
                         : errors.apellido?.type === "pattern"
                         ? "Solo se permiten letras y espacios"
                         : ""
@@ -286,7 +286,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                     {...register("descripcion", {
                       required: true,
                       minLength: 2,
-                      maxLength: 120,
+                      maxLength: 700,
                     })}
                     error={!!errors.descripcion}
                     helperText={
@@ -295,7 +295,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                         : errors.descripcion?.type === "minLength"
                         ? "Mínimo 2 caracteres"
                         : errors.descripcion?.type === "maxLength"
-                        ? "Máximo 120 caracteres"
+                        ? "Máximo 700 caracteres"
                         : ""
                     }
                   />

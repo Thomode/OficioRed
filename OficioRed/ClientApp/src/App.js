@@ -10,7 +10,7 @@ import { RubroAdminPage } from "./pages/RubroAdminPage";
 import { RubroForm } from "./components/Rubro/RubroForm";
 import { ProfesionalPage } from "./pages/ProfesionalPage";
 import { MiPerfil } from "./pages/MiPerfil";
-import { PerfilProfesional } from "./pages/PerfilProfesional";
+import  PerfilProfesional  from "./pages/PerfilProfesional";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
