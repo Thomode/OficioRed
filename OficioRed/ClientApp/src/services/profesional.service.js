@@ -17,6 +17,11 @@ const registerProfesional = async (nombre, apellido, email, descripcion) => {
 
   return res
 }
+async function getAll() {
+    const res = await axios.get("/api/Profesional")
+
+    return res.data
+}
 
 const imageUpload = async (selectedFile) => {
   const formData = new FormData();
@@ -40,6 +45,7 @@ const asociarRubro = async (idRubro) => {
 }
 
 export const profesionalService = {
+  getAll,
   registerProfesional,
   imageUpload,
   asociarRubro

@@ -33,25 +33,11 @@ const buttonStyle = {
     margin: "0 8px",
 };
 
-const CardProfesional = () => {
+const CardProfesional = ({ profesionales }) => {
     const navigate = useNavigate(); // Use useNavigate to access the navigation function
-    const [profesionales, setProfesionales] = useState([]);
-
-    useEffect(() => {
-        axios
-            .get("/api/Profesional")
-            .then((response) => {
-                setProfesionales(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching data", error);
-            });
-    }, []);
-
     const handleLeerMasClick = (id) => {
         navigate(`/${id}/PerfilProfesional`); // Use navigate to redirect to the route
     };
-
     return (
         <Grid container spacing={2}>
             {profesionales.map((profesional, index) => (
