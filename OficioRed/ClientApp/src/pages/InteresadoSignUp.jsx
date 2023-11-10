@@ -99,7 +99,7 @@ export const InteresadoSignUp = ({ setAcceso }) => {
 
   return (
     <div style={backgroundStyle}>
-      <Grid container style={{ height: "85vh", justifyContent: "center" }}>
+      <Grid container style={{justifyContent: "center" }}>
         <Grid
           container
           item
