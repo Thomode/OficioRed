@@ -119,7 +119,6 @@ namespace OficioRed.Services
             }
 
             // Realizar las validaciones o lógica adicional si es necesario
-
             var rubroXProfesional = new RubroXprofesional();
 
             rubroXProfesional.IdProfesional = profesional.IdProfesional;
@@ -134,35 +133,9 @@ namespace OficioRed.Services
                     // Realiza tus operaciones de base de datos aquí
                     _context.RubroXprofesionals.Add(rubroXProfesional);      
                     _context.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    // Si ocurre un error, realiza un rollback
-                    transaction.Rollback();
-                    throw new Exception("Error al asociar el rubro al profesional.", ex);
-                }
-            }
-            /*
-            var rubroXProfesionalSave = _context.RubroXprofesionals.FirstOrDefault(e => e.IdProfesional == profesional.IdProfesional);
-
-            if(rubroXProfesionalSave == null)
-            {
-                throw new AppException("Error al asociar el rubro al profesional.");
-            }
-
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    // Realiza tus operaciones de base de datos aquí
-                    var rubroXProfesionalSave = _context.RubroXprofesionals.FirstOrDefault(e => e.IdProfesional == profesional.IdProfesional);
-                    profesional.IdRubroXprofesional = rubroXProfesionalSave.IdRubroXprofesional;
-                    _context.Profesionals.Update(profesional);
-                    _context.SaveChanges();
 
                     // Si todo va bien, haz un commit
                     transaction.Commit();
-                    _context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -171,8 +144,6 @@ namespace OficioRed.Services
                     throw new Exception("Error al asociar el rubro al profesional.", ex);
                 }
             }
-
-            */
         }
 
 

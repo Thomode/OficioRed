@@ -82,14 +82,15 @@ namespace OficioRed.Controllers
             }
         }
 
-        [HttpPost("asociar-rubro/{rubroId}")]
-        public IActionResult AsociarRubroAProfesional(int rubroId)
+        [HttpPost("asociar-rubro/{idRubro}")]
+        public IActionResult AsociarRubroAProfesional(int idRubro)
         {
             try
             {
                 // Llama a la función AsociarRubro en el servicio Profesional
-                _profesionalService.AsociarRubro(rubroId);
 
+                _profesionalService.AsociarRubro(idRubro);
+                
                 return Ok("Rubro asociado al profesional exitosamente.");
             }
             catch (Exception ex)
