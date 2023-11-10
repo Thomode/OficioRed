@@ -24,7 +24,7 @@ const number = {
 };
 
 const image = {
-    height: 55,
+    height: 100,
     my: 4,
 };
 
@@ -34,12 +34,12 @@ function ProductHowItWorks() {
         <Box
             component="section"
             sx={{
-                display: 'flex', bgcolor: '#f26c4f', overflow: 'hidden' }}
+                display: 'flex', bgcolor: '#9cc4e4', overflow: 'hidden' }}
         >
             <Container
                 sx={{
-                    mt: 10,
-                    mb: 15,
+                    mt: 5,
+                    mb: 2,
                     position: 'relative',
                     display: 'flex',
                     flexDirection: 'column',
@@ -57,7 +57,7 @@ function ProductHowItWorks() {
                         opacity: 0.7,
                     }}
                 />
-                <Typography variant="h4" marked="center" component="h2" sx={{ mb: 14 }}>
+                <Typography variant="h4" marked="center" component="h2" sx={{ mb: 5 }}>
                     ¿Cómo funcionamos?
                 </Typography>
                 <div>
@@ -71,8 +71,8 @@ function ProductHowItWorks() {
                                     alt="suitcase"
                                     sx={image}
                                 />
-                                <Typography variant="h5" align="center">
-                                    {'Inicia sesión o registrate y apreta en "Comenza la búsqueda".'}
+                                <Typography variant="h5" align="center" sx={{ textAlign: 'center', fontStyle: 'italic' }}>
+                                    {'Una vez iniciada la sesión ingresa a la sección de "Profesionales".'}
                                 </Typography>
                             </Box>
                         </Grid>
@@ -85,8 +85,8 @@ function ProductHowItWorks() {
                                     alt="graph"
                                     sx={image}
                                 />
-                                <Typography variant="h5" align="center">
-                                    {' Busca el tipo de servicio o profesional que necesitas y compara con las distintas opciones disponibles.'}
+                                <Typography variant="h5" align="center" sx={{ textAlign: 'center', fontStyle: 'italic' }} >
+                                    {' Busca por el tipo de servicio o profesional que necesitas y compara con las distintas opciones disponibles.'}
                                 </Typography>
                             </Box>
                         </Grid>
@@ -99,7 +99,7 @@ function ProductHowItWorks() {
                                     alt="clock"
                                     sx={image}
                                 />
-                                <Typography variant="h5" align="center">
+                                <Typography variant="h5" align="center" sx={{ textAlign: 'center', fontStyle: 'italic' }}>
                                     {'Elige el profesional que más se adapte a tus requerimientos y apreta en "Contactar".'}
                                 </Typography>
                             </Box>
@@ -110,7 +110,7 @@ function ProductHowItWorks() {
                     size="large"
                     variant="contained"
                     component="a"
-                    style={{ backgroundColor: '#1b325f', color: 'white', marginTop: 8 }}
+                    style={{ backgroundColor: '#1b325f', color: 'white', marginTop: 50, borderRadius: 10 }}
                     onClick={() => navigate(`/profesionales`)}
                 >
                     INGRESA

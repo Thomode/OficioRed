@@ -3,11 +3,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';  // Agregado para utilizar el componente Box
 import fondoInicio from '../../assets/arregloHogar.jpeg';
 import { useNavigate } from 'react-router-dom';
+
 const backgroundImage = fondoInicio;
-
-
 
 const containerStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -22,6 +22,17 @@ const containerStyle = {
     alignItems: 'center',
 };
 
+const overlayStyle = {
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: '20px',
+    borderRadius: '10px',
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    mb: '80px',
+};
+
 const buttonStyle = {
     marginTop: '16px',
     backgroundColor: '#1b325f',
@@ -33,13 +44,13 @@ const titleStyle = {
     fontWeight: 'bold',
     color: '#1b325f',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-    WebkitTextStroke: '2px white', // Agrega borde blanco al texto
-    MozTextStroke: '2px white', // Agrega borde blanco al texto
+    WebkitTextStroke: '2px white',
+    MozTextStroke: '2px white',
 };
 
 const contentStyle = {
     textAlign: 'center',
-    color: '#fff',
+    color: '#1b325f',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
 };
 
@@ -48,11 +59,11 @@ export default function ProductHero() {
     return (
         <Paper style={containerStyle}>
             <Container maxWidth="md">
-                <div style={contentStyle}>
+                <Box sx={overlayStyle}> 
                     <Typography variant="h2" sx={titleStyle}>
                         OFICIORED
                     </Typography>
-                    <Typography variant="h5">
+                    <Typography variant="h5" sx={contentStyle}>
                         Encuentra el servicio que buscas
                     </Typography>
                     <Button
@@ -63,7 +74,7 @@ export default function ProductHero() {
                     >
                         COMIENZA LA BÚSQUEDA
                     </Button>
-                </div>
+                </Box>
             </Container>
         </Paper>
     );

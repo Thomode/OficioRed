@@ -272,7 +272,7 @@ export const SignupPage = ({ setAcceso }) => {
                                           </Typography>
                                       )}
                                       {selectedRoleId === 4 && (
-                                          <Typography style={{fontWeight: 'bold', marginTop: '10px', color: '#1b325f' }}>
+                                          <Typography style={{ fontStyle: 'italic', fontWeight: 'bold', marginTop: '10px', color: '#1b325f' }}>
                                               Como interesado únicamente vas a ingresar nombre, apellido, email y una foto. Vas a ser capaz de ver a todos
                                               los profesionales cargados en el sistema y realizar una búsqueda de acuerdo a tus necesidades.
                                           </Typography>
