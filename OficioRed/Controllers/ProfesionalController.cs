@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using OficioRed.Dtos;
 using OficioRed.Models;
 using OficioRed.Services;
@@ -15,12 +16,14 @@ namespace OficioRed.Controllers
         private readonly IProfesionalService _profesionalService;
         private readonly IRubroService _rubroService;
         private readonly IRatingService _ratingService;
+        private readonly IMapper _mapper;
 
-        public ProfesionalController(IProfesionalService profesionalService, IRubroService rubroService,IRatingService ratingService)
+        public ProfesionalController(IProfesionalService profesionalService, IRubroService rubroService,IRatingService ratingService, IMapper mapper)
         {
             _profesionalService = profesionalService;
             _rubroService = rubroService;
             _ratingService = ratingService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -29,7 +32,17 @@ namespace OficioRed.Controllers
             try
             {
                 var profesionales = _profesionalService.GetAll();
-                return Ok(profesionales);
+
+                var profesionalesResDTO = new List<ProfesionalResDTO>();
+
+                _mapper.Map(profesionales, profesionalesResDTO);
+
+                foreach(var p  in profesionalesResDTO)
+                {
+                    p.rubros = _profesionalService.GetRubrosXProfesional(p.IdProfesional);
+                }
+
+                return Ok(profesionalesResDTO);
             }
             catch (Exception ex)
             {

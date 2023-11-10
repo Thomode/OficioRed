@@ -18,9 +18,7 @@ const MenuProps = {
   },
 };
 
-export const FiltroRubros = () => {
-  const [rubros, setRubros] = useState([]); // Initialize rubros as an empty array
-
+export const FiltroRubros = ({rubros, setRubros}) => {
   const getRubros = async () => {
     try {
       const res = await axios.get("/api/Rubro");

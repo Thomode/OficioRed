@@ -35,6 +35,7 @@ const imageUpload = async (selectedFile) => {
 }
 
 const asociarRubro = async (idRubro) => {
+  console.log(idRubro)
   const res = await axios.post(`/api/Profesional/asociar-rubro/${idRubro}`, {}, await sesionService.getConfig())
   return res
 }
