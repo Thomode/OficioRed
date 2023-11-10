@@ -117,7 +117,7 @@ export const SignupPage = ({ setAcceso }) => {
   return (
     <>
       <div style={backgroundStyle}>
-        <Grid container style={{ height: "85vh", justifyContent: "center" }}>
+        <Grid container style={{ justifyContent: "center" }}>
           <Grid
             container
             item
@@ -265,14 +265,14 @@ export const SignupPage = ({ setAcceso }) => {
                                   <Box marginTop={2}>
                                       {selectedRoleId === 3 && (
                                           <Typography style={{ fontStyle: 'italic', fontWeight: 'bold', marginTop: '10px', color: '#1b325f'}}>
-                                              Como profesional vas a tener que cargar una mayor cantidad de datos como foto, número de teléfono, email
+                                              Como profesional vas a tener que cargar una mayor cantidad de datos como foto, número de teléfono, email,
                                               redes sociales, descripción, rubros de servicios a los que te dedicas,etc. Dicha
                                               información va a ser visible para el resto de las personas de tal manera de que puedan contactarte. 
                                               A su vez vas a poder ver al resto de profesionales.
                                           </Typography>
                                       )}
                                       {selectedRoleId === 4 && (
-                                          <Typography style={{fontWeight: 'bold', marginTop: '10px', color: '#1b325f' }}>
+                                          <Typography style={{ fontStyle: 'italic', fontWeight: 'bold', marginTop: '10px', color: '#1b325f' }}>
                                               Como interesado únicamente vas a ingresar nombre, apellido, email y una foto. Vas a ser capaz de ver a todos
                                               los profesionales cargados en el sistema y realizar una búsqueda de acuerdo a tus necesidades.
                                           </Typography>

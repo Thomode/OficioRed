@@ -8,7 +8,7 @@ import withRoot from "../../components/Inicio/withRoot";
 
 function HomePage() {
   const componentSpacing = {
-    marginBottom: 10, // Puedes ajustar el valor según tu preferencia.
+    marginBottom: 10, 
   };
 
   return (
