@@ -23,6 +23,17 @@ async function getAll() {
     return res.data
 }
 
+const registerContacto = async (telefono, email, instagram, facebook) => {
+  const res = await axios.post('/api/Contacto', {
+    telefono: telefono,
+    email: email,
+    instagram: instagram,
+    facebook: facebook,
+  }, await sesionService.getConfig())
+
+  return res
+}
+
 const imageUpload = async (selectedFile) => {
   const formData = new FormData();
   formData.append("archivo", selectedFile);
@@ -49,5 +60,6 @@ export const profesionalService = {
   getAll,
   registerProfesional,
   imageUpload,
-  asociarRubro
+  asociarRubro,
+  registerContacto
 }

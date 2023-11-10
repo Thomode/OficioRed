@@ -38,9 +38,9 @@ const titleStyle = {
 export const SignupPage = ({ setAcceso }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-    const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState([]);
 
-    const [selectedRoleId, setSelectedRoleId] = useState(null);
+  const [selectedRoleId, setSelectedRoleId] = useState(null);
 
   const cargarRoles = async () => {
     const data = await rolService.getAll();
@@ -61,6 +61,7 @@ export const SignupPage = ({ setAcceso }) => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -144,7 +145,7 @@ export const SignupPage = ({ setAcceso }) => {
                 boxShadow={"5px 5px 10px #ccc"}
                 sx={{
                   ":hover": {
-                    boxShadow: "10px 10px 20px #ccc", 
+                    boxShadow: "10px 10px 20px #ccc",
                   },
                   backgroundColor: "white",
                 }}
@@ -238,6 +239,49 @@ export const SignupPage = ({ setAcceso }) => {
                       : ""
                   }
                 />
+                <TextField
+                  fullWidth
+                  required
+                  name="confirmPassword"
+                  placeholder="Confirmar Contraseña"
+                  autoComplete="off"
+                  type={showPassword ? "text" : "password"}
+                  label="Confirmar Contraseña"
+                  margin="normal"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <LockRounded />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={togglePasswordVisibility}
+                          edge="end"
+                        >
+                          {showPassword ? (
+                            <RemoveRedEyeRoundedIcon fontSize="small" />
+                          ) : (
+                            <VisibilityOffRoundedIcon fontSize="small" />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("confirmPassword", {
+                    required: true,
+                    validate: (value) => value === watch("password"),
+                  })}
+                  error={!!errors.confirmPassword}
+                  helperText={
+                    errors.confirmPassword?.type === "required"
+                      ? "Campo obligatorio"
+                      : errors.confirmPassword?.type === "validate"
+                      ? "Las contraseñas no coinciden"
+                      : ""
+                  }
+                />
 
                 <Box sx={{ width: "100%" }} marginBottom={2} marginTop={2}>
                   <FormControl fullWidth>
@@ -245,39 +289,58 @@ export const SignupPage = ({ setAcceso }) => {
                       Tipo de Usuario
                     </InputLabel>
                     <Select
-                        fullWidth
-                        label="Tipo de Usuario"
-                        name="idRol"
-                        {...register("idRol", {
-                            required: true,
-                        })}
-                        onChange={(e) => setSelectedRoleId(e.target.value)}
+                      fullWidth
+                      label="Tipo de Usuario"
+                      name="idRol"
+                      {...register("idRol", {
+                        required: true,
+                      })}
+                      onChange={(e) => setSelectedRoleId(e.target.value)}
                     >
-                        {roles
-                            .filter((e) => e.idRol !== 2)
-                            .map((e) => (
-                                <MenuItem key={e.idRol} value={e.idRol}>
-                                    {e.nombre}
-                                </MenuItem>
-                            ))}
+                      {roles
+                        .filter((e) => e.idRol !== 2)
+                        .map((e) => (
+                          <MenuItem key={e.idRol} value={e.idRol}>
+                            {e.nombre}
+                          </MenuItem>
+                        ))}
                     </Select>
-                    </FormControl>
-                                  <Box marginTop={2}>
-                                      {selectedRoleId === 3 && (
-                                          <Typography style={{ fontStyle: 'italic', fontWeight: 'bold', marginTop: '10px', color: '#1b325f'}}>
-                                              Como profesional vas a tener que cargar una mayor cantidad de datos como foto, número de teléfono, email,
-                                              redes sociales, descripción, rubros de servicios a los que te dedicas,etc. Dicha
-                                              información va a ser visible para el resto de las personas de tal manera de que puedan contactarte. 
-                                              A su vez vas a poder ver al resto de profesionales.
-                                          </Typography>
-                                      )}
-                                      {selectedRoleId === 4 && (
-                                          <Typography style={{ fontStyle: 'italic', fontWeight: 'bold', marginTop: '10px', color: '#1b325f' }}>
-                                              Como interesado únicamente vas a ingresar nombre, apellido, email y una foto. Vas a ser capaz de ver a todos
-                                              los profesionales cargados en el sistema y realizar una búsqueda de acuerdo a tus necesidades.
-                                          </Typography>
-                                      )}
-                                  </Box>
+                  </FormControl>
+                  <Box marginTop={2}>
+                    {selectedRoleId === 3 && (
+                      <Typography
+                        style={{
+                          fontStyle: "italic",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                          color: "#1b325f",
+                        }}
+                      >
+                        Como profesional vas a tener que cargar una mayor
+                        cantidad de datos como foto, número de teléfono, email,
+                        redes sociales, descripción, rubros de servicios a los
+                        que te dedicas,etc. Dicha información va a ser visible
+                        para el resto de las personas de tal manera de que
+                        puedan contactarte. A su vez vas a poder ver al resto de
+                        profesionales.
+                      </Typography>
+                    )}
+                    {selectedRoleId === 4 && (
+                      <Typography
+                        style={{
+                          fontStyle: "italic",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                          color: "#1b325f",
+                        }}
+                      >
+                        Como interesado únicamente vas a ingresar nombre,
+                        apellido, email y una foto. Vas a ser capaz de ver a
+                        todos los profesionales cargados en el sistema y
+                        realizar una búsqueda de acuerdo a tus necesidades.
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
 
                 <Button

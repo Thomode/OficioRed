@@ -66,12 +66,16 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
         data.email,
         data.descripcion
       );
+      const resContact = await profesionalService.registerContacto(
+        data.telefono,
+        data.email,
+        data.instagram,
+        data.facebook
+      );
       const res2 = await profesionalService.imageUpload(selectedFile);
-      
-      console.log(rubros)
+
       rubros.forEach(async (rubro) => {
         if (rubro.seleccionado) {
-          console.log(rubro)
           const res3 = await profesionalService.asociarRubro(rubro.idRubro);
         }
       });
@@ -116,7 +120,6 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
       <Grid
         container
         style={{
-          height: "100vh",
           width: "100%",
           justifyContent: "center",
           alignItems: "center",
@@ -267,13 +270,57 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                         : ""
                     }
                   />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    required
+                    name="telefono"
+                    type="tel"
+                    placeholder="Teléfono"
+                    autoComplete="off"
+                    label="Teléfono"
+                    margin="normal"
+                    {...register("telefono", {
+                      required: true,
+                      pattern: /^[0-9]{10}$/, // Asumiendo que el teléfono tiene 10 dígitos
+                    })}
+                    error={!!errors.telefono}
+                    helperText={
+                      errors.telefono?.type === "required"
+                        ? "Campo obligatorio"
+                        : errors.telefono?.type === "pattern"
+                        ? "Ingrese un número de teléfono válido"
+                        : ""
+                    }
+                  />
+                  <TextField
+                    fullWidth
+                    name="instagram"
+                    type="text"
+                    placeholder="Instagram"
+                    autoComplete="off"
+                    label="Instagram"
+                    margin="normal"
+                    {...register("instagram")}
+                  />
+                  <TextField
+                    fullWidth
+                    name="facebook"
+                    type="text"
+                    placeholder="Facebook"
+                    autoComplete="off"
+                    label="Facebook"
+                    margin="normal"
+                    {...register("facebook")}
+                  />
+                </Grid>
+                <Grid item xs={12}>
                   <FiltroRubros
                     sx={{ width: "100%" }}
                     rubros={rubros}
                     setRubros={setRubros}
                   />
-                </Grid>
-                <Grid item xs={6}>
                   <TextField
                     fullWidth
                     required
@@ -283,7 +330,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                     autoComplete="off"
                     label="Descripcion"
                     multiline
-                    rows={11}
+                    rows={3}
                     margin="normal"
                     {...register("descripcion", {
                       required: true,
