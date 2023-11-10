@@ -60,8 +60,8 @@ export function ProfesionalPage() {
                     </Grid>
                 </Grid>
             </Box>
-            <Grid container spacing={2}>
-                <Grid item container spacing={2}>
+            <Grid container spacing={2} bgcolor="#9cc4e4">
+                <Grid item container spacing={2} mt={2}>
                     {profesionales.length > 0 ? (
                         <CardProfesional profesionales={profesionales} />
                     ) : (
