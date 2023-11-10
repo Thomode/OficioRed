@@ -26,7 +26,7 @@ function HomeAdmin() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "300px",
-        width: "450px",
+        width: "410px",
         margin: "20px"
     };
 
@@ -42,6 +42,15 @@ function HomeAdmin() {
         color: "#555",
     };
 
+    const titleStyle2 = {
+        fontSize: '80px',
+        fontWeight: 'bold',
+        color: '#1b325f',
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+        WebkitTextStroke: '2px white',
+        MozTextStroke: '2px white',
+    };
+
     useEffect(() => {
         usuarioService.getDashboard()
             .then((data) => setDashboardData(data))
@@ -51,7 +60,9 @@ function HomeAdmin() {
 
     return (
         <Container style={{ padding: "20px", backgroundColor: "#9cc4e4", minHeight: "100vh" }}>
-            <h1 style={{ textAlign: "center" }}>Dashboard</h1>
+            <Typography variant="h2" sx={titleStyle2}>
+                Panel Admin
+            </Typography>
             <Grid container spacing={3} justifyContent="center">
                 <Grid item xs={12} sm={8} md={3}>
                     <Card sx={cardStyle}>

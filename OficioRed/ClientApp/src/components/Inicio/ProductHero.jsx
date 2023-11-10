@@ -25,7 +25,7 @@ const containerStyle = {
 const overlayStyle = {
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     padding: '20px',
-    borderRadius: '10px',
+    borderRadius: '20px',
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',
