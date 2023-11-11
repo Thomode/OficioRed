@@ -11,6 +11,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import imagenFondo from "../assets/armarios-formas-geometricas.jpg"
 
 export function ProfesionalPage() {
+    const [rubros, setRubros] = useState([]);
     const handleSearch = async () => {
         const data = await profesionalService.getAll(); // Obtén todos los usuarios
         console.log(data);
@@ -63,7 +64,9 @@ export function ProfesionalPage() {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <FiltroRubros />
+                        <FiltroRubros
+                            rubros={rubros}
+                            setRubros={setRubros} />
                     </Grid>
                 </Grid>
             </Box>

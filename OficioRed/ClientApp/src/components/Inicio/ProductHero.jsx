@@ -3,9 +3,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';  // Agregado para utilizar el componente Box
+import Box from '@mui/material/Box';
 import fondoInicio from '../../assets/arregloHogar.jpeg';
 import { useNavigate } from 'react-router-dom';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 
 const backgroundImage = fondoInicio;
 
@@ -54,12 +55,17 @@ const contentStyle = {
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
 };
 
+const arrowDownStyle = {
+    fontSize: '6em',
+    animation: 'bounce 2s infinite', // Agrega la animación 'bounce' de 2 segundos en bucle
+};
+
 export default function ProductHero() {
     const navigate = useNavigate()
     return (
         <Paper style={containerStyle}>
             <Container maxWidth="md">
-                <Box sx={overlayStyle}> 
+                <Box sx={overlayStyle}>
                     <Typography variant="h2" sx={titleStyle}>
                         OFICIORED
                     </Typography>
@@ -76,6 +82,7 @@ export default function ProductHero() {
                     </Button>
                 </Box>
             </Container>
+            <KeyboardDoubleArrowDownIcon style={arrowDownStyle}></KeyboardDoubleArrowDownIcon>
         </Paper>
     );
 }
