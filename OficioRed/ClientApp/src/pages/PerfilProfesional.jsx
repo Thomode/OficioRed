@@ -16,6 +16,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import imagendefault from "../assets/fotodefault.webp";
 import { contactoService } from "../services/contacto.service";
+import imagenFondo from "../assets/fondo.jpg"
+
 
 const PerfilProfesional = () => {
   const [profesional, setProfesional] = useState({});
@@ -56,11 +58,14 @@ const PerfilProfesional = () => {
   };
 
   return (
-    <Box bgcolor="#9cc4e4" minHeight="100vh" p={5}>
+      <Box minHeight="100vh" p={5} style={{
+          backgroundImage: `url(${imagenFondo})`, backgroundSize: "cover"
+      }}
+       >
       <Grid container justifyContent="center" spacing={2}>
         <Grid item xs={12} md={8}>
-          <Card>
-            <Box p={2} border="2px solid #1b325f" borderRadius="5px">
+                  <Card style={{ backgroundColor: "rgba(255, 255, 255, 0.6)" }} borderRadius="50px">
+                      <Box p={2} border="2px solid #1b325f">
               <Box
                 display="flex"
                 justifyContent="flex-start"
@@ -132,10 +137,15 @@ const PerfilProfesional = () => {
                         {instagram || "No disponible"}
                       </Typography>
                     </Box>
-                    <Box bgcolor="#1b325f" color="white" p={2}>
-                      <Typography variant="subtitle1">
-                        <strong>Facebook:</strong> {facebook || "No disponible"}
-                      </Typography>
+                    <Box
+                        bgcolor="#1b325f"
+                        color="white"
+                        p={2}
+                        borderRadius="0px 0px 20px 20px"
+                    >
+                        <Typography variant="subtitle1">
+                            <strong>Facebook:</strong> {facebook || "No disponible"}
+                        </Typography>
                     </Box>
                   </CardContent>
                   <CardActions>

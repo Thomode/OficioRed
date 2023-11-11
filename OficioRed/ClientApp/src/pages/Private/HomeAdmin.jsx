@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Card, CardContent } from "@mui/material";
 import Chart from "react-apexcharts";
 import { usuarioService } from "../../services/usuario.service";
+import imagenFondo from "../../assets/armarios-formas-geometricas.jpg"
 
 
 function HomeAdmin() {
@@ -85,7 +86,7 @@ function HomeAdmin() {
     };
 
     return (
-        <Container style={{ padding: "20px", backgroundColor: "#9cc4e4", minHeight: "100vh" }}>
+        <Container style={{ padding: "20px", backgroundImage: `url(${imagenFondo})`, backgroundSize: "cover", minHeight: "100vh" }}>
             <Typography variant="h2" sx={titleStyle2}>
                 Dashboard
             </Typography>

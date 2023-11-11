@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import imagenFondo from "../assets/armarios-formas-geometricas.jpg"
+import imagenFondo from "../assets/fondo.jpg"
 
 export function ProfesionalPage() {
     const [rubros, setRubros] = useState([]);
@@ -43,12 +43,12 @@ export function ProfesionalPage() {
         loadProfesionales();
     }, []);
     return (
-        <Container style={{ backgroundImage: `url(${imagenFondo})`, backgroundSize: "cover", minHeight: "100vh" }}>
+        <Container style={{ backgroundImage: `url(${imagenFondo})`, backgroundSize: "cover", minHeight: "100vh"}}>
             <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                bgcolor='rgba(255, 255, 255, 0.3)'
+                bgcolor='rgba(255, 255, 255, 0.6)'
                 p={2}
                 mt={0}
                 borderBottom="2px solid #1b325f"

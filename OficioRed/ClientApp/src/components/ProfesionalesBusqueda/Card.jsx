@@ -15,12 +15,14 @@ import imagendefault from "../../assets/fotodefault.webp";
 
 const cardStyle = {
   maxWidth: 345,
-  borderRadius: 10,
+    borderRadius: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.6)",
   overflow: "hidden",
   transition: "transform 0.3s ease-in-out",
   marginBottom: "20px",
-  marginLeft: "100px",
-  marginRight: "50px",
+  marginLeft: "160px",
+    marginRight: "110px",
+    border: "2px solid #1b325f",
   "&:hover": {
     transform: "scale(1.05)",
     border: "",
