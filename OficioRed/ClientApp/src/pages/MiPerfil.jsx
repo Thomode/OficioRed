@@ -20,6 +20,7 @@ import {
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import { AccountCircle, LockRounded } from "@mui/icons-material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -63,7 +64,6 @@ export const MiPerfil = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const imageRef = useRef(null);
   const [image, setImage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -114,6 +114,9 @@ export const MiPerfil = () => {
       });
     }
   };
+  const handleClick = () => {
+    navigate(`/profesionales`);
+  };
 
   return (
     <div style={backgroundStyle}>
@@ -156,11 +159,20 @@ export const MiPerfil = () => {
                   alignItems: "center",
                 }}
               >
-                <Grid container justify="center">
-                  <Grid item xs={12} sm={6} style={{ textAlign: "center" }}>
-                    <img src={logo} width={350} alt="logo" />
-                  </Grid>
-                </Grid>
+                <Button
+                  variant="text"
+                  style={{
+                    color: "#1b325f",
+                    marginRight: "8px",
+                    fontWeight: "bold",
+                  }}
+                  size="small"
+                  startIcon={<ArrowBackIcon />}
+                  onClick={() => handleClick()}
+                >
+                  Volver
+                </Button>
+
                 <Typography style={titleStyle}>Editar mi perfil</Typography>
                 {image ? (
                   <img

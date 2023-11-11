@@ -12,7 +12,7 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import imagendefault from "../../assets/fotodefault.webp";
-import { contactoService } from "../../services/contacto.service"
+import { contactoService } from "../../services/contacto.service";
 
 const cardStyle = {
   maxWidth: 345,
@@ -59,7 +59,7 @@ const CardProfesional = ({ profesionales }) => {
   };
 
   return (
-    <Grid container spacing={2} marginLeft={4} marginRight={1}>
+    <Grid container spacing={2} marginLeft={"8%"} marginRight={"2%"}>
       {profesionales.map((profesional, index) => (
         <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
           <Card sx={cardStyle}>
@@ -87,9 +87,7 @@ const CardProfesional = ({ profesionales }) => {
                     size="small"
                     style={{ backgroundColor: "#1b325f", color: "white" }}
                     sx={buttonStyle}
-                    onClick={() =>
-                      handleContactar(profesional.idContacto)
-                    }
+                    onClick={() => handleContactar(profesional.idContacto)}
                   >
                     CONTACTAR
                   </Button>
