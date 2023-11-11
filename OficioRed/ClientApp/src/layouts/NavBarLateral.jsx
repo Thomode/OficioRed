@@ -209,7 +209,13 @@ export function NavBarLateral({ children, type, logout }) {
   };
 
   const [fotoPerfil, setFotoPerfil] = React.useState("");
-
+  const imageStyle = {
+    borderRadius: "50%",
+    border: "1px solid #1b325f",
+    width: "100px",
+    height: "100px",
+    objectFit: "cover",
+  };
   React.useEffect(() => {
     const obtenerFotoPerfil = async () => {
       const fotoPerfilUrl = await infoPerfil();
@@ -254,10 +260,11 @@ export function NavBarLateral({ children, type, logout }) {
                 src={fotoPerfil || imagendefault}
                 alt="Perfil"
                 style={{
-                  width: 50,
-                  height: 50,
                   borderRadius: "50%",
-                  border: "2px solid white",
+                  border: "0.5px solid black",
+                  width: "50px",
+                  height: "50px",
+                  objectFit: "cover",
                 }}
               />
             </IconButton>
