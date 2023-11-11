@@ -11,6 +11,7 @@ import {
   Box,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import imagendefault from "../assets/fotodefault.webp";
@@ -49,6 +50,9 @@ const PerfilProfesional = () => {
 
   const handleClick = () => {
     navigate(`/profesionales`);
+  };
+  const handleClickComments = (id) => {
+    navigate(`/${id}/PerfilProfesional/Comentarios`);
   };
 
   return (
@@ -128,12 +132,7 @@ const PerfilProfesional = () => {
                         {instagram || "No disponible"}
                       </Typography>
                     </Box>
-                    <Box
-                      bgcolor="#1b325f"
-                      color="white"
-                      p={2}
-                      borderRadius="20px 20px 0 0"
-                    >
+                    <Box bgcolor="#1b325f" color="white" p={2}>
                       <Typography variant="subtitle1">
                         <strong>Facebook:</strong> {facebook || "No disponible"}
                       </Typography>
@@ -163,6 +162,19 @@ const PerfilProfesional = () => {
                         endIcon={<FavoriteIcon />}
                       >
                         Agregar a Favoritos
+                      </Button>
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "#1b325f",
+                          color: "white",
+                          margin: "5px",
+                        }}
+                        size="small"
+                        endIcon={<CommentIcon />}
+                        onClick={() => handleClickComments(id)}
+                      >
+                        Comentarios
                       </Button>
                     </Box>
                   </CardActions>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
 import { CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
-import backgroundImage from './assets/armarios-formas-geometricas.jpg';
 import { NavBarLateral } from './layouts/NavBarLateral';
 import HomePage from "./pages/Private/HomePage";
 import { SignupPage } from "./pages/SignupPage";
@@ -17,6 +16,8 @@ import { ProtectedRoute } from './utilities/ProtectedRoute';
 import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx'
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
 import HomeAdmin from "./pages/Private/HomeAdmin";
+import Comments from './pages/Comments/Comments.jsx';
+import "./index.css";
 
 const theme = createTheme();
 
@@ -68,6 +69,14 @@ const clientRoutes = [
         path: '/:id/PerfilProfesional',
         element: <PerfilProfesional />
     },
+    {
+        path: '/:id/PerfilProfesional/Comentarios',
+        element: <Comments
+        commentsUrl="http://localhost:3004/comments"
+        currentUserId="1"
+      />
+        
+    }
 ]
 
 const getAcceso = () => {

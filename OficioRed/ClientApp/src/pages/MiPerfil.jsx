@@ -1,237 +1,261 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { usuarioService } from "../services/usuario.service";
-import {
-  Grid,
-  Card,
-  Typography,
-  CardContent,
-  TextField,
-  Button,
-  Paper,
-  Box,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
+import React, { useState, useRef } from "react";
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
-import { LockRounded } from "@mui/icons-material";
-import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
-import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
+import { useNavigate } from "react-router-dom";
+import { interesadoService } from "../services/interesado.service";
+import { useSnackbar } from "notistack";
+import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
+import logo from "../assets/Logo1_Recorte.png";
+import imagenDefault from "../assets/profile.png";
 
-const styles = {
-  card: {
-    borderRadius: "10px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-    backgroundColor: "white",
-    padding: "1rem",
-  },
-  title: {
-    background: "#f0f0f0",
-  },
+const titleStyle = {
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  color: "#1B325F",
+  textAlign: "center",
+  marginBottom: "20px",
+};
+
+const imageStyle = {
+  borderRadius: "50%",
+  border: "1px solid #1b325f",
+  width: "100px",
+  height: "100px",
+  objectFit: "cover",
+};
+
+const backgroundStyle = {
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 export const MiPerfil = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
   const navigate = useNavigate();
-  const params = useParams();
-  const [editing, setEditing] = useState(false);
+
   const {
     register,
+    handleSubmit,
     formState: { errors },
   } = useForm();
-  const [usuario, setUsuario] = useState({
-    user: "",
-    password: "",
-  });
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
-  useEffect(() => {
-    const loadUsuario = async () => {
-      if (params.id) {
-        try {
-          const data = await handleGet(params.id);
-          if (data) {
-            setUsuario(data);
-            setEditing(true);
-          }
-        } catch (error) {
-          console.error("Error al obtener los datos:", error);
-        }
-      }
-    };
-    loadUsuario();
-  }, [params.id]);
+  const imageRef = useRef(null);
+  const [image, setImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleGet = async () => {
-    const id = usuarioService.getId();
-    try {
-      const response = await usuarioService.get(Number(id));
-      return response.data;
-    } catch (error) {
-      console.error("Error al obtener el usuario:", error);
-      return null;
+  const fileSelectedHandler = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setImage(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
+  const { enqueueSnackbar } = useSnackbar();
 
+  const onSubmit = async (data) => {
+    console.log(data);
     try {
-      const id = usuarioService.getId();
-      console.log("Actualizando usuario:", usuario);
-      await usuarioService.updateUser(id, usuario.user, usuario.password);
-      console.log("Usuario actualizado con éxito");
-      setSuccessMessage("Usuario actualizado con éxito");
+      const res = await interesadoService.registerInteresado(
+        data.nombre,
+        data.apellido,
+        data.email
+      );
+      const res2 = await interesadoService.imageUpload(selectedFile);
 
       navigate("/home");
+      enqueueSnackbar("Registro exitoso", {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
+      });
     } catch (error) {
-      setErrorMessage("Error al guardar el usuario");
-      console.error("Error al guardar el usuario:", error);
+      enqueueSnackbar(error.response.data, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        autoHideDuration: 2000,
+      });
     }
-  };
-
-  const handleCancelar = () => {
-    navigate("/home");
-  };
-
-  const handleChange = (e) => {
-    setUsuario({ ...usuario, [e.target.name]: e.target.value });
   };
 
   return (
-    <Grid
-      container
-      alignItems="center"
-      justifyContent="center"
-      style={{ height: "100vh" }}
-    >
-      <Grid item xs={12} sm={8} md={6} lg={4}>
-        <Card elevation={5} sx={styles.card}>
-          <Typography
-            variant="h4"
-            align="center"
-            color="#1b325f"
-            gutterBottom
-            sx={styles.title}
-          >
-            Mi Perfil
-          </Typography>
-          <CardContent>
-            <Paper elevation={3} style={{ padding: "20px", margin: "20px 0" }}>
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  variant="outlined"
-                  label="Usuario"
-                  fullWidth
-                  margin="normal"
-                  name="user"
-                  value={usuario.user}
-                  onChange={handleChange}
-                  required
+    <div style={backgroundStyle}>
+      <Grid container style={{ justifyContent: "center" }}>
+        <Grid
+          container
+          item
+          xs={12}
+          md={6}
+          sm={3}
+          alignItems="center"
+          direction="column"
+          justifyContent="space-between"
+          style={{ padding: 10 }}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box
+              display="flex"
+              flexDirection={"column"}
+              maxWidth={400}
+              minWidth={300}
+              alignItems="center"
+              justifyContent={"center"}
+              margin="auto"
+              marginTop={5}
+              padding={3}
+              borderRadius={5}
+              boxShadow={"5px 5px 10px #ccc"}
+              sx={{
+                ":hover": {
+                  boxShadow: "10px 10px 20px #ccc",
+                },
+                backgroundColor: "white",
+              }}
+            >
+              <Grid container justify="center">
+                <img src={logo} width={350} alt="logo" />
+              </Grid>
+              <Typography style={titleStyle}>Editar mi perfil</Typography>
+
+              {image ? (
+                <img
+                  src={image}
+                  alt="Vista previa de la imagen"
+                  style={imageStyle}
                 />
-
-                <TextField
-                  fullWidth
-                  required
-                  name="password"
-                  placeholder="Contraseña"
-                  autoComplete="off"
-                  type={showPassword ? "text" : "password"}
-                  label="Contraseña"
-                  margin="normal"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <LockRounded />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={togglePasswordVisibility}
-                          edge="end"
-                        >
-                          {showPassword ? (
-                            <RemoveRedEyeRoundedIcon fontSize="small" />
-                          ) : (
-                            <VisibilityOffRoundedIcon fontSize="small" />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  {...register("password", {
-                    required: true,
-                    minLength: 2,
-                    maxLength: 15,
-                    pattern:
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
-                  })}
-                  error={!!errors.password}
-                  helperText={
-                    errors.password?.type === "required"
-                      ? "Campo obligatorio"
-                      : errors.password?.type === "minLength"
-                      ? "Mínimo 2 caracteres"
-                      : errors.password?.type === "maxLength"
-                      ? "Máximo 15 caracteres"
-                      : errors.password?.type === "pattern"
-                      ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                      : ""
-                  }
+              ) : (
+                <img
+                  src={imagenDefault}
+                  alt="Imagen por defecto"
+                  style={imageStyle}
                 />
+              )}
+              <Button
+                variant="outlined"
+                component="label"
+                fullWidth
+                style={{ marginTop: "10px" }}
+              >
+                Cambiar Foto de Perfil
+                <input
+                  type="file"
+                  style={{ display: "none", color: "black" }}
+                  onChange={fileSelectedHandler}
+                  name="fotoPerfil"
+                />
+              </Button>
+              <TextField
+                fullWidth
+                required
+                name="nombre"
+                type={"text"}
+                placeholder="Nombre"
+                autoComplete="off"
+                label="Nombre"
+                margin="normal"
+                {...register("nombre", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                })}
+                error={!!errors.nombre}
+                helperText={
+                  errors.nombre?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.nombre?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.nombre?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.apellido?.type === "pattern"
+                    ? "Solo se permiten letras y espacios"
+                    : ""
+                }
+              />
+              <TextField
+                fullWidth
+                required
+                name="apellido"
+                type={"text"}
+                placeholder="Apellido"
+                autoComplete="off"
+                label="Apellido"
+                margin="normal"
+                {...register("apellido", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                })}
+                error={!!errors.apellido}
+                helperText={
+                  errors.apellido?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.apellido?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.apellido?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.apellido?.type === "pattern"
+                    ? "Solo se permiten letras y espacios"
+                    : ""
+                }
+              />
 
-                <Box display="flex" justifyContent="center" marginTop="20px">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    style={{ marginRight: "10px" }}
-                  >
-                    {editing ? "Actualizar" : "Guardar"}
-                  </Button>
+              <TextField
+                fullWidth
+                required
+                name="email"
+                type={"email"}
+                placeholder="example@email.com"
+                autoComplete="off"
+                label="Email"
+                margin="normal"
+                {...register("email", {
+                  required: true,
+                  pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
+                })}
+                error={!!errors.email}
+                helperText={
+                  errors.email?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.email?.type === "pattern"
+                    ? "Coloque un email válido"
+                    : ""
+                }
+              />
 
-                  <Button
-                    variant="contained"
-                    color="error"
-                    type="button"
-                    onClick={handleCancelar}
-                  >
-                    Cancelar
-                  </Button>
-                </Box>
-
-                {errorMessage && (
-                  <Typography
-                    variant="body2"
-                    color="error"
-                    style={{ marginTop: "10px" }}
-                  >
-                    {errorMessage}
-                  </Typography>
-                )}
-
-                {successMessage && (
-                  <Typography
-                    variant="body2"
-                    color="success"
-                    style={{ marginTop: "10px" }}
-                  >
-                    {successMessage}
-                  </Typography>
-                )}
-              </form>
-            </Paper>
-          </CardContent>
-        </Card>
+              <div style={{ height: 20 }} />
+              <Button
+                endIcon={<HowToRegOutlinedIcon />}
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Guardar cambios
+              </Button>
+            </Box>
+          </form>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };

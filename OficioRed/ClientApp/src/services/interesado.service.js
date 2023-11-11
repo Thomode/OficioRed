@@ -1,16 +1,5 @@
 import axios from "axios";
-
-const getToken = () => {
-  const local = window.localStorage.getItem("acceso");
-  const data = JSON.parse(local);
-
-  return data?.token;
-};
-
-const token = getToken();
-const config = {
-  headers: { Authorization: token ? `Bearer ${token}` : "" },
-};
+import { sesionService } from "../auth/sesion";
 
 const registerInteresado = async (
   nombre,
@@ -19,20 +8,21 @@ const registerInteresado = async (
   idDireccion,
   fotoPerfil
 ) => {
-  console.log(config);
   const res = await axios.post("/api/Interesado",{
       nombre: nombre,
       apellido: apellido,
       email: email,
       idDireccion: null,
       fotoPerfil: "",
-    }, config);
+    }, await sesionService.getConfig())
   return res;
 };
 
 const imageUpload = async (selectedFile) => {
   const formData = new FormData();
   formData.append("archivo", selectedFile);
+
+  const config = await sesionService.getConfig()
 
   const res = await axios
     .post("/api/Interesado/upload", formData, {

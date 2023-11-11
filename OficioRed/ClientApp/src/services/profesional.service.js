@@ -2,7 +2,6 @@ import axios from "axios"
 import { sesionService } from "../auth/sesion";
 
 const registerProfesional = async (nombre, apellido, email, descripcion) => {
-  console.log(await sesionService.getConfig())
   const res = await axios.post('/api/Profesional', {
     nombre: nombre,
     apellido: apellido,

@@ -317,6 +317,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                 </Grid>
                 <Grid item xs={12}>
                   <FiltroRubros
+                    label="Rubros"
                     sx={{ width: "100%" }}
                     rubros={rubros}
                     setRubros={setRubros}
