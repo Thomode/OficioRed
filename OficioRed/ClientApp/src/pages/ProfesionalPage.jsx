@@ -13,7 +13,7 @@ import imagenFondo from "../assets/fondo.jpg"
 export function ProfesionalPage() {
     const [rubros, setRubros] = useState([]);
     const handleSearch = async () => {
-        const data = await profesionalService.getAll(); // Obtén todos los usuarios
+        const data = await profesionalService.getAll(); // Obtï¿½n todos los usuarios
         console.log(data);
         const filteredProfesionales = data.filter((profesional) => {
             const nombreEnMinusculas = profesional.nombre.toLowerCase();
@@ -25,9 +25,9 @@ export function ProfesionalPage() {
                 apellidoEnMinusculas.includes(searchValueEnMinusculas) ||
                 (nombreEnMinusculas + " " + apellidoEnMinusculas).includes(searchValueEnMinusculas)
             );
-        }); // Filtra los usuarios basados en el texto de búsqueda
+        }); // Filtra los usuarios basados en el texto de bï¿½squeda
 
-        setProfesionales(filteredProfesionales); // Actualiza la lista de usuarios con el resultado de la búsqueda
+        setProfesionales(filteredProfesionales); // Actualiza la lista de usuarios con el resultado de la bï¿½squeda
     };
     const [profesionales, setProfesionales] = useState([]);
     const [searchValue, setSearchValue] = useState("");
@@ -52,8 +52,7 @@ export function ProfesionalPage() {
                 p={2}
                 mt={0}
                 borderBottom="2px solid #1b325f"
-                borderRadius="50px"
-
+                borderRadius="0px 0px 50px 50px"
             >
                 <Grid>
                     <Grid item xs={12} mt={2}>

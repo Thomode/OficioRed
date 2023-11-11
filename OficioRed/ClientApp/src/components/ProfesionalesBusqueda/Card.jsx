@@ -1,4 +1,4 @@
-﻿import { useNavigate} from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardMedia,
@@ -16,14 +16,12 @@ import { contactoService } from "../../services/contacto.service"
 
 const cardStyle = {
   maxWidth: 345,
-    borderRadius: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
+  borderRadius: 10,
+  backgroundColor: "rgba(255, 255, 255, 0.6)",
   overflow: "hidden",
   transition: "transform 0.3s ease-in-out",
   marginBottom: "20px",
-  marginLeft: "160px",
-  marginRight: "110px",
-    border: "2px solid #1b325f",
+  border: "2px solid #1b325f",
   "&:hover": {
     transform: "scale(1.05)",
     border: "",
@@ -38,28 +36,30 @@ const CardProfesional = ({ profesionales }) => {
   const navigate = useNavigate();
   const handleLeerMasClick = (id) => {
     navigate(`/${id}/PerfilProfesional`);
-    };
+  };
 
-    const handleContactar = async (idContacto) => {
-        try {
-            const res = await contactoService.getById(idContacto);
-            console.log(res.data);
+  const handleContactar = async (idContacto) => {
+    try {
+      const res = await contactoService.getById(idContacto);
+      console.log(res.data);
 
-            if (res.data.telefono) {
-                const url = `https://api.whatsapp.com/send?phone=${res.data.telefono}`;
-                window.open(url, '_blank');
-            } else {
-                console.error('El número de teléfono no está definido en el objeto de contacto.');
-                // Puedes mostrar un mensaje de error o tomar alguna otra acción apropiada.
-            }
-        } catch (error) {
-            console.error('Error al obtener el contacto:', error);
-            // Puedes mostrar un mensaje de error o tomar alguna otra acción apropiada.
-        }
-    };
+      if (res.data.telefono) {
+        const url = `https://wa.me/+549${res.data.telefono}`;
+        window.open(url, "_blank");
+      } else {
+        console.error(
+          "El numero de telefono no esta definido en el objeto de contacto."
+        );
+        // Puedes mostrar un mensaje de error o tomar alguna otra acci�n apropiada.
+      }
+    } catch (error) {
+      console.error("Error al obtener el contacto:", error);
+      // Puedes mostrar un mensaje de error o tomar alguna otra acci�n apropiada.
+    }
+  };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} marginLeft={4} marginRight={1}>
       {profesionales.map((profesional, index) => (
         <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
           <Card sx={cardStyle}>
@@ -88,7 +88,7 @@ const CardProfesional = ({ profesionales }) => {
                     style={{ backgroundColor: "#1b325f", color: "white" }}
                     sx={buttonStyle}
                     onClick={() =>
-                        handleContactar(profesional.idContacto)
+                      handleContactar(profesional.idContacto)
                     }
                   >
                     CONTACTAR

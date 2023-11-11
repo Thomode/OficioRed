@@ -61,8 +61,7 @@ const PerfilProfesional = () => {
       console.log(res.data);
 
       if (res.data.telefono) {
-        //const url = `https://api.whatsapp.com/send?phone=549${res.data.telefono}`;
-        const url = `https://wa.me/+549${res.data.telefono}/?text=urlencodedtext`;
+        const url = `https://wa.me/+549${res.data.telefono}`;
         window.open(url, "_blank");
       } else {
         console.error(

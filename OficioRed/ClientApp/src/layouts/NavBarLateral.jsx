@@ -293,9 +293,9 @@ export function NavBarLateral({ children, type, logout }) {
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>
             {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
+              <ChevronRightIcon sx={{ color: "#FFFFFF" }}  />
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon  sx={{ color: "#FFFFFF" }}  />
             )}
           </IconButton>
         </DrawerHeader>
