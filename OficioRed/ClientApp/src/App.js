@@ -101,7 +101,7 @@ export function App() {
 
         if (acceso) {
             if (acceso.idRol === 2) {
-                navigate("/admin/usuarios")
+                navigate("/admin/home")
             }
             else {
                 navigate("/home")

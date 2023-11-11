@@ -46,7 +46,7 @@ public class AccesoService: IAccesoService
         {
             if (usuario.Password != loginDto.Password)
             {
-                throw new AppException("Password incorrecta");
+                throw new AppException("Contraseña incorrecta");
             }
             return usuario;
         }
@@ -120,7 +120,7 @@ public class AccesoService: IAccesoService
 
         if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, usuario.Password))
         {
-            throw new Exception("Password incorrecta");
+            throw new Exception("Contraseña incorrecta");
         }
 
         // Crear el token

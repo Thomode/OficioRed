@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from "react";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
+import React, { useEffect } from "react";
 import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-export const FiltroRubros = ({rubros, setRubros}) => {
+export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
   const getRubros = async () => {
     try {
       const res = await axios.get("/api/Rubro");
       const rubrosLoad = res.data.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
-        seleccionado: false,
+        seleccionado: seleccionado,
       }));
       return rubrosLoad;
     } catch (error) {
@@ -43,54 +28,51 @@ export const FiltroRubros = ({rubros, setRubros}) => {
     loadRubros();
   }, []);
 
-  const handleSelectChange = (event) => {
-    const selectedRubroIds = event.target.value;
+  const handleCheckboxChange = (rubroId) => {
     setRubros((prevRubros) =>
-      prevRubros.map((rubro) => ({
-        ...rubro,
-        seleccionado: selectedRubroIds.includes(rubro.idRubro),
-      }))
+      prevRubros.map((rubro) =>
+        rubro.idRubro === rubroId
+          ? { ...rubro, seleccionado: !rubro.seleccionado }
+          : rubro
+      )
+    );
+  };
+
+  const handleSelectAllChange = (checked) => {
+    setRubros((prevRubros) =>
+      prevRubros.map((rubro) => ({ ...rubro, seleccionado: checked }))
     );
   };
 
   return (
     <div>
-      <FormControl
-        sx={{
-          m: 1,
-          width: { xs: "100%", sm: "100%" },
-          paddingRight: { xs: 0, sm: 0 },
-          marginLeft: { xs: 0, sm: 0 },
-        }}
-      >
-        <InputLabel sx={{ color: "#1b325f" }} >Rubros</InputLabel>
-              <Select
-          label = "Rubros"
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
-          multiple
-          value={rubros && rubros
-            .filter((rubro) => rubro.seleccionado)
-            .map((rubro) => rubro.idRubro)}
-          onChange={handleSelectChange}
-          renderValue={(selected) =>
-            selected && selected
-              .map(
-                (rubroId) =>
-                  rubros.find((rubro) => rubro.idRubro === rubroId).nombre
-              )
-              .join(", ")
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <FormControlLabel
+          style={{ marginLeft: 0, fontWeight: "bold" }}
+          control={
+            <Checkbox
+              checked={
+                rubros.length > 0 && rubros.every((rubro) => rubro.seleccionado)
+              }
+              onChange={(event) => handleSelectAllChange(event.target.checked)}
+            />
           }
-          MenuProps={MenuProps}
-        >
-          {rubros && rubros.map((rubro) => (
-            <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
-              <Checkbox checked={rubro.seleccionado} />
-              <ListItemText primary={rubro.nombre} />
-            </MenuItem>
+          label="Todos"
+        />
+        {rubros &&
+          rubros.map((rubro) => (
+            <FormControlLabel
+              key={rubro.idRubro}
+              control={
+                <Checkbox
+                  checked={rubro.seleccionado}
+                  onChange={() => handleCheckboxChange(rubro.idRubro)}
+                />
+              }
+              label={rubro.nombre}
+            />
           ))}
-        </Select>
-      </FormControl>
+      </div>
     </div>
   );
 };

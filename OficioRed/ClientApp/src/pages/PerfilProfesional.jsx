@@ -67,11 +67,9 @@ const PerfilProfesional = () => {
         console.error(
           "El numero de telefono no esta definido en el objeto de contacto."
         );
-        // Puedes mostrar un mensaje de error o tomar alguna otra acci�n apropiada.
       }
     } catch (error) {
       console.error("Error al obtener el contacto:", error);
-      // Puedes mostrar un mensaje de error o tomar alguna otra acci�n apropiada.
     }
   };
 
@@ -127,12 +125,15 @@ const PerfilProfesional = () => {
                 <Grid item xs={12} md={6}>
                   <CardContent>
                     <Box
-                      bgcolor="#1b325f"
+                      bgcolor="#21406e"
                       color="white"
                       p={2}
                       borderRadius="20px 20px 0 0"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
                     >
-                      <Typography variant="h4">
+                      <Typography variant="h4" style={{ textAlign: "center" }}>
                         {`${profesional.nombre} ${profesional.apellido}`}
                       </Typography>
                     </Box>
@@ -156,14 +157,14 @@ const PerfilProfesional = () => {
                         <strong>Email:</strong> {profesional.email}
                       </Typography>
                     </Box>
-                    <Box bgcolor="#21406e" color="white" p={2}>
+                    <Box bgcolor="#1b325f" color="white" p={2}>
                       <Typography variant="subtitle1">
                         <strong>Instagram:</strong>{" "}
                         {instagram || "No disponible"}
                       </Typography>
                     </Box>
                     <Box
-                      bgcolor="#1b325f"
+                      bgcolor="#21406e"
                       color="white"
                       p={2}
                       borderRadius="0px 0px 20px 20px"

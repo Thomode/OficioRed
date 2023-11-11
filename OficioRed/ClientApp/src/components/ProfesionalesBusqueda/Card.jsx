@@ -50,11 +50,9 @@ const CardProfesional = ({ profesionales }) => {
         console.error(
           "El numero de telefono no esta definido en el objeto de contacto."
         );
-        // Puedes mostrar un mensaje de error o tomar alguna otra acci�n apropiada.
       }
     } catch (error) {
       console.error("Error al obtener el contacto:", error);
-      // Puedes mostrar un mensaje de error o tomar alguna otra acci�n apropiada.
     }
   };
 

@@ -63,7 +63,7 @@ export const LoginPage = ({ setAcceso }) => {
       setAcceso(res.data);
 
       if (res.data.idRol === 2) {
-        navigate("/admin/usuarios", { replace: true });
+        navigate("/admin/home", { replace: true });
       } else {
         navigate("/home", { replace: true });
       }

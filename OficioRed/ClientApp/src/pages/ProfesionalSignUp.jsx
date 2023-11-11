@@ -321,6 +321,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                     sx={{ width: "100%" }}
                     rubros={rubros}
                     setRubros={setRubros}
+                    seleccionado={false}
                   />
                   <TextField
                     fullWidth
