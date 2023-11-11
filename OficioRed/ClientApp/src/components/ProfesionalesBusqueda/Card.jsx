@@ -1,4 +1,4 @@
-﻿import { useNavigate } from "react-router-dom";
+﻿import { useNavigate} from "react-router-dom";
 import {
   Card,
   CardMedia,
@@ -12,6 +12,7 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import imagendefault from "../../assets/fotodefault.webp";
+import { contactoService } from "../../services/contacto.service"
 
 const cardStyle = {
   maxWidth: 345,
@@ -21,7 +22,7 @@ const cardStyle = {
   transition: "transform 0.3s ease-in-out",
   marginBottom: "20px",
   marginLeft: "160px",
-    marginRight: "110px",
+  marginRight: "110px",
     border: "2px solid #1b325f",
   "&:hover": {
     transform: "scale(1.05)",
@@ -37,7 +38,26 @@ const CardProfesional = ({ profesionales }) => {
   const navigate = useNavigate();
   const handleLeerMasClick = (id) => {
     navigate(`/${id}/PerfilProfesional`);
-  };
+    };
+
+    const handleContactar = async (idContacto) => {
+        try {
+            const res = await contactoService.getById(idContacto);
+            console.log(res.data);
+
+            if (res.data.telefono) {
+                const url = `https://api.whatsapp.com/send?phone=${res.data.telefono}`;
+                window.open(url, '_blank');
+            } else {
+                console.error('El número de teléfono no está definido en el objeto de contacto.');
+                // Puedes mostrar un mensaje de error o tomar alguna otra acción apropiada.
+            }
+        } catch (error) {
+            console.error('Error al obtener el contacto:', error);
+            // Puedes mostrar un mensaje de error o tomar alguna otra acción apropiada.
+        }
+    };
+
   return (
     <Grid container spacing={2}>
       {profesionales.map((profesional, index) => (
@@ -67,6 +87,9 @@ const CardProfesional = ({ profesionales }) => {
                     size="small"
                     style={{ backgroundColor: "#1b325f", color: "white" }}
                     sx={buttonStyle}
+                    onClick={() =>
+                        handleContactar(profesional.idContacto)
+                    }
                   >
                     CONTACTAR
                   </Button>

@@ -1,8 +1,8 @@
 import axios from "axios"
 
-const get = async (id) =>
+const getById = async (id) =>
     await axios.get(`/api/Contacto/${id}`)
 
 export const contactoService = {
-    get
+    getById
 }
