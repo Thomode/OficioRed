@@ -209,7 +209,7 @@ const PerfilProfesional = () => {
                       borderRadius="0px 0px 20px 20px"
                     >
                       <Typography variant="subtitle1">
-                        <strong>Facebook: </strong>{" "}
+                        <strong>Facebook: </strong>
                         {facebook || "No disponible"}
                       </Typography>
                     </Box>
