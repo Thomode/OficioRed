@@ -26,7 +26,7 @@ function HomeAdmin() {
 
     const chartOptions = {
         labels: ["Administradores", "Profesionales", "Interesados"],
-        colors: ["#1b325f", "#9cc4e4", "#aad4e3"],
+        colors: ["#1b325f", "#3a89c9", "#f26c4f"],
         legend: {
             show: true,
             position: "bottom",
