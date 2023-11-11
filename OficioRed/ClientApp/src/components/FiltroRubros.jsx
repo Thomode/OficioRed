@@ -63,8 +63,9 @@ export const FiltroRubros = ({rubros, setRubros}) => {
           marginLeft: { xs: 0, sm: 0 },
         }}
       >
-        <InputLabel>Rubros</InputLabel>
-        <Select
+        <InputLabel sx={{ color: "#1b325f" }} >Rubros</InputLabel>
+              <Select
+          label = "Rubros"
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple

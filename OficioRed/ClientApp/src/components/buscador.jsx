@@ -8,12 +8,11 @@ function Buscador({ searchValue, setSearchValue, handleSearch }) {
       <Grid item xs={6}>
         <TextField
           variant="outlined"
-          placeholder="Buscar usuario"
+          placeholder="Buscar"
           fullWidth
           size="small"
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          style={{ backgroundColor: "white" }}
+                  onChange={(e) => setSearchValue(e.target.value)}
         />
       </Grid>
       <Grid item>

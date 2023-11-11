@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import imagenFondo from "../assets/armarios-formas-geometricas.jpg"
+
 export function ProfesionalPage() {
     const handleSearch = async () => {
         const data = await profesionalService.getAll(); // Obtén todos los usuarios
@@ -40,17 +42,20 @@ export function ProfesionalPage() {
         loadProfesionales();
     }, []);
     return (
-        <Container style={{ backgroundColor: "#9cc4e4", minHeight: "100vh" }}>
+        <Container style={{ backgroundImage: `url(${imagenFondo})`, backgroundSize: "cover", minHeight: "100vh" }}>
             <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                bgcolor="white"
+                bgcolor='rgba(255, 255, 255, 0.3)'
                 p={2}
                 mt={0}
+                borderBottom="2px solid #1b325f"
+                borderRadius="50px"
+
             >
                 <Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} mt={2}>
                         <Buscador
                             searchValue={searchValue}
                             setSearchValue={setSearchValue}
