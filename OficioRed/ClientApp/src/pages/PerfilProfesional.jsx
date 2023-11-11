@@ -17,11 +17,15 @@ import axios from "axios";
 import imagendefault from "../assets/fotodefault.webp";
 import { contactoService } from "../services/contacto.service";
 import imagenFondo from "../assets/fondo.jpg";
+import fotofb from "../assets/facebook.png";
+import fotoig from "../assets/instagram.png";
+import whatsapp from "../assets/whatsapp.png";
 
 const PerfilProfesional = () => {
   const [profesional, setProfesional] = useState({});
   const [facebook, setFacebook] = useState("");
   const [instagram, setInstagram] = useState("");
+  const [telefono, setTelefono] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -34,10 +38,11 @@ const PerfilProfesional = () => {
         const idContacto = response.data.idContacto;
         if (idContacto) {
           contactoService
-            .get(idContacto)
+            .getById(idContacto)
             .then((contactoResponse) => {
               setFacebook(contactoResponse.data.facebook || "");
               setInstagram(contactoResponse.data.instagram || "");
+              setTelefono(contactoResponse.data.telefono || "");
             })
             .catch((error) => {
               console.error("Error fetching contacto data", error);
@@ -121,6 +126,34 @@ const PerfilProfesional = () => {
                       border: "2px solid #1b325f",
                     }}
                   />
+                  <Box
+                    display="flex"
+                    justifyContent="space-evenly"
+                    alignItems="center"
+                    mt={2}
+                  >
+                    <img
+                      src={fotofb}
+                      alt="facebook"
+                      style={{
+                        width: "60px",
+                      }}
+                    />
+                    <img
+                      src={fotoig}
+                      alt="instagram"
+                      style={{
+                        width: "60px",
+                      }}
+                    />
+                    <img
+                      src={whatsapp}
+                      alt="whatsapp"
+                      style={{
+                        width: "60px",
+                      }}
+                    />
+                  </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <CardContent>
@@ -139,38 +172,45 @@ const PerfilProfesional = () => {
                     </Box>
                     <Box bgcolor="#1b325f" color="white" p={2}>
                       <Typography variant="subtitle1">
-                        <strong>Nombre:</strong> {profesional.nombre}
+                        <strong>Nombre: </strong> {profesional.nombre}
                       </Typography>
                     </Box>
                     <Box bgcolor="#21406e" color="white" p={2}>
                       <Typography variant="subtitle1">
-                        <strong>Apellido:</strong> {profesional.apellido}
+                        <strong>Apellido: </strong> {profesional.apellido}
                       </Typography>
                     </Box>
                     <Box bgcolor="#1b325f" color="white" p={2}>
                       <Typography variant="subtitle1">
-                        <strong>Descripcion:</strong> {profesional.descripcion}
+                        <strong>Descripcion: </strong> {profesional.descripcion}
                       </Typography>
                     </Box>
                     <Box bgcolor="#21406e" color="white" p={2}>
                       <Typography variant="subtitle1">
-                        <strong>Email:</strong> {profesional.email}
+                        <strong>Email: </strong> {profesional.email}
                       </Typography>
                     </Box>
                     <Box bgcolor="#1b325f" color="white" p={2}>
                       <Typography variant="subtitle1">
-                        <strong>Instagram:</strong>{" "}
+                        <strong>Teléfono: </strong>
+                        {telefono || "No disponible"}
+                      </Typography>
+                    </Box>
+                    <Box bgcolor="#21406e" color="white" p={2}>
+                      <Typography variant="subtitle1">
+                        <strong>Instagram: </strong>
                         {instagram || "No disponible"}
                       </Typography>
                     </Box>
                     <Box
-                      bgcolor="#21406e"
+                      bgcolor="#1b325f"
                       color="white"
                       p={2}
                       borderRadius="0px 0px 20px 20px"
                     >
                       <Typography variant="subtitle1">
-                        <strong>Facebook:</strong> {facebook || "No disponible"}
+                        <strong>Facebook: </strong>{" "}
+                        {facebook || "No disponible"}
                       </Typography>
                     </Box>
                   </CardContent>

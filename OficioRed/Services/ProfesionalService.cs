@@ -270,7 +270,7 @@ namespace OficioRed.Services
                 .Select(rp => rp.IdRubroNavigation)  
                 .ToList();
 
-            return rubros;
+            return rubros.Where(e => !e.Fhbaja.HasValue).ToList();
         }
     }
 }

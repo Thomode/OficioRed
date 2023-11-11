@@ -13,6 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import imagendefault from "../../assets/fotodefault.webp";
 import { contactoService } from "../../services/contacto.service";
+import Chip from "@mui/material/Chip";
 
 const cardStyle = {
   maxWidth: 345,
@@ -64,7 +65,7 @@ const CardProfesional = ({ profesionales }) => {
             <CardMedia
               component="img"
               alt="profesional"
-              height="240"
+              height="240px"
               src={
                 profesional.fotoPerfil ? profesional.fotoPerfil : imagendefault
               }
@@ -74,7 +75,18 @@ const CardProfesional = ({ profesionales }) => {
                 {`${profesional.nombre} ${profesional.apellido}`}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {profesional.email}
+                {profesional.rubros &&
+                  profesional.rubros.map((rubro, index) => (
+                    <Chip
+                      variant="elevated"
+                      label={`${rubro.nombre} `}
+                      style={{
+                        backgroundColor: "#1b325f",
+                        color: "white",
+                        margin: "2px",
+                      }}
+                    />
+                  ))}
               </Typography>
             </CardContent>
             <CardActions>
