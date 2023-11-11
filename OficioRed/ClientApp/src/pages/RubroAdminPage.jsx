@@ -7,7 +7,7 @@ import Buscador from "../components/buscador";
 import Swal from "sweetalert2";
 
 const titleStyle2 = {
-    fontSize: '80px',
+    fontSize: '70px',
     fontWeight: 'bold',
     color: '#1b325f',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
