@@ -20,6 +20,7 @@ import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const PerfilProfesional = () => {
   const [profesional, setProfesional] = useState({});
@@ -60,7 +61,40 @@ const PerfilProfesional = () => {
   const handleClickComments = (id) => {
     navigate(`/${id}/PerfilProfesional/Comentarios`);
   };
-  const handleContactar = async (idContacto) => {
+
+  const handleClickFb = async (idContacto) => {
+    try {
+      const res = await contactoService.getById(idContacto);
+      console.log(res.data);
+
+      if (res.data.facebook) {
+        const url = `https://www.facebook.com/${res.data.facebook}`;
+        window.open(url, "_blank");
+      } else {
+        console.error("Facebook no esta definido en el objeto de contacto.");
+      }
+    } catch (error) {
+      console.error("Error al obtener el contacto:", error);
+    }
+  };
+
+  const handleClickIg = async (idContacto) => {
+    try {
+      const res = await contactoService.getById(idContacto);
+      console.log(res.data);
+
+      if (res.data.instagram) {
+        const url = `https://www.instagram.com/${res.data.instagram}`;
+        window.open(url, "_blank");
+      } else {
+        console.error("Instagram no esta definido en el objeto de contacto.");
+      }
+    } catch (error) {
+      console.error("Error al obtener el contacto:", error);
+    }
+  };
+
+  const handleClickWpp = async (idContacto) => {
     try {
       const res = await contactoService.getById(idContacto);
       console.log(res.data);
@@ -69,9 +103,7 @@ const PerfilProfesional = () => {
         const url = `https://wa.me/+549${res.data.telefono}`;
         window.open(url, "_blank");
       } else {
-        console.error(
-          "El numero de telefono no esta definido en el objeto de contacto."
-        );
+        console.error("Telefono no esta definido en el objeto de contacto.");
       }
     } catch (error) {
       console.error("Error al obtener el contacto:", error);
@@ -137,23 +169,62 @@ const PerfilProfesional = () => {
                       alt="facebook"
                       style={{
                         width: "60px",
+                        cursor: "pointer",
+                        transition: "transform 0.3s ease-in-out",
                       }}
+                      onClick={() => handleClickFb(profesional.idContacto)}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.2)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
                     />
                     <img
                       src={fotoig}
                       alt="instagram"
                       style={{
                         width: "60px",
+                        cursor: "pointer",
+                        transition: "transform 0.3s ease-in-out",
                       }}
+                      onClick={() => handleClickIg(profesional.idContacto)}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.2)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
                     />
                     <img
                       src={whatsapp}
                       alt="whatsapp"
                       style={{
                         width: "60px",
+                        cursor: "pointer",
+                        transition: "transform 0.3s ease-in-out",
                       }}
+                      onClick={() => handleClickWpp(profesional.idContacto)}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.2)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
                     />
                   </Box>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                      marginTop: "30px",
+                    }}
+                  >
+                    Contáctame por alguno de estos medios
+                  </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <CardContent>
@@ -216,18 +287,6 @@ const PerfilProfesional = () => {
                   </CardContent>
                   <CardActions>
                     <Box marginLeft="65px">
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: "#1b325f",
-                          color: "white",
-                          margin: "5px",
-                        }}
-                        size="small"
-                        onClick={() => handleContactar(profesional.idContacto)}
-                      >
-                        Contactar
-                      </Button>
                       <Button
                         variant="contained"
                         style={{
