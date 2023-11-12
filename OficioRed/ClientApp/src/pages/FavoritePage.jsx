@@ -16,6 +16,7 @@ import Chip from "@mui/material/Chip";
 import imagendefault from "../assets/fotodefault.webp";
 import { contactoService } from "../services/contacto.service";
 import imagenFondo from "../assets/fondo.jpg";
+import imagenwsp from "../assets/whatsapp.png";
 
 const cardStyle = {
     maxWidth: "345px",
@@ -162,8 +163,9 @@ const FavoritePage = ({ profesionales }) => {
                                         variant="contained"
                                         position="bottom"
                                         size="small"
-                                        style={{ backgroundColor: "#1b325f", color: "white" }}
+                                        style={{ backgroundColor: "#2E8B57", color: "white" }}
                                         sx={buttonStyle}
+                                        startIcon={<img src={imagenwsp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
                                         onClick={() => handleContactar(profesional.idContacto)}
                                     >
                                         CONTACTAR
@@ -192,7 +194,7 @@ const FavoritePage = ({ profesionales }) => {
                                                 favoritos.some(
                                                     (fav) => fav.idProfesional === profesional.idProfesional
                                                 )
-                                                    ? "secondary"
+                                                    ? "error"
                                                     : "default"
                                             }
                                         />

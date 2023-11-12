@@ -98,6 +98,7 @@ export function App() {
     
     const logout = () => {
         window.localStorage.removeItem("acceso");
+        window.localStorage.removeItem("favoritos");
         setAcceso(null)
       };
 

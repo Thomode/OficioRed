@@ -14,6 +14,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import imagendefault from "../../assets/fotodefault.webp";
 import { contactoService } from "../../services/contacto.service";
 import Chip from "@mui/material/Chip";
+import imagenwsp from "../../assets/whatsapp.png";
 
 const cardStyle = {
   maxWidth: "345px",
@@ -119,16 +120,17 @@ const CardProfesional = ({ profesionales }) => {
             <CardActions>
               <Grid container alignItems="center" spacing={1}>
                 <Grid item>
-                  <Button
+                <Button
                     variant="contained"
-                    posittion="bottom"
+                    position="bottom"
                     size="small"
-                    style={{ backgroundColor: "#1b325f", color: "white" }}
+                    style={{ backgroundColor: "#2E8B57", color: "white" }}
                     sx={buttonStyle}
+                    startIcon={<img src={imagenwsp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
                     onClick={() => handleContactar(profesional.idContacto)}
-                  >
+                >
                     CONTACTAR
-                  </Button>
+                </Button>
                 </Grid>
                 <Grid item>
                   <Button
@@ -148,7 +150,7 @@ const CardProfesional = ({ profesionales }) => {
                     aria-label="Agregar a favoritos"
                     onClick={() => handleAgregarFavorito(profesional)}
                 >
-                    <FavoriteIcon color={favoritos.some((fav) => fav.idProfesional === profesional.idProfesional) ? 'secondary' : 'default'} />
+                    <FavoriteIcon color={favoritos.some((fav) => fav.idProfesional === profesional.idProfesional) ? 'error' : 'default'} />
                 </IconButton>
                 </Grid>
               </Grid>
