@@ -19,6 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import WorkIcon from "@mui/icons-material/Work";
 import UserIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
+import BookmarksOutlinedIcon from '@mui/icons-material/BookmarksOutlined';
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
@@ -134,7 +135,12 @@ export function NavBarLateral({ children, type, logout }) {
           text: "Profesionales",
           icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
           route: "/profesionales",
-        },
+          },
+          {
+              text: "Favoritos",
+              icon: <BookmarksOutlinedIcon sx={{ color: "#FFFFFF" }} />,
+              route: "/favoritos",
+          },
       ];
     }
   };
