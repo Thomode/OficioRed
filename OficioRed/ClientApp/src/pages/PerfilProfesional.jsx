@@ -20,24 +20,16 @@ import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
+import Rating from '@mui/material/Rating';
 
 const buttonStyle = {
     margin: "0 8px",
     posittion: "bottom",
 };
 
-const titleStyle2 = {
-    fontSize: '60px',
-    fontWeight: 'bold',
-    color: '#1b325f',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-    WebkitTextStroke: '2px white',
-    MozTextStroke: '2px white',
-    marginBottom: '0px',
-    marginLeft: '300px'
-};
 
 const PerfilProfesional = () => {
+  const [value, setValue] = React.useState(2);
   const [profesional, setProfesional] = useState({});
   const [facebook, setFacebook] = useState("");
   const [instagram, setInstagram] = useState("");
@@ -229,7 +221,7 @@ const PerfilProfesional = () => {
                     >
                         CONTACTAR
                     </Button>
-                  </Box>
+                    </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <CardContent>
@@ -290,37 +282,57 @@ const PerfilProfesional = () => {
                       </Typography>
                     </Box>
                   </CardContent>
-                <CardActions style={{ textAlign: "center" }}>
-                    <Box marginLeft="auto"> 
-                        <Button
-                            variant="contained"
-                            style={{
-                                backgroundColor: "#e9f2f9",
-                                color: "#1b325f",
-                                margin: "5px",
-                                fontWeight: "bold",
-                            }}
-                            size="small"
-                            endIcon={<FavoriteIcon />}
-                        >
-                            Agregar a Favoritos
-                        </Button>
-                        <Button
-                            variant="contained"
-                            style={{
-                                backgroundColor: "#e9f2f9",
-                                color: "#1b325f",
-                                margin: "5px",
-                                fontWeight: "bold",
-                            }}
-                            size="small"
-                            endIcon={<CommentIcon />}
-                            onClick={() => handleClickComments(id)}
-                        >
-                            Comentarios
-                        </Button>
-                    </Box>
-                </CardActions>
+                    <CardActions style={{ textAlign: "center" }}>
+                        <Box marginLeft="auto" display="flex" alignItems="center">
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                                  margin: '5px', 
+                                                  backgroundColor: "#e9f2f9",
+                                                  borderRadius: '5px',
+                                                  color: "#1b325f"
+                                }}
+                            >
+                                <Rating
+                                    name="simple-controlled"
+                                    value={value}
+                                    onChange={(event, newValue) => {
+                                        setValue(newValue);
+                                                  }}
+                                    size="large"
+                                />
+                            </Box>
+                            <Button
+                                variant="contained"
+                                style={{
+                                    backgroundColor: "#e9f2f9",
+                                    color: "#1b325f",
+                                    margin: "5px",
+                                    fontWeight: "bold",
+                                }}
+                                size="small"
+                                endIcon={<FavoriteIcon />}
+                            >
+                                Agregar a Favoritos
+                            </Button>
+                            <Button
+                                variant="contained"
+                                style={{
+                                    backgroundColor: "#e9f2f9",
+                                    color: "#1b325f",
+                                    margin: "5px",
+                                    fontWeight: "bold",
+                                }}
+                                size="small"
+                                endIcon={<CommentIcon />}
+                                onClick={() => handleClickComments(id)}
+                            >
+                                Comentarios
+                            </Button>
+                        </Box>
+                    </CardActions>
+
                 </Grid>
               </Grid>
             </Box>
