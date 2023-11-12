@@ -10,13 +10,13 @@ import {
   Grid,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import imagendefault from "../../assets/fotodefault.webp";
 import { contactoService } from "../../services/contacto.service";
 import Chip from "@mui/material/Chip";
 
 const cardStyle = {
-  maxWidth: 345,
+  maxWidth: "345px",
+  minHeight: "500px",
   borderRadius: 10,
   backgroundColor: "rgba(255, 255, 255, 0.6)",
   overflow: "hidden",
@@ -31,6 +31,7 @@ const cardStyle = {
 
 const buttonStyle = {
   margin: "0 8px",
+  posittion: "bottom",
 };
 
 const CardProfesional = ({ profesionales }) => {
@@ -94,6 +95,7 @@ const CardProfesional = ({ profesionales }) => {
                 <Grid item>
                   <Button
                     variant="contained"
+                    posittion="bottom"
                     size="small"
                     style={{ backgroundColor: "#1b325f", color: "white" }}
                     sx={buttonStyle}
@@ -118,11 +120,6 @@ const CardProfesional = ({ profesionales }) => {
                 <Grid item>
                   <IconButton aria-label="Agregar a favoritos">
                     <FavoriteIcon />
-                  </IconButton>
-                </Grid>
-                <Grid item>
-                  <IconButton aria-label="Compartir">
-                    <ShareIcon />
                   </IconButton>
                 </Grid>
               </Grid>
