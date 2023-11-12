@@ -20,7 +20,11 @@ import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+
+const buttonStyle = {
+    margin: "0 8px",
+    posittion: "bottom",
+};
 
 const PerfilProfesional = () => {
   const [profesional, setProfesional] = useState({});
@@ -151,10 +155,9 @@ const PerfilProfesional = () => {
                   <CardMedia
                     component="img"
                     alt="profesional"
-                    height="400"
+                    height="560"
                     image={profesional.fotoPerfil || imagendefault}
                     style={{
-                      borderRadius: "20px",
                       border: "2px solid #1b325f",
                     }}
                   />
@@ -162,69 +165,59 @@ const PerfilProfesional = () => {
                     display="flex"
                     justifyContent="space-evenly"
                     alignItems="center"
-                    mt={2}
-                  >
-                    <img
-                      src={fotofb}
-                      alt="facebook"
-                      style={{
-                        width: "60px",
-                        cursor: "pointer",
-                        transition: "transform 0.3s ease-in-out",
-                      }}
-                      onClick={() => handleClickFb(profesional.idContacto)}
-                      onMouseOver={(e) =>
-                        (e.currentTarget.style.transform = "scale(1.2)")
-                      }
-                      onMouseOut={(e) =>
-                        (e.currentTarget.style.transform = "scale(1)")
-                      }
-                    />
-                    <img
-                      src={fotoig}
-                      alt="instagram"
-                      style={{
-                        width: "60px",
-                        cursor: "pointer",
-                        transition: "transform 0.3s ease-in-out",
-                      }}
-                      onClick={() => handleClickIg(profesional.idContacto)}
-                      onMouseOver={(e) =>
-                        (e.currentTarget.style.transform = "scale(1.2)")
-                      }
-                      onMouseOut={(e) =>
-                        (e.currentTarget.style.transform = "scale(1)")
-                      }
-                    />
-                    <img
-                      src={whatsapp}
-                      alt="whatsapp"
-                      style={{
-                        width: "60px",
-                        cursor: "pointer",
-                        transition: "transform 0.3s ease-in-out",
-                      }}
-                      onClick={() => handleClickWpp(profesional.idContacto)}
-                      onMouseOver={(e) =>
-                        (e.currentTarget.style.transform = "scale(1.2)")
-                      }
-                      onMouseOut={(e) =>
-                        (e.currentTarget.style.transform = "scale(1)")
-                      }
-                    />
+                    mt={2}>
+                    <Button
+                        variant="contained"
+                        position="bottom"
+                        size="small"
+                        style={{ backgroundColor: "#2E8B57", color: "white", fontWeight: "bold" }}
+                        sx={buttonStyle}
+                        startIcon={<img src={whatsapp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
+                        onClick={() => handleClickWpp(profesional.idContacto)}
+                        onMouseOver={(e) =>
+                            (e.currentTarget.style.transform = "scale(1.2)")
+                        }
+                        onMouseOut={(e) =>
+                            (e.currentTarget.style.transform = "scale(1)")
+                        }
+                    >
+                        CONTACTAR
+                    </Button>
+                    <Button
+                        variant="contained"
+                        position="bottom"
+                        size="small"
+                                          style={{ backgroundColor: "#1E90FF", color: "black", fontWeight: "bold" }}
+                        sx={buttonStyle}
+                        startIcon={<img src={fotofb} alt="facebook" style={{ height: '20px', marginRight: '5px' }} />}
+                        onClick={() => handleClickFb(profesional.idContacto)}
+                        onMouseOver={(e) =>
+                            (e.currentTarget.style.transform = "scale(1.2)")
+                        }
+                        onMouseOut={(e) =>
+                            (e.currentTarget.style.transform = "scale(1)")
+                        }
+                    >
+                        CONTACTAR
+                    </Button>
+                    <Button
+                        variant="contained"
+                        position="bottom"
+                        size="small"
+                        style={{ backgroundColor: "#ffffff", color: "black", fontWeight: "bold" }}
+                        sx={buttonStyle}
+                        startIcon={<img src={fotoig} alt="facebook" style={{ height: '20px', marginRight: '5px' }} />}
+                        onClick={() => handleClickIg(profesional.idContacto)}
+                        onMouseOver={(e) =>
+                            (e.currentTarget.style.transform = "scale(1.2)")
+                        }
+                        onMouseOut={(e) =>
+                            (e.currentTarget.style.transform = "scale(1)")
+                        }
+                    >
+                        CONTACTAR
+                    </Button>
                   </Box>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    align="center"
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "bold",
-                      marginTop: "30px",
-                    }}
-                  >
-                    Contáctame por alguno de estos medios
-                  </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <CardContent>
