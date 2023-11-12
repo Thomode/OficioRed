@@ -110,17 +110,17 @@ export function NavBarLateral({ children, type, logout }) {
     if (type === "Admin") {
       return [
         {
-          text: "Home",
+          text: "Panel de Admin.",
           icon: <SupervisorAccountIcon sx={{ color: "#FFFFFF" }} />,
           route: "/admin/home",
         },
         {
-          text: "Usuarios",
+          text: "Admin. de Usuarios",
           icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
           route: "/admin/usuarios",
         },
         {
-          text: "Rubros",
+          text: "Admin. de Rubros",
           icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
           route: "/admin/rubros",
         },
@@ -128,7 +128,7 @@ export function NavBarLateral({ children, type, logout }) {
     } else {
       return [
         {
-          text: "Home",
+          text: "Inicio",
           icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
           route: "/home",
         },
@@ -222,13 +222,6 @@ export function NavBarLateral({ children, type, logout }) {
   };
 
   const [fotoPerfil, setFotoPerfil] = React.useState("");
-  const imageStyle = {
-    borderRadius: "50%",
-    border: "1px solid #1b325f",
-    width: "100px",
-    height: "100px",
-    objectFit: "cover",
-  };
   React.useEffect(() => {
     const obtenerFotoPerfil = async () => {
       const fotoPerfilUrl = await infoPerfil();

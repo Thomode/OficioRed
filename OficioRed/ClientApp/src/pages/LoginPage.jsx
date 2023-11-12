@@ -84,7 +84,7 @@ export const LoginPage = ({ setAcceso }) => {
           vertical: "bottom",
           horizontal: "right",
         },
-        autoHideDuration: 2000,
+        autoHideDuration: 4000,
       });
     }
   };

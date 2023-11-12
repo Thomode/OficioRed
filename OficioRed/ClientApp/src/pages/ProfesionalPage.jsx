@@ -5,6 +5,7 @@ import { profesionalService } from "../services/profesional.service";
 import { useEffect, useState } from "react";
 import imagenFondo from "../assets/fondo.jpg";
 import { Suspense, lazy } from "react";
+import { useParams } from "react-router-dom";
 
 const CardProfesional = lazy(() =>
   import("../components/ProfesionalesBusqueda/Card")
@@ -58,6 +59,19 @@ export function ProfesionalPage() {
     setProfesionalesFiltrados(profFiltrados);
   }, [rubros, profesionales]);
 
+  const { idRubro } = useParams();
+
+  useEffect(() => {
+    if (idRubro) {
+      setRubros((prevRubros) =>
+        prevRubros.map((r) => ({
+          ...r,
+          seleccionado: r.idRubro === idRubro,
+        }))
+      );
+    }
+  }, [idRubro]);
+
   return (
     <Suspense fallback={<h1>Cargando...</h1>}>
       <Container
@@ -86,11 +100,7 @@ export function ProfesionalPage() {
               />
             </Grid>
             <Grid item xs={12}>
-              <FiltroRubros
-                rubros={rubros}
-                setRubros={setRubros}
-                seleccionado={true}
-              />
+              <FiltroRubros rubros={rubros} setRubros={setRubros} />
             </Grid>
           </Grid>
         </Box>

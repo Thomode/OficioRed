@@ -115,7 +115,7 @@ public class AccesoService: IAccesoService
 
         if (usuario == null)
         {
-            throw new Exception("Usuario no encontrado");
+            throw new Exception("Usuario no encontrado, por favor registrese");
         }
 
         if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, usuario.Password))

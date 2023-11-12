@@ -10,7 +10,7 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
       const rubrosLoad = res.data.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
-        seleccionado: seleccionado,
+        seleccionado: seleccionado === rubro.nombre,
       }));
       return rubrosLoad;
     } catch (error) {
@@ -26,7 +26,7 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
 
   useEffect(() => {
     loadRubros();
-  }, []);
+  }, [seleccionado]);
 
   const handleCheckboxChange = (rubroId) => {
     setRubros((prevRubros) =>

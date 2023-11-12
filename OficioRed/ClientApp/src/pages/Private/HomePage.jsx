@@ -5,11 +5,13 @@ import ProductHero from "../../components/Inicio/ProductHero";
 import ProductValues from "../../components/Inicio/ProductValues";
 import ProductHowItWorks from "../../components/Inicio/ProductHowItWorks";
 import withRoot from "../../components/Inicio/withRoot";
+import { useState } from "react";
 
 function HomePage() {
   const componentSpacing = {
-    marginBottom: 10, 
+    marginBottom: 10,
   };
+  const [rubros, setRubros] = useState([]);
 
   return (
     <Container>
@@ -20,7 +22,7 @@ function HomePage() {
         <ProductValues />
       </Box>
       <Box sx={componentSpacing}>
-        <ProductCategories />
+        <ProductCategories setRubros={setRubros} />
       </Box>
       <Box>
         <ProductHowItWorks />

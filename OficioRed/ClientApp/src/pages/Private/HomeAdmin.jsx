@@ -100,7 +100,7 @@ function HomeAdmin() {
       }}
     >
       <Typography variant="h2" sx={titleStyle2}>
-        Dashboard
+        Panel de Administración
       </Typography>
       <Grid container spacing={3} justifyContent="center">
         <Grid item xs={12} sm={8} md={3}>

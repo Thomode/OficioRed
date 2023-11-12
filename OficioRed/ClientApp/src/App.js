@@ -64,6 +64,10 @@ const clientRoutes = [
         element: <ProfesionalPage />
     },
     {
+        path: '/profesionales/:idRubro',
+        element: <ProfesionalPage />
+    },
+    {
         path: '/:id/PerfilProfesional',
         element: <PerfilProfesional />
     },
