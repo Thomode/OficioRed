@@ -124,7 +124,7 @@ const CardProfesional = ({ profesionales }) => {
                     variant="contained"
                     position="bottom"
                     size="small"
-                    style={{ backgroundColor: "#2E8B57", color: "white" }}
+                    style={{ backgroundColor: "#2E8B57", color: "white", fontWeight: "bold" }}
                     sx={buttonStyle}
                     startIcon={<img src={imagenwsp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
                     onClick={() => handleContactar(profesional.idContacto)}
@@ -136,7 +136,7 @@ const CardProfesional = ({ profesionales }) => {
                   <Button
                     variant="contained"
                     size="small"
-                    style={{ backgroundColor: "#f26c4f", color: "white" }}
+                    style={{ backgroundColor: "#f26c4f", color: "white", fontWeight: "bold" }}
                     sx={buttonStyle}
                     onClick={() =>
                       handleLeerMasClick(profesional.idProfesional)

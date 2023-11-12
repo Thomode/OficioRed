@@ -182,7 +182,7 @@ const PerfilProfesional = () => {
                         variant="contained"
                         position="bottom"
                         size="small"
-                        style={{ backgroundColor: "#e9f2f9", color: "black", fontWeight: "bold" }}
+                        style={{ backgroundColor: "#e9f2f9", color: "#1b325f", fontWeight: "bold" }}
                         sx={buttonStyle}
                         startIcon={<img src={whatsapp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
                         onClick={() => handleClickWpp(profesional.idContacto)}
@@ -199,7 +199,7 @@ const PerfilProfesional = () => {
                         variant="contained"
                         position="bottom"
                         size="small"
-                        style={{ backgroundColor: "#e9f2f9", color: "black", fontWeight: "bold" }}
+                        style={{ backgroundColor: "#e9f2f9", color: "#1b325f", fontWeight: "bold" }}
                         sx={buttonStyle}
                         startIcon={<img src={fotofb} alt="facebook" style={{ height: '20px', marginRight: '5px' }} />}
                         onClick={() => handleClickFb(profesional.idContacto)}
@@ -216,7 +216,7 @@ const PerfilProfesional = () => {
                         variant="contained"
                         position="bottom"
                         size="small"
-                        style={{ backgroundColor: "#e9f2f9", color: "black", fontWeight: "bold" }}
+                        style={{ backgroundColor: "#e9f2f9", color: "#1b325f", fontWeight: "bold" }}
                         sx={buttonStyle}
                         startIcon={<img src={fotoig} alt="instagram" style={{ height: '20px', marginRight: '5px' }} />}
                         onClick={() => handleClickIg(profesional.idContacto)}
@@ -298,6 +298,7 @@ const PerfilProfesional = () => {
                                 backgroundColor: "#e9f2f9",
                                 color: "#1b325f",
                                 margin: "5px",
+                                fontWeight: "bold",
                             }}
                             size="small"
                             endIcon={<FavoriteIcon />}
@@ -310,6 +311,7 @@ const PerfilProfesional = () => {
                                 backgroundColor: "#e9f2f9",
                                 color: "#1b325f",
                                 margin: "5px",
+                                fontWeight: "bold",
                             }}
                             size="small"
                             endIcon={<CommentIcon />}
