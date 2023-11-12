@@ -1,15 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { profesionalService } from "../services/profesional.service";
-import { FiltroRubros } from "../components/FiltroRubrosSignUp";
-import logo from "../assets/Logo1_Recorte.png";
-import imagenDefault from "../assets/profile.png";
+import { interesadoService } from "../services/interesado.service";
 import { useSnackbar } from "notistack";
-
 import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
+import imagenDefault from "../assets/profile.png";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
+import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
+import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
+import { LockRounded } from "@mui/icons-material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { usuarioService } from "../services/usuario.service";
+import { FiltroRubros } from "../components/FiltroRubrosSignUp";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -27,17 +38,36 @@ const imageStyle = {
   objectFit: "cover",
 };
 
-export const ProfesionalSignUp = ({ setAcceso }) => {
-  const [rubros, setRubros] = useState([]);
+const backgroundStyle = {
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  minHeight: "93vh",
+  overFlow: "hidden",
+};
 
+export const MiPerfilProfesional = () => {
+  const [rubros, setRubros] = useState([]);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm();
 
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   const [image, setImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const fileSelectedHandler = (event) => {
     const file = event.target.files[0];
@@ -54,34 +84,56 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
     }
   };
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
   const { enqueueSnackbar } = useSnackbar();
 
+  const handleClick = () => {
+    navigate(`/profesionales`);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = usuarioService.getId();
+        const userData = await usuarioService.get(userId);
+
+        // Actualizo los campos de usuario con los datos obtenidos
+        Object.keys(userData).forEach((key) => {
+          setValue(key, userData[key]);
+        });
+
+        const interesadoData = await interesadoService.getById(userId);
+
+        // Actualizo los campos de interesado con los datos obtenidos
+        Object.keys(interesadoData).forEach((key) => {
+          setValue(key, interesadoData[key]);
+        });
+
+        if (interesadoData?.fotoPerfil) {
+          setImage(interesadoData.fotoPerfil);
+        }
+      } catch (error) {
+        console.log(
+          "Error al obtener los datos del usuario e interesado",
+          error
+        );
+      }
+    };
+    fetchData();
+  }, [setValue]);
+
   const onSubmit = async (data) => {
+    console.log(data);
     try {
-      const res = await profesionalService.registerProfesional(
+      await interesadoService.updateInteresado(
         data.nombre,
         data.apellido,
         data.email,
-        data.descripcion
+        selectedFile
       );
-      const resContact = await profesionalService.registerContacto(
-        data.telefono,
-        data.email,
-        data.instagram,
-        data.facebook
-      );
-      const res2 = await profesionalService.imageUpload(selectedFile);
-
-      rubros.forEach(async (rubro) => {
-        if (rubro.seleccionado) {
-          const res3 = await profesionalService.asociarRubro(rubro.idRubro);
-        }
-      });
+      await usuarioService.updateUser(data.id, data.user, data.password);
 
       navigate("/home");
-      enqueueSnackbar("Registro exitoso", {
+      enqueueSnackbar("Actualización exitosa", {
         variant: "success",
         anchorOrigin: {
           vertical: "bottom",
@@ -101,39 +153,18 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("Rubros actualizados:", rubros);
-  }, [rubros]);
-
-  const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-
   return (
     <div style={backgroundStyle}>
-      <Grid
-        container
-        style={{
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Grid container style={{ justifyContent: "center" }}>
         <Grid
           container
           item
           xs={12}
-          sm={8}
           md={6}
-          lg={4}
+          sm={3}
           alignItems="center"
-          justifyContent="center"
+          direction="column"
+          justifyContent="space-between"
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box
@@ -143,8 +174,6 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
               minWidth={300}
               alignItems="center"
               justifyContent={"center"}
-              margin="auto"
-              marginTop={5}
               padding={3}
               borderRadius={5}
               boxShadow={"5px 5px 10px #ccc"}
@@ -155,41 +184,60 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                 backgroundColor: "white",
               }}
             >
-              <Grid container justify="center" justifyContent="center">
-                <img src={logo} width={350} alt="logo" />
-              </Grid>
-              <Typography style={titleStyle}>
-                Registro como Profesional
-              </Typography>
-
-              {image ? (
-                <img
-                  src={image}
-                  alt="Vista previa de la imagen"
-                  style={imageStyle}
-                />
-              ) : (
-                <img
-                  src={imagenDefault}
-                  alt="Imagen por defecto"
-                  style={imageStyle}
-                />
-              )}
-
-              <Button
-                variant="outlined"
-                component="label"
-                fullWidth
-                style={{ marginTop: "10px" }}
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
               >
-                Elegir Foto de Perfil
-                <input
-                  type="file"
-                  style={{ display: "none", color: "black" }}
-                  onChange={fileSelectedHandler}
-                  name="fotoPerfil"
-                />
-              </Button>
+                <Button
+                  variant="text"
+                  style={{
+                    color: "#1b325f",
+                    marginRight: "8px",
+                    fontWeight: "bold",
+                  }}
+                  size="small"
+                  startIcon={<ArrowBackIcon />}
+                  onClick={() => handleClick()}
+                >
+                  Volver
+                </Button>
+
+                <Typography style={titleStyle}>Editar mi perfil</Typography>
+                {image ? (
+                  <img
+                    src={image}
+                    alt="Vista previa de la imagen"
+                    style={imageStyle}
+                  />
+                ) : (
+                  <img
+                    src={imagenDefault}
+                    alt="Imagen por defecto"
+                    style={imageStyle}
+                  />
+                )}
+                <Button
+                  variant="outlined"
+                  component="label"
+                  fullWidth
+                  style={{ marginTop: "10px" }}
+                >
+                  Cambiar Foto de Perfil
+                  <input
+                    type="file"
+                    style={{ display: "none", color: "black" }}
+                    onChange={fileSelectedHandler}
+                    name="fotoPerfil"
+                  />
+                </Button>
+              </Grid>
+
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
@@ -283,7 +331,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                     margin="normal"
                     {...register("telefono", {
                       required: true,
-                      pattern: /^[0-9]{10}$/, // Asumiendo que el teléfono tiene 10 dígitos
+                      pattern: /^[0-9]{10}$/,
                     })}
                     error={!!errors.telefono}
                     helperText={
@@ -352,16 +400,102 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                   />
                 </Grid>
               </Grid>
+              <TextField
+                fullWidth
+                required
+                placeholder="Contraseña"
+                autoComplete="off"
+                type={showPassword ? "text" : "password"}
+                label="Contraseña"
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment>
+                      <LockRounded />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? (
+                          <RemoveRedEyeRoundedIcon fontSize="small" />
+                        ) : (
+                          <VisibilityOffRoundedIcon fontSize="small" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                {...register("password", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
+                })}
+                error={!!errors.password}
+                helperText={
+                  errors.password?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.password?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.password?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.password?.type === "pattern"
+                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                    : ""
+                }
+              />
+              <TextField
+                fullWidth
+                required
+                name="confirmPassword"
+                placeholder="Confirmar Contraseña"
+                autoComplete="off"
+                type={showPassword ? "text" : "password"}
+                label="Confirmar Contraseña"
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment>
+                      <LockRounded />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? (
+                          <RemoveRedEyeRoundedIcon fontSize="small" />
+                        ) : (
+                          <VisibilityOffRoundedIcon fontSize="small" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                {...register("confirmPassword", {
+                  required: true,
+                  validate: (value) => value === watch("password"),
+                })}
+                error={!!errors.confirmPassword}
+                helperText={
+                  errors.confirmPassword?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.confirmPassword?.type === "validate"
+                    ? "Las contraseñas no coinciden"
+                    : ""
+                }
+              />
 
-              <div style={{ height: 20 }} />
               <Button
+                margin="normal"
                 endIcon={<HowToRegOutlinedIcon />}
                 type="submit"
                 variant="contained"
                 color="primary"
                 fullWidth
               >
-                Registrarse
+                Guardar cambios
               </Button>
             </Box>
           </form>

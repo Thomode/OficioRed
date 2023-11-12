@@ -1,13 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { interesadoService } from "../services/interesado.service";
 import { useSnackbar } from "notistack";
 import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
-import logo from "../assets/Logo1_Recorte.png";
 import imagenDefault from "../assets/profile.png";
-
 import {
   Box,
   Button,
@@ -21,6 +19,7 @@ import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import { AccountCircle, LockRounded } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { usuarioService } from "../services/usuario.service";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -49,7 +48,7 @@ const backgroundStyle = {
   overFlow: "hidden",
 };
 
-export const MiPerfil = () => {
+export const MiPerfilInteresado = () => {
   const navigate = useNavigate();
 
   const {
@@ -57,6 +56,7 @@ export const MiPerfil = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -84,18 +84,54 @@ export const MiPerfil = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
+  const handleClick = () => {
+    navigate(`/profesionales`);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = usuarioService.getId();
+        const userData = await usuarioService.get(userId);
+
+        // Actualizo los campos de usuario con los datos obtenidos
+        Object.keys(userData).forEach((key) => {
+          setValue(key, userData[key]);
+        });
+
+        const interesadoData = await interesadoService.getById(userId);
+
+        // Actualizo los campos de interesado con los datos obtenidos
+        Object.keys(interesadoData).forEach((key) => {
+          setValue(key, interesadoData[key]);
+        });
+
+        if (interesadoData?.fotoPerfil) {
+          setImage(interesadoData.fotoPerfil);
+        }
+      } catch (error) {
+        console.log(
+          "Error al obtener los datos del usuario e interesado",
+          error
+        );
+      }
+    };
+    fetchData();
+  }, [setValue]);
+
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const res = await interesadoService.registerInteresado(
+      await interesadoService.updateInteresado(
         data.nombre,
         data.apellido,
-        data.email
+        data.email,
+        selectedFile
       );
-      const res2 = await interesadoService.imageUpload(selectedFile);
+      await usuarioService.updateUser(data.id, data.user, data.password);
 
       navigate("/home");
-      enqueueSnackbar("Registro exitoso", {
+      enqueueSnackbar("Actualización exitosa", {
         variant: "success",
         anchorOrigin: {
           vertical: "bottom",
@@ -113,9 +149,6 @@ export const MiPerfil = () => {
         autoHideDuration: 2000,
       });
     }
-  };
-  const handleClick = () => {
-    navigate(`/profesionales`);
   };
 
   return (

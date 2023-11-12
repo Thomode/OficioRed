@@ -13,9 +13,6 @@ async function getDashboard() {
     return res.data
 }
 
-const get = async (id) =>
-    await axios.get(`/api/Usuario/${id}`)
-
 const create = async (user, password, idRol) =>
     await axios.post('/api/Usuario', {
         user,
@@ -59,6 +56,9 @@ const getId = () => {
 
     return data?.id
 }
+
+const get = async (id) =>
+    await axios.get(`/api/Usuario/${id}`)
 
 export const usuarioService = {
     get,

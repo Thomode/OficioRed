@@ -95,7 +95,7 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: "Rol no válido",
+            text: "Usuario no válido",
           });
           return;
         }

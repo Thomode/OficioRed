@@ -19,7 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import WorkIcon from "@mui/icons-material/Work";
 import UserIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
-import BookmarksOutlinedIcon from '@mui/icons-material/BookmarksOutlined';
+import BookmarksOutlinedIcon from "@mui/icons-material/BookmarksOutlined";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,7 @@ import { ExitToApp } from "@mui/icons-material";
 import { usuarioService } from "../services/usuario.service";
 import axios from "axios";
 import imagendefault from "../assets/fotodefault.webp";
+import { sesionService } from "../auth/sesion";
 
 const drawerWidth = 240;
 
@@ -135,12 +136,12 @@ export function NavBarLateral({ children, type, logout }) {
           text: "Profesionales",
           icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
           route: "/profesionales",
-          },
-          {
-              text: "Favoritos",
-              icon: <BookmarksOutlinedIcon sx={{ color: "#FFFFFF" }} />,
-              route: "/favoritos",
-          },
+        },
+        {
+          text: "Favoritos",
+          icon: <BookmarksOutlinedIcon sx={{ color: "#FFFFFF" }} />,
+          route: "/favoritos",
+        },
       ];
     }
   };
@@ -151,9 +152,15 @@ export function NavBarLateral({ children, type, logout }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleChange = () => {
-    const id = usuarioService.getId();
-    navigate(`/${id}/miPerfil`);
+  const handleChange = async () => {
+    const acceso = await sesionService.getAcceso();
+    if (acceso.idRol === 3) {
+      navigate(`/${acceso.id}/miPerfilProfesional`);
+    } else if (acceso.idRol === 4) {
+      navigate(`/${acceso.id}/miPerfilInteresado`);
+    } else {
+      navigate(`/home`);
+    }
   };
 
   const handleChangeLogout = () => {
@@ -299,9 +306,9 @@ export function NavBarLateral({ children, type, logout }) {
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>
             {theme.direction === "rtl" ? (
-              <ChevronRightIcon sx={{ color: "#FFFFFF" }}  />
+              <ChevronRightIcon sx={{ color: "#FFFFFF" }} />
             ) : (
-              <ChevronLeftIcon  sx={{ color: "#FFFFFF" }}  />
+              <ChevronLeftIcon sx={{ color: "#FFFFFF" }} />
             )}
           </IconButton>
         </DrawerHeader>

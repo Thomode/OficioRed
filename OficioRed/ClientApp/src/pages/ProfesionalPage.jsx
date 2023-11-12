@@ -1,5 +1,5 @@
 import { Container, Grid, Box } from "@mui/material";
-import { FiltroRubros } from "../components/FiltroRubros";
+import { FiltroRubros } from "../components/FiltroRubroProfesional";
 import Buscador from "../components/buscador";
 import { profesionalService } from "../services/profesional.service";
 import { useEffect, useState } from "react";

@@ -45,34 +45,40 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
   };
 
   return (
-    <div>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <FormControlLabel
-          style={{ marginLeft: 0, fontWeight: "bold" }}
-          control={
-            <Checkbox
-              checked={
-                rubros.length > 0 && rubros.every((rubro) => rubro.seleccionado)
-              }
-              onChange={(event) => handleSelectAllChange(event.target.checked)}
-            />
-          }
-          label="Todos"
-        />
-        {rubros &&
-          rubros.map((rubro) => (
-            <FormControlLabel
-              key={rubro.idRubro}
-              control={
-                <Checkbox
-                  checked={rubro.seleccionado}
-                  onChange={() => handleCheckboxChange(rubro.idRubro)}
-                />
-              }
-              label={rubro.nombre}
-            />
-          ))}
-      </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: "16px",
+      }}
+    >
+      <FormControlLabel
+        style={{ fontWeight: "bold", flexBasis: "100%" }}
+        control={
+          <Checkbox
+            checked={
+              rubros.length > 0 && rubros.every((rubro) => rubro.seleccionado)
+            }
+            onChange={(event) => handleSelectAllChange(event.target.checked)}
+          />
+        }
+        label="Todos"
+      />
+      {rubros &&
+        rubros.map((rubro) => (
+          <FormControlLabel
+            key={rubro.idRubro}
+            style={{ flexBasis: "30%" }}
+            control={
+              <Checkbox
+                checked={rubro.seleccionado}
+                onChange={() => handleCheckboxChange(rubro.idRubro)}
+              />
+            }
+            label={rubro.nombre}
+          />
+        ))}
     </div>
   );
 };
