@@ -8,7 +8,8 @@ import { UsuarioAdminPage } from "./pages/UsuarioAdminPage";
 import { RubroAdminPage } from "./pages/RubroAdminPage";
 import { RubroForm } from "./components/Rubro/RubroForm";
 import { ProfesionalPage } from "./pages/ProfesionalPage";
-import { MiPerfil } from "./pages/MiPerfil";
+import { MiPerfilProfesional } from "./pages/MiPerfilProfesional.jsx";
+import { MiPerfilInteresado } from "./pages/MiPerfilInteresado.jsx";
 import  PerfilProfesional  from "./pages/PerfilProfesional";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
@@ -63,16 +64,20 @@ const clientRoutes = [
         element: <ProfesionalPage />
     },
     {
-        path: '/:id/miPerfil',
-        element: <MiPerfil />
-    },
-    {
         path: '/:id/PerfilProfesional',
         element: <PerfilProfesional />
     },
     {
         path: '/Favoritos',
         element: <FavoritePage />
+    },
+    {
+        path: '/:id/miPerfilProfesional',
+        element: <MiPerfilProfesional />
+    },
+    {
+        path: '/:id/miPerfilInteresado',
+        element: <MiPerfilInteresado />
     },
     {
         path: '/:id/PerfilProfesional/Comentarios',
