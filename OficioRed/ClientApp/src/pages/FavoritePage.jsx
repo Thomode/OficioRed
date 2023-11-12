@@ -25,7 +25,7 @@ const cardStyle = {
     backgroundColor: "rgba(255, 255, 255, 0.6)",
     overflow: "hidden",
     transition: "transform 0.3s ease-in-out",
-    margin: "20px",  // Reducido el margen superior
+    margin: "20px",  
     marginBottom: "20px",
     border: "2px solid #1b325f",
     "&:hover": {
@@ -46,7 +46,6 @@ const titleStyle2 = {
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
     WebkitTextStroke: '2px white',
     MozTextStroke: '2px white',
-    margin: '50px',
     marginBottom: '0px',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',  
     padding: '10px',
@@ -113,11 +112,11 @@ const FavoritePage = ({ profesionales }) => {
     };
 
     return (
-        <Grid container spacing={2} style={{
+        <Grid container style={{
             backgroundImage: `url(${imagenFondo})`,
             backgroundSize: "cover",
             minHeight: "100vh",
-        }}>
+        }} xs={12}>
             <Grid xs={12}>
                 <Typography variant="h2" sx={titleStyle2}>
                     Favoritos

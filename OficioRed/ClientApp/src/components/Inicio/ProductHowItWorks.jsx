@@ -72,7 +72,7 @@ function ProductHowItWorks() {
                                     sx={image}
                                 />
                                 <Typography variant="h5" align="center" sx={{ textAlign: 'center', fontStyle: 'italic' }}>
-                                    {'Una vez iniciada la sesión ingresa a la sección de "Profesionales".'}
+                                    {'Una vez iniciada la sesión ingrese a la sección de "Profesionales".'}
                                 </Typography>
                             </Box>
                         </Grid>
@@ -86,7 +86,7 @@ function ProductHowItWorks() {
                                     sx={image}
                                 />
                                 <Typography variant="h5" align="center" sx={{ textAlign: 'center', fontStyle: 'italic' }} >
-                                    {' Busca por el tipo de servicio o profesional que necesitas y compara con las distintas opciones disponibles.'}
+                                    {' Busque por el tipo de servicio o profesional que necesita y compare con las distintas opciones disponibles.'}
                                 </Typography>
                             </Box>
                         </Grid>
@@ -100,7 +100,7 @@ function ProductHowItWorks() {
                                     sx={image}
                                 />
                                 <Typography variant="h5" align="center" sx={{ textAlign: 'center', fontStyle: 'italic' }}>
-                                    {'Elige el profesional que más se adapte a tus requerimientos y apreta en "Contactar".'}
+                                    {'Elija el profesional que más se adapte a sus requerimientos y contáctese con él.'}
                                 </Typography>
                             </Box>
                         </Grid>

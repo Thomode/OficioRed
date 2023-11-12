@@ -26,6 +26,17 @@ const buttonStyle = {
     posittion: "bottom",
 };
 
+const titleStyle2 = {
+    fontSize: '60px',
+    fontWeight: 'bold',
+    color: '#1b325f',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    WebkitTextStroke: '2px white',
+    MozTextStroke: '2px white',
+    marginBottom: '0px',
+    marginLeft: '300px'
+};
+
 const PerfilProfesional = () => {
   const [profesional, setProfesional] = useState({});
   const [facebook, setFacebook] = useState("");
@@ -123,7 +134,7 @@ const PerfilProfesional = () => {
         backgroundSize: "cover",
       }}
     >
-      <Grid container justifyContent="center" spacing={2}>
+        <Grid container justifyContent="center" xs={12}>
         <Grid item xs={12} md={8}>
           <Card
             style={{ backgroundColor: "rgba(255, 255, 255, 0.6)" }}
@@ -139,11 +150,12 @@ const PerfilProfesional = () => {
                 <Button
                   variant="text"
                   style={{
-                    color: "#1b325f",
+                    color: "white",
                     marginRight: "8px",
                     fontWeight: "bold",
-                  }}
-                  size="small"
+                    backgroundColor: "#1b325f"
+                                  }}
+                  size="large"
                   startIcon={<ArrowBackIcon />}
                   onClick={() => handleClick()}
                 >
@@ -170,7 +182,7 @@ const PerfilProfesional = () => {
                         variant="contained"
                         position="bottom"
                         size="small"
-                        style={{ backgroundColor: "#2E8B57", color: "white", fontWeight: "bold" }}
+                        style={{ backgroundColor: "#e9f2f9", color: "black", fontWeight: "bold" }}
                         sx={buttonStyle}
                         startIcon={<img src={whatsapp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
                         onClick={() => handleClickWpp(profesional.idContacto)}
@@ -187,7 +199,7 @@ const PerfilProfesional = () => {
                         variant="contained"
                         position="bottom"
                         size="small"
-                                          style={{ backgroundColor: "#1E90FF", color: "black", fontWeight: "bold" }}
+                        style={{ backgroundColor: "#e9f2f9", color: "black", fontWeight: "bold" }}
                         sx={buttonStyle}
                         startIcon={<img src={fotofb} alt="facebook" style={{ height: '20px', marginRight: '5px' }} />}
                         onClick={() => handleClickFb(profesional.idContacto)}
@@ -204,9 +216,9 @@ const PerfilProfesional = () => {
                         variant="contained"
                         position="bottom"
                         size="small"
-                        style={{ backgroundColor: "#ffffff", color: "black", fontWeight: "bold" }}
+                        style={{ backgroundColor: "#e9f2f9", color: "black", fontWeight: "bold" }}
                         sx={buttonStyle}
-                        startIcon={<img src={fotoig} alt="facebook" style={{ height: '20px', marginRight: '5px' }} />}
+                        startIcon={<img src={fotoig} alt="instagram" style={{ height: '20px', marginRight: '5px' }} />}
                         onClick={() => handleClickIg(profesional.idContacto)}
                         onMouseOver={(e) =>
                             (e.currentTarget.style.transform = "scale(1.2)")
@@ -278,35 +290,35 @@ const PerfilProfesional = () => {
                       </Typography>
                     </Box>
                   </CardContent>
-                  <CardActions>
-                    <Box marginLeft="65px">
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: "#f26c4f",
-                          color: "white",
-                          margin: "5px",
-                        }}
-                        size="small"
-                        endIcon={<FavoriteIcon />}
-                      >
-                        Agregar a Favoritos
-                      </Button>
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: "#1b325f",
-                          color: "white",
-                          margin: "5px",
-                        }}
-                        size="small"
-                        endIcon={<CommentIcon />}
-                        onClick={() => handleClickComments(id)}
-                      >
-                        Comentarios
-                      </Button>
+                <CardActions style={{ textAlign: "center" }}>
+                    <Box marginLeft="auto"> 
+                        <Button
+                            variant="contained"
+                            style={{
+                                backgroundColor: "#e9f2f9",
+                                color: "#1b325f",
+                                margin: "5px",
+                            }}
+                            size="small"
+                            endIcon={<FavoriteIcon />}
+                        >
+                            Agregar a Favoritos
+                        </Button>
+                        <Button
+                            variant="contained"
+                            style={{
+                                backgroundColor: "#e9f2f9",
+                                color: "#1b325f",
+                                margin: "5px",
+                            }}
+                            size="small"
+                            endIcon={<CommentIcon />}
+                            onClick={() => handleClickComments(id)}
+                        >
+                            Comentarios
+                        </Button>
                     </Box>
-                  </CardActions>
+                </CardActions>
                 </Grid>
               </Grid>
             </Box>
