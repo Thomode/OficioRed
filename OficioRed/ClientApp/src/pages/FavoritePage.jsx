@@ -88,24 +88,27 @@ const FavoritePage = ({ profesionales }) => {
     };
 
     const handleAgregarFavorito = (profesional) => {
-        // Verifica si el profesional ya está en la lista de favoritos
-        const isInFavoritos = favoritos.some((fav) => fav.idProfesional === profesional.idProfesional);
+        // Usa una función para actualizar el estado correctamente
+        setFavoritos((prevFavoritos) => {
+            const isInFavoritos = prevFavoritos.some((fav) => fav.idProfesional === profesional.idProfesional);
 
-        let nuevosFavoritos;
+            let nuevosFavoritos;
 
-        if (!isInFavoritos) {
-            // Agrega el profesional a la lista de favoritos
-            nuevosFavoritos = [...favoritos, profesional];
-        } else {
-            // Elimina el profesional de la lista de favoritos
-            nuevosFavoritos = favoritos.filter((fav) => fav.idProfesional !== profesional.idProfesional);
-        }
+            if (!isInFavoritos) {
+                // Agrega el profesional a la lista de favoritos
+                console.log([...prevFavoritos, profesional]);
+                nuevosFavoritos = [...prevFavoritos, profesional];
+            } else {
+                // Elimina el profesional de la lista de favoritos
+                nuevosFavoritos = prevFavoritos.filter((fav) => fav.idProfesional !== profesional.idProfesional);
+                console.log(nuevosFavoritos);
+            }
 
-        // Actualiza el estado local
-        setFavoritos(nuevosFavoritos);
+            // Guarda la lista de favoritos en el localStorage
+            localStorage.setItem('favoritos', JSON.stringify(nuevosFavoritos));
 
-        // Actualiza la ubicación para que la información persista
-        navigate('/favoritos', { state: { favoritos: nuevosFavoritos } });
+            return nuevosFavoritos;
+        });
     };
 
     return (
