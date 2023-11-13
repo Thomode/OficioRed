@@ -65,11 +65,11 @@ public class InteresadoController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult Update(InteresadoDTO interesadoDTO)
+    public IActionResult Update(InteresadoUpdateDTO interesadoUpdateDTO)
     {
         try
         {
-            _interesadoService.Update(interesadoDTO);
+            _interesadoService.Update(interesadoUpdateDTO);
 
             return Ok(new
             {

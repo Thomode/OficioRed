@@ -132,15 +132,14 @@ export const MiPerfilProfesional = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
+      await profesionalService.imageUpload(selectedFile)
+
       await profesionalService.updateProfesional(
         data.nombre,
         data.apellido,
         data.email,
         data.descripcion
       )
-    
-      await usuarioService.updateUser(profesional.idUsuario, data.user, data.password);
-
       await contactoService.updateContacto(
         profesional.idContacto,
         data.telefono,
@@ -148,6 +147,8 @@ export const MiPerfilProfesional = () => {
         data.instagram,
         data.facebook
       );
+    
+      await usuarioService.updateUser(profesional.idUsuario, data.user, data.password);
 
       navigate("/home");
 

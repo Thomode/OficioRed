@@ -34,5 +34,8 @@ public class AutoMapperProfile: Profile
 
         // ProfesionalUpdateDTO -> Profesional
         CreateMap<ProfesionalUpdateDTO, Profesional>();
+
+        // InteresadoUpdateDTO -> Interesado
+        CreateMap<InteresadoUpdateDTO, Interesado>();
     }
 }

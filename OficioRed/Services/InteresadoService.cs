@@ -11,7 +11,7 @@ public interface IInteresadoService
     List<Interesado> GetAll();
     Interesado Get(int id);
     void Create(InteresadoDTO interesadoDTO);
-    void Update(InteresadoDTO interesadoDTO);
+    void Update(InteresadoUpdateDTO interesadoUpdateDTO);
     void Delete(int id);
     Task<Interesado> SubirFotoPerfil(Stream archivo, string nombreFoto);
 }
@@ -116,7 +116,7 @@ public class InteresadoService : IInteresadoService
         return _context.Interesados.Where(e => !e.Fhbaja.HasValue).ToList();
     }
 
-    public void Update(InteresadoDTO interesadoDTO)
+    public void Update(InteresadoUpdateDTO interesadoUpdateDTO)
     {
         var interesado = getInteresadoSesion();
 
@@ -125,7 +125,7 @@ public class InteresadoService : IInteresadoService
             throw new AppException("El Usuario no esta logeado");
         }
 
-        _mapper.Map(interesadoDTO, interesado);
+        _mapper.Map(interesadoUpdateDTO, interesado);
 
         using (var transaction = _context.Database.BeginTransaction())
         {
