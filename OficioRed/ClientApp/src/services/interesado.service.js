@@ -44,18 +44,13 @@ const getById = async (id) =>
     await axios.get(`/api/Interesado/${id}`)
 
 const updateInteresado = async (nombre, apellido, email, fotoPerfil) => {
-  try {
-      const response = await axios.put(`/api/Interesado`, {
+  const response = await axios.put(`/api/Interesado`, {
           nombre,
           apellido,
           email,
           fotoPerfil,
-      });
+      }, await sesionService.getConfig())
       return response.data;
-  } catch (error) {
-      console.error('Error al actualizar el interesado:', error);
-      throw error;
-  }
 };
     
 
