@@ -283,7 +283,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                     margin="normal"
                     {...register("telefono", {
                       required: true,
-                      pattern: /^[0-9]{10}$/, // Asumiendo que el teléfono tiene 10 dígitos
+                      pattern: /^[0-9]{10}$/,
                     })}
                     error={!!errors.telefono}
                     helperText={

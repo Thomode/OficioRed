@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-import { LockRounded } from "@mui/icons-material";
+import { AccountCircle, LockRounded } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { usuarioService } from "../services/usuario.service";
 import { profesionalService } from "../services/profesional.service";
@@ -112,14 +112,14 @@ export const MiPerfilProfesional = () => {
         setValue("apellido", profesionalData.apellido);
         setValue("email", profesionalData.email);
         setValue("descripcion", profesionalData.descripcion);
+        setValue("user", userData.data.user);
         setValue("fotoPerfil", profesionalData.fotoPerfil);
-        setImage(profesionalData.fotoPerfil);
+        setSelectedFile(profesionalData.fotoPerfil);
         setValue("telefono", contactoData.data.telefono);
         setValue("instagram", contactoData.data.instagram);
         setValue("facebook", contactoData.data.facebook);
 
-        setProfesional(profesionalData)
-
+        setProfesional(profesionalData);
       } catch (error) {
         console.log("Error al obtener los datos", error);
         setErrorMessage("Error al obtener los datos");
@@ -132,14 +132,14 @@ export const MiPerfilProfesional = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      await profesionalService.imageUpload(selectedFile)
+      //await profesionalService.imageUpload(selectedFile);
 
       await profesionalService.updateProfesional(
         data.nombre,
         data.apellido,
         data.email,
         data.descripcion
-      )
+      );
       await contactoService.updateContacto(
         profesional.idContacto,
         data.telefono,
@@ -147,8 +147,12 @@ export const MiPerfilProfesional = () => {
         data.instagram,
         data.facebook
       );
-    
-      await usuarioService.updateUser(profesional.idUsuario, data.user, data.password);
+
+      await usuarioService.updateUser(
+        profesional.idUsuario,
+        data.user,
+        data.password
+      );
 
       navigate("/home");
 
@@ -231,14 +235,14 @@ export const MiPerfilProfesional = () => {
                 <Typography style={titleStyle}>Editar mi perfil</Typography>
                 {image ? (
                   <img
-                    src={image}
+                    src={selectedFile}
                     alt="Vista previa de la imagen"
                     style={imageStyle}
                     name="fotoPerfil"
                   />
                 ) : (
                   <img
-                    src={imagenDefault}
+                    src={selectedFile}
                     alt="Imagen por defecto"
                     style={imageStyle}
                   />
@@ -332,6 +336,37 @@ export const MiPerfilProfesional = () => {
                         ? "Campo obligatorio"
                         : errors.email?.type === "pattern"
                         ? "Coloque un email válido"
+                        : ""
+                    }
+                  />
+                  <TextField
+                    fullWidth
+                    required
+                    name="user"
+                    type={"text"}
+                    placeholder="Nombre de Usuario"
+                    autoComplete="off"
+                    margin="normal"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      ),
+                    }}
+                    {...register("user", {
+                      required: true,
+                      minLength: 2,
+                      maxLength: 15,
+                    })}
+                    error={!!errors.usuario}
+                    helperText={
+                      errors.usuario?.type === "required"
+                        ? "Campo obligatorio"
+                        : errors.usuario?.type === "minLength"
+                        ? "Mínimo 2 caracteres"
+                        : errors.usuario?.type === "maxLength"
+                        ? "Máximo 15 caracteres"
                         : ""
                     }
                   />

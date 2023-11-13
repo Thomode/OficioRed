@@ -69,6 +69,7 @@ const Comments = ({ commentsUrl, currentUserId }) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
       cancelButtonText: "Cancelar",
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         deleteCommentApi().then(() => {

@@ -31,12 +31,22 @@ const update = async (id, user, password, idRol) =>
 })
 
 const updateUser = async (id, user, password) => {
-    const response = await axios.put(`/api/Usuario/${id}`, {
+    try {
+        const response = await axios.put(`/api/Usuario/${id}`, {
             user,
             password,
-        }, await sesionService.getConfig())
-    return response.data;
+            idRol: null,
+            activo: null
+        }, await sesionService.getConfig());
+        console.log('Respuesta del servidor:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error);
+        console.error('Detalles del error:', error.response.data);
+        throw error; // Puedes lanzar una excepción para que el error se propague
+    }
 }
+
 
 async function getRoles() {
     const res = await axios.get("/api/Rol")
