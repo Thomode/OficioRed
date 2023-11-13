@@ -54,16 +54,7 @@ const backgroundStyle = {
 
 export const MiPerfilProfesional = () => {
   const [rubros, setRubros] = useState([]);
-  const [usuarioData, setUsuarioData] = useState({
-    nombre: "",
-    apellido: "",
-    email: "",
-    telefono: "",
-    instagram: "",
-    facebook: "",
-    descripcion: "",
-    fotoPerfil: "",
-  });
+  const [profesional, setProfesional] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [image, setImage] = useState("");
@@ -126,6 +117,9 @@ export const MiPerfilProfesional = () => {
         setValue("telefono", contactoData.data.telefono);
         setValue("instagram", contactoData.data.instagram);
         setValue("facebook", contactoData.data.facebook);
+
+        setProfesional(profesionalData)
+
       } catch (error) {
         console.log("Error al obtener los datos", error);
         setErrorMessage("Error al obtener los datos");
@@ -138,14 +132,17 @@ export const MiPerfilProfesional = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      /*await profesionalService.updateProfesional(
+      await profesionalService.updateProfesional(
         data.nombre,
         data.apellido,
         data.email,
         data.descripcion
-      );*/
-      await usuarioService.updateUser(data.id, data.user, data.password);
+      )
+    
+      await usuarioService.updateUser(profesional.idUsuario, data.user, data.password);
+
       await contactoService.updateContacto(
+        profesional.idContacto,
         data.telefono,
         data.email,
         data.instagram,
@@ -153,6 +150,7 @@ export const MiPerfilProfesional = () => {
       );
 
       navigate("/home");
+
       enqueueSnackbar("Actualización exitosa", {
         variant: "success",
         anchorOrigin: {

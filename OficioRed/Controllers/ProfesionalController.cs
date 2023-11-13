@@ -100,12 +100,12 @@ namespace OficioRed.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(ProfesionalDTO profesionalDTO)
+        [HttpPut]
+        public IActionResult Update(ProfesionalUpdateDTO profesionalUpdateDTO)
         {
             try
             {
-                _profesionalService.Update(profesionalDTO);
+                _profesionalService.Update(profesionalUpdateDTO);
 
                 return Ok(new
                 {

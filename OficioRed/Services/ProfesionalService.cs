@@ -13,7 +13,7 @@ namespace OficioRed.Services
         List<Profesional> GetAll();
         Profesional Get(int id);
         void Create(ProfesionalDTO profesionalDTO);
-        void Update(ProfesionalDTO profesionalDTO);
+        void Update(ProfesionalUpdateDTO profesionalUpdateDTO);
         void Delete(int id);
         void AsociarRubro(int rubroId);
         List<Rubro> GetRubrosXProfesional(int idProfesional);
@@ -147,7 +147,7 @@ namespace OficioRed.Services
         }
 
 
-        public void Update(ProfesionalDTO profesionalDTO)
+        public void Update(ProfesionalUpdateDTO profesionalUpdateDTO)
         {
             var profesional = getProfesionalSesion();
 
@@ -156,7 +156,7 @@ namespace OficioRed.Services
                 throw new AppException("El Usuario no esta logeado");
             }
 
-            _mapper.Map(profesionalDTO, profesional);
+            _mapper.Map(profesionalUpdateDTO, profesional);
 
             using (var transaction = _context.Database.BeginTransaction())
             {
