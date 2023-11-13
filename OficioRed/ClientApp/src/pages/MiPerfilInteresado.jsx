@@ -195,11 +195,12 @@ export const MiPerfilInteresado = () => {
                 <Button
                   variant="text"
                   style={{
-                    color: "#1b325f",
+                    color: "white",
                     marginRight: "8px",
                     fontWeight: "bold",
+                    backgroundColor: "#1b325f",
                   }}
-                  size="small"
+                  size="large"
                   startIcon={<ArrowBackIcon />}
                   onClick={() => handleClick()}
                 >
