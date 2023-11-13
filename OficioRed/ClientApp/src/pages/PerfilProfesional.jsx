@@ -21,10 +21,11 @@ import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
 import Rating from '@mui/material/Rating';
+import Chip from "@mui/material/Chip";
 
 const buttonStyle = {
     margin: "0 8px",
-    posittion: "bottom",
+    position: "bottom",
 };
 
 
@@ -254,24 +255,36 @@ const PerfilProfesional = () => {
                       </Typography>
                     </Box>
                     <Box bgcolor="#21406e" color="white" p={2}>
+                        <Typography variant="subtitle1">
+                            <strong>Rubros: </strong>
+                            {profesional.rubros &&
+                                profesional.rubros.map((rubro, index) => (
+                                    <React.Fragment key={index}>
+                                        {rubro.nombre}
+                                        {index < profesional.rubros.length - 1 ? ', ' : ''}
+                                    </React.Fragment>
+                                ))}
+                        </Typography>
+                    </Box>
+                    <Box bgcolor="#1b325f" color="white" p={2}>
                       <Typography variant="subtitle1">
                         <strong>Email: </strong> {profesional.email}
                       </Typography>
                     </Box>
-                    <Box bgcolor="#1b325f" color="white" p={2}>
+                     <Box bgcolor="#21406e" color="white" p={2}>
                       <Typography variant="subtitle1">
                         <strong>Teléfono: </strong>
                         {telefono || "No disponible"}
                       </Typography>
                     </Box>
-                    <Box bgcolor="#21406e" color="white" p={2}>
+                    <Box bgcolor="#1b325f" color="white" p={2}>
                       <Typography variant="subtitle1">
                         <strong>Instagram: </strong>
                         {instagram || "No disponible"}
                       </Typography>
                     </Box>
                     <Box
-                      bgcolor="#1b325f"
+                      bgcolor="#21406e"
                       color="white"
                       p={2}
                       borderRadius="0px 0px 20px 20px"
@@ -288,10 +301,10 @@ const PerfilProfesional = () => {
                                 sx={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                                  margin: '5px', 
-                                                  backgroundColor: "#e9f2f9",
-                                                  borderRadius: '5px',
-                                                  color: "#1b325f"
+                                    margin: '5px', 
+                                    backgroundColor: "#e9f2f9",
+                                    borderRadius: '5px',
+                                    color: "#1b325f"
                                 }}
                             >
                                 <Rating
@@ -314,7 +327,7 @@ const PerfilProfesional = () => {
                                 size="small"
                                 endIcon={<FavoriteIcon />}
                             >
-                                Agregar a Favoritos
+                                Favoritos
                             </Button>
                             <Button
                                 variant="contained"
@@ -332,7 +345,6 @@ const PerfilProfesional = () => {
                             </Button>
                         </Box>
                     </CardActions>
-
                 </Grid>
               </Grid>
             </Box>
