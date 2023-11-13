@@ -8,26 +8,22 @@ import {
   updateComment as updateCommentApi,
   deleteComment as deleteCommentApi,
 } from "./api";
-import {
-    Typography,
-    Grid,
-    Button,
-
-} from "@mui/material";
+import { Typography, Grid, Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Swal from "sweetalert2";
 
 const titleStyle2 = {
-    fontSize: '70px',
-    fontWeight: 'bold',
-    color: '#1b325f',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-    WebkitTextStroke: '2px white',
-    MozTextStroke: '2px white',
-    marginBottom: '0px',
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    padding: '10px',
-    borderRadius: '10px',
-    margin: '5px'
+  fontSize: "70px",
+  fontWeight: "bold",
+  color: "#1b325f",
+  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+  WebkitTextStroke: "2px white",
+  MozTextStroke: "2px white",
+  marginBottom: "0px",
+  backgroundColor: "rgba(255, 255, 255, 0.6)",
+  padding: "10px",
+  borderRadius: "10px",
+  margin: "5px",
 };
 
 const Comments = ({ commentsUrl, currentUserId }) => {
@@ -64,14 +60,33 @@ const Comments = ({ commentsUrl, currentUserId }) => {
     });
   };
   const deleteComment = (commentId) => {
-    if (window.confirm("Eliminar el comentario?")) {
-      deleteCommentApi().then(() => {
-        const updatedBackendComments = backendComments.filter(
-          (backendComment) => backendComment.id !== commentId
-        );
-        setBackendComments(updatedBackendComments);
-      });
-    }
+    Swal.fire({
+      position: "center",
+      icon: "question",
+      title: "Eliminar el comentario?",
+      showCancelButton: true,
+      confirmButtonColor: "#1b325f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCommentApi().then(() => {
+          const updatedBackendComments = backendComments.filter(
+            (backendComment) => backendComment.id !== commentId
+          );
+          setBackendComments(updatedBackendComments);
+
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Comentario eliminado con éxito",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -79,31 +94,31 @@ const Comments = ({ commentsUrl, currentUserId }) => {
       setBackendComments(data);
     });
   }, []);
-    const handleClick = () => {
-        navigate(-1);
-    };
+  const handleClick = () => {
+    navigate(-1);
+  };
 
   return (
     <div className="comments">
-          <Grid xs={12}>
-              <Button
-                  variant="text"
-                  style={{
-                      color: "white",
-                      margin: "10px",
-                      fontWeight: "bold",
-                      backgroundColor: "#1b325f"
-                  }}
-                  size="large"
-                  startIcon={<ArrowBackIcon />}
-                  onClick={() => handleClick()}
-              >
-                  Volver
-              </Button>
-              <Typography variant="h2" sx={titleStyle2}>
-                  Comentarios
-              </Typography>
-          </Grid>
+      <Grid xs={12}>
+        <Button
+          variant="text"
+          style={{
+            color: "white",
+            margin: "10px",
+            fontWeight: "bold",
+            backgroundColor: "#1b325f",
+          }}
+          size="large"
+          startIcon={<ArrowBackIcon />}
+          onClick={() => handleClick()}
+        >
+          Volver
+        </Button>
+        <Typography variant="h2" sx={titleStyle2}>
+          Comentarios
+        </Typography>
+      </Grid>
       <CommentForm submitLabel="Guardar" handleSubmit={addComment} />
       <div className="comments-container">
         {rootComments.map((rootComment) => (

@@ -85,7 +85,7 @@ export const MiPerfilInteresado = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = () => {
-    navigate(`/profesionales`);
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -93,29 +93,23 @@ export const MiPerfilInteresado = () => {
       try {
         const userId = usuarioService.getId();
         const userData = await usuarioService.get(userId);
-
-        // Actualizo los campos de usuario con los datos obtenidos
-        Object.keys(userData).forEach((key) => {
-          setValue(key, userData[key]);
-        });
-
-        const interesadoData = await interesadoService.getById(userId);
-
-        // Actualizo los campos de interesado con los datos obtenidos
-        Object.keys(interesadoData).forEach((key) => {
-          setValue(key, interesadoData[key]);
-        });
-
-        if (interesadoData?.fotoPerfil) {
-          setImage(interesadoData.fotoPerfil);
-        }
+        const idUser = userData.data.idUsuario;
+        const interesadoData = await interesadoService
+          .getAll()
+          .then((res) =>
+            res.find((interesado) => interesado.idUsuario === idUser)
+          );
+        setValue("nombre", interesadoData.nombre);
+        setValue("apellido", interesadoData.apellido);
+        setValue("email", interesadoData.email);
+        setValue("fotoPerfil", interesadoData.fotoPerfil);
+        setImage(interesadoData.fotoPerfil);
       } catch (error) {
-        console.log(
-          "Error al obtener los datos del usuario e interesado",
-          error
-        );
+        console.log("Error al obtener los datos", error);
+        //setErrorMessage("Error al obtener los datos");
       }
     };
+
     fetchData();
   }, [setValue]);
 
