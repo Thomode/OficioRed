@@ -18,7 +18,7 @@ import imagenwsp from "../../assets/whatsapp.png";
 
 const cardStyle = {
   maxWidth: "345px",
-  minHeight: "500px",
+  minHeight: "480px",
   borderRadius: 10,
   backgroundColor: "rgba(255, 255, 255, 0.6)",
   overflow: "hidden",
@@ -102,7 +102,7 @@ const CardProfesional = ({ profesionales }) => {
               <Typography gutterBottom variant="h5" component="div">
                 {`${profesional.nombre} ${profesional.apellido}`}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary"  minHeight= "100px">
                 {profesional.rubros &&
                   profesional.rubros.map((rubro, index) => (
                     <Chip
