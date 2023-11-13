@@ -26,18 +26,14 @@ async function getAll() {
 const getById = async (id) =>
     await axios.get(`/api/Profesional/${id}`)
 
-const updateProfesional = async (id, nombre, apellido, email, descripcion) => {
-  const response = await axios.put(`/api/Profesional/${id}`, {
+const updateProfesional = async (nombre, apellido, email, descripcion) => {
+  const response = await axios.put(`/api/Profesional/`, {
           nombre,
           apellido,
           email,
-          descripcion,
-          fotoPerfil: null,
-          idRubroXprofesional: null,
-          idRating: null,
-          idContacto: null,
-          idDireccion: null,
+          descripcion
       }, await sesionService.getConfig())
+      
     return response.data;
 }
 
