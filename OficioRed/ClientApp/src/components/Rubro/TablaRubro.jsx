@@ -15,6 +15,9 @@ export function TablaRubro({ rubros, loadRubros }) {
         <TableHead sx={{ backgroundColor: "#f0f0f0" }}>
           <TableRow>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
+              #
+            </TableCell>
+            <TableCell align="right" sx={{ fontWeight: "bold" }}>
               Rubro
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
