@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import {
@@ -7,8 +8,30 @@ import {
   updateComment as updateCommentApi,
   deleteComment as deleteCommentApi,
 } from "./api";
+import {
+    Typography,
+    Grid,
+    Button,
+
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+const titleStyle2 = {
+    fontSize: '70px',
+    fontWeight: 'bold',
+    color: '#1b325f',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    WebkitTextStroke: '2px white',
+    MozTextStroke: '2px white',
+    marginBottom: '0px',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    padding: '10px',
+    borderRadius: '10px',
+    margin: '5px'
+};
 
 const Comments = ({ commentsUrl, currentUserId }) => {
+  const navigate = useNavigate();
   const [backendComments, setBackendComments] = useState([]);
   const [activeComment, setActiveComment] = useState(null);
   const rootComments = backendComments.filter(
@@ -56,11 +79,32 @@ const Comments = ({ commentsUrl, currentUserId }) => {
       setBackendComments(data);
     });
   }, []);
+    const handleClick = () => {
+        navigate(-1);
+    };
 
   return (
     <div className="comments">
-      <h3 className="comments-title">Comentarios</h3>
-      <CommentForm submitLabel="Write" handleSubmit={addComment} />
+          <Grid xs={12}>
+              <Button
+                  variant="text"
+                  style={{
+                      color: "white",
+                      margin: "10px",
+                      fontWeight: "bold",
+                      backgroundColor: "#1b325f"
+                  }}
+                  size="large"
+                  startIcon={<ArrowBackIcon />}
+                  onClick={() => handleClick()}
+              >
+                  Volver
+              </Button>
+              <Typography variant="h2" sx={titleStyle2}>
+                  Comentarios
+              </Typography>
+          </Grid>
+      <CommentForm submitLabel="Guardar" handleSubmit={addComment} />
       <div className="comments-container">
         {rootComments.map((rootComment) => (
           <Comment

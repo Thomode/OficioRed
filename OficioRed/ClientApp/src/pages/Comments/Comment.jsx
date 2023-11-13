@@ -67,7 +67,7 @@ const Comment = ({
         )}
         {isEditing && (
           <CommentForm
-            submitLabel="Update"
+            submitLabel="Guardar cambios"
             hasCancelButton
             initialText={comment.body}
             handleSubmit={(text) => updateComment(text, comment.id)}
@@ -96,7 +96,7 @@ const Comment = ({
       </CardActions>
       {isReplying && (
         <CommentForm
-          submitLabel="Reply"
+          submitLabel="Guardar respuesta"
           handleSubmit={(text) => addComment(text, replyId)}
         />
       )}

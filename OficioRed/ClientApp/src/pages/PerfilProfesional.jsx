@@ -76,7 +76,7 @@ const PerfilProfesional = () => {
   }, [id]);
 
   const handleClick = () => {
-    navigate(`/profesionales`);
+      navigate(-1);
   };
   const handleClickComments = (id) => {
     navigate(`/${id}/PerfilProfesional/Comentarios`);
