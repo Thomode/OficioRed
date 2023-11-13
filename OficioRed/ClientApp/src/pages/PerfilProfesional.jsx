@@ -21,7 +21,7 @@ import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
 import Rating from '@mui/material/Rating';
-import Chip from "@mui/material/Chip";
+import { profesionalService } from "../services/profesional.service";
 
 const buttonStyle = {
     margin: "0 8px",
@@ -36,6 +36,7 @@ const PerfilProfesional = () => {
   const [instagram, setInstagram] = useState("");
   const [telefono, setTelefono] = useState("");
   const { id } = useParams();
+  const [rubros, setRubros] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,6 +62,17 @@ const PerfilProfesional = () => {
       .catch((error) => {
         console.error("Error fetching data", error);
       });
+      profesionalService.getAll()
+          .then((profesionales) => {
+              const profesionalActual = profesionales.find((prof) => prof.idProfesional === parseInt(id, 10));
+              // Ahora, puedes acceder a los rubros del profesional actual
+              if (profesionalActual) {
+                  setRubros(profesionalActual.rubros || []);
+              }
+          })
+          .catch((error) => {
+              console.error("Error fetching profesionales data", error);
+          });
   }, [id]);
 
   const handleClick = () => {
@@ -257,11 +269,11 @@ const PerfilProfesional = () => {
                     <Box bgcolor="#21406e" color="white" p={2}>
                         <Typography variant="subtitle1">
                             <strong>Rubros: </strong>
-                            {profesional.rubros &&
-                                profesional.rubros.map((rubro, index) => (
+                            {rubros &&
+                                rubros.map((rubro, index) => (
                                     <React.Fragment key={index}>
                                         {rubro.nombre}
-                                        {index < profesional.rubros.length - 1 ? ', ' : ''}
+                                        {index < rubros.length - 1 ? ', ' : ''}
                                     </React.Fragment>
                                 ))}
                         </Typography>
