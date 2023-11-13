@@ -119,8 +119,7 @@ export const MiPerfilInteresado = () => {
       await interesadoService.updateInteresado(
         data.nombre,
         data.apellido,
-        data.email,
-        selectedFile
+        data.email
       );
       await usuarioService.updateUser(data.id, data.user, data.password);
 
@@ -207,6 +206,7 @@ export const MiPerfilInteresado = () => {
                     src={image}
                     alt="Vista previa de la imagen"
                     style={imageStyle}
+                    name="fotoPerfil"
                   />
                 ) : (
                   <img

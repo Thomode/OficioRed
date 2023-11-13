@@ -114,7 +114,7 @@ export const MiPerfilProfesional = () => {
         setValue("descripcion", profesionalData.descripcion);
         setValue("user", userData.data.user);
         setValue("fotoPerfil", profesionalData.fotoPerfil);
-        setSelectedFile(profesionalData.fotoPerfil);
+        setImage(profesionalData.fotoPerfil);
         setValue("telefono", contactoData.data.telefono);
         setValue("instagram", contactoData.data.instagram);
         setValue("facebook", contactoData.data.facebook);
@@ -132,7 +132,7 @@ export const MiPerfilProfesional = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      //await profesionalService.imageUpload(selectedFile);
+      await profesionalService.imageUpload(selectedFile);
 
       await profesionalService.updateProfesional(
         data.nombre,
@@ -148,11 +148,11 @@ export const MiPerfilProfesional = () => {
         data.facebook
       );
 
-      await usuarioService.updateUser(
+      /*await usuarioService.updateUser(
         profesional.idUsuario,
         data.user,
         data.password
-      );
+      );*/
 
       navigate("/home");
 
@@ -235,7 +235,7 @@ export const MiPerfilProfesional = () => {
                 <Typography style={titleStyle}>Editar mi perfil</Typography>
                 {image ? (
                   <img
-                    src={selectedFile}
+                    src={image}
                     alt="Vista previa de la imagen"
                     style={imageStyle}
                     name="fotoPerfil"
@@ -339,88 +339,7 @@ export const MiPerfilProfesional = () => {
                         : ""
                     }
                   />
-                  <TextField
-                    fullWidth
-                    required
-                    name="user"
-                    type={"text"}
-                    placeholder="Nombre de Usuario"
-                    autoComplete="off"
-                    margin="normal"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AccountCircle />
-                        </InputAdornment>
-                      ),
-                    }}
-                    {...register("user", {
-                      required: true,
-                      minLength: 2,
-                      maxLength: 15,
-                    })}
-                    error={!!errors.usuario}
-                    helperText={
-                      errors.usuario?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.usuario?.type === "minLength"
-                        ? "Mínimo 2 caracteres"
-                        : errors.usuario?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : ""
-                    }
-                  />
-                  <TextField
-                    fullWidth
-                    required
-                    placeholder="Nueva Contraseña"
-                    autoComplete="off"
-                    type={showPassword ? "text" : "password"}
-                    margin="normal"
-                    label="Nueva Contraseña"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment>
-                          <LockRounded />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={togglePasswordVisibility}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <RemoveRedEyeRoundedIcon fontSize="small" />
-                            ) : (
-                              <VisibilityOffRoundedIcon fontSize="small" />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    {...register("password", {
-                      required: true,
-                      minLength: 2,
-                      maxLength: 15,
-                      pattern:
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
-                    })}
-                    error={!!errors.password}
-                    helperText={
-                      errors.password?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.password?.type === "minLength"
-                        ? "Mínimo 2 caracteres"
-                        : errors.password?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : errors.password?.type === "pattern"
-                        ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                        : ""
-                    }
-                  />
                 </Grid>
-
                 <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
@@ -460,49 +379,6 @@ export const MiPerfilProfesional = () => {
                     autoComplete="off"
                     margin="normal"
                     {...register("facebook")}
-                  />
-                  <TextField
-                    fullWidth
-                    required
-                    name="confirmPassword"
-                    placeholder="Confirmar Contraseña"
-                    autoComplete="off"
-                    type={showPassword ? "text" : "password"}
-                    label="Confirmar Contraseña"
-                    margin="normal"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment>
-                          <LockRounded />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={togglePasswordVisibility}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <RemoveRedEyeRoundedIcon fontSize="small" />
-                            ) : (
-                              <VisibilityOffRoundedIcon fontSize="small" />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    {...register("confirmPassword", {
-                      required: true,
-                      validate: (value) => value === watch("password"),
-                    })}
-                    error={!!errors.confirmPassword}
-                    helperText={
-                      errors.confirmPassword?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.confirmPassword?.type === "validate"
-                        ? "Las contraseñas no coinciden"
-                        : ""
-                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
