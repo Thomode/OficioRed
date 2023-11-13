@@ -138,17 +138,16 @@ export const MiPerfilProfesional = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      await profesionalService.updateProfesional(
+      /*await profesionalService.updateProfesional(
         data.nombre,
         data.apellido,
         data.email,
-        data.descripcion,
-        data.fotoPerfil
-      );
+        data.descripcion
+      );*/
       await usuarioService.updateUser(data.id, data.user, data.password);
       await contactoService.updateContacto(
-        data.id,
         data.telefono,
+        data.email,
         data.instagram,
         data.facebook
       );
@@ -498,29 +497,6 @@ export const MiPerfilProfesional = () => {
                         ? "Máximo 700 caracteres"
                         : ""
                     }
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Box mb={2}>
-                    <Divider style={{ color: "black" }} />
-
-                    <Typography
-                      variant="h6"
-                      style={{
-                        color: "#1B325F",
-                        position: "absolute",
-                        left: "53%",
-                      }}
-                    >
-                      Rubros
-                    </Typography>
-                  </Box>
-
-                  <FiltroRubros
-                    sx={{ width: "100%" }}
-                    rubros={rubros}
-                    setRubros={setRubros}
-                    seleccionado={false}
                   />
                 </Grid>
               </Grid>

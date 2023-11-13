@@ -1,22 +1,18 @@
 import axios from "axios"
+import { sesionService } from "../auth/sesion";
 
 const getById = async (id) =>
     await axios.get(`/api/Contacto/${id}`)
 
 const updateContacto = async (id, telefono, email, instagram, facebook) => {
-    try {
-        const response = await axios.put(`/api/Contacto/${id}`, {
+    const response = await axios.put(`/api/Contacto/${id}`, {
             telefono,
             email,
             instagram,
             facebook
-        });
+        }, await sesionService.getConfig())
         return response.data;
-    } catch (error) {
-        console.error('Error al actualizar el contacto:', error);
-        throw error;
-    }
-};
+    } 
 
 export const contactoService = {
     getById,

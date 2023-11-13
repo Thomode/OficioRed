@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { sesionService } from "../auth/sesion";
 
 async function getAll() {
     const res = await axios.get("/api/Usuario")
@@ -31,18 +31,12 @@ const update = async (id, user, password, idRol) =>
 })
 
 const updateUser = async (id, user, password) => {
-    console.log(`Actualizando usuario con ID: ${id}`);
-    try {
-        const response = await axios.put(`/api/Usuario/${id}`, {
+    const response = await axios.put(`/api/Usuario/${id}`, {
             user,
             password,
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error al actualizar el usuario:', error);
-        throw error;
-    }
-};
+        }, await sesionService.getConfig())
+    return response.data;
+}
 
 async function getRoles() {
     const res = await axios.get("/api/Rol")

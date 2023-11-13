@@ -26,21 +26,20 @@ async function getAll() {
 const getById = async (id) =>
     await axios.get(`/api/Profesional/${id}`)
 
-const updateProfesional = async (id, nombre, apellido, email, descripcion, fotoPerfil) => {
-  try {
-      const response = await axios.put(`/api/Profesional/${id}`, {
+const updateProfesional = async (id, nombre, apellido, email, descripcion) => {
+  const response = await axios.put(`/api/Profesional/${id}`, {
           nombre,
           apellido,
           email,
           descripcion,
-          fotoPerfil,
-      });
-      return response.data;
-  } catch (error) {
-      console.error('Error al actualizar el profesional:', error);
-      throw error;
-  }
-};
+          fotoPerfil: null,
+          idRubroXprofesional: null,
+          idRating: null,
+          idContacto: null,
+          idDireccion: null,
+      }, await sesionService.getConfig())
+    return response.data;
+}
 
 const registerContacto = async (telefono, email, instagram, facebook) => {
   const res = await axios.post('/api/Contacto', {
