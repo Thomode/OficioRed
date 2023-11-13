@@ -242,7 +242,7 @@ export const MiPerfilProfesional = () => {
                   />
                 ) : (
                   <img
-                    src={selectedFile}
+                    src={imagenDefault}
                     alt="Imagen por defecto"
                     style={imageStyle}
                   />
