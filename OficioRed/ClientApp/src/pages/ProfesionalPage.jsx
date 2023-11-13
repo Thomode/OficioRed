@@ -1,4 +1,10 @@
-import { Container, Grid, Box } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { FiltroRubros } from "../components/FiltroRubroProfesional";
 import Buscador from "../components/buscador";
 import { profesionalService } from "../services/profesional.service";
@@ -111,7 +117,30 @@ export function ProfesionalPage() {
           spacing={2}
           mt={2}
         >
-          <CardProfesional profesionales={profesionalesFiltrados} />
+          {rubros.some((rubro) => rubro.seleccionado) ? (
+            profesionalesFiltrados.length > 0 ? (
+              <CardProfesional profesionales={profesionalesFiltrados} />
+            ) : (
+              <CircularProgress style={{ position: "absolute", top: "50%" }} />
+            )
+          ) : (
+            <Typography
+              variant="h6"
+              align="center"
+              style={{
+                position: "absolute",
+                top: "50%",
+                fontWeight: "bold",
+                fontSize: "24px",
+                color: "white",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                borderRadius: "10px",
+                padding: "10px",
+              }}
+            >
+              Por favor, seleccione algún rubro
+            </Typography>
+          )}
         </Grid>
       </Container>
     </Suspense>

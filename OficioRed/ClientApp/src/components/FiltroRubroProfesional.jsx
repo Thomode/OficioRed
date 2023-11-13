@@ -10,7 +10,7 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
       const rubrosLoad = res.data.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
-        seleccionado: seleccionado === rubro.nombre,
+        seleccionado: true,
       }));
       return rubrosLoad;
     } catch (error) {
@@ -53,6 +53,10 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
             <Checkbox
               checked={
                 rubros.length > 0 && rubros.every((rubro) => rubro.seleccionado)
+              }
+              indeterminate={
+                rubros.some((rubro) => rubro.seleccionado) &&
+                !rubros.every((rubro) => rubro.seleccionado)
               }
               onChange={(event) => handleSelectAllChange(event.target.checked)}
             />
