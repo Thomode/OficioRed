@@ -316,12 +316,12 @@ export const SignupPage = ({ setAcceso }) => {
                           color: "#1b325f",
                         }}
                       >
-                        Como profesional vas a tener que cargar una mayor
+                        Como profesional usted tendrá que cargar una mayor
                         cantidad de datos como foto, número de teléfono, email,
                         redes sociales, descripción, rubros de servicios a los
-                        que te dedicas,etc. Dicha información va a ser visible
-                        para el resto de las personas de tal manera de que
-                        puedan contactarte. A su vez vas a poder ver al resto de
+                        que se dedica,etc. Dicha información va a ser visible
+                        para el resto de las personas, quiénes podrán contactarte.
+                        A su vez, usted será capaz de ver al resto de
                         profesionales.
                       </Typography>
                     )}
@@ -334,10 +334,10 @@ export const SignupPage = ({ setAcceso }) => {
                           color: "#1b325f",
                         }}
                       >
-                        Como interesado únicamente vas a ingresar nombre,
-                        apellido, email y una foto. Vas a ser capaz de ver a
+                        Como interesado usted únicamente deberá ingresar nombre,
+                        apellido, email y una foto. Será capaz de ver a
                         todos los profesionales cargados en el sistema y
-                        realizar una búsqueda de acuerdo a tus necesidades.
+                        realizar una búsqueda de acuerdo a sus necesidades.
                       </Typography>
                     )}
                   </Box>

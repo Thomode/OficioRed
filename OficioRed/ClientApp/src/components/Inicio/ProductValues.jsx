@@ -44,7 +44,7 @@ function ProductValues() {
                             </Typography>
                             <Typography variant="h5" sx={{ textAlign: 'center', fontStyle: 'italic' }}>
                                 {
-                                    'Conectar personas y profesionales, permitiendo que ambos puedan contactarse de manera ágil'
+                                    'Conectar personas interesadas y profesionales, permitiendo que ambos puedan contactarse de manera ágil'
                                 }
                                 {
                                     ' y efectiva según lo que necesiten.'

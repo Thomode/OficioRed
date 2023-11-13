@@ -86,7 +86,7 @@ function ProductHowItWorks() {
                                     sx={image}
                                 />
                                 <Typography variant="h5" align="center" sx={{ textAlign: 'center', fontStyle: 'italic' }} >
-                                    {' Busque por el tipo de servicio o profesional que necesita y compare con las distintas opciones disponibles.'}
+                                    {' Busque por el tipo de servicio o nombre del profesional que necesita y compare con las distintas opciones disponibles.'}
                                 </Typography>
                             </Box>
                         </Grid>
