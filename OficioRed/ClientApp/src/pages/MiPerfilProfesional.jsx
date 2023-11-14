@@ -390,7 +390,7 @@ export const MiPerfilProfesional = () => {
                     placeholder="Descripcion"
                     autoComplete="off"
                     multiline
-                    rows={11}
+                    rows={8}
                     margin="normal"
                     {...register("descripcion", {
                       required: true,
