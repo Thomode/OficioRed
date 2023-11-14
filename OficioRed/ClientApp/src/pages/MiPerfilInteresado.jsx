@@ -121,7 +121,6 @@ export const MiPerfilInteresado = () => {
         data.apellido,
         data.email
       );
-      await usuarioService.updateUser(data.id, data.user, data.password);
 
       navigate("/home");
       enqueueSnackbar("Actualización exitosa", {
