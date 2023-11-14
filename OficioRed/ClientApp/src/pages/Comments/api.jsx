@@ -1,11 +1,9 @@
-
-
 export const getComments = async () => {
   return [
     {
       id: "1",
       body: "Super recomendable",
-      username: "Emiliano Fabricio Suarez",
+      username: "Tobías Bordino",
       userId: "4",
       parentId: null,
       createdAt: "2023-11-13T23:00:33.010+02:00",

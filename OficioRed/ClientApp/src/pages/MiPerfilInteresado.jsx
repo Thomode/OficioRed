@@ -232,7 +232,7 @@ export const MiPerfilInteresado = () => {
               </Grid>
 
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     required
@@ -240,7 +240,6 @@ export const MiPerfilInteresado = () => {
                     type={"text"}
                     placeholder="Nombre"
                     autoComplete="off"
-                    label="Nombre"
                     margin="normal"
                     {...register("nombre", {
                       required: true,
@@ -268,7 +267,6 @@ export const MiPerfilInteresado = () => {
                     type={"text"}
                     placeholder="Apellido"
                     autoComplete="off"
-                    label="Apellido"
                     margin="normal"
                     {...register("apellido", {
                       required: true,
@@ -296,7 +294,6 @@ export const MiPerfilInteresado = () => {
                     type={"email"}
                     placeholder="example@email.com"
                     autoComplete="off"
-                    label="Email"
                     margin="normal"
                     {...register("email", {
                       required: true,
@@ -308,165 +305,6 @@ export const MiPerfilInteresado = () => {
                         ? "Campo obligatorio"
                         : errors.email?.type === "pattern"
                         ? "Coloque un email válido"
-                        : ""
-                    }
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    required
-                    name="user"
-                    type={"text"}
-                    placeholder="Nombre de Usuario"
-                    autoComplete="off"
-                    label="Usuario"
-                    margin="normal"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AccountCircle />
-                        </InputAdornment>
-                      ),
-                    }}
-                    {...register("user", {
-                      required: true,
-                      minLength: 2,
-                      maxLength: 15,
-                    })}
-                    error={!!errors.usuario}
-                    helperText={
-                      errors.usuario?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.usuario?.type === "minLength"
-                        ? "Mínimo 2 caracteres"
-                        : errors.usuario?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : ""
-                    }
-                  />
-
-                  <TextField
-                    fullWidth
-                    required
-                    name="password"
-                    placeholder="Contraseña Actual"
-                    autoComplete="off"
-                    type={showPassword ? "text" : "password"}
-                    label="Contraseña Actual"
-                    margin="normal"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment>
-                          <LockRounded />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={togglePasswordVisibility}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <RemoveRedEyeRoundedIcon fontSize="small" />
-                            ) : (
-                              <VisibilityOffRoundedIcon fontSize="small" />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    required
-                    placeholder="Contraseña"
-                    autoComplete="off"
-                    type={showPassword ? "text" : "password"}
-                    label="Contraseña"
-                    margin="normal"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment>
-                          <LockRounded />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={togglePasswordVisibility}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <RemoveRedEyeRoundedIcon fontSize="small" />
-                            ) : (
-                              <VisibilityOffRoundedIcon fontSize="small" />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    {...register("password", {
-                      required: true,
-                      minLength: 2,
-                      maxLength: 15,
-                      pattern:
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
-                    })}
-                    error={!!errors.password}
-                    helperText={
-                      errors.password?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.password?.type === "minLength"
-                        ? "Mínimo 2 caracteres"
-                        : errors.password?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : errors.password?.type === "pattern"
-                        ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                        : ""
-                    }
-                  />
-                  <TextField
-                    fullWidth
-                    required
-                    name="confirmPassword"
-                    placeholder="Confirmar Contraseña"
-                    autoComplete="off"
-                    type={showPassword ? "text" : "password"}
-                    label="Confirmar Contraseña"
-                    margin="normal"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment>
-                          <LockRounded />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={togglePasswordVisibility}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <RemoveRedEyeRoundedIcon fontSize="small" />
-                            ) : (
-                              <VisibilityOffRoundedIcon fontSize="small" />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    {...register("confirmPassword", {
-                      required: true,
-                      validate: (value) => value === watch("password"),
-                    })}
-                    error={!!errors.confirmPassword}
-                    helperText={
-                      errors.confirmPassword?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.confirmPassword?.type === "validate"
-                        ? "Las contraseñas no coinciden"
                         : ""
                     }
                   />

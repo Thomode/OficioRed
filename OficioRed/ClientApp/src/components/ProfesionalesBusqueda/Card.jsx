@@ -39,6 +39,10 @@ const buttonStyle = {
 const CardProfesional = ({ profesionales }) => {
     const navigate = useNavigate();
     const [favoritos, setFavoritos] = useState([]);
+    const filteredProfesionales = profesionales.filter(
+        (profesional) =>
+            profesional.idProfesional !== 70 && profesional.idProfesional !== 71
+    );
   const handleLeerMasClick = (id) => {
     navigate(`/${id}/PerfilProfesional`);
   };
@@ -87,7 +91,7 @@ const CardProfesional = ({ profesionales }) => {
 
   return (
     <Grid container spacing={2} marginLeft={"8%"} marginRight={"2%"}>
-      {profesionales.map((profesional, index) => (
+      {filteredProfesionales.map((profesional, index) => (
         <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
           <Card sx={cardStyle}>
             <CardMedia
