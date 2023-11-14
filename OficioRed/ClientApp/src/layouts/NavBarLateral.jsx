@@ -161,6 +161,7 @@ export function NavBarLateral({ children, type, logout }) {
     } else {
       navigate(`/home`);
     }
+    handleClose();
   };
 
   const handleChangeLogout = () => {
