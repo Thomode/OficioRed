@@ -115,7 +115,7 @@ export function App() {
         console.log("acceso:", acceso)
 
         if (acceso) {
-            if (acceso.idRol === 2) {
+            if (acceso.idRol === 1) {
                 navigate("/admin/home")
             }
             else {
@@ -145,7 +145,7 @@ export function App() {
                                     path={route.path}
                                     element={
                                         <ProtectedRoute
-                                            isAllowed={acceso && acceso.idRol === 2}
+                                            isAllowed={acceso && acceso.idRol === 1}
                                         >
                                             <NavBarLateral type='Admin' logout={logout}>{route.element}</NavBarLateral>
                                         </ProtectedRoute>
@@ -162,7 +162,7 @@ export function App() {
                                     path={route.path}
                                     element={
                                         <ProtectedRoute
-                                            isAllowed={acceso && acceso.idRol !== 2}
+                                            isAllowed={acceso && acceso.idRol !== 1}
                                         >
                                             <NavBarLateral type='client' logout={logout}>{route.element}</NavBarLateral>
                                         </ProtectedRoute>
