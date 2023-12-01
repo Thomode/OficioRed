@@ -18,7 +18,9 @@ import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx'
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
 import FavoritePage from './pages/FavoritePage';
 import HomeAdmin from "./pages/Private/HomeAdmin";
-import Comments from './pages/Comments/Comments.jsx';
+//import Comments from './pages/Comments/Comments.jsx';
+import { Comentarios } from './pages/Comentarios/Comentarios.jsx';
+
 import "./index.css";
 
 const theme = createTheme();
@@ -83,13 +85,16 @@ const clientRoutes = [
         path: '/:id/miPerfilInteresado',
         element: <MiPerfilInteresado />
     },
-    {
+    /*{
         path: '/:id/PerfilProfesional/Comentarios',
         element: <Comments
         commentsUrl="http://localhost:3004/comments"
         currentUserId="1"
       />
-        
+    },*/
+    {
+        path: '/:id/PerfilProfesional/Comentarios',
+        element: <Comentarios />
     }
 ]
 
