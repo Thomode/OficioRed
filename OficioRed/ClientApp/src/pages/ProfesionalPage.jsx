@@ -5,8 +5,8 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-//import { FiltroRubros } from "../components/FiltroRubroProfesional";
-import { FiltroRubrosPage } from "../components/FiltroRubrosPage";
+import { FiltroRubros } from "../components/FiltroRubroProfesional";
+//import { FiltroRubrosPage } from "../components/FiltroRubrosPage";
 import { Busqueda } from "../components/Busqueda";
 import { profesionalService } from "../services/profesional.service";
 import { useEffect, useState } from "react";
@@ -106,7 +106,7 @@ export function ProfesionalPage() {
               />
             </Grid>
             <Grid item xs={12}>
-              <FiltroRubrosPage rubros={rubros} setRubros={setRubros} />
+              <FiltroRubros rubros={rubros} setRubros={setRubros} />
             </Grid>
           </Grid>
         </Box>
