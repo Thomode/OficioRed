@@ -67,7 +67,7 @@ namespace OficioRed.Services
                 throw new AppException("Email de profesional ya registrado");
             }
 
-            if (sesion.IdRol != 3)
+            if (sesion.IdRol != 2)
             {
                 throw new AppException("El usuario no tiene el rol de profesional");
             }

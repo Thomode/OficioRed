@@ -43,7 +43,7 @@ public class InteresadoService : IInteresadoService
             throw new AppException("Email de interesado ya registrado");
         }
 
-        if(sesion.IdRol != 4)
+        if(sesion.IdRol != 3)
         {
             throw new AppException("El usuario no tiene el rol de interesado");
         }
