@@ -137,7 +137,7 @@ public class AccesoService: IAccesoService
 
     public void Register(RegisterDTO registerDTO)
     {
-        if (registerDTO.IdRol == 2)
+        if (registerDTO.IdRol == 1)
         {
             throw new AppException("Usuario con ese rol no esta permitido");
         }
