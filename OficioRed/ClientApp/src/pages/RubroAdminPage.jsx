@@ -3,18 +3,17 @@ import { TablaRubro } from "../components/Rubro/TablaRubro";
 import { rubroService } from "../services/rubro.service";
 import { Button, Grid, Typography, Card, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import Buscador from "../components/buscador";
+import { Busqueda } from "../components/Busqueda";
 import Swal from "sweetalert2";
 
 const titleStyle2 = {
-    fontSize: '70px',
-    fontWeight: 'bold',
-    color: '#1b325f',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-    WebkitTextStroke: '2px white',
-    MozTextStroke: '2px white',
+  fontSize: "70px",
+  fontWeight: "bold",
+  color: "#1b325f",
+  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+  WebkitTextStroke: "2px white",
+  MozTextStroke: "2px white",
 };
-
 
 export function RubroAdminPage() {
   const handleSearch = async () => {
@@ -80,9 +79,9 @@ export function RubroAdminPage() {
     <>
       <Card>
         <CardContent>
-        <Typography variant="h2" sx={titleStyle2}>
+          <Typography variant="h2" sx={titleStyle2}>
             Administración Rubros
-        </Typography>
+          </Typography>
           <Grid
             container
             spacing={3}
@@ -93,7 +92,7 @@ export function RubroAdminPage() {
             }}
           >
             <Grid item xs={6}>
-              <Buscador
+              <Busqueda
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 handleSearch={handleSearch}

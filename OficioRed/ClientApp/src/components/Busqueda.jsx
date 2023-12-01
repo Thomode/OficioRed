@@ -1,7 +1,7 @@
 import { TextField, Button, Grid } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-function Buscador({ searchValue, setSearchValue, handleSearch }) {
+export function Busqueda({ searchValue, setSearchValue, handleSearch }) {
   return (
     <Grid container spacing={3} alignItems="center" justifyContent="left">
       <Grid item xs={8}>
@@ -27,5 +27,3 @@ function Buscador({ searchValue, setSearchValue, handleSearch }) {
     </Grid>
   );
 }
-
-export default Buscador;

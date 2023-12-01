@@ -6,8 +6,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 //import { FiltroRubros } from "../components/FiltroRubroProfesional";
-import { FiltroRubrosPage } from '../components/FiltroRubrosPage';
-import Buscador from "../components/buscador";
+import { FiltroRubrosPage } from "../components/FiltroRubrosPage";
+import { Busqueda } from "../components/Busqueda";
 import { profesionalService } from "../services/profesional.service";
 import { useEffect, useState } from "react";
 import imagenFondo from "../assets/fondo.jpg";
@@ -38,7 +38,7 @@ export function ProfesionalPage() {
 
     setProfesionales(filteredProfesionales);
   };
-  
+
   const [profesionales, setProfesionales] = useState([]);
   const [profesionalesFiltrados, setProfesionalesFiltrados] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -97,9 +97,9 @@ export function ProfesionalPage() {
           borderBottom="2px solid #1b325f"
           borderRadius="0px 0px 50px 50px"
         >
-          <Grid width="70%" >
+          <Grid width="70%">
             <Grid item xs={12} mt={2}>
-              <Buscador
+              <Busqueda
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 handleSearch={handleSearch}

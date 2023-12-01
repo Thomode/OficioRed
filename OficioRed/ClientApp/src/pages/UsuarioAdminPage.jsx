@@ -3,7 +3,7 @@ import { TablaUsuario } from "../components/Usuario/TablaUsuario";
 import { usuarioService } from "../services/usuario.service";
 import { Button, Grid, Typography, Card, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import Buscador from "../components/buscador";
+import { Busqueda } from "../components/Busqueda";
 import Swal from "sweetalert2";
 
 const titleStyle2 = {
@@ -117,7 +117,7 @@ export function UsuarioAdminPage() {
             }}
           >
             <Grid item xs={6}>
-              <Buscador
+              <Busqueda
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 handleSearch={handleSearch}
