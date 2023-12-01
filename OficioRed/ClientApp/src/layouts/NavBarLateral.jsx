@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+﻿import { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -147,16 +147,16 @@ export function NavBarLateral({ children, type, logout }) {
   };
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleChange = async () => {
     const acceso = await sesionService.getAcceso();
-    if (acceso.idRol === 3) {
+    if (acceso.idRol === 2) {
       navigate(`/${acceso.id}/miPerfilProfesional`);
-    } else if (acceso.idRol === 4) {
+    } else if (acceso.idRol === 3) {
       navigate(`/${acceso.id}/miPerfilInteresado`);
     } else {
       navigate(`/home`);
@@ -185,7 +185,7 @@ export function NavBarLateral({ children, type, logout }) {
       let profesionalId = null;
       let interesadoId = null;
 
-      if (response.data.idRol === 3) {
+      if (response.data.idRol === 2) {
         const profesionales = await axios.get("/api/Profesional");
         for (const profesional of profesionales.data) {
           if (profesional.idUsuario === id) {
@@ -199,7 +199,7 @@ export function NavBarLateral({ children, type, logout }) {
           );
           fotoUsuario = profesionalResponse.data.fotoPerfil;
         }
-      } else if (response.data.idRol === 4) {
+      } else if (response.data.idRol === 3) {
         const interesados = await axios.get("/api/Interesado");
         for (const interesado of interesados.data) {
           if (interesado.idUsuario === id) {
@@ -222,8 +222,9 @@ export function NavBarLateral({ children, type, logout }) {
     }
   };
 
-  const [fotoPerfil, setFotoPerfil] = React.useState("");
-  React.useEffect(() => {
+  const [fotoPerfil, setFotoPerfil] = useState("");
+
+  useEffect(() => {
     const obtenerFotoPerfil = async () => {
       const fotoPerfilUrl = await infoPerfil();
       setFotoPerfil(fotoPerfilUrl);

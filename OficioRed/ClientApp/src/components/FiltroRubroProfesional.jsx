@@ -25,7 +25,7 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
 
   useEffect(() => {
     loadRubros();
-  }, [seleccionado]);
+  }, []);
 
   const handleCheckboxChange = (rubroId) => {
     setRubros((prevRubros) =>

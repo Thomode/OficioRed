@@ -7,11 +7,11 @@ import { usuarioService } from "../../services/usuario.service";
 export function ItemUsuario({ usuario, loadUsuarios, index }) {
   const getRolName = (idRol) => {
     switch (idRol) {
-      case 2:
+      case 1:
         return "Admin";
-      case 3:
+      case 2:
         return "Profesional";
-      case 4:
+      case 3:
         return "Interesado";
       default:
         return "Desconocido";

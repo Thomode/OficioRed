@@ -164,10 +164,7 @@ function HomeAdmin() {
           </Card>
         </Grid>
         <Grid
-          item
-          xs={12}
-          sm={8}
-          md={6}
+          item xs={12} sm={8} md={6}
           sx={{ display: "flex", justifyContent: "center" }}
         >
           <Card sx={{ ...cardStyle, width: "100%" }}>
