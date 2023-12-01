@@ -11,21 +11,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
-
-import { useEffect, useState } from "react";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-import logo from "../assets/Logo1_Recorte.png";
 import { AccountCircle, LockRounded } from "@mui/icons-material";
-import { rolService } from "../services/rol.service";
+
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import accesoService from "../services/acceso.service";
+import { useEffect, useState } from "react";
 
+import { rolService } from "../services/rol.service";
+import accesoService from "../services/acceso.service";
 import { useSnackbar } from "notistack";
+import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
+import logo from "../assets/Logo1_Recorte.png";
 
 const titleStyle = {
   fontSize: "2.5rem",
@@ -37,9 +37,7 @@ const titleStyle = {
 
 export const SignupPage = ({ setAcceso }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [roles, setRoles] = useState([]);
-
   const [selectedRoleId, setSelectedRoleId] = useState(null);
 
   const cargarRoles = async () => {
@@ -65,6 +63,7 @@ export const SignupPage = ({ setAcceso }) => {
   } = useForm();
 
   const { enqueueSnackbar } = useSnackbar();
+
   const onSubmit = async (data) => {
     try {
       const res = await accesoService.register(
@@ -78,10 +77,10 @@ export const SignupPage = ({ setAcceso }) => {
         window.localStorage.setItem("acceso", JSON.stringify(res2.data));
         setAcceso(res2.data);
 
-        if (res2.data.idRol === 3) {
+        if (res2.data.idRol === 2) {
           navigate("/profesionalSignup", { replace: true });
         }
-        if (res2.data.idRol === 4) {
+        if (res2.data.idRol === 3) {
           navigate("/interesadoSignup", { replace: true });
         }
         enqueueSnackbar("Registro exitoso", {
@@ -298,7 +297,7 @@ export const SignupPage = ({ setAcceso }) => {
                       onChange={(e) => setSelectedRoleId(e.target.value)}
                     >
                       {roles
-                        .filter((e) => e.idRol !== 2)
+                        .filter((e) => e.idRol !== 1)
                         .map((e) => (
                           <MenuItem key={e.idRol} value={e.idRol}>
                             {e.nombre}
@@ -307,7 +306,7 @@ export const SignupPage = ({ setAcceso }) => {
                     </Select>
                   </FormControl>
                   <Box marginTop={2}>
-                    {selectedRoleId === 3 && (
+                    {selectedRoleId === 2 && (
                       <Typography
                         style={{
                           fontStyle: "italic",
@@ -325,7 +324,7 @@ export const SignupPage = ({ setAcceso }) => {
                         profesionales.
                       </Typography>
                     )}
-                    {selectedRoleId === 4 && (
+                    {selectedRoleId === 3 && (
                       <Typography
                         style={{
                           fontStyle: "italic",

@@ -3,7 +3,6 @@ import { sesionService } from "../auth/sesion";
 
 async function getAll() {
     const res = await axios.get("/api/Usuario")
-
     return res.data
 }
 

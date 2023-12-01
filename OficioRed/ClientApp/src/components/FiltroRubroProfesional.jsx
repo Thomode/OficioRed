@@ -3,18 +3,17 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
 
-export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
+export const FiltroRubros = ({ rubros, setRubros }) => {
   const getRubros = async () => {
     try {
       const res = await axios.get("/api/Rubro");
       const rubrosLoad = res.data.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
-        seleccionado: true,
       }));
       return rubrosLoad;
     } catch (error) {
-      console.error("Error fetching rubros:", error);
+      console.error("Error al obtener los rubros:", error);
       return [];
     }
   };

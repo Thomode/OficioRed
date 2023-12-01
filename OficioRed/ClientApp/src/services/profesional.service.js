@@ -19,7 +19,6 @@ const registerProfesional = async (nombre, apellido, email, descripcion) => {
 
 async function getAll() {
     const res = await axios.get("/api/Profesional")
-
     return res.data
 }
 
