@@ -37,12 +37,8 @@ const buttonStyle = {
 };
 
 const CardProfesional = ({ profesionales }) => {
-    const navigate = useNavigate();
-    const [favoritos, setFavoritos] = useState([]);
-    const filteredProfesionales = profesionales.filter(
-        (profesional) =>
-            profesional.idProfesional !== 70 && profesional.idProfesional !== 71
-    );
+  const navigate = useNavigate();
+  const [favoritos, setFavoritos] = useState([]);
   const handleLeerMasClick = (id) => {
     navigate(`/${id}/PerfilProfesional`);
   };
@@ -63,35 +59,39 @@ const CardProfesional = ({ profesionales }) => {
     } catch (error) {
       console.error("Error al obtener el contacto:", error);
     }
-    };
+  };
 
-    const handleAgregarFavorito = (profesional) => {
-        // Usa una función para actualizar el estado correctamente
-        setFavoritos((prevFavoritos) => {
-            const isInFavoritos = prevFavoritos.some((fav) => fav.idProfesional === profesional.idProfesional);
+  const handleAgregarFavorito = (profesional) => {
+    // Usa una función para actualizar el estado correctamente
+    setFavoritos((prevFavoritos) => {
+      const isInFavoritos = prevFavoritos.some(
+        (fav) => fav.idProfesional === profesional.idProfesional
+      );
 
-            let nuevosFavoritos;
+      let nuevosFavoritos;
 
-            if (!isInFavoritos) {
-                // Agrega el profesional a la lista de favoritos
-                console.log([...prevFavoritos, profesional]);
-                nuevosFavoritos = [...prevFavoritos, profesional];
-            } else {
-                // Elimina el profesional de la lista de favoritos
-                nuevosFavoritos = prevFavoritos.filter((fav) => fav.idProfesional !== profesional.idProfesional);
-                console.log(nuevosFavoritos);
-            }
+      if (!isInFavoritos) {
+        // Agrega el profesional a la lista de favoritos
+        console.log([...prevFavoritos, profesional]);
+        nuevosFavoritos = [...prevFavoritos, profesional];
+      } else {
+        // Elimina el profesional de la lista de favoritos
+        nuevosFavoritos = prevFavoritos.filter(
+          (fav) => fav.idProfesional !== profesional.idProfesional
+        );
+        console.log(nuevosFavoritos);
+      }
 
-            // Guarda la lista de favoritos en el localStorage
-            localStorage.setItem('favoritos', JSON.stringify(nuevosFavoritos));
+      // Guarda la lista de favoritos en el localStorage
+      localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
 
-            return nuevosFavoritos;
-        });
-    };
+      return nuevosFavoritos;
+    });
+  };
 
   return (
     <Grid container spacing={2} marginLeft={"8%"} marginRight={"2%"}>
-      {filteredProfesionales.map((profesional, index) => (
+      {profesionales.map((profesional, index) => (
         <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
           <Card sx={cardStyle}>
             <CardMedia
@@ -106,7 +106,11 @@ const CardProfesional = ({ profesionales }) => {
               <Typography gutterBottom variant="h5" component="div">
                 {`${profesional.nombre} ${profesional.apellido}`}
               </Typography>
-              <Typography variant="body2" color="text.secondary"  minHeight= "100px">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                minHeight="100px"
+              >
                 {profesional.rubros &&
                   profesional.rubros.map((rubro, index) => (
                     <Chip
@@ -124,23 +128,37 @@ const CardProfesional = ({ profesionales }) => {
             <CardActions>
               <Grid container alignItems="center" spacing={1}>
                 <Grid item>
-                <Button
+                  <Button
                     variant="contained"
                     position="bottom"
                     size="small"
-                    style={{ backgroundColor: "#2E8B57", color: "white", fontWeight: "bold" }}
+                    style={{
+                      backgroundColor: "#2E8B57",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
                     sx={buttonStyle}
-                    startIcon={<img src={imagenwsp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
+                    startIcon={
+                      <img
+                        src={imagenwsp}
+                        alt="WhatsApp"
+                        style={{ height: "20px", marginRight: "5px" }}
+                      />
+                    }
                     onClick={() => handleContactar(profesional.idContacto)}
-                >
+                  >
                     CONTACTAR
-                </Button>
+                  </Button>
                 </Grid>
                 <Grid item>
                   <Button
                     variant="contained"
                     size="small"
-                    style={{ backgroundColor: "#f26c4f", color: "white", fontWeight: "bold" }}
+                    style={{
+                      backgroundColor: "#f26c4f",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
                     sx={buttonStyle}
                     onClick={() =>
                       handleLeerMasClick(profesional.idProfesional)
@@ -150,12 +168,21 @@ const CardProfesional = ({ profesionales }) => {
                   </Button>
                 </Grid>
                 <Grid item>
-                <IconButton
+                  <IconButton
                     aria-label="Agregar a favoritos"
                     onClick={() => handleAgregarFavorito(profesional)}
-                >
-                    <FavoriteIcon color={favoritos.some((fav) => fav.idProfesional === profesional.idProfesional) ? 'error' : 'default'} />
-                </IconButton>
+                  >
+                    <FavoriteIcon
+                      color={
+                        favoritos.some(
+                          (fav) =>
+                            fav.idProfesional === profesional.idProfesional
+                        )
+                          ? "error"
+                          : "default"
+                      }
+                    />
+                  </IconButton>
                 </Grid>
               </Grid>
             </CardActions>

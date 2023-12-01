@@ -62,7 +62,7 @@ export const LoginPage = ({ setAcceso }) => {
       window.localStorage.setItem("acceso", JSON.stringify(res.data));
       setAcceso(res.data);
 
-      if (res.data.idRol === 2) {
+      if (res.data.idRol === 1) {
         navigate("/admin/home", { replace: true });
       } else {
         navigate("/home", { replace: true });
@@ -133,13 +133,10 @@ export const LoginPage = ({ setAcceso }) => {
                   backgroundColor: "white",
                 }}
               >
-                {/*--------------- IMAGEN LOGO ---------------*/}
                 <Grid container justify="center">
                   <img src={logo} width={350} alt="logo" />
                 </Grid>
-                {/*--------------- TÍTULO ---------------*/}
                 <Typography style={titleStyle}>Iniciar Sesión</Typography>
-                {/*--------------- Campo USUARIO ---------------*/}
                 <TextField
                   fullWidth
                   required
@@ -179,7 +176,6 @@ export const LoginPage = ({ setAcceso }) => {
                     )
                   }
                 />
-                {/*--------------- Campo CONTRASEÑA ---------------*/}
                 <TextField
                   fullWidth
                   required
@@ -213,11 +209,9 @@ export const LoginPage = ({ setAcceso }) => {
                   {...register("password", {
                     required: true,
                     minLength: 4,
-                    maxLength: 15,
-                    // patron regular que contenga al menos una letra mayúscula, una minúscula, un número y un caracter especial
-                    // pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
+                    maxLength: 15
                   })}
-                  error={!!errors.password} // Agregar la propiedad 'error' para resaltar el campo en caso de error
+                  error={!!errors.password}
                   helperText={
                     errors.password?.type === "required"
                       ? "Campo obligatorio"
@@ -225,12 +219,9 @@ export const LoginPage = ({ setAcceso }) => {
                       ? "Mínimo 4 caracteres"
                       : errors.password?.type === "maxLength"
                       ? "Máximo 15 caracteres"
-                      : //: errors.password?.type === "pattern"
-                        //? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                        ""
+                      : ""
                   }
                 />
-                {/*--------------- Checkbox para recordar credenciales ---------------*/}
                 <FormControlLabel
                   name="recordarCredenciales"
                   control={<Checkbox />}
@@ -238,7 +229,6 @@ export const LoginPage = ({ setAcceso }) => {
                   {...register("recordarCredenciales")}
                 />
                 <div style={{ height: 20 }} />
-                {/*--------------- Botón Iniciar Sesión ---------------*/}
                 <Button
                   endIcon={<LoginOutlinedIcon />}
                   type="submit"
@@ -250,11 +240,9 @@ export const LoginPage = ({ setAcceso }) => {
                 </Button>
 
                 <div style={{ height: 20 }} />
-                {/*---------- Link si olvidó la contraseña ----------*/}
                 <Typography marginBottom={2}>
                   <Link href="#">Olvidaste tu contraseña?</Link>
                 </Typography>
-                {/*--------------- Botón Registrarse ---------------*/}
                 <Button
                   endIcon={<HowToRegOutlinedIcon />}
                   color="primary"
