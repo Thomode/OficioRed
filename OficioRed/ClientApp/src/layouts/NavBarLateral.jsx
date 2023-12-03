@@ -152,17 +152,21 @@ export function NavBarLateral({ children, type, logout }) {
 
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleChange = async () => {
-    const acceso = await sesionService.getAcceso();
-    if (acceso.idRol === 2) {
-      navigate(`/${acceso.id}/miPerfilProfesional`);
-    } else if (acceso.idRol === 3) {
-      navigate(`/${acceso.id}/miPerfilInteresado`);
-    } else {
-      navigate(`/home`);
-    }
-    handleClose();
-  };
+    const handleChange = async () => {
+        
+        const acceso = await sesionService.getAcceso();
+        if (acceso.idRol === 1) {
+            navigate(`/admin/${acceso.id}/miPerfilAdmin`);
+        } else if (acceso.idRol === 2) {
+            navigate(`/${acceso.id}/miPerfilProfesional`);
+        } else if (acceso.idRol === 3) {
+            navigate(`/${acceso.id}/miPerfilInteresado`);
+        } else {
+            navigate(`/home`);
+        }
+        handleClose();
+    };
+
 
   const handleChangeLogout = () => {
     logout();

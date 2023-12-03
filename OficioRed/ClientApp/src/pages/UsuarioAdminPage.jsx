@@ -63,9 +63,9 @@ export function UsuarioAdminPage() {
         const selectedRol = document.getElementById("idRol").value;
         const nuevoIdRol =
           selectedRol === "Profesional"
-            ? 3
+            ? 2
             : selectedRol === "Interesado"
-            ? 4
+            ? 3
             : null;
 
         if (nuevoIdRol === null) {

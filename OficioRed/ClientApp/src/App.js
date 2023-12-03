@@ -10,6 +10,7 @@ import { RubroForm } from "./components/Rubro/RubroForm";
 import { ProfesionalPage } from "./pages/ProfesionalPage";
 import { MiPerfilProfesional } from "./pages/MiPerfilProfesional.jsx";
 import { MiPerfilInteresado } from "./pages/MiPerfilInteresado.jsx";
+import { MiPerfilAdmin } from "./pages/MiPerfilAdmin.jsx";
 import  PerfilProfesional  from "./pages/PerfilProfesional";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
@@ -53,6 +54,10 @@ const adminRoutes = [
     {
         path: '/admin/rubros/:id/edit',
         element: <RubroForm />
+    },
+    {
+        path: '/admin/:id/miPerfilAdmin',
+        element: <MiPerfilAdmin />
     },
 ]
 

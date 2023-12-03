@@ -86,9 +86,9 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
         const selectedRol = document.getElementById("rolUsuario").value;
         const nuevoIdRol =
           selectedRol === "Profesional"
-            ? 3
+            ? 2
             : selectedRol === "Interesado"
-            ? 4
+            ? 3
             : null;
 
         if (nuevoIdRol === null) {
