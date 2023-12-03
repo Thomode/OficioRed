@@ -1,15 +1,21 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
 
 export const FiltroRubros = ({ rubros, setRubros }) => {
+  const [selectAll, setSelectAll] = useState(false);
+
   const getRubros = async () => {
     try {
       const res = await axios.get("/api/Rubro");
       const rubrosLoad = res.data.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
+        seleccionado: true,
       }));
       return rubrosLoad;
     } catch (error) {
@@ -27,55 +33,63 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
     loadRubros();
   }, []);
 
-  const handleCheckboxChange = (rubroId) => {
+  const handleSelectChange = (event) => {
+    const selectedRubros = event.target.value;
+    setSelectAll(selectedRubros.includes("selectAll"));
+
     setRubros((prevRubros) =>
-      prevRubros.map((rubro) =>
-        rubro.idRubro === rubroId
-          ? { ...rubro, seleccionado: !rubro.seleccionado }
-          : rubro
-      )
+      prevRubros.map((rubro) => ({
+        ...rubro,
+        seleccionado:
+          selectedRubros.includes("selectAll") ||
+          selectedRubros.includes(rubro.idRubro),
+      }))
     );
   };
 
-  const handleSelectAllChange = (checked) => {
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    const allSelected = rubros.every((rubro) => rubro.seleccionado);
     setRubros((prevRubros) =>
-      prevRubros.map((rubro) => ({ ...rubro, seleccionado: checked }))
+      prevRubros.map((rubro) => ({
+        ...rubro,
+        seleccionado: !allSelected,
+      }))
     );
   };
 
   return (
-    <div>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <FormControlLabel
-          style={{ fontWeight: "bold" }}
-          control={
-            <Checkbox
-              checked={
-                rubros.length > 0 && rubros.every((rubro) => rubro.seleccionado)
-              }
-              indeterminate={
-                rubros.some((rubro) => rubro.seleccionado) &&
-                !rubros.every((rubro) => rubro.seleccionado)
-              }
-              onChange={(event) => handleSelectAllChange(event.target.checked)}
-            />
+    <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
+      <FormControl style={{ width: "55vw" }}>
+        <InputLabel id="rubros-label">Rubros</InputLabel>
+        <Select
+          labelId="rubros-label"
+          id="rubros"
+          label="Rubros"
+          multiple
+          value={rubros
+            .filter((rubro) => rubro.seleccionado)
+            .map((rubro) => rubro.idRubro)}
+          onChange={handleSelectChange}
+          renderValue={(selected) =>
+            rubros
+              .filter((rubro) => selected.includes(rubro.idRubro))
+              .map((rubro) => rubro.nombre)
+              .join(", ")
           }
-          label="Todos"
-        />
-        {rubros &&
-          rubros.map((rubro) => (
-            <FormControlLabel
-              key={rubro.idRubro}
-              control={
-                <Checkbox
-                  checked={rubro.seleccionado}
-                  onChange={() => handleCheckboxChange(rubro.idRubro)}
-                />
-              }
-              label={rubro.nombre}
-            />
+        >
+          <MenuItem key="selectAll" value="selectAll" onClick={handleSelectAll}>
+            <Checkbox checked={selectAll} />
+            Seleccionar todos
+          </MenuItem>
+          {rubros.map((rubro) => (
+            <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
+              <Checkbox checked={rubro.seleccionado} />
+              {rubro.nombre}
+            </MenuItem>
           ))}
-      </div>
+        </Select>
+      </FormControl>
     </div>
   );
 };

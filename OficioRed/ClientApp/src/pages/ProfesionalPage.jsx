@@ -6,7 +6,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { FiltroRubros } from "../components/FiltroRubroProfesional";
-//import { FiltroRubrosPage } from "../components/FiltroRubrosPage";
 import { Busqueda } from "../components/Busqueda";
 import { profesionalService } from "../services/profesional.service";
 import { useEffect, useState } from "react";

@@ -1,20 +1,25 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
 
 export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
+  const [selectAll, setSelectAll] = useState(false);
+
   const getRubros = async () => {
     try {
       const res = await axios.get("/api/Rubro");
       const rubrosLoad = res.data.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
-        seleccionado: seleccionado,
+        seleccionado: false,
       }));
       return rubrosLoad;
     } catch (error) {
-      console.error("Error fetching rubros:", error);
+      console.error("Error al obtener los rubros:", error);
       return [];
     }
   };
@@ -28,57 +33,63 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
     loadRubros();
   }, []);
 
-  const handleCheckboxChange = (rubroId) => {
+  const handleSelectChange = (event) => {
+    const selectedRubros = event.target.value;
+    setSelectAll(selectedRubros.includes("selectAll"));
+
     setRubros((prevRubros) =>
-      prevRubros.map((rubro) =>
-        rubro.idRubro === rubroId
-          ? { ...rubro, seleccionado: !rubro.seleccionado }
-          : rubro
-      )
+      prevRubros.map((rubro) => ({
+        ...rubro,
+        seleccionado:
+          selectedRubros.includes("selectAll") ||
+          selectedRubros.includes(rubro.idRubro),
+      }))
     );
   };
 
-  const handleSelectAllChange = (checked) => {
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    const allSelected = rubros.every((rubro) => rubro.seleccionado);
     setRubros((prevRubros) =>
-      prevRubros.map((rubro) => ({ ...rubro, seleccionado: checked }))
+      prevRubros.map((rubro) => ({
+        ...rubro,
+        seleccionado: !allSelected,
+      }))
     );
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: "16px",
-      }}
-    >
-      <FormControlLabel
-        style={{ fontWeight: "bold", flexBasis: "100%" }}
-        control={
-          <Checkbox
-            checked={
-              rubros.length > 0 && rubros.every((rubro) => rubro.seleccionado)
-            }
-            onChange={(event) => handleSelectAllChange(event.target.checked)}
-          />
-        }
-        label="Todos"
-      />
-      {rubros &&
-        rubros.map((rubro) => (
-          <FormControlLabel
-            key={rubro.idRubro}
-            style={{ flexBasis: "30%" }}
-            control={
-              <Checkbox
-                checked={rubro.seleccionado}
-                onChange={() => handleCheckboxChange(rubro.idRubro)}
-              />
-            }
-            label={rubro.nombre}
-          />
-        ))}
+    <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
+      <FormControl style={{ width: "55vw" }}>
+        <InputLabel id="rubros-label">Rubros</InputLabel>
+        <Select
+          labelId="rubros-label"
+          id="rubros"
+          label="Rubros"
+          multiple
+          value={rubros
+            .filter((rubro) => rubro.seleccionado)
+            .map((rubro) => rubro.idRubro)}
+          onChange={handleSelectChange}
+          renderValue={(selected) =>
+            rubros
+              .filter((rubro) => selected.includes(rubro.idRubro))
+              .map((rubro) => rubro.nombre)
+              .join(", ")
+          }
+        >
+          <MenuItem key="selectAll" value="selectAll" onClick={handleSelectAll}>
+            <Checkbox checked={selectAll} />
+            Seleccionar todos
+          </MenuItem>
+          {rubros.map((rubro) => (
+            <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
+              <Checkbox checked={rubro.seleccionado} />
+              {rubro.nombre}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </div>
   );
 };
