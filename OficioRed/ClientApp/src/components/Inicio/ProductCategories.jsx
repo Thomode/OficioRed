@@ -124,7 +124,7 @@ const ProductCategories = ({ setRubros }) => {
   const navigate = useNavigate();
 
   const handleImageClick = (idRubro) => {
-    navigate(`/profesionales`);
+    navigate(`/profesionales/${idRubro}`);
 
     setRubros((prevRubros) =>
       prevRubros.map((r) => ({
