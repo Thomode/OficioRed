@@ -21,7 +21,7 @@ import FavoritePage from './pages/FavoritePage';
 import HomeAdmin from "./pages/Private/HomeAdmin";
 //import Comments from './pages/Comments/Comments.jsx';
 import { Comentarios } from './pages/Comentarios/Comentarios.jsx';
-
+import Swal from "sweetalert2";
 import "./index.css";
 
 const theme = createTheme();
@@ -118,7 +118,29 @@ export function App() {
     const logout = () => {
         window.localStorage.removeItem("acceso");
         window.localStorage.removeItem("favoritos");
-        setAcceso(null)
+        Swal.fire({
+            title: "¿Está seguro que quiero cerrar sesión?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#1b325f",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "SÍ",
+            cancelButtonText: "NO",
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "¡Hasta luego!",
+                text: "Cierre de sesión exitoso!",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              setAcceso(null)
+            }
+        });
     };
 
     useEffect(() => {
