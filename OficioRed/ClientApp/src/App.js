@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
 import { CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
 import { NavBarLateral } from './layouts/NavBarLateral';
@@ -11,7 +11,7 @@ import { ProfesionalPage } from "./pages/ProfesionalPage";
 import { MiPerfilProfesional } from "./pages/MiPerfilProfesional.jsx";
 import { MiPerfilInteresado } from "./pages/MiPerfilInteresado.jsx";
 import { MiPerfilAdmin } from "./pages/MiPerfilAdmin.jsx";
-import  PerfilProfesional  from "./pages/PerfilProfesional";
+import PerfilProfesional from "./pages/PerfilProfesional";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
@@ -29,7 +29,7 @@ const theme = createTheme();
 const adminRoutes = [
     {
         path: '/admin/home',
-        element: <HomeAdmin/>
+        element: <HomeAdmin />
     },
     {
         path: '/admin/usuarios',
@@ -114,16 +114,14 @@ export function App() {
     const [acceso, setAcceso] = useState(getAcceso())
 
     const navigate = useNavigate()
-    
+
     const logout = () => {
         window.localStorage.removeItem("acceso");
         window.localStorage.removeItem("favoritos");
         setAcceso(null)
-      };
+    };
 
     useEffect(() => {
-        console.log("acceso:", acceso)
-
         if (acceso) {
             if (acceso.idRol === 1) {
                 navigate("/admin/home")
@@ -132,7 +130,6 @@ export function App() {
                 navigate("/home")
             }
         }
-
     }, [])
 
     return (
@@ -146,7 +143,7 @@ export function App() {
                         <Route path='/profesionalSignup' element={<ProfesionalSignUp setAcceso={setAcceso} />} />
                         <Route path='/interesadoSignup' element={<InteresadoSignUp setAcceso={setAcceso} />} />
                         <Route path='*' element={<Navigate to={'/'} />} />
-                        
+
 
                         {
                             adminRoutes.map((route, index) =>

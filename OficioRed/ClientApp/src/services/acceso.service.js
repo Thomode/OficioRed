@@ -17,8 +17,6 @@ const register = async  (usuario, password, idRol) => {
     return res
 }
 
-const accesoService = {
+export const accesoService = {
     login, register
 }
-
-export default accesoService

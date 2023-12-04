@@ -22,13 +22,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { rolService } from "../services/rol.service";
-import accesoService from "../services/acceso.service";
+import { accesoService } from "../services/acceso.service";
 import { useSnackbar } from "notistack";
 import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
 import logo from "../assets/Logo1_Recorte.png";
 
 const titleStyle = {
-  fontSize: "2.5rem",
+  fontSize: "2rem",
   fontWeight: "bold",
   color: "#1B325F",
   textAlign: "center",
@@ -133,8 +133,7 @@ export const SignupPage = ({ setAcceso }) => {
               <Box
                 display="flex"
                 flexDirection={"column"}
-                maxWidth={400}
-                minWidth={300}
+                width={450}
                 alignItems="center"
                 justifyContent={"center"}
                 margin="auto"
@@ -149,11 +148,11 @@ export const SignupPage = ({ setAcceso }) => {
                   backgroundColor: "white",
                 }}
               >
-                <Grid container justify="center">
-                  <img src={logo} width={350} alt="logo" />
+                <Grid container justifyContent={"center"}>
+                  <img src={logo} width={250} alt="logo" />
                 </Grid>
 
-                <Typography style={titleStyle}>Registrarse</Typography>
+                <Typography style={titleStyle}>Crea una cuenta de OficioRed</Typography>
 
                 <TextField
                   fullWidth
@@ -162,7 +161,7 @@ export const SignupPage = ({ setAcceso }) => {
                   type={"text"}
                   placeholder="Nombre de Usuario"
                   autoComplete="off"
-                  label="Usuario"
+                  label="Nombre de Usuario"
                   margin="normal"
                   InputProps={{
                     startAdornment: (
@@ -285,11 +284,11 @@ export const SignupPage = ({ setAcceso }) => {
                 <Box sx={{ width: "100%" }} marginBottom={2} marginTop={2}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Tipo de Usuario
+                      Selecciona el Tipo de Usuario
                     </InputLabel>
                     <Select
                       fullWidth
-                      label="Tipo de Usuario"
+                      label="Selecciona el Tipo de Usuario"
                       name="idRol"
                       {...register("idRol", {
                         required: true,
