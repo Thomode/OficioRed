@@ -26,6 +26,12 @@ export const InteresadoSignUp = () => {
 
   const navigate = useNavigate();
 
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    minHeight: "100vh",
+  };
+
   const {
     register,
     handleSubmit,
@@ -80,12 +86,6 @@ export const InteresadoSignUp = () => {
         autoHideDuration: 2000,
       });
     }
-  };
-
-  const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    minHeight: "100vh",
   };
 
   return (

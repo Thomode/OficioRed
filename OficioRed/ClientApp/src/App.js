@@ -114,8 +114,6 @@ export function App() {
     const navigate = useNavigate()
 
     const logout = () => {
-        window.localStorage.removeItem("acceso");
-        window.localStorage.removeItem("favoritos");
         Swal.fire({
             title: "¿Está seguro que quiero cerrar sesión?",
             icon: "warning",
@@ -136,6 +134,8 @@ export function App() {
                     showConfirmButton: false,
                     timer: 1500,
                 });
+                window.localStorage.removeItem("acceso");
+                window.localStorage.removeItem("favoritos");
                 setAcceso(null);
             }
         });

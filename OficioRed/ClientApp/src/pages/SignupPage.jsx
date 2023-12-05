@@ -35,7 +35,7 @@ export const SignupPage = ({ setAcceso }) => {
   const [loading, setLoading] = useState(false);
   const [loadingSignUp, setLoadingSignUp] = useState(false);
   const [roles, setRoles] = useState([]);
-  const [selectedRolId, setSelectedRolId] = useState('');
+  const [selectedRolId, setSelectedRolId] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
@@ -110,7 +110,7 @@ export const SignupPage = ({ setAcceso }) => {
       });
     }
   };
-  
+
   return (
     <div style={backgroundStyle}>
       <div
@@ -253,29 +253,29 @@ export const SignupPage = ({ setAcceso }) => {
                 }
               />
               <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                      Selecciona el Tipo de Usuario
-                    </InputLabel>
-                    <Select
-                      fullWidth
-                      label="Selecciona el Tipo de Usuario"
-                      name="idRol"
-                      value={selectedRolId}
-                      {...register("idRol", {
-                        required: true,
-                      })}
-                      onChange={(e) => setSelectedRolId(e.target.value)}
-                    >
-                      {roles
-                        .filter((e) => e.idRol !== 1)
-                        .map((e) => (
-                          <MenuItem key={e.idRol} value={e.idRol}>
-                            {e.nombre}
-                          </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-              
+                <InputLabel id="demo-simple-select-label">
+                  Selecciona el Tipo de Usuario
+                </InputLabel>
+                <Select
+                  fullWidth
+                  label="Selecciona el Tipo de Usuario"
+                  name="idRol"
+                  value={selectedRolId || ''}
+                  {...register("idRol", {
+                    required: true,
+                  })}
+                  onChange={(e) => setSelectedRolId(e.target.value)}
+                >
+                  {roles
+                    .filter((e) => e.idRol !== 1)
+                    .map((e) => (
+                      <MenuItem key={e.idRol} value={e.idRol}>
+                        {e.nombre}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+
               <Box>
                 {selectedRolId === 2 && (
                   <Typography

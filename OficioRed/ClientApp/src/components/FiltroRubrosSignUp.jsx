@@ -59,8 +59,8 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
-      <FormControl style={{ width: "55vw" }}>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <FormControl fullWidth>
         <InputLabel id="rubros-label">Rubros</InputLabel>
         <Select
           labelId="rubros-label"
