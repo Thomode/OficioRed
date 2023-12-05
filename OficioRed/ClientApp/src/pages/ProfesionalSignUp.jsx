@@ -27,10 +27,13 @@ const imageStyle = {
   objectFit: "cover",
 };
 
-export const ProfesionalSignUp = ({ setAcceso }) => {
+export const ProfesionalSignUp = () => {
   const [rubros, setRubros] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -45,18 +48,12 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
 
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         setImage(e.target.result);
       };
-
       reader.readAsDataURL(file);
     }
   };
-
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = async (data) => {
     try {
@@ -108,11 +105,7 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: "cover",
-    backgroundPosition: "center",
     minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
   };
 
   return (

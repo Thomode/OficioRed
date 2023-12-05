@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
-import { CssBaseline, Box, createTheme, ThemeProvider } from '@mui/material';
+import { CssBaseline, createTheme, ThemeProvider } from '@mui/material';
 import { NavBarLateral } from './layouts/NavBarLateral';
 import HomePage from "./pages/Private/HomePage";
 import { SignupPage } from "./pages/SignupPage";
@@ -105,14 +105,12 @@ const clientRoutes = [
 
 const getAcceso = () => {
     const local = window.localStorage.getItem("acceso");
-    const data = JSON.parse(local)
-
+    const data = JSON.parse(local);
     return data
 }
 
 export function App() {
     const [acceso, setAcceso] = useState(getAcceso())
-
     const navigate = useNavigate()
 
     const logout = () => {
@@ -128,17 +126,17 @@ export function App() {
             cancelButtonText: "NO",
             reverseButtons: true,
             showLoaderOnConfirm: true,
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "¡Hasta luego!",
-                text: "Cierre de sesión exitoso!",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              setAcceso(null)
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "¡Hasta luego!",
+                    text: "Cierre de sesión exitoso!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                setAcceso(null);
             }
         });
     };
@@ -155,54 +153,41 @@ export function App() {
     }, [])
 
     return (
-        <>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Box>
-                    <Routes>
-                        <Route path='/' element={<LoginPage setAcceso={setAcceso} />} />
-                        <Route path='/signup' element={<SignupPage setAcceso={setAcceso} />} />
-                        <Route path='/profesionalSignup' element={<ProfesionalSignUp setAcceso={setAcceso} />} />
-                        <Route path='/interesadoSignup' element={<InteresadoSignUp setAcceso={setAcceso} />} />
-                        <Route path='*' element={<Navigate to={'/'} />} />
-
-
-                        {
-                            adminRoutes.map((route, index) =>
-                                <Route
-                                    key={index}
-                                    path={route.path}
-                                    element={
-                                        <ProtectedRoute
-                                            isAllowed={acceso && acceso.idRol === 1}
-                                        >
-                                            <NavBarLateral type='Admin' logout={logout}>{route.element}</NavBarLateral>
-                                        </ProtectedRoute>
-
-                                    }
-                                />
-
-                            )
-                        }
-                        {
-                            clientRoutes.map((route, index) =>
-                                <Route
-                                    key={index}
-                                    path={route.path}
-                                    element={
-                                        <ProtectedRoute
-                                            isAllowed={acceso && acceso.idRol !== 1}
-                                        >
-                                            <NavBarLateral type='client' logout={logout}>{route.element}</NavBarLateral>
-                                        </ProtectedRoute>
-
-                                    }
-                                />
-                            )
-                        }
-                    </Routes>
-                </Box>
-            </ThemeProvider>
-        </>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Routes>
+                <Route path='/' element={<LoginPage setAcceso={setAcceso} />} />
+                <Route path='/signup' element={<SignupPage setAcceso={setAcceso} />} />
+                <Route path='/profesionalSignup' element={<ProfesionalSignUp />} />
+                <Route path='/interesadoSignup' element={<InteresadoSignUp />} />
+                <Route path='*' element={<Navigate to={'/'} />} />
+                {
+                    adminRoutes.map((route, index) =>
+                        <Route
+                            key={index}
+                            path={route.path}
+                            element={
+                                <ProtectedRoute isAllowed={acceso && acceso.idRol === 1} >
+                                    <NavBarLateral type='Admin' logout={logout}>{route.element}</NavBarLateral>
+                                </ProtectedRoute>
+                            }
+                        />
+                    )
+                }
+                {
+                    clientRoutes.map((route, index) =>
+                        <Route
+                            key={index}
+                            path={route.path}
+                            element={
+                                <ProtectedRoute isAllowed={acceso && acceso.idRol !== 1} >
+                                    <NavBarLateral type='client' logout={logout}>{route.element}</NavBarLateral>
+                                </ProtectedRoute>
+                            }
+                        />
+                    )
+                }
+            </Routes>
+        </ThemeProvider>
     );
 }

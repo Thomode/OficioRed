@@ -1,23 +1,15 @@
-import React, { useState, useRef } from "react";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { interesadoService } from "../services/interesado.service";
-import logo from "../assets/Logo1_Recorte.png";
+import logo from "../assets/logo-oficiored.png";
 import imagenDefault from "../assets/profile.png";
-
-import { useSnackbar } from "notistack";
-
 import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
+import { useSnackbar } from "notistack";
+import { interesadoService } from "../services/interesado.service";
+import { Button, TextField, Typography, Paper } from "@mui/material";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import LoadingButton from "@mui/lab/LoadingButton";
 
-const titleStyle = {
-  fontSize: "2.5rem",
-  fontWeight: "bold",
-  color: "#1B325F",
-  textAlign: "center",
-  marginBottom: "20px",
-};
 const imageStyle = {
   borderRadius: "50%",
   border: "1px solid #1b325f",
@@ -26,7 +18,12 @@ const imageStyle = {
   objectFit: "cover",
 };
 
-export const InteresadoSignUp = ({ setAcceso }) => {
+export const InteresadoSignUp = () => {
+  const [image, setImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
   const navigate = useNavigate();
 
   const {
@@ -35,29 +32,27 @@ export const InteresadoSignUp = ({ setAcceso }) => {
     formState: { errors },
   } = useForm();
 
-  const imageRef = useRef(null);
-  const [image, setImage] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
-
   const fileSelectedHandler = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
 
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         setImage(e.target.result);
       };
-
       reader.readAsDataURL(file);
     }
   };
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const onSubmit = async (data) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    
     console.log(data);
+
     try {
       const res = await interesadoService.registerInteresado(
         data.nombre,
@@ -90,54 +85,54 @@ export const InteresadoSignUp = ({ setAcceso }) => {
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: "cover",
-    backgroundPosition: "center",
     minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
   };
 
   return (
     <div style={backgroundStyle}>
-      <Grid container style={{justifyContent: "center" }}>
-        <Grid
-          container
-          item
-          xs={12}
-          md={6}
-          sm={3}
-          alignItems="center"
-          direction="column"
-          justifyContent="space-between"
-          style={{ padding: 10 }}
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box
-              display="flex"
-              flexDirection={"column"}
-              maxWidth={400}
-              minWidth={300}
-              alignItems="center"
-              justifyContent={"center"}
-              margin="auto"
-              marginTop={5}
-              padding={3}
-              borderRadius={5}
-              boxShadow={"5px 5px 10px #ccc"}
-              sx={{
-                ":hover": {
-                  boxShadow: "10px 10px 20px #ccc",
-                },
-                backgroundColor: "white",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Paper
+            elevation={3}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              placeItems: "center",
+              padding: "20px",
+              maxWidth: "600px",
+              borderRadius: "20px",
+            }}
+          >
+            <img src={logo} width={250} alt="logo-app" />
+            <Typography
+              style={{
+                fontSize: "2.3rem",
+                fontWeight: "bold",
+                color: "#1B325F",
+                marginBottom: "20px",
+                textAlign: "center",
               }}
             >
-              <Grid container justify="center">
-                <img src={logo} width={350} alt="logo" />
-              </Grid>
-              <Typography style={titleStyle}>
-                Registro como Interesado
-              </Typography>
+              Registro como <br />
+              Interesado
+            </Typography>
 
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                placeItems: "center",
+                gap: "15px",
+                minWidth: "350px",
+              }}
+            >
               {image ? (
                 <img
                   src={image}
@@ -151,29 +146,23 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                   style={imageStyle}
                 />
               )}
-              <Button
-                variant="outlined"
-                component="label"
-                fullWidth
-                style={{ marginTop: "10px" }}
-              >
+
+              <Button variant="outlined" component="label" fullWidth>
                 Elegir Foto de Perfil
                 <input
                   type="file"
                   style={{ display: "none", color: "black" }}
                   onChange={fileSelectedHandler}
-                  name="fotoPerfil"
                 />
               </Button>
+
               <TextField
                 fullWidth
                 required
                 name="nombre"
-                type={"text"}
-                placeholder="Nombre"
-                autoComplete="off"
                 label="Nombre"
-                margin="normal"
+                variant="outlined"
+                autoComplete="none"
                 {...register("nombre", {
                   required: true,
                   minLength: 2,
@@ -197,11 +186,9 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                 fullWidth
                 required
                 name="apellido"
-                type={"text"}
-                placeholder="Apellido"
-                autoComplete="off"
                 label="Apellido"
-                margin="normal"
+                variant="outlined"
+                autoComplete="none"
                 {...register("apellido", {
                   required: true,
                   minLength: 2,
@@ -226,11 +213,10 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                 fullWidth
                 required
                 name="email"
-                type={"email"}
-                placeholder="example@email.com"
-                autoComplete="off"
                 label="Email"
-                margin="normal"
+                variant="outlined"
+                autoComplete="none"
+                placeholder="example@email.com"
                 {...register("email", {
                   required: true,
                   pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -245,20 +231,20 @@ export const InteresadoSignUp = ({ setAcceso }) => {
                 }
               />
 
-              <div style={{ height: 20 }} />
-              <Button
-                endIcon={<HowToRegOutlinedIcon />}
-                type="submit"
-                variant="contained"
-                color="primary"
+              <LoadingButton
                 fullWidth
+                type="submit"
+                loading={loading}
+                loadingPosition="start"
+                startIcon={<HowToRegOutlinedIcon />}
+                variant="contained"
               >
-                Registrarse
-              </Button>
-            </Box>
-          </form>
-        </Grid>
-      </Grid>
+                REGISTRARSE
+              </LoadingButton>
+            </div>
+          </Paper>
+        </form>
+      </div>
     </div>
   );
 };

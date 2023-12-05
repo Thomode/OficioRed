@@ -55,7 +55,7 @@ export const SignupPage = ({ setAcceso }) => {
     setLoadingSignUp(true);
     setTimeout(() => {
       setLoadingSignUp(false);
-    }, 2000);
+    }, 1500);
   };
 
   const cargarRoles = async () => {
@@ -71,7 +71,7 @@ export const SignupPage = ({ setAcceso }) => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 1500);
 
       const res = await accesoService.register(
         data.user,

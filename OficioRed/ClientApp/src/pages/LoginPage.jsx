@@ -48,7 +48,7 @@ export const LoginPage = ({ setAcceso }) => {
     setLoadingSignUp(true);
     setTimeout(() => {
       setLoadingSignUp(false);
-    }, 1000);
+    }, 1500);
   };
 
   const onSubmit = async (data) => {
@@ -56,7 +56,7 @@ export const LoginPage = ({ setAcceso }) => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 1500);
       const res = await accesoService.login(data.usuario, data.password);
       setUsuarioEncontrado(true);
 
