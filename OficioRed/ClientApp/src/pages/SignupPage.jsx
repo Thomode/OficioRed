@@ -1,59 +1,48 @@
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo-oficiored.png";
 import {
   Box,
-  Button,
   FormControl,
-  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import LoginIcon from "@mui/icons-material/Login";
+import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-import { AccountCircle, LockRounded } from "@mui/icons-material";
-
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import { rolService } from "../services/rol.service";
-import { accesoService } from "../services/acceso.service";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { useSnackbar } from "notistack";
-import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
-import logo from "../assets/Logo1_Recorte.png";
+import { accesoService } from "../services/acceso.service";
+import { rolService } from "../services/rol.service";
 
-const titleStyle = {
-  fontSize: "2rem",
-  fontWeight: "bold",
-  color: "#1B325F",
-  textAlign: "center",
-  marginBottom: "20px",
+const backgroundStyle = {
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: "cover",
+  minHeight: "100vh",
 };
 
 export const SignupPage = ({ setAcceso }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingSignUp, setLoadingSignUp] = useState(false);
   const [roles, setRoles] = useState([]);
-  const [selectedRoleId, setSelectedRoleId] = useState(null);
+  const [selectedRolId, setSelectedRolId] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
 
-  const cargarRoles = async () => {
-    const data = await rolService.getAll();
-    setRoles(data.data);
-  };
-
-  useEffect(() => {
-    cargarRoles();
-  }, []);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -62,10 +51,28 @@ export const SignupPage = ({ setAcceso }) => {
     watch,
   } = useForm();
 
-  const { enqueueSnackbar } = useSnackbar();
+  const handleClickSignUp = () => {
+    setLoadingSignUp(true);
+    setTimeout(() => {
+      setLoadingSignUp(false);
+    }, 2000);
+  };
+
+  const cargarRoles = async () => {
+    const data = await rolService.getAll();
+    setRoles(data.data);
+  };
+  useEffect(() => {
+    cargarRoles();
+  }, []);
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+
       const res = await accesoService.register(
         data.user,
         data.password,
@@ -103,186 +110,149 @@ export const SignupPage = ({ setAcceso }) => {
       });
     }
   };
-
-  const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-
+  
   return (
-    <>
-      <div style={backgroundStyle}>
-        <Grid container style={{ justifyContent: "center" }}>
-          <Grid
-            container
-            item
-            xs={12}
-            md={6}
-            sm={3}
-            alignItems="center"
-            direction="column"
-            justifyContent="space-between"
-            style={{ padding: 10 }}
+    <div style={backgroundStyle}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Paper
+            elevation={3}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              placeItems: "center",
+              padding: "20px",
+              maxWidth: "450px",
+              borderRadius: "20px",
+            }}
           >
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Box
-                display="flex"
-                flexDirection={"column"}
-                width={450}
-                alignItems="center"
-                justifyContent={"center"}
-                margin="auto"
-                marginTop={5}
-                padding={3}
-                borderRadius={5}
-                boxShadow={"5px 5px 10px #ccc"}
-                sx={{
-                  ":hover": {
-                    boxShadow: "10px 10px 20px #ccc",
-                  },
-                  backgroundColor: "white",
+            <img src={logo} width={250} alt="logo-app" />
+            <Typography
+              style={{
+                fontSize: "2.3rem",
+                fontWeight: "bold",
+                color: "#1B325F",
+                marginBottom: "20px",
+                textAlign: "center",
+              }}
+            >
+              Crea una cuenta en <br />
+              OficioRed
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                placeItems: "center",
+                gap: "15px",
+                minWidth: "350px",
+              }}
+            >
+              <TextField
+                fullWidth
+                required
+                name="user"
+                label="Nombre de usuario"
+                variant="outlined"
+                autoComplete="none"
+                {...register("user", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                })}
+                error={!!errors.usuario}
+                helperText={
+                  errors.usuario?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.usuario?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.usuario?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : ""
+                }
+              />
+
+              <TextField
+                fullWidth
+                required
+                name="password"
+                label="Contraseña"
+                type={showPassword ? "text" : "password"}
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? (
+                          <RemoveRedEyeRoundedIcon fontSize="small" />
+                        ) : (
+                          <VisibilityOffRoundedIcon fontSize="small" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
-              >
-                <Grid container justifyContent={"center"}>
-                  <img src={logo} width={250} alt="logo" />
-                </Grid>
-
-                <Typography style={titleStyle}>Crea una cuenta de OficioRed</Typography>
-
-                <TextField
-                  fullWidth
-                  required
-                  name="user"
-                  type={"text"}
-                  placeholder="Nombre de Usuario"
-                  autoComplete="off"
-                  label="Nombre de Usuario"
-                  margin="normal"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AccountCircle />
-                      </InputAdornment>
-                    ),
-                  }}
-                  {...register("user", {
-                    required: true,
-                    minLength: 2,
-                    maxLength: 15,
-                  })}
-                  error={!!errors.usuario}
-                  helperText={
-                    errors.usuario?.type === "required"
-                      ? "Campo obligatorio"
-                      : errors.usuario?.type === "minLength"
-                      ? "Mínimo 2 caracteres"
-                      : errors.usuario?.type === "maxLength"
-                      ? "Máximo 15 caracteres"
-                      : ""
-                  }
-                />
-
-                <TextField
-                  fullWidth
-                  required
-                  name="password"
-                  placeholder="Contraseña"
-                  autoComplete="off"
-                  type={showPassword ? "text" : "password"}
-                  label="Contraseña"
-                  margin="normal"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <LockRounded />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={togglePasswordVisibility}
-                          edge="end"
-                        >
-                          {showPassword ? (
-                            <RemoveRedEyeRoundedIcon fontSize="small" />
-                          ) : (
-                            <VisibilityOffRoundedIcon fontSize="small" />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  {...register("password", {
-                    required: true,
-                    minLength: 2,
-                    maxLength: 15,
-                    pattern:
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
-                  })}
-                  error={!!errors.password}
-                  helperText={
-                    errors.password?.type === "required"
-                      ? "Campo obligatorio"
-                      : errors.password?.type === "minLength"
-                      ? "Mínimo 2 caracteres"
-                      : errors.password?.type === "maxLength"
-                      ? "Máximo 15 caracteres"
-                      : errors.password?.type === "pattern"
-                      ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
-                      : ""
-                  }
-                />
-                <TextField
-                  fullWidth
-                  required
-                  name="confirmPassword"
-                  placeholder="Confirmar Contraseña"
-                  autoComplete="off"
-                  type={showPassword ? "text" : "password"}
-                  label="Confirmar Contraseña"
-                  margin="normal"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <LockRounded />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={togglePasswordVisibility}
-                          edge="end"
-                        >
-                          {showPassword ? (
-                            <RemoveRedEyeRoundedIcon fontSize="small" />
-                          ) : (
-                            <VisibilityOffRoundedIcon fontSize="small" />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  {...register("confirmPassword", {
-                    required: true,
-                    validate: (value) => value === watch("password"),
-                  })}
-                  error={!!errors.confirmPassword}
-                  helperText={
-                    errors.confirmPassword?.type === "required"
-                      ? "Campo obligatorio"
-                      : errors.confirmPassword?.type === "validate"
-                      ? "Las contraseñas no coinciden"
-                      : ""
-                  }
-                />
-
-                <Box sx={{ width: "100%" }} marginBottom={2} marginTop={2}>
-                  <FormControl fullWidth>
+                {...register("password", {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 15,
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$.-_,@$!%*?&])[A-Za-z\d$.-_,@$!%*?&]{4,15}$/,
+                })}
+                error={!!errors.password}
+                helperText={
+                  errors.password?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.password?.type === "minLength"
+                    ? "Mínimo 2 caracteres"
+                    : errors.password?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : errors.password?.type === "pattern"
+                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                    : ""
+                }
+              />
+              <TextField
+                fullWidth
+                required
+                name="confirmPassword"
+                label="Confirmar Contraseña"
+                type={showPassword ? "text" : "password"}
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? (
+                          <RemoveRedEyeRoundedIcon fontSize="small" />
+                        ) : (
+                          <VisibilityOffRoundedIcon fontSize="small" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                {...register("confirmPassword", {
+                  required: true,
+                  validate: (value) => value === watch("password"),
+                })}
+                error={!!errors.confirmPassword}
+                helperText={
+                  errors.confirmPassword?.type === "required"
+                    ? "Campo obligatorio"
+                    : errors.confirmPassword?.type === "validate"
+                    ? "Las contraseñas no coinciden"
+                    : ""
+                }
+              />
+              <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
                       Selecciona el Tipo de Usuario
                     </InputLabel>
@@ -290,10 +260,11 @@ export const SignupPage = ({ setAcceso }) => {
                       fullWidth
                       label="Selecciona el Tipo de Usuario"
                       name="idRol"
+                      value={selectedRolId}
                       {...register("idRol", {
                         required: true,
                       })}
-                      onChange={(e) => setSelectedRoleId(e.target.value)}
+                      onChange={(e) => setSelectedRolId(e.target.value)}
                     >
                       {roles
                         .filter((e) => e.idRol !== 1)
@@ -303,71 +274,64 @@ export const SignupPage = ({ setAcceso }) => {
                           </MenuItem>
                         ))}
                     </Select>
-                  </FormControl>
-                  <Box marginTop={2}>
-                    {selectedRoleId === 2 && (
-                      <Typography
-                        style={{
-                          fontStyle: "italic",
-                          fontWeight: "bold",
-                          marginTop: "10px",
-                          color: "#1b325f",
-                        }}
-                      >
-                        Como profesional usted tendrá que cargar una mayor
-                        cantidad de datos como foto, número de teléfono, email,
-                        redes sociales, descripción, rubros de servicios a los
-                        que se dedica,etc. Dicha información va a ser visible
-                        para el resto de las personas, quiénes podrán contactarte.
-                        A su vez, usted será capaz de ver al resto de
-                        profesionales.
-                      </Typography>
-                    )}
-                    {selectedRoleId === 3 && (
-                      <Typography
-                        style={{
-                          fontStyle: "italic",
-                          fontWeight: "bold",
-                          marginTop: "10px",
-                          color: "#1b325f",
-                        }}
-                      >
-                        Como interesado usted únicamente deberá ingresar nombre,
-                        apellido, email y una foto. Será capaz de ver a
-                        todos los profesionales cargados en el sistema y
-                        realizar una búsqueda de acuerdo a sus necesidades.
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-
-                <Button
-                  endIcon={<HowToRegOutlinedIcon />}
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                >
-                  Registrarse
-                </Button>
-
-                <div style={{ height: 20 }} />
-
-                <Button
-                  endIcon={<LoginOutlinedIcon />}
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Iniciar Sesión
-                </Button>
+                </FormControl>
+              
+              <Box>
+                {selectedRolId === 2 && (
+                  <Typography
+                    style={{
+                      fontStyle: "italic",
+                      fontWeight: "bold",
+                      color: "#1b325f",
+                    }}
+                  >
+                    Como profesional usted tendrá que cargar una mayor cantidad
+                    de datos como foto, número de teléfono, email, redes
+                    sociales, descripción, rubros de servicios a los que se
+                    dedica,etc. Dicha información va a ser visible para el resto
+                    de las personas, quiénes podrán contactarte. A su vez, usted
+                    será capaz de ver al resto de profesionales.
+                  </Typography>
+                )}
+                {selectedRolId === 3 && (
+                  <Typography
+                    style={{
+                      fontStyle: "italic",
+                      fontWeight: "bold",
+                      color: "#1b325f",
+                    }}
+                  >
+                    Como interesado usted únicamente deberá ingresar nombre,
+                    apellido, email y una foto. Será capaz de ver a todos los
+                    profesionales cargados en el sistema y realizar una búsqueda
+                    de acuerdo a sus necesidades.
+                  </Typography>
+                )}
               </Box>
-            </form>
-          </Grid>
-        </Grid>
+              <LoadingButton
+                fullWidth
+                type="submit"
+                loading={loading}
+                loadingPosition="start"
+                startIcon={<HowToRegOutlinedIcon />}
+                variant="contained"
+              >
+                CREAR CUENTA
+              </LoadingButton>
+              <LoadingButton
+                href="/"
+                loading={loadingSignUp}
+                loadingPosition="start"
+                startIcon={<LoginIcon />}
+                variant="outlined"
+                onClick={handleClickSignUp}
+              >
+                INICIO DE SESIÓN
+              </LoadingButton>
+            </div>
+          </Paper>
+        </form>
       </div>
-    </>
+    </div>
   );
 };

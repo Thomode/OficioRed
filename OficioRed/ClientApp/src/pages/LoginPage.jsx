@@ -1,14 +1,21 @@
 ﻿import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import logo from '../assets/logo-oficiored.png';
-import { Button, IconButton, InputAdornment, Paper, TextField, Typography } from "@mui/material";
-import LoginIcon from '@mui/icons-material/Login';
-import backgroundImage from '../assets/armarios-formas-geometricas.jpg';
+import logo from "../assets/logo-oficiored.png";
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
+import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 import { useSnackbar } from "notistack";
 import { accesoService } from "../services/acceso.service";
 
@@ -85,16 +92,24 @@ export const LoginPage = ({ setAcceso }) => {
 
   return (
     <div style={backgroundStyle}>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Paper elevation={3}
+          <Paper
+            elevation={3}
             style={{
               display: "flex",
               flexDirection: "column",
               placeItems: "center",
               padding: "20px",
               maxWidth: "600px",
-              borderRadius: "20px"
+              borderRadius: "20px",
             }}
           >
             <img src={logo} width={250} alt="logo-app" />
@@ -103,14 +118,21 @@ export const LoginPage = ({ setAcceso }) => {
                 fontSize: "2.3rem",
                 fontWeight: "bold",
                 color: "#1B325F",
-                marginBottom: "20px"
+                marginBottom: "20px",
               }}
             >
               Iniciar Sesión
             </Typography>
 
-            <div style={{ display: "flex", flexDirection: "column", placeItems: "center", gap: "15px", minWidth: "350px" }}>
-
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                placeItems: "center",
+                gap: "15px",
+                minWidth: "350px",
+              }}
+            >
               <TextField
                 fullWidth
                 required
@@ -133,9 +155,7 @@ export const LoginPage = ({ setAcceso }) => {
                   ) : errors.usuario?.type === "maxLength" ? (
                     "Máximo 15 caracteres"
                   ) : usuarioEncontrado ? (
-                    <span style={{ color: "red" }}>
-                      Usuario no encontrado
-                    </span>
+                    <span style={{ color: "red" }}>Usuario no encontrado</span>
                   ) : (
                     ""
                   )
@@ -151,10 +171,7 @@ export const LoginPage = ({ setAcceso }) => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        onClick={togglePasswordVisibility}
-                        edge="end"
-                      >
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
                         {showPassword ? (
                           <RemoveRedEyeRoundedIcon fontSize="small" />
                         ) : (
@@ -167,17 +184,17 @@ export const LoginPage = ({ setAcceso }) => {
                 {...register("password", {
                   required: true,
                   minLength: 4,
-                  maxLength: 15
+                  maxLength: 15,
                 })}
                 error={!!errors.password}
                 helperText={
                   errors.password?.type === "required"
                     ? "Campo obligatorio"
                     : errors.password?.type === "minLength"
-                      ? "Mínimo 4 caracteres"
-                      : errors.password?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : ""
+                    ? "Mínimo 4 caracteres"
+                    : errors.password?.type === "maxLength"
+                    ? "Máximo 15 caracteres"
+                    : ""
                 }
               />
               <LoadingButton
@@ -199,7 +216,7 @@ export const LoginPage = ({ setAcceso }) => {
                 variant="outlined"
                 onClick={handleClickSignUp}
               >
-                REGISTRARSE
+                CREAR CUENTA
               </LoadingButton>
             </div>
           </Paper>
