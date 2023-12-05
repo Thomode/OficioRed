@@ -11,12 +11,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useParams, useNavigate } from "react-router-dom";
 
 const actions = [
-    { icon: <FileCopyIcon />, name: 'Copiar' },
-    { icon: <FavoriteIcon />, name: 'Favoritos' },
-    { icon: <CommentIcon />, name: 'Comentarios' },
-    { icon: <ArrowBackIcon />, name: 'Volver' },
+    { icon: <FileCopyIcon style={{ color: 'white' }} />, name: 'Copiar' },
+    { icon: <FavoriteIcon style={{ color: 'white' }} />, name: 'Favoritos' },
+    { icon: <CommentIcon style={{ color: 'white' }} />, name: 'Comentarios' },
+    { icon: <ArrowBackIcon style={{ color: 'white' }} />, name: 'Volver' },
 ];
-
 
 export default function SpeedDialTooltipOpen() {
     const [open, setOpen] = React.useState(false);
@@ -38,7 +37,9 @@ export default function SpeedDialTooltipOpen() {
             <SpeedDial
                 ariaLabel="SpeedDial tooltip example"
                 sx={{ position: 'absolute', bottom: 16, right: 16 }}
-                icon={<SpeedDialIcon />}
+                icon={
+                    <SpeedDialIcon style={{ color: 'white' }} />
+                }
                 onClose={handleClose}
                 onOpen={handleOpen}
                 open={open}
@@ -46,8 +47,8 @@ export default function SpeedDialTooltipOpen() {
                 {actions.map((action) => (
                     <SpeedDialAction
                         key={action.name}
-                        icon={action.icon}
-                        tooltipTitle={action.name}
+                        icon={<Box sx={{ backgroundColor: '#1b325f', borderRadius: '50%', padding: '8px' }}>{action.icon}</Box>}
+                        tooltipTitle={<span style={{ color: '#1b325f' , fontWeight:'bold'}}>{action.name}</span>}
                         tooltipOpen
                         onClick={() => {
                             handleClose();
