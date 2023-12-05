@@ -19,6 +19,12 @@ const imageStyle = {
   objectFit: "cover",
 };
 
+const backgroundStyle = {
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: "cover",
+  minHeight: "100vh",
+};
+
 export const ProfesionalSignUp = () => {
   const [image, setImage] = useState("");
   const [rubros, setRubros] = useState([]);
@@ -27,12 +33,6 @@ export const ProfesionalSignUp = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
-
-  const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    minHeight: "100vh",
-  };
 
   const {
     register,

@@ -1,37 +1,18 @@
-import React, { useEffect, useState } from "react";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import { set, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { interesadoService } from "../services/interesado.service";
-import { useSnackbar } from "notistack";
+import { useForm } from "react-hook-form";
 import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
 import imagenDefault from "../assets/profile.png";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
-import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-import { AccountCircle, LockRounded } from "@mui/icons-material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useSnackbar } from "notistack";
+
 import { usuarioService } from "../services/usuario.service";
 import { profesionalService } from "../services/profesional.service";
-import { FiltroRubros } from "../components/FiltroRubrosSignUp";
 import { contactoService } from "../services/contacto.service";
 
-const titleStyle = {
-  fontSize: "2.5rem",
-  fontWeight: "bold",
-  color: "#1B325F",
-  textAlign: "center",
-  marginBottom: "20px",
-};
+import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -44,54 +25,39 @@ const imageStyle = {
 const backgroundStyle = {
   backgroundImage: `url(${backgroundImage})`,
   backgroundSize: "cover",
-  backgroundPosition: "center",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
   minHeight: "93vh",
-  overFlow: "hidden",
 };
 
 export const MiPerfilProfesional = () => {
-  const [rubros, setRubros] = useState([]);
   const [profesional, setProfesional] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [image, setImage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     setValue,
   } = useForm();
+
+  const handleClick = () => {
+    navigate(-1);
+  };
 
   const fileSelectedHandler = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         setImage(e.target.result);
       };
-
       reader.readAsDataURL(file);
     }
-  };
-
-  const { enqueueSnackbar } = useSnackbar();
-
-  const handleClick = () => {
-    navigate(-1);
   };
 
   useEffect(() => {
@@ -100,14 +66,12 @@ export const MiPerfilProfesional = () => {
         const userId = usuarioService.getId();
         const userData = await usuarioService.get(userId);
         const idUser = userData.data.idUsuario;
-        const profesionalData = await profesionalService
-          .getAll()
-          .then((res) =>
+        const [profesionalData, contactoData] = await Promise.all([
+          profesionalService.getAll().then((res) =>
             res.find((profesional) => profesional.idUsuario === idUser)
-          );
-        const contactoData = await contactoService.getById(
-          profesionalData.idContacto
-        );
+          ),
+          contactoService.getById(idUser),
+        ]);
         setValue("nombre", profesionalData.nombre);
         setValue("apellido", profesionalData.apellido);
         setValue("email", profesionalData.email);
@@ -118,22 +82,24 @@ export const MiPerfilProfesional = () => {
         setValue("telefono", contactoData.data.telefono);
         setValue("instagram", contactoData.data.instagram);
         setValue("facebook", contactoData.data.facebook);
-
         setProfesional(profesionalData);
       } catch (error) {
         console.log("Error al obtener los datos", error);
-        setErrorMessage("Error al obtener los datos");
       }
     };
-
     fetchData();
-  }, [setValue]);
+  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      await profesionalService.imageUpload(selectedFile);
-
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+      if (selectedFile) {
+        await profesionalService.imageUpload(selectedFile);
+      }
       await profesionalService.updateProfesional(
         data.nombre,
         data.apellido,
@@ -147,12 +113,6 @@ export const MiPerfilProfesional = () => {
         data.instagram,
         data.facebook
       );
-
-      /*await usuarioService.updateUser(
-        profesional.idUsuario,
-        data.user,
-        data.password
-      );*/
 
       navigate("/home");
 
@@ -177,101 +137,122 @@ export const MiPerfilProfesional = () => {
   };
 
   return (
-    <div style={backgroundStyle}>
-      <Grid container style={{ justifyContent: "center" }}>
-        <Grid
-          container
-          item
-          xs={12}
-          md={9}
-          sm={3}
-          alignItems="center"
-          direction="column"
-          justifyContent="space-between"
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box
-              display="flex"
-              flexDirection={"column"}
-              maxWidth={1500}
-              minWidth={300}
-              alignItems="center"
-              justifyContent={"center"}
-              padding={3}
-              borderRadius={5}
-              boxShadow={"5px 5px 10px #ccc"}
-              sx={{
-                ":hover": {
-                  boxShadow: "10px 10px 20px #ccc",
-                },
-                backgroundColor: "white",
+    <div
+      style={{
+        ...backgroundStyle,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          placeItems: "center",
+          height: "100%",
+        }}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Paper
+            elevation={3}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              placeItems: "center",
+              padding: "20px",
+              borderRadius: "20px",
+              width: "auto",
+              margin: "20px",
+            }}
+          >
+            <Button
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                backgroundColor: "#1b325f",
+              }}
+              size="large"
+              startIcon={<ArrowBackIcon />}
+              onClick={() => handleClick()}
+            >
+              Volver
+            </Button>
+
+            <Typography
+              style={{
+                fontSize: "2.3rem",
+                fontWeight: "bold",
+                color: "#1B325F",
+                marginBottom: "20px",
               }}
             >
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  variant="text"
+              Editar Mi Perfil
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                placeItems: "center",
+                gap: "15px",
+                minWidth: "200px",
+              }}
+            >
+              <Grid container spacing={2} style={{ maxWidth: "650px" }}>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
                   style={{
-                    color: "white",
-                    marginRight: "8px",
-                    fontWeight: "bold",
-                    backgroundColor: "#1b325f",
+                    display: "flex",
+                    flexDirection: "column",
+                    placeItems: "center",
                   }}
-                  size="large"
-                  startIcon={<ArrowBackIcon />}
-                  onClick={() => handleClick()}
                 >
-                  Volver
-                </Button>
-
-                <Typography style={titleStyle}>Editar mi perfil</Typography>
-                {image ? (
-                  <img
-                    src={image}
-                    alt="Vista previa de la imagen"
-                    style={imageStyle}
-                    name="fotoPerfil"
-                  />
-                ) : (
-                  <img
-                    src={imagenDefault}
-                    alt="Imagen por defecto"
-                    style={imageStyle}
-                  />
-                )}
-                <Button
-                  variant="outlined"
-                  component="label"
-                  fullWidth
-                  style={{ marginTop: "10px" }}
-                >
-                  Cambiar Foto de Perfil
-                  <input
-                    type="file"
-                    style={{ display: "none", color: "black" }}
-                    onChange={fileSelectedHandler}
-                    name="fotoPerfil"
-                  />
-                </Button>
+                  {image ? (
+                    <img
+                      src={image}
+                      alt="Vista previa de la imagen"
+                      style={imageStyle}
+                    />
+                  ) : (
+                    <img
+                      src={imagenDefault}
+                      alt="Imagen por defecto"
+                      style={imageStyle}
+                    />
+                  )}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    fullWidth
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "100%",
+                    }}
+                  >
+                    Cambiar Foto de Perfil
+                    <input
+                      type="file"
+                      style={{ display: "none", color: "black" }}
+                      onChange={fileSelectedHandler}
+                    />
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={4}>
+              <Grid container spacing={2} style={{ maxWidth: "650px" }}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="nombre"
-                    type={"text"}
-                    placeholder="Nombre"
-                    autoComplete="off"
-                    margin="normal"
+                    label="Nombre"
+                    variant="outlined"
                     {...register("nombre", {
                       required: true,
                       minLength: 2,
@@ -290,15 +271,16 @@ export const MiPerfilProfesional = () => {
                         ? "Solo se permiten letras y espacios"
                         : ""
                     }
+                    InputLabelProps={{ shrink: true }}
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="apellido"
-                    type={"text"}
-                    placeholder="Apellido"
-                    autoComplete="off"
-                    margin="normal"
+                    label="Apellido"
+                    variant="outlined"
                     {...register("apellido", {
                       required: true,
                       minLength: 2,
@@ -317,15 +299,17 @@ export const MiPerfilProfesional = () => {
                         ? "Solo se permiten letras y espacios"
                         : ""
                     }
+                    InputLabelProps={{ shrink: true }}
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="email"
-                    type={"email"}
+                    label="Email"
+                    variant="outlined"
                     placeholder="example@email.com"
-                    autoComplete="off"
-                    margin="normal"
                     {...register("email", {
                       required: true,
                       pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -338,17 +322,17 @@ export const MiPerfilProfesional = () => {
                         ? "Coloque un email válido"
                         : ""
                     }
+                    InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="telefono"
+                    label="Telefono"
+                    variant="outlined"
                     type="tel"
-                    placeholder="Teléfono"
-                    autoComplete="off"
-                    margin="normal"
                     {...register("telefono", {
                       required: true,
                       pattern: /^[0-9]{10}$/,
@@ -361,37 +345,38 @@ export const MiPerfilProfesional = () => {
                         ? "Ingrese un número de teléfono válido"
                         : ""
                     }
+                    InputLabelProps={{ shrink: true }}
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     name="instagram"
-                    type="text"
-                    placeholder="Instagram"
-                    autoComplete="off"
-                    margin="normal"
+                    label="Instagram"
+                    variant="outlined"
                     {...register("instagram")}
+                    InputLabelProps={{ shrink: true }}
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     name="facebook"
-                    type="text"
-                    placeholder="Facebook"
-                    autoComplete="off"
-                    margin="normal"
+                    label="Facebook"
+                    variant="outlined"
                     {...register("facebook")}
+                    InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     required
                     name="descripcion"
-                    type={"text"}
-                    placeholder="Descripcion"
-                    autoComplete="off"
+                    label="Descripcion"
+                    variant="outlined"
                     multiline
-                    rows={8}
-                    margin="normal"
+                    rows={3}
                     {...register("descripcion", {
                       required: true,
                       minLength: 2,
@@ -407,25 +392,25 @@ export const MiPerfilProfesional = () => {
                         ? "Máximo 700 caracteres"
                         : ""
                     }
+                    InputLabelProps={{ shrink: true }}
                   />
+                  <LoadingButton
+                    fullWidth
+                    type="submit"
+                    loading={loading}
+                    loadingPosition="start"
+                    startIcon={<HowToRegOutlinedIcon />}
+                    variant="contained"
+                    style={{ marginTop: "15px" }}
+                  >
+                    GUARDAR CAMBIOS
+                  </LoadingButton>
                 </Grid>
               </Grid>
-
-              <Button
-                margin="normal"
-                endIcon={<HowToRegOutlinedIcon />}
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                marginTop={"20px"}
-              >
-                Guardar cambios
-              </Button>
-            </Box>
-          </form>
-        </Grid>
-      </Grid>
+            </div>
+          </Paper>
+        </form>
+      </div>
     </div>
   );
 };

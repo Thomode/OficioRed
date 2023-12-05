@@ -36,7 +36,6 @@ const imageUpload = async (selectedFile) => {
 
 async function getAll() {
   const res = await axios.get("/api/Interesado")
-
   return res.data
 }
 
@@ -50,7 +49,7 @@ const updateInteresado = async (nombre, apellido, email, fotoPerfil) => {
           email,
           fotoPerfil,
       }, await sesionService.getConfig())
-      return response.data;
+    return response.data;
 };
     
 

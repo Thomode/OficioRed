@@ -13,7 +13,6 @@ const register = async  (usuario, password, idRol) => {
         password: password,
         idRol: idRol
     })
-
     return res
 }
 

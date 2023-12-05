@@ -15,9 +15,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
-import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-import { AccountCircle, LockRounded } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { usuarioService } from "../services/usuario.service";
 
