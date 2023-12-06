@@ -1,5 +1,4 @@
-﻿import * as React from "react";
-import { styled } from "@mui/material/styles";
+﻿import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Container from "@mui/material/Container";
@@ -120,7 +119,7 @@ const images = [
   },
 ];
 
-const ProductCategories = ({ setRubros }) => {
+export const ProductCategories = ({ setRubros }) => {
   const navigate = useNavigate();
 
   const handleImageClick = (idRubro) => {
@@ -189,5 +188,3 @@ const ProductCategories = ({ setRubros }) => {
     </Container>
   );
 };
-
-export default ProductCategories;

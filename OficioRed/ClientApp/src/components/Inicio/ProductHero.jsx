@@ -1,11 +1,6 @@
-﻿import React from "react";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import fondoInicio from "../../assets/arregloHogar.jpeg";
+﻿import { Button, Typography, Container, Paper, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import fondoInicio from "../../assets/arregloHogar.jpeg";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
 const backgroundImage = fondoInicio;

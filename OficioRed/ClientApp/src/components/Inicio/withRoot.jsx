@@ -1,9 +1,8 @@
-import * as React from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 
-export default function withRoot(Component) {
+export function withRoot(Component) {
   function WithRoot(props) {
     return (
       <ThemeProvider theme={theme}>
@@ -12,6 +11,5 @@ export default function withRoot(Component) {
       </ThemeProvider>
     );
   }
-
   return WithRoot;
 }

@@ -1,4 +1,6 @@
 ﻿import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { contactoService } from "../../services/contacto.service";
 import {
   Card,
   CardMedia,
@@ -8,12 +10,10 @@ import {
   Typography,
   IconButton,
   Grid,
+  Chip,
 } from "@mui/material";
-import React, { useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import imagendefault from "../../assets/fotodefault.webp";
-import { contactoService } from "../../services/contacto.service";
-import Chip from "@mui/material/Chip";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import imagenwsp from "../../assets/whatsapp.png";
 
 const cardStyle = {
@@ -46,15 +46,11 @@ const CardProfesional = ({ profesionales }) => {
   const handleContactar = async (idContacto) => {
     try {
       const res = await contactoService.getById(idContacto);
-      console.log(res.data);
-
       if (res.data.telefono) {
         const url = `https://wa.me/+549${res.data.telefono}`;
         window.open(url, "_blank");
       } else {
-        console.error(
-          "El numero de telefono no esta definido en el objeto de contacto."
-        );
+        console.error("El numero de telefono no esta definido.");
       }
     } catch (error) {
       console.error("Error al obtener el contacto:", error);
@@ -62,29 +58,19 @@ const CardProfesional = ({ profesionales }) => {
   };
 
   const handleAgregarFavorito = (profesional) => {
-    // Usa una función para actualizar el estado correctamente
     setFavoritos((prevFavoritos) => {
       const isInFavoritos = prevFavoritos.some(
         (fav) => fav.idProfesional === profesional.idProfesional
       );
-
       let nuevosFavoritos;
-
       if (!isInFavoritos) {
-        // Agrega el profesional a la lista de favoritos
-        console.log([...prevFavoritos, profesional]);
         nuevosFavoritos = [...prevFavoritos, profesional];
       } else {
-        // Elimina el profesional de la lista de favoritos
         nuevosFavoritos = prevFavoritos.filter(
           (fav) => fav.idProfesional !== profesional.idProfesional
         );
-        console.log(nuevosFavoritos);
       }
-
-      // Guarda la lista de favoritos en el localStorage
       localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
-
       return nuevosFavoritos;
     });
   };
