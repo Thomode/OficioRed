@@ -17,7 +17,7 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
             const rubrosLoad = res.data.map((rubro) => ({
                 idRubro: rubro.idRubro,
                 nombre: rubro.nombre,
-                seleccionado: selectedId ? rubro.idRubro === selectedId : false,
+                seleccionado: selectedId ? rubro.idRubro === selectedId : true,
             }));
             return rubrosLoad;
         } catch (error) {
