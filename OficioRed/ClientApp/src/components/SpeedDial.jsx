@@ -14,7 +14,6 @@ const actions = [
     { icon: <FileCopyIcon style={{ color: 'white' }} />, name: 'Copiar' },
     { icon: <FavoriteIcon style={{ color: 'white' }} />, name: 'Favoritos' },
     { icon: <CommentIcon style={{ color: 'white' }} />, name: 'Comentarios' },
-    { icon: <ArrowBackIcon style={{ color: 'white' }} />, name: 'Volver' },
 ];
 
 export default function SpeedDialTooltipOpen() {

@@ -30,6 +30,17 @@ const buttonStyle = {
     position: "bottom",
 };
 
+const titleStyle2 = {
+    fontSize: '45px',
+    fontWeight: 'bold',
+    color: '#1b325f',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    WebkitTextStroke: '2px white',
+    MozTextStroke: '2px white',
+    margin: '0px',
+    padding: '0px',
+};
+
 const PerfilProfesional = () => {
     const [value, setValue] = React.useState(2);
     const [profesional, setProfesional] = useState({});
@@ -137,24 +148,29 @@ const PerfilProfesional = () => {
                 backgroundImage: `url(${imagenFondo})`,
                 backgroundSize: "cover",
                 position: "relative"
-            }}
-        >
-            <Button
-                variant="text"
-                style={{
-                    color: "white",
-
-                    fontWeight: "bold",
-                    backgroundColor: "#1b325f",
-                    position: "absolute",
-                }}
-                size="small"
-                startIcon={<ArrowBackIcon />}
-                onClick={() => handleClick()}
-            >
-                Volver
-            </Button>
-            <Grid container justifyContent="center" spacing={3} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)" }}>
+            }}>
+            <Grid xs={12} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "20px 20px 0px 0px", padding: "5px" }}>
+                <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                    <Typography variant="h2" sx={titleStyle2}>
+                        Detalle de Perfil
+                    </Typography>
+                    <Button
+                        variant="text"
+                        style={{
+                            color: "#1b325f",
+                            margin: "20px",
+                            fontWeight: "bold",
+                            fontSize: '15px',
+                        }}
+                        size="small"
+                        startIcon={<ArrowBackIcon />}
+                        onClick={() => handleClick()}
+                    >
+                        Seguir buscando
+                    </Button>
+                </Box>
+            </Grid>
+            <Grid container justifyContent="center" spacing={0} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "0px 0px 20px 20px" }}>
                 <Grid item xs={12} md={4} style={{ padding: 10 }}>
                     <CardMedia
                         component="img"
@@ -173,6 +189,7 @@ const PerfilProfesional = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        borderRadius= "0px 0px 20px 20px"
                     >
                         <Typography variant="h4" style={{ textAlign: "center", fontSize: "2.5rem" }}>
                             {`${profesional.nombre} ${profesional.apellido}`}
