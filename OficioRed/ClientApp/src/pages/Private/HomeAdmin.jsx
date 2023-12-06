@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Container, Typography, Grid, Card, CardContent } from "@mui/material";
 import Chart from "react-apexcharts";
 import { usuarioService } from "../../services/usuario.service";

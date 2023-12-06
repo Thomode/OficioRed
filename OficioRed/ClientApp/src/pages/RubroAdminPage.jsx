@@ -3,8 +3,8 @@ import { TablaRubro } from "../components/Rubro/TablaRubro";
 import { rubroService } from "../services/rubro.service";
 import { Button, Grid, Typography, Card, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { Busqueda } from "../components/Busqueda";
 import Swal from "sweetalert2";
+import { SearchBar } from "../components/SearchBar";
 
 const titleStyle2 = {
   fontSize: "70px",
@@ -16,21 +16,33 @@ const titleStyle2 = {
 };
 
 export function RubroAdminPage() {
+  const [loading, setLoading] = useState(false);
   const handleSearch = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
     const data = await rubroService.getAll();
-    console.log(data);
     const filteredRubros = data.filter((rubro) =>
       rubro.nombre.toLowerCase().includes(searchValue.toLowerCase())
     );
-
+    if (filteredRubros.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: `No se encontró el rubro "${searchValue}"`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#1b325f",
+      });
+    }
     setRubros(filteredRubros);
   };
+
   const [rubros, setRubros] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   async function loadRubros() {
     const data = await rubroService.getAll();
-    console.log(data);
     setRubros(data);
   }
 
@@ -76,42 +88,41 @@ export function RubroAdminPage() {
   };
 
   return (
-    <>
-      <Card>
-        <CardContent>
-          <Typography variant="h2" sx={titleStyle2}>
-            Administración Rubros
-          </Typography>
-          <Grid
-            container
-            spacing={3}
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{
-              marginBottom: "10px",
-            }}
-          >
-            <Grid item xs={6}>
-              <Busqueda
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                handleSearch={handleSearch}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="success"
-                startIcon={<AddIcon />}
-                onClick={() => crearRubro()}
-              >
-                Agregar
-              </Button>
-            </Grid>
+    <Card>
+      <CardContent>
+        <Typography variant="h2" sx={titleStyle2}>
+          Administración Rubros
+        </Typography>
+        <Grid
+          container
+          spacing={3}
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            marginBottom: "10px",
+          }}
+        >
+          <Grid item xs={6}>
+            <SearchBar
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              loading={loading}
+              handleSearch={handleSearch}
+            />
           </Grid>
-          <TablaRubro rubros={rubros} loadRubros={loadRubros}></TablaRubro>
-        </CardContent>
-      </Card>
-    </>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<AddIcon />}
+              onClick={() => crearRubro()}
+            >
+              Agregar
+            </Button>
+          </Grid>
+        </Grid>
+        <TablaRubro rubros={rubros} loadRubros={loadRubros}></TablaRubro>
+      </CardContent>
+    </Card>
   );
 }

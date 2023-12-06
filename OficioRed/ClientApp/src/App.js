@@ -15,7 +15,7 @@ import PerfilProfesional from "./pages/PerfilProfesional";
 import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
-import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx'
+import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx';
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
 import FavoritePage from './pages/FavoritePage';
 import HomeAdmin from "./pages/Private/HomeAdmin";

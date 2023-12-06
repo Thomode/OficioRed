@@ -3,8 +3,8 @@ import { TablaUsuario } from "../components/Usuario/TablaUsuario";
 import { usuarioService } from "../services/usuario.service";
 import { Button, Grid, Typography, Card, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { Busqueda } from "../components/Busqueda";
 import Swal from "sweetalert2";
+import { SearchBar } from "../components/SearchBar";
 
 const titleStyle2 = {
   fontSize: "70px",
@@ -16,13 +16,17 @@ const titleStyle2 = {
 };
 
 export function UsuarioAdminPage() {
+  const [loading, setLoading] = useState(false);
   const handleSearch = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
     const data = await usuarioService.getAll();
     console.log(data);
     const filteredUsuarios = data.filter((usuario) =>
       usuario.user.toLowerCase().includes(searchValue.toLowerCase())
     );
-
     setUsuarios(filteredUsuarios);
   };
   const [usuarios, setUsuarios] = useState([]);
@@ -79,9 +83,7 @@ export function UsuarioAdminPage() {
 
         try {
           await usuarioService.create(nuevoNombre, nuevaPassword, nuevoIdRol);
-
           loadUsuarios();
-
           Swal.fire({
             position: "center",
             icon: "success",
@@ -99,7 +101,6 @@ export function UsuarioAdminPage() {
       },
     });
   };
-
   return (
     <>
       <Card>
@@ -117,9 +118,10 @@ export function UsuarioAdminPage() {
             }}
           >
             <Grid item xs={6}>
-              <Busqueda
+              <SearchBar
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
+                loading={loading}
                 handleSearch={handleSearch}
               />
             </Grid>

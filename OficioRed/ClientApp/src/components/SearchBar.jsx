@@ -1,7 +1,8 @@
-import { TextField, Button, Grid } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import LoadingButton from "@mui/lab/LoadingButton";
 
-export function Busqueda({ searchValue, setSearchValue, handleSearch }) {
+export const SearchBar = ({ searchValue, setSearchValue, loading, handleSearch }) => {
   return (
     <Grid container spacing={3} alignItems="center" justifyContent="left">
       <Grid item xs={8}>
@@ -15,15 +16,18 @@ export function Busqueda({ searchValue, setSearchValue, handleSearch }) {
         />
       </Grid>
       <Grid item>
-        <Button
-          variant="contained"
+        <LoadingButton
+          fullWidth
+          loading={loading}
+          loadingPosition="start"
           startIcon={<SearchIcon />}
+          variant="contained"
+          style={{ backgroundColor: "#1b325f", color: "white" }}
           onClick={handleSearch}
-          style={{ backgroundColor: "#1b325f" }}
         >
-          Buscar
-        </Button>
+          BUSCAR
+        </LoadingButton>
       </Grid>
     </Grid>
   );
-}
+};

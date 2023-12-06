@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -6,20 +7,24 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { FiltroRubros } from "../components/FiltroRubroProfesional";
-import { Busqueda } from "../components/Busqueda";
 import { profesionalService } from "../services/profesional.service";
-import { useEffect, useState } from "react";
 import imagenFondo from "../assets/fondo.jpg";
 import { Suspense, lazy } from "react";
 import { useParams } from "react-router-dom";
+import { SearchBar } from "../components/SearchBar";
 
 const CardProfesional = lazy(() =>
   import("../components/ProfesionalesBusqueda/Card")
 );
 
 export function ProfesionalPage() {
+  const [loading, setLoading] = useState(false);
   const [rubros, setRubros] = useState([]);
   const handleSearch = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
     const data = await profesionalService.getAll();
     const filteredProfesionales = data.filter((profesional) => {
       const nombreEnMinusculas = profesional.nombre.toLowerCase();
@@ -96,17 +101,14 @@ export function ProfesionalPage() {
           borderBottom="2px solid #1b325f"
           borderRadius="0px 0px 50px 50px"
         >
-          <Grid width="70%">
-            <Grid item xs={12} mt={2}>
-              <Busqueda
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                handleSearch={handleSearch}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FiltroRubros rubros={rubros} setRubros={setRubros} />
-            </Grid>
+          <Grid item xs={12}>
+            <SearchBar
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              loading={loading}
+              handleSearch={handleSearch}
+            />
+            <FiltroRubros rubros={rubros} setRubros={setRubros} />
           </Grid>
         </Box>
         <Grid
