@@ -18,6 +18,10 @@ const titleStyle2 = {
 export function UsuarioAdminPage() {
   const [loading, setLoading] = useState(false);
 
+  const reloadUsuarios = async () => {
+    loadUsuarios();
+  };
+
   const handleSearch = async () => {
     setLoading(true);
     setTimeout(() => {
@@ -35,6 +39,7 @@ export function UsuarioAdminPage() {
         confirmButtonText: "OK",
         confirmButtonColor: "#1b325f",
       });
+      reloadUsuarios();
     }
     setUsuarios(filteredUsuarios);
   };

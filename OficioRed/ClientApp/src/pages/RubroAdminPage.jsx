@@ -17,6 +17,11 @@ const titleStyle2 = {
 
 export function RubroAdminPage() {
   const [loading, setLoading] = useState(false);
+
+  const reloadRubros = async () => {
+    loadRubros();
+  };
+
   const handleSearch = async () => {
     setLoading(true);
     setTimeout(() => {
@@ -34,6 +39,7 @@ export function RubroAdminPage() {
         confirmButtonText: "OK",
         confirmButtonColor: "#1b325f",
       });
+      reloadRubros();
     }
     setRubros(filteredRubros);
   };
