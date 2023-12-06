@@ -17,16 +17,25 @@ const titleStyle2 = {
 
 export function UsuarioAdminPage() {
   const [loading, setLoading] = useState(false);
+
   const handleSearch = async () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 1000);
+
     const data = await usuarioService.getAll();
-    console.log(data);
     const filteredUsuarios = data.filter((usuario) =>
       usuario.user.toLowerCase().includes(searchValue.toLowerCase())
     );
+    if (filteredUsuarios.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: `No se encontró el usuario "${searchValue}"`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#1b325f",
+      });
+    }
     setUsuarios(filteredUsuarios);
   };
   const [usuarios, setUsuarios] = useState([]);
@@ -34,8 +43,6 @@ export function UsuarioAdminPage() {
 
   async function loadUsuarios() {
     const data = await usuarioService.getAll();
-    console.log(data);
-
     setUsuarios(data);
   }
 
@@ -102,46 +109,44 @@ export function UsuarioAdminPage() {
     });
   };
   return (
-    <>
-      <Card>
-        <CardContent>
-          <Typography variant="h2" sx={titleStyle2}>
-            Administración Usuarios
-          </Typography>
-          <Grid
-            container
-            spacing={3}
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{
-              marginBottom: "10px",
-            }}
-          >
-            <Grid item xs={6}>
-              <SearchBar
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                loading={loading}
-                handleSearch={handleSearch}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="success"
-                startIcon={<AddIcon />}
-                onClick={() => crearUsuario()}
-              >
-                Agregar
-              </Button>
-            </Grid>
+    <Card>
+      <CardContent>
+        <Typography variant="h2" sx={titleStyle2}>
+          Administración Usuarios
+        </Typography>
+        <Grid
+          container
+          spacing={3}
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            marginBottom: "10px",
+          }}
+        >
+          <Grid item xs={6}>
+            <SearchBar
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              loading={loading}
+              handleSearch={handleSearch}
+            />
           </Grid>
-          <TablaUsuario
-            usuarios={usuarios}
-            loadUsuarios={loadUsuarios}
-          ></TablaUsuario>
-        </CardContent>
-      </Card>
-    </>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<AddIcon />}
+              onClick={() => crearUsuario()}
+            >
+              Agregar
+            </Button>
+          </Grid>
+        </Grid>
+        <TablaUsuario
+          usuarios={usuarios}
+          loadUsuarios={loadUsuarios}
+        ></TablaUsuario>
+      </CardContent>
+    </Card>
   );
 }

@@ -1,8 +1,20 @@
+import { useEffect } from "react";
 import { Grid, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-export const SearchBar = ({ searchValue, setSearchValue, loading, handleSearch }) => {
+export const SearchBar = ({
+  searchValue,
+  setSearchValue,
+  loading,
+  handleSearch,
+  resetSearch,
+}) => {
+  useEffect(() => {
+    if (resetSearch) {
+      setSearchValue("");
+    }
+  }, [resetSearch, setSearchValue]);
   return (
     <Grid container spacing={3} alignItems="center" justifyContent="left">
       <Grid item xs={8}>
