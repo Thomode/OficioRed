@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
     Typography,
     Button,
@@ -13,6 +13,8 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import SearchIcon from "@mui/icons-material/Search";
 import Chip from "@mui/material/Chip";
 import axios from "axios";
 import imagendefault from "../assets/fotodefault.webp";
@@ -42,14 +44,15 @@ const titleStyle2 = {
 };
 
 const PerfilProfesional = () => {
-    const [value, setValue] = React.useState(2);
+    const navigate = useNavigate();
+    const location = useLocation();
     const [profesional, setProfesional] = useState({});
     const [facebook, setFacebook] = useState("");
     const [instagram, setInstagram] = useState("");
     const [telefono, setTelefono] = useState("");
     const { id } = useParams();
     const [rubros, setRubros] = useState([]);
-    const navigate = useNavigate();
+    const idActual = location.pathname.split('/')[1];
 
     useEffect(() => {
         axios
@@ -86,9 +89,25 @@ const PerfilProfesional = () => {
             });
     }, [id]);
 
+
+
     const handleClick = () => {
-        navigate(-1);
+        const nuevaUrl = `/profesionales`;
+        navigate(nuevaUrl);
     };
+
+    const handleClickAntes = () => {
+        const nuevoId = Math.max(idActual - 1, 1);
+        const nuevaUrl = `/${nuevoId}/PerfilProfesional`;
+        navigate(nuevaUrl);
+    };
+
+    const handleClickSiguiente = () => {
+        const nuevoId = parseInt(idActual, 10) + 1;
+        const nuevaUrl = `/${nuevoId}/PerfilProfesional`;
+        navigate(nuevaUrl);
+    };
+
 
 
     const handleClickFb = async (idContacto) => {
@@ -150,7 +169,21 @@ const PerfilProfesional = () => {
                 position: "relative"
             }}>
             <Grid xs={12} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "20px 20px 0px 0px", padding: "5px" }}>
-                <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                </Box>
+                <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <Button
+                        variant="text"
+                        style={{
+                            color: "#1b325f",
+                            margin: "20px",
+                            fontWeight: "bold",
+                        }}
+                        fontSize="large"
+                        startIcon={<ArrowBackIcon />}
+                        onClick={() => handleClickAntes()}
+                    >
+                    </Button>
                     <Typography variant="h2" sx={titleStyle2}>
                         Detalle de Perfil
                     </Typography>
@@ -160,13 +193,11 @@ const PerfilProfesional = () => {
                             color: "#1b325f",
                             margin: "20px",
                             fontWeight: "bold",
-                            fontSize: '15px',
                         }}
-                        size="small"
-                        startIcon={<ArrowBackIcon />}
-                        onClick={() => handleClick()}
+                        fontSize="large"
+                        startIcon={<ArrowForwardIcon />}
+                        onClick={() => handleClickSiguiente()}
                     >
-                        Seguir buscando
                     </Button>
                 </Box>
             </Grid>
@@ -195,6 +226,21 @@ const PerfilProfesional = () => {
                             {`${profesional.nombre} ${profesional.apellido}`}
                         </Typography>
                     </Box>
+                    <Button
+                        variant="text"
+                        style={{
+                            color: "white",
+                            backgroundColor: "#1b325f",
+                            margin: "20px",
+                            fontWeight: "bold",
+                            fontSize: '15px',
+                        }}
+                        size="small"
+                        startIcon={<SearchIcon />}
+                        onClick={() => handleClick()}
+                    >
+                        Seguir buscando profesionales
+                    </Button>
                 </Grid>
                 <Grid item xs={12} md={4} style={{ padding: 0 }}>
                     <CardContent>
