@@ -22,7 +22,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import BookmarksOutlinedIcon from "@mui/icons-material/BookmarksOutlined";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoOficio from "../assets/logo-oficiored.png";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -148,29 +148,8 @@ export function NavBarLateral({ children, type, logout }) {
 
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const navigate = useNavigate();
-
   const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleChange = async () => {
-        
-        const acceso = await sesionService.getAcceso();
-        if (acceso.idRol === 1) {
-            navigate(`/admin/${acceso.id}/miPerfilAdmin`);
-        } else if (acceso.idRol === 2) {
-            navigate(`/${acceso.id}/miPerfilProfesional`);
-        } else if (acceso.idRol === 3) {
-            navigate(`/${acceso.id}/miPerfilInteresado`);
-        } else {
-            navigate(`/home`);
-        }
-        handleClose();
-    };
-
-
-  const handleChangeLogout = () => {
-    logout();
-  };
+  const navigate = useNavigate();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -218,7 +197,6 @@ export function NavBarLateral({ children, type, logout }) {
           fotoUsuario = interesadoResponse.data.fotoPerfil;
         }
       }
-
       return fotoUsuario;
     } catch (error) {
       console.error("Error al obtener los datos:", error);
@@ -228,14 +206,33 @@ export function NavBarLateral({ children, type, logout }) {
 
   const [fotoPerfil, setFotoPerfil] = useState("");
 
-  useEffect(() => {
-    const obtenerFotoPerfil = async () => {
-      const fotoPerfilUrl = await infoPerfil();
-      setFotoPerfil(fotoPerfilUrl);
-    };
+  const obtenerFotoPerfil = async () => {
+    const fotoPerfilUrl = await infoPerfil();
+    setFotoPerfil(fotoPerfilUrl || imagendefault);
+  };
 
+  useEffect(() => {
     obtenerFotoPerfil();
   }, []);
+
+  const handleChange = async () => {
+    const acceso = await sesionService.getAcceso();
+    if (acceso.idRol === 1) {
+      navigate(`/admin/${acceso.id}/miPerfilAdmin`);
+    } else if (acceso.idRol === 2) {
+      navigate(`/${acceso.id}/miPerfilProfesional`);
+    } else if (acceso.idRol === 3) {
+      navigate(`/${acceso.id}/miPerfilInteresado`);
+    } else {
+      navigate(`/home`);
+    }
+    handleClose();
+    obtenerFotoPerfil();
+  };
+
+  const handleChangeLogout = () => {
+    logout();
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -254,11 +251,18 @@ export function NavBarLateral({ children, type, logout }) {
           >
             {open ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
-          <img
-            src={logoOficio}
-            alt="Logo"
-            style={{ height: 40, width: "auto", borderRadius: 8 }}
-          />
+          <Link to={"/home"}>
+            <img
+              src={logoOficio}
+              alt="Logo"
+              style={{
+                height: 40,
+                width: "auto",
+                borderRadius: 8,
+                cursor: "pointer",
+              }}
+            />
+          </Link>
           <div style={{ marginLeft: "auto" }}>
             <IconButton
               size="large"

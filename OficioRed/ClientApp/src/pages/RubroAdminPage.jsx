@@ -17,8 +17,10 @@ const titleStyle2 = {
 
 export function RubroAdminPage() {
   const [loading, setLoading] = useState(false);
+  const [resetSearch, setResetSearch] = useState(false);
 
   const reloadRubros = async () => {
+    setResetSearch(false);
     loadRubros();
   };
 
@@ -40,6 +42,9 @@ export function RubroAdminPage() {
         confirmButtonColor: "#1b325f",
       });
       reloadRubros();
+      setResetSearch(true);
+    } else {
+      setResetSearch(false);
     }
     setRubros(filteredRubros);
   };
@@ -114,6 +119,7 @@ export function RubroAdminPage() {
               setSearchValue={setSearchValue}
               loading={loading}
               handleSearch={handleSearch}
+              resetSearch={resetSearch}
             />
           </Grid>
           <Grid item>

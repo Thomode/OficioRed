@@ -50,8 +50,8 @@ export function ProfesionalPage() {
         confirmButtonText: "OK",
         confirmButtonColor: "#1b325f",
       });
-      setResetSearch(true);
       reloadProfesionales();
+      setResetSearch(true);
     } else {
       setResetSearch(false);
     }

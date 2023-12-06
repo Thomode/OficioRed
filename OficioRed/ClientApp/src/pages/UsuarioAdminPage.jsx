@@ -17,8 +17,10 @@ const titleStyle2 = {
 
 export function UsuarioAdminPage() {
   const [loading, setLoading] = useState(false);
+  const [resetSearch, setResetSearch] = useState(false);
 
   const reloadUsuarios = async () => {
+    setResetSearch(false);
     loadUsuarios();
   };
 
@@ -40,6 +42,9 @@ export function UsuarioAdminPage() {
         confirmButtonColor: "#1b325f",
       });
       reloadUsuarios();
+      setResetSearch(true);
+    } else {
+      setResetSearch(false);
     }
     setUsuarios(filteredUsuarios);
   };
@@ -134,6 +139,7 @@ export function UsuarioAdminPage() {
               setSearchValue={setSearchValue}
               loading={loading}
               handleSearch={handleSearch}
+              resetSearch={resetSearch}
             />
           </Grid>
           <Grid item>
