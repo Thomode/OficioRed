@@ -51,7 +51,6 @@ const PerfilProfesional = () => {
     const [instagram, setInstagram] = useState("");
     const [telefono, setTelefono] = useState("");
     const { id } = useParams();
-    const [rubros, setRubros] = useState([]);
     const idActual = location.pathname.split('/')[1];
 
     useEffect(() => {
@@ -76,16 +75,6 @@ const PerfilProfesional = () => {
             })
             .catch((error) => {
                 console.error("Error fetching data", error);
-            });
-        profesionalService.getAll()
-            .then((profesionales) => {
-                const profesionalActual = profesionales.find((prof) => prof.idProfesional === parseInt(id, 10));
-                if (profesionalActual) {
-                    setRubros(profesionalActual.rubros || []);
-                }
-            })
-            .catch((error) => {
-                console.error("Error fetching profesionales data", error);
             });
     }, [id]);
 
@@ -179,6 +168,7 @@ const PerfilProfesional = () => {
                         startIcon={<ArrowBackIcon />}
                         onClick={() => handleClickAntes()}
                     >
+                    Anterior
                     </Button>
                     <Typography variant="h2" sx={titleStyle2}>
                         Detalle de Perfil
@@ -191,9 +181,11 @@ const PerfilProfesional = () => {
                             fontWeight: "bold",
                         }}
                         fontSize="large"
-                        startIcon={<ArrowForwardIcon />}
+                        endIcon={<ArrowForwardIcon />}
                         onClick={() => handleClickSiguiente()}
                     >
+                    Siguiente
+                     
                     </Button>
                 </Box>
             </Grid>
@@ -266,8 +258,8 @@ const PerfilProfesional = () => {
                         >
                             <Typography variant="subtitle1" style={{ fontSize: "1.2rem" }}>
                                 <strong>Rubros: </strong>
-                                {rubros &&
-                                    rubros.map((rubro, index) => (
+                                {profesional.rubros &&
+                                    profesional.rubros.map((rubro, index) => (
                                         <Chip
                                             key={index}
                                             variant="elevated"
