@@ -92,7 +92,7 @@ builder.Services.AddScoped<IInteresadoService, InteresadoService>();
 builder.Services.AddScoped<IProfesionalService, ProfesionalService>();
 builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
-
+builder.Services.AddScoped<IComentarioService, ComentarioService>();
 builder.Services.AddScoped<IContactoService, ContactoService>();
 
 

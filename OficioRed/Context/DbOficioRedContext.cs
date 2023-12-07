@@ -48,9 +48,9 @@ public partial class DbOficioRedContext : DbContext
     {
         modelBuilder.Entity<Comentario>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Comentario");
+            entity.HasKey(e => e.IdComentario).HasName("Comentario_PK");
+            
+            entity.ToTable("Comentario");
 
             entity.Property(e => e.Comentario1)
                 .HasMaxLength(300)
@@ -140,9 +140,9 @@ public partial class DbOficioRedContext : DbContext
 
         modelBuilder.Entity<Favorito>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Favorito");
+            entity.HasKey(e => e.IdFavorito).HasName("Favorito_PK");
+
+            entity.ToTable("Favorito");
 
             entity.Property(e => e.Fhalta)
                 .HasColumnType("datetime")

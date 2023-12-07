@@ -38,5 +38,8 @@ public class AutoMapperProfile: Profile
 
         // InteresadoUpdateDTO -> Interesado
         CreateMap<InteresadoUpdateDTO, Interesado>();
+
+        // ComentarioDTO -> Comentario
+        CreateMap<ComentarioDTO, Comentario>();
     }
 }

@@ -45,7 +45,7 @@ namespace OficioRed.Services
 
             if (profesional == null || profesional.Fhbaja != null)
             {
-                throw new KeyNotFoundException("Interesado no encontrado");
+                throw new KeyNotFoundException("Profesional no encontrado");
             }
 
             return profesional;
@@ -55,7 +55,6 @@ namespace OficioRed.Services
         {
             // Validar datos de entrada (profesionalDTO)
             var sesion = _accesoService.GetCurrentUsuario();
-            Console.WriteLine(sesion.ToString());
 
             if(sesion == null)
             {
