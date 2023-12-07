@@ -1,8 +1,8 @@
 ﻿import { Container, Box } from "@mui/material";
 import { ProductCategories } from "../../components/Inicio/ProductCategories";
-import ProductHero from "../../components/Inicio/ProductHero";
-import ProductValues from "../../components/Inicio/ProductValues";
-import ProductHowItWorks from "../../components/Inicio/ProductHowItWorks";
+import { ProductHero } from "../../components/Inicio/ProductHero";
+import { ProductValues } from "../../components/Inicio/ProductValues";
+import { ProductHowItWorks } from "../../components/Inicio/ProductHowItWorks";
 import { withRoot } from "../../components/Inicio/withRoot";
 import { useState } from "react";
 

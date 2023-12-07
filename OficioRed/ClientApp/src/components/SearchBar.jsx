@@ -16,8 +16,8 @@ export const SearchBar = ({
     }
   }, [resetSearch, setSearchValue]);
   return (
-    <Grid container spacing={3} alignItems="center" justifyContent="left">
-      <Grid item xs={8}>
+    <Grid container spacing={2} alignItems="center" justifyContent="left">
+      <Grid item  xs={12} sm={8} md={8} lg={10}>
         <TextField
           variant="outlined"
           placeholder="Buscar"
@@ -27,7 +27,7 @@ export const SearchBar = ({
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={12} sm={4} md={4} lg={2}>
         <LoadingButton
           fullWidth
           loading={loading}

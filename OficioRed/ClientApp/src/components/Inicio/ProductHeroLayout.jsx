@@ -29,7 +29,7 @@ const Background = styled(Box)({
   zIndex: -2,
 });
 
-function ProductHeroLayout(props) {
+export function ProductHeroLayout(props) {
   const { sxBackground, children } = props;
   return (
     <ProductHeroLayoutRoot>
@@ -80,5 +80,3 @@ ProductHeroLayout.propTypes = {
     PropTypes.object,
   ]),
 };
-
-export default ProductHeroLayout;

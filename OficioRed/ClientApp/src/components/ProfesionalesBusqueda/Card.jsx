@@ -13,8 +13,8 @@ import {
   Chip,
 } from "@mui/material";
 import imagendefault from "../../assets/fotodefault.webp";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import imagenwsp from "../../assets/whatsapp.png";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const cardStyle = {
   maxWidth: "345px",
@@ -36,9 +36,13 @@ const buttonStyle = {
   posittion: "bottom",
 };
 
-const CardProfesional = ({ profesionales }) => {
+export function CardProfesional({ profesionales }) {
   const navigate = useNavigate();
-  const [favoritos, setFavoritos] = useState([]);
+  const [favoritos, setFavoritos] = useState(() => {
+    const storedFavoritos = localStorage.getItem("favoritos");
+    return storedFavoritos ? JSON.parse(storedFavoritos) : [];
+  });
+
   const handleLeerMasClick = (id) => {
     navigate(`/${id}/PerfilProfesional`);
   };
@@ -58,27 +62,24 @@ const CardProfesional = ({ profesionales }) => {
   };
 
   const handleAgregarFavorito = (profesional) => {
-    setFavoritos((prevFavoritos) => {
-      const isInFavoritos = prevFavoritos.some(
-        (fav) => fav.idProfesional === profesional.idProfesional
-      );
-      let nuevosFavoritos;
-      if (!isInFavoritos) {
-        nuevosFavoritos = [...prevFavoritos, profesional];
-      } else {
-        nuevosFavoritos = prevFavoritos.filter(
+    const isInFavoritos = favoritos.some(
+      (fav) => fav.idProfesional === profesional.idProfesional
+    );
+
+    const nuevosFavoritos = isInFavoritos
+      ? favoritos.filter(
           (fav) => fav.idProfesional !== profesional.idProfesional
-        );
-      }
-      localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
-      return nuevosFavoritos;
-    });
+        )
+      : [...favoritos, profesional];
+
+    setFavoritos(nuevosFavoritos);
+    localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
   };
 
   return (
     <Grid container spacing={2} marginLeft={"8%"} marginRight={"2%"}>
-      {profesionales.map((profesional, index) => (
-        <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
+      {profesionales.map((profesional) => (
+        <Grid item key={profesional.idProfesional} sm={6} md={4} lg={4}>
           <Card sx={cardStyle}>
             <CardMedia
               component="img"
@@ -89,7 +90,7 @@ const CardProfesional = ({ profesionales }) => {
               }
             />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography gutterBottom variant="h5">
                 {`${profesional.nombre} ${profesional.apellido}`}
               </Typography>
               <Typography
@@ -100,6 +101,7 @@ const CardProfesional = ({ profesionales }) => {
                 {profesional.rubros &&
                   profesional.rubros.map((rubro, index) => (
                     <Chip
+                      key={index}
                       variant="elevated"
                       label={`${rubro.nombre} `}
                       style={{
@@ -177,6 +179,4 @@ const CardProfesional = ({ profesionales }) => {
       ))}
     </Grid>
   );
-};
-
-export default CardProfesional;
+}

@@ -1,5 +1,4 @@
-﻿import { Box, Grid, Container, Button } from "@mui/material";
-import Typography from "./Adicionales/Typography";
+﻿import { Box, Grid, Container, Button, Typography } from "@mui/material";
 import ImagenIngreso from "../../assets/ingreso.png";
 import ImagenBusquedayComparacion from "../../assets/busquedaycomparacion.png";
 import ImagenContactar from "../../assets/contactar.png";
@@ -17,7 +16,7 @@ const image = {
   my: 4,
 };
 
-function ProductHowItWorks() {
+export function ProductHowItWorks() {
   const navigate = useNavigate();
   return (
     <Box
@@ -146,5 +145,3 @@ function ProductHowItWorks() {
     </Box>
   );
 }
-
-export default ProductHowItWorks;

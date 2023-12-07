@@ -1,5 +1,4 @@
-﻿import { Box, Grid, Container } from "@mui/material";
-import Typography from "./Adicionales/Typography";
+﻿import { Box, Grid, Container, Typography } from "@mui/material";
 import Imagen1Values from "../../assets/conectar.png";
 import Imagen2Values from "../../assets/profesionalizacion.png";
 import Imagen3Values from "../../assets/experiencias.png";
@@ -11,7 +10,7 @@ const item = {
   px: 5,
 };
 
-function ProductValues() {
+export function ProductValues() {
   return (
     <Box
       component="section"
@@ -135,5 +134,3 @@ function ProductValues() {
     </Box>
   );
 }
-
-export default ProductValues;

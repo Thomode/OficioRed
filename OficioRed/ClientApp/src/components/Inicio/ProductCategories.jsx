@@ -1,8 +1,6 @@
-﻿import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import ButtonBase from "@mui/material/ButtonBase";
-import Container from "@mui/material/Container";
-import Typography from "./Adicionales/Typography";
+﻿import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { Box, ButtonBase, Container, Typography } from "@mui/material";
 import ImagenPintor from "../../assets/primer-img-inicio.jpg";
 import ImagenPlomero from "../../assets/quinta-img-inicio.jpg";
 import ImagenTecnico from "../../assets/septima-img-inicio.jpg";
@@ -12,7 +10,6 @@ import ImagenTecnicoAire from "../../assets/sexta-img-inicio.jpg";
 import ImagenCarpintero from "../../assets/cuarta-img-inicio.jpg";
 import ImagenLimpiadora from "../../assets/ocatava-img-inicio.jpg";
 import ImagenAlbañil from "../../assets/albañil.webp";
-import { useNavigate } from "react-router-dom";
 
 const ImageBackdrop = styled("div")(({ theme }) => ({
   position: "absolute",
@@ -132,6 +129,7 @@ export const ProductCategories = ({ setRubros }) => {
       }))
     );
   };
+
   return (
     <Container component="section" sx={{ mt: 8, mb: 4 }}>
       <Typography variant="h4" marked="center" align="center" component="h2">
@@ -172,12 +170,7 @@ export const ProductCategories = ({ setRubros }) => {
                 color: "common.white",
               }}
             >
-              <Typography
-                component="h3"
-                variant="h6"
-                color="inherit"
-                className="imageTitle"
-              >
+              <Typography variant="h6" color="inherit" className="imageTitle">
                 {image.title}
                 <div className="imageMarked" />
               </Typography>

@@ -55,7 +55,7 @@ const arrowDownStyle = {
   animation: "bounce 2s infinite",
 };
 
-export default function ProductHero() {
+export function ProductHero() {
   const navigate = useNavigate();
   return (
     <Paper style={containerStyle}>

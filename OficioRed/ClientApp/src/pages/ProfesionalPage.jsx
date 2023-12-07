@@ -12,7 +12,7 @@ import { profesionalService } from "../services/profesional.service";
 import imagenFondo from "../assets/fondo.jpg";
 import { SearchBar } from "../components/SearchBar";
 import Swal from "sweetalert2";
-import CardProfesional from "../components/ProfesionalesBusqueda/Card";
+import { CardProfesional } from "../components/ProfesionalesBusqueda/Card";
 
 export function ProfesionalPage() {
   const [loading, setLoading] = useState(false);

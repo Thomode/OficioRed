@@ -89,8 +89,6 @@ const PerfilProfesional = () => {
             });
     }, [id]);
 
-
-
     const handleClick = () => {
         const nuevaUrl = `/profesionales`;
         navigate(nuevaUrl);
@@ -107,8 +105,6 @@ const PerfilProfesional = () => {
         const nuevaUrl = `/${nuevoId}/PerfilProfesional`;
         navigate(nuevaUrl);
     };
-
-
 
     const handleClickFb = async (idContacto) => {
         try {
@@ -273,6 +269,7 @@ const PerfilProfesional = () => {
                                 {rubros &&
                                     rubros.map((rubro, index) => (
                                         <Chip
+                                            key={index}
                                             variant="elevated"
                                             label={`${rubro.nombre} `}
                                             style={{

@@ -17,7 +17,7 @@ import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
 import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx';
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
-import FavoritePage from './pages/FavoritePage';
+import { FavoritePage } from './pages/FavoritePage';
 import HomeAdmin from "./pages/Private/HomeAdmin";
 //import Comments from './pages/Comments/Comments.jsx';
 import { Comentarios } from './pages/Comentarios/Comentarios.jsx';
@@ -40,19 +40,11 @@ const adminRoutes = [
         element: <UsuarioForm />
     },
     {
-        path: '/admin/usuarios/:id/edit',
-        element: <UsuarioForm />
-    },
-    {
         path: '/admin/rubros',
         element: <RubroAdminPage />
     },
     {
         path: '/admin/rubroForm',
-        element: <RubroForm />
-    },
-    {
-        path: '/admin/rubros/:id/edit',
         element: <RubroForm />
     },
     {
@@ -130,7 +122,7 @@ export function App() {
                     position: "center",
                     icon: "success",
                     title: "¡Hasta luego!",
-                    text: "Cierre de sesión exitoso!",
+                    text: "¡Cierre de sesión exitoso!",
                     showConfirmButton: false,
                     timer: 1500,
                 });
