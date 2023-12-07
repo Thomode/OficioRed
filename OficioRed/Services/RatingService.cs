@@ -1,9 +1,9 @@
 ﻿using OficioRed.Context;
 using OficioRed.Dtos;
-using OficioRed.Models;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using OficioRed.Models;
 
 public interface IRatingService
 {
@@ -35,7 +35,6 @@ public class RatingService : IRatingService
         {
             IdProfesional = ratingDTO.IdProfesional,
             Puntuacion = ratingDTO.Puntuacion,
-            Comentario = ratingDTO.Comentario
         };
 
         _context.Ratings.Add(rating);
@@ -73,7 +72,6 @@ public class RatingService : IRatingService
         }
 
         existingRating.Puntuacion = updatedRatingDTO.Puntuacion;
-        existingRating.Comentario = updatedRatingDTO.Comentario;
 
         _context.SaveChanges();
     }

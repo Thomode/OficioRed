@@ -5,6 +5,8 @@ namespace OficioRed.Models;
 
 public partial class Direccion
 {
+    public int IdDireccion { get; set; }
+
     public string? Calle { get; set; }
 
     public string? Barrio { get; set; }
@@ -18,8 +20,6 @@ public partial class Direccion
     public DateTime Fhalta { get; set; }
 
     public DateTime? Fhbaja { get; set; }
-
-    public int IdDireccion { get; set; }
 
     public virtual Localidad IdLocalidadNavigation { get; set; } = null!;
 

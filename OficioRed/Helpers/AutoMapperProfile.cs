@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using OficioRed.Dtos;
 using OficioRed.Models;
+using OficioRed.Models;
 
 namespace OficioRed.Helpers;
 

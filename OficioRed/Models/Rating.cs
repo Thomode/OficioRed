@@ -11,8 +11,6 @@ public partial class Rating
 
     public int? Puntuacion { get; set; }
 
-    public string? Comentario { get; set; }
-
     public DateTime Fhalta { get; set; }
 
     public DateTime? Fhbaja { get; set; }

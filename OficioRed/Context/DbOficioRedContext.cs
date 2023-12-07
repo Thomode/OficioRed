@@ -16,9 +16,13 @@ public partial class DbOficioRedContext : DbContext
     {
     }
 
+    public virtual DbSet<Comentario> Comentarios { get; set; }
+
     public virtual DbSet<Contacto> Contactos { get; set; }
 
     public virtual DbSet<Direccion> Direccions { get; set; }
+
+    public virtual DbSet<Favorito> Favoritos { get; set; }
 
     public virtual DbSet<Interesado> Interesados { get; set; }
 
@@ -42,6 +46,35 @@ public partial class DbOficioRedContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Comentario>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Comentario");
+
+            entity.Property(e => e.Comentario1)
+                .HasMaxLength(300)
+                .IsUnicode(false)
+                .HasColumnName("Comentario");
+            entity.Property(e => e.Fhalta)
+                .HasColumnType("datetime")
+                .HasColumnName("FHAlta");
+            entity.Property(e => e.Fhbaja)
+                .HasColumnType("datetime")
+                .HasColumnName("FHBaja");
+            entity.Property(e => e.IdComentario).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.IdProfesionalNavigation).WithMany()
+                .HasForeignKey(d => d.IdProfesional)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Comentario_Profesional_FK");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany()
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Comentario_Usuario_FK");
+        });
+
         modelBuilder.Entity<Contacto>(entity =>
         {
             entity.HasKey(e => e.IdContacto).HasName("PK__Contacto__A4D6BBFA9D8BBAD2");
@@ -69,6 +102,12 @@ public partial class DbOficioRedContext : DbContext
             entity.HasKey(e => e.IdDireccion).HasName("Direccion_PK");
 
             entity.ToTable("Direccion");
+
+            entity.HasIndex(e => e.IdLocalidad, "IX_Direccion_IdLocalidad");
+
+            entity.HasIndex(e => e.IdPais, "IX_Direccion_IdPais");
+
+            entity.HasIndex(e => e.IdProvincia, "IX_Direccion_IdProvincia");
 
             entity.Property(e => e.Barrio)
                 .HasMaxLength(100)
@@ -99,11 +138,40 @@ public partial class DbOficioRedContext : DbContext
                 .HasConstraintName("FK_Direccion_Provincia");
         });
 
+        modelBuilder.Entity<Favorito>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Favorito");
+
+            entity.Property(e => e.Fhalta)
+                .HasColumnType("datetime")
+                .HasColumnName("FHAlta");
+            entity.Property(e => e.Fhbaja)
+                .HasColumnType("datetime")
+                .HasColumnName("FHBaja");
+            entity.Property(e => e.IdFavorito).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.IdProfesionalNavigation).WithMany()
+                .HasForeignKey(d => d.IdProfesional)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Favorito_Profesional_FK");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany()
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Favorito_Usuario_FK");
+        });
+
         modelBuilder.Entity<Interesado>(entity =>
         {
             entity.HasKey(e => e.IdInteresado).HasName("PK__Interesa__EEBF9AB4E4C61B67");
 
             entity.ToTable("Interesado");
+
+            entity.HasIndex(e => e.IdDireccion, "IX_Interesado_IdDireccion");
+
+            entity.HasIndex(e => e.IdUsuario, "IX_Interesado_IdUsuario");
 
             entity.Property(e => e.Apellido)
                 .HasMaxLength(50)
@@ -140,6 +208,8 @@ public partial class DbOficioRedContext : DbContext
 
             entity.ToTable("Localidad");
 
+            entity.HasIndex(e => e.IdProvincia, "IX_Localidad_IdProvincia");
+
             entity.Property(e => e.IdLocalidad).ValueGeneratedNever();
             entity.Property(e => e.Nombre).HasMaxLength(100);
 
@@ -162,6 +232,14 @@ public partial class DbOficioRedContext : DbContext
 
             entity.ToTable("Profesional");
 
+            entity.HasIndex(e => e.IdContacto, "IX_Profesional_IdContacto");
+
+            entity.HasIndex(e => e.IdDireccion, "IX_Profesional_IdDireccion");
+
+            entity.HasIndex(e => e.IdRating, "IX_Profesional_IdRating");
+
+            entity.HasIndex(e => e.IdUsuario, "IX_Profesional_IdUsuario");
+
             entity.Property(e => e.Apellido)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -178,7 +256,6 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.FotoPerfil)
                 .HasMaxLength(300)
                 .IsUnicode(false);
-            entity.Property(e => e.IdRubroXprofesional).HasColumnName("IdRubroXProfesional");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -195,10 +272,6 @@ public partial class DbOficioRedContext : DbContext
                 .HasForeignKey(d => d.IdRating)
                 .HasConstraintName("Profesional_FK");
 
-            entity.HasOne(d => d.IdRubroXprofesionalNavigation).WithMany(p => p.Profesionals)
-                .HasForeignKey(d => d.IdRubroXprofesional)
-                .HasConstraintName("FK_Profesional_RubroXProfesional");
-
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Profesionals)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -208,6 +281,8 @@ public partial class DbOficioRedContext : DbContext
         modelBuilder.Entity<Provincia>(entity =>
         {
             entity.HasKey(e => e.IdProvincia).HasName("PK__Provinci__F7CBC757639E10A0");
+
+            entity.HasIndex(e => e.IdPais, "IX_Provincia_IdPais");
 
             entity.Property(e => e.IdProvincia).ValueGeneratedNever();
             entity.Property(e => e.Nombre).HasMaxLength(100);
@@ -223,7 +298,6 @@ public partial class DbOficioRedContext : DbContext
 
             entity.ToTable("Rating");
 
-            entity.Property(e => e.Comentario).IsUnicode(false);
             entity.Property(e => e.Fhalta)
                 .HasColumnType("datetime")
                 .HasColumnName("FHAlta");
@@ -272,6 +346,10 @@ public partial class DbOficioRedContext : DbContext
 
             entity.ToTable("RubroXProfesional");
 
+            entity.HasIndex(e => e.IdProfesional, "IX_RubroXProfesional_IdProfesional");
+
+            entity.HasIndex(e => e.IdRubro, "IX_RubroXProfesional_IdRubro");
+
             entity.Property(e => e.IdRubroXprofesional).HasColumnName("IdRubroXProfesional");
             entity.Property(e => e.Fhalta)
                 .HasColumnType("datetime")
@@ -296,6 +374,8 @@ public partial class DbOficioRedContext : DbContext
             entity.HasKey(e => e.IdUsuario).HasName("Usuario_PK");
 
             entity.ToTable("Usuario");
+
+            entity.HasIndex(e => e.IdRol, "IX_Usuario_IdRol");
 
             entity.Property(e => e.Fhalta)
                 .HasColumnType("datetime")

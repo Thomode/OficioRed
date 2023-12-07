@@ -11,8 +11,6 @@ public partial class Profesional
 
     public string Apellido { get; set; } = null!;
 
-    public int? IdRubroXprofesional { get; set; }
-
     public string? Descripcion { get; set; }
 
     public string? FotoPerfil { get; set; }
@@ -36,8 +34,6 @@ public partial class Profesional
     public virtual Direccion? IdDireccionNavigation { get; set; }
 
     public virtual Rating? IdRatingNavigation { get; set; }
-
-    public virtual RubroXprofesional? IdRubroXprofesionalNavigation { get; set; }
 
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 

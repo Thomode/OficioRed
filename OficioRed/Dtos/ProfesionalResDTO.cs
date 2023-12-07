@@ -10,8 +10,6 @@ public class ProfesionalResDTO
 
     public string Apellido { get; set; } = null!;
 
-    public int? IdRubroXprofesional { get; set; }
-
     public string? Descripcion { get; set; }
 
     public string? FotoPerfil { get; set; }
