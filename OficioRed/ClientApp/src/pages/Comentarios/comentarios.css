@@ -1,0 +1,76 @@
+.mainCard {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    color: black;
+    gap: 2rem;
+    align-items: center;
+}
+
+.card {
+    box-shadow: 0px 9px 36px -22px rgba(0, 0, 0, 0.75);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background-color: #d8dde8;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+}
+
+.imagenComment {
+    width: 15%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.username {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin-left: 2rem;
+}
+
+.timeUser {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.nameUser {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.trashIcon {
+    color: red;
+    width: 2.5rem;
+}
+
+.parrafo {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    gap: 8px;
+}
+
+.commentContainer {
+    width: 60%;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+}

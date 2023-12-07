@@ -8,7 +8,6 @@ async function getAll() {
 
 async function getDashboard() {
     const res = await axios.get("/api/Admin/Dashboard")
-
     return res.data
 }
 
@@ -42,21 +41,19 @@ const updateUser = async (id, user, password) => {
     } catch (error) {
         console.error('Error al actualizar usuario:', error);
         console.error('Detalles del error:', error.response.data);
-        throw error; // Puedes lanzar una excepción para que el error se propague
+        throw error;
     }
 }
 
 
 async function getRoles() {
     const res = await axios.get("/api/Rol")
-
     return res.data
 }
 
 const getId = () => {
     const local = window.localStorage.getItem("acceso");
     const data = JSON.parse(local)
-
     return data?.id
 }
 

@@ -1,4 +1,6 @@
 ﻿import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { contactoService } from "../../services/contacto.service";
 import {
   Card,
   CardMedia,
@@ -8,13 +10,11 @@ import {
   Typography,
   IconButton,
   Grid,
+  Chip,
 } from "@mui/material";
-import React, { useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import imagendefault from "../../assets/fotodefault.webp";
-import { contactoService } from "../../services/contacto.service";
-import Chip from "@mui/material/Chip";
 import imagenwsp from "../../assets/whatsapp.png";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const cardStyle = {
   maxWidth: "345px",
@@ -36,13 +36,13 @@ const buttonStyle = {
   posittion: "bottom",
 };
 
-const CardProfesional = ({ profesionales }) => {
-    const navigate = useNavigate();
-    const [favoritos, setFavoritos] = useState([]);
-    const filteredProfesionales = profesionales.filter(
-        (profesional) =>
-            profesional.idProfesional !== 70 && profesional.idProfesional !== 71
-    );
+export function CardProfesional({ profesionales }) {
+  const navigate = useNavigate();
+  const [favoritos, setFavoritos] = useState(() => {
+    const storedFavoritos = localStorage.getItem("favoritos");
+    return storedFavoritos ? JSON.parse(storedFavoritos) : [];
+  });
+
   const handleLeerMasClick = (id) => {
     navigate(`/${id}/PerfilProfesional`);
   };
@@ -50,49 +50,36 @@ const CardProfesional = ({ profesionales }) => {
   const handleContactar = async (idContacto) => {
     try {
       const res = await contactoService.getById(idContacto);
-      console.log(res.data);
-
       if (res.data.telefono) {
         const url = `https://wa.me/+549${res.data.telefono}`;
         window.open(url, "_blank");
       } else {
-        console.error(
-          "El numero de telefono no esta definido en el objeto de contacto."
-        );
+        console.error("El numero de telefono no esta definido.");
       }
     } catch (error) {
       console.error("Error al obtener el contacto:", error);
     }
-    };
+  };
 
-    const handleAgregarFavorito = (profesional) => {
-        // Usa una función para actualizar el estado correctamente
-        setFavoritos((prevFavoritos) => {
-            const isInFavoritos = prevFavoritos.some((fav) => fav.idProfesional === profesional.idProfesional);
+  const handleAgregarFavorito = (profesional) => {
+    const isInFavoritos = favoritos.some(
+      (fav) => fav.idProfesional === profesional.idProfesional
+    );
 
-            let nuevosFavoritos;
+    const nuevosFavoritos = isInFavoritos
+      ? favoritos.filter(
+          (fav) => fav.idProfesional !== profesional.idProfesional
+        )
+      : [...favoritos, profesional];
 
-            if (!isInFavoritos) {
-                // Agrega el profesional a la lista de favoritos
-                console.log([...prevFavoritos, profesional]);
-                nuevosFavoritos = [...prevFavoritos, profesional];
-            } else {
-                // Elimina el profesional de la lista de favoritos
-                nuevosFavoritos = prevFavoritos.filter((fav) => fav.idProfesional !== profesional.idProfesional);
-                console.log(nuevosFavoritos);
-            }
-
-            // Guarda la lista de favoritos en el localStorage
-            localStorage.setItem('favoritos', JSON.stringify(nuevosFavoritos));
-
-            return nuevosFavoritos;
-        });
-    };
+    setFavoritos(nuevosFavoritos);
+    localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
+  };
 
   return (
     <Grid container spacing={2} marginLeft={"8%"} marginRight={"2%"}>
-      {filteredProfesionales.map((profesional, index) => (
-        <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
+      {profesionales.map((profesional) => (
+        <Grid item key={profesional.idProfesional} sm={6} md={4} lg={4}>
           <Card sx={cardStyle}>
             <CardMedia
               component="img"
@@ -103,13 +90,18 @@ const CardProfesional = ({ profesionales }) => {
               }
             />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography gutterBottom variant="h5">
                 {`${profesional.nombre} ${profesional.apellido}`}
               </Typography>
-              <Typography variant="body2" color="text.secondary"  minHeight= "100px">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                minHeight="100px"
+              >
                 {profesional.rubros &&
                   profesional.rubros.map((rubro, index) => (
                     <Chip
+                      key={index}
                       variant="elevated"
                       label={`${rubro.nombre} `}
                       style={{
@@ -124,23 +116,37 @@ const CardProfesional = ({ profesionales }) => {
             <CardActions>
               <Grid container alignItems="center" spacing={1}>
                 <Grid item>
-                <Button
+                  <Button
                     variant="contained"
                     position="bottom"
                     size="small"
-                    style={{ backgroundColor: "#2E8B57", color: "white", fontWeight: "bold" }}
+                    style={{
+                      backgroundColor: "#2E8B57",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
                     sx={buttonStyle}
-                    startIcon={<img src={imagenwsp} alt="WhatsApp" style={{ height: '20px', marginRight: '5px' }} />}
+                    startIcon={
+                      <img
+                        src={imagenwsp}
+                        alt="WhatsApp"
+                        style={{ height: "20px", marginRight: "5px" }}
+                      />
+                    }
                     onClick={() => handleContactar(profesional.idContacto)}
-                >
+                  >
                     CONTACTAR
-                </Button>
+                  </Button>
                 </Grid>
                 <Grid item>
                   <Button
                     variant="contained"
                     size="small"
-                    style={{ backgroundColor: "#f26c4f", color: "white", fontWeight: "bold" }}
+                    style={{
+                      backgroundColor: "#f26c4f",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
                     sx={buttonStyle}
                     onClick={() =>
                       handleLeerMasClick(profesional.idProfesional)
@@ -150,12 +156,21 @@ const CardProfesional = ({ profesionales }) => {
                   </Button>
                 </Grid>
                 <Grid item>
-                <IconButton
+                  <IconButton
                     aria-label="Agregar a favoritos"
                     onClick={() => handleAgregarFavorito(profesional)}
-                >
-                    <FavoriteIcon color={favoritos.some((fav) => fav.idProfesional === profesional.idProfesional) ? 'error' : 'default'} />
-                </IconButton>
+                  >
+                    <FavoriteIcon
+                      color={
+                        favoritos.some(
+                          (fav) =>
+                            fav.idProfesional === profesional.idProfesional
+                        )
+                          ? "error"
+                          : "default"
+                      }
+                    />
+                  </IconButton>
                 </Grid>
               </Grid>
             </CardActions>
@@ -164,6 +179,4 @@ const CardProfesional = ({ profesionales }) => {
       ))}
     </Grid>
   );
-};
-
-export default CardProfesional;
+}

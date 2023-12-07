@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo-oficiored.png";
+import imagenDefault from "../assets/profile.png";
+import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
+import { useSnackbar } from "notistack";
 import { profesionalService } from "../services/profesional.service";
 import { FiltroRubros } from "../components/FiltroRubrosSignUp";
-import logo from "../assets/Logo1_Recorte.png";
-import imagenDefault from "../assets/profile.png";
-import { useSnackbar } from "notistack";
-
-import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
-
-const titleStyle = {
-  fontSize: "2.5rem",
-  fontWeight: "bold",
-  color: "#1B325F",
-  textAlign: "center",
-  marginBottom: "20px",
-};
+import { Button, TextField, Typography, Paper, Grid } from "@mui/material";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -27,17 +19,26 @@ const imageStyle = {
   objectFit: "cover",
 };
 
-export const ProfesionalSignUp = ({ setAcceso }) => {
+const backgroundStyle = {
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: "cover",
+  minHeight: "100vh",
+};
+
+export const ProfesionalSignUp = () => {
+  const [image, setImage] = useState("");
   const [rubros, setRubros] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const [image, setImage] = useState("");
 
   const fileSelectedHandler = (event) => {
     const file = event.target.files[0];
@@ -45,20 +46,21 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
 
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         setImage(e.target.result);
       };
-
       reader.readAsDataURL(file);
     }
   };
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const { enqueueSnackbar } = useSnackbar();
-
   const onSubmit = async (data) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    console.log(data);
+
     try {
       const res = await profesionalService.registerProfesional(
         data.nombre,
@@ -101,106 +103,115 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("Rubros actualizados:", rubros);
-  }, [rubros]);
-
-  const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-
   return (
-    <div style={backgroundStyle}>
-      <Grid
-        container
+    <div
+      style={{
+        ...backgroundStyle,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
         style={{
-          width: "100%",
+          display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          placeItems: "center",
+          height: "100%",
         }}
       >
-        <Grid
-          container
-          item
-          xs={12}
-          sm={8}
-          md={6}
-          lg={4}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box
-              display="flex"
-              flexDirection={"column"}
-              maxWidth={800}
-              minWidth={300}
-              alignItems="center"
-              justifyContent={"center"}
-              margin="auto"
-              marginTop={5}
-              padding={3}
-              borderRadius={5}
-              boxShadow={"5px 5px 10px #ccc"}
-              sx={{
-                ":hover": {
-                  boxShadow: "10px 10px 20px #ccc",
-                },
-                backgroundColor: "white",
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Paper
+            elevation={3}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              placeItems: "center",
+              padding: "20px",
+              borderRadius: "20px",
+              width: "auto",
+              margin: "20px",
+            }}
+          >
+            <img src={logo} width={250} alt="logo-app" />
+            <Typography
+              style={{
+                fontSize: "2.3rem",
+                fontWeight: "bold",
+                color: "#1B325F",
+                marginBottom: "20px",
+                textAlign: "center",
               }}
             >
-              <Grid container justify="center" justifyContent="center">
-                <img src={logo} width={350} alt="logo" />
+              Registro como <br />
+              Profesional
+            </Typography>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                placeItems: "center",
+                gap: "15px",
+                minWidth: "200px",
+              }}
+            >
+              <Grid container spacing={2} style={{ maxWidth: "650px" }}>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    placeItems: "center",
+                  }}
+                >
+                  {image ? (
+                    <img
+                      src={image}
+                      alt="Vista previa de la imagen"
+                      style={imageStyle}
+                    />
+                  ) : (
+                    <img
+                      src={imagenDefault}
+                      alt="Imagen por defecto"
+                      style={imageStyle}
+                    />
+                  )}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    fullWidth
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "100%",
+                    }}
+                  >
+                    Elegir Foto de Perfil
+                    <input
+                      type="file"
+                      style={{ display: "none", color: "black" }}
+                      onChange={fileSelectedHandler}
+                    />
+                  </Button>
+                </Grid>
               </Grid>
-              <Typography style={titleStyle}>
-                Registro como Profesional
-              </Typography>
-
-              {image ? (
-                <img
-                  src={image}
-                  alt="Vista previa de la imagen"
-                  style={imageStyle}
-                />
-              ) : (
-                <img
-                  src={imagenDefault}
-                  alt="Imagen por defecto"
-                  style={imageStyle}
-                />
-              )}
-
-              <Button
-                variant="outlined"
-                component="label"
-                fullWidth
-                style={{ marginTop: "10px" }}
-              >
-                Elegir Foto de Perfil
-                <input
-                  type="file"
-                  style={{ display: "none", color: "black" }}
-                  onChange={fileSelectedHandler}
-                  name="fotoPerfil"
-                />
-              </Button>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
+              <Grid container spacing={2} style={{ maxWidth: "650px" }}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="nombre"
-                    type={"text"}
-                    placeholder="Nombre"
-                    autoComplete="off"
                     label="Nombre"
-                    margin="normal"
+                    variant="outlined"
+                    autoComplete="none"
                     {...register("nombre", {
                       required: true,
                       minLength: 2,
@@ -220,15 +231,15 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                         : ""
                     }
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="apellido"
-                    type={"text"}
-                    placeholder="Apellido"
-                    autoComplete="off"
                     label="Apellido"
-                    margin="normal"
+                    variant="outlined"
+                    autoComplete="none"
                     {...register("apellido", {
                       required: true,
                       minLength: 2,
@@ -248,15 +259,16 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                         : ""
                     }
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="email"
-                    type={"email"}
-                    placeholder="example@email.com"
-                    autoComplete="off"
                     label="Email"
-                    margin="normal"
+                    variant="outlined"
+                    autoComplete="none"
+                    placeholder="example@email.com"
                     {...register("email", {
                       required: true,
                       pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -271,16 +283,15 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                     }
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     required
                     name="telefono"
+                    label="Telefono"
+                    variant="outlined"
                     type="tel"
-                    placeholder="Teléfono"
-                    autoComplete="off"
-                    label="Teléfono"
-                    margin="normal"
+                    autoComplete="none"
                     {...register("telefono", {
                       required: true,
                       pattern: /^[0-9]{10}$/,
@@ -294,46 +305,45 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                         : ""
                     }
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     name="instagram"
-                    type="text"
-                    placeholder="Instagram"
-                    autoComplete="off"
                     label="Instagram"
-                    margin="normal"
+                    variant="outlined"
+                    autoComplete="none"
                     {...register("instagram")}
                   />
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     name="facebook"
-                    type="text"
-                    placeholder="Facebook"
-                    autoComplete="off"
                     label="Facebook"
-                    margin="normal"
+                    variant="outlined"
+                    autoComplete="none"
                     {...register("facebook")}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FiltroRubros
+                    fullWidth
                     label="Rubros"
-                    sx={{ width: "100%" }}
                     rubros={rubros}
                     setRubros={setRubros}
-                    seleccionado={false}
                   />
+                </Grid>
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     required
                     name="descripcion"
-                    type={"text"}
-                    placeholder="Descripcion"
-                    autoComplete="off"
                     label="Descripcion"
+                    variant="outlined"
+                    autoComplete="none"
                     multiline
                     rows={3}
-                    margin="normal"
                     {...register("descripcion", {
                       required: true,
                       minLength: 2,
@@ -350,23 +360,23 @@ export const ProfesionalSignUp = ({ setAcceso }) => {
                         : ""
                     }
                   />
+                  <LoadingButton
+                    fullWidth
+                    type="submit"
+                    loading={loading}
+                    loadingPosition="start"
+                    startIcon={<HowToRegOutlinedIcon />}
+                    variant="contained"
+                    style={{ marginTop: "15px" }}
+                  >
+                    REGISTRARSE
+                  </LoadingButton>
                 </Grid>
               </Grid>
-
-              <div style={{ height: 20 }} />
-              <Button
-                endIcon={<HowToRegOutlinedIcon />}
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Registrarse
-              </Button>
-            </Box>
-          </form>
-        </Grid>
-      </Grid>
+            </div>
+          </Paper>
+        </form>
+      </div>
     </div>
   );
 };

@@ -12,8 +12,10 @@ import { Typography, Grid, Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Swal from "sweetalert2";
 
+import "./comment.css";
+
 const titleStyle2 = {
-  fontSize: "70px",
+  fontSize: "60px",
   fontWeight: "bold",
   color: "#1b325f",
   textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
@@ -33,20 +35,13 @@ const Comments = ({ commentsUrl, currentUserId }) => {
   const rootComments = backendComments.filter(
     (backendComment) => backendComment.parentId === null
   );
-  const getReplies = (commentId) =>
-    backendComments
-      .filter((backendComment) => backendComment.parentId === commentId)
-      .sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
+
   const addComment = (text, parentId) => {
     createCommentApi(text, parentId).then((comment) => {
       setBackendComments([comment, ...backendComments]);
       setActiveComment(null);
     });
   };
-
   const updateComment = (text, commentId) => {
     updateCommentApi(text).then(() => {
       const updatedBackendComments = backendComments.map((backendComment) => {
@@ -100,7 +95,7 @@ const Comments = ({ commentsUrl, currentUserId }) => {
   };
 
   return (
-    <div className="comments">
+    <div>
       <Grid xs={12}>
         <Button
           variant="text"
@@ -120,13 +115,14 @@ const Comments = ({ commentsUrl, currentUserId }) => {
           Comentarios
         </Typography>
       </Grid>
-      <CommentForm submitLabel="Guardar" handleSubmit={addComment} />
+      <div className="commentContainer">
+        <CommentForm submitLabel="Comentar" handleSubmit={addComment} />
+      </div>
       <div className="comments-container">
         {rootComments.map((rootComment) => (
           <Comment
             key={rootComment.id}
             comment={rootComment}
-            replies={getReplies(rootComment.id)}
             activeComment={activeComment}
             setActiveComment={setActiveComment}
             addComment={addComment}

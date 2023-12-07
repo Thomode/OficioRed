@@ -36,21 +36,19 @@ const imageUpload = async (selectedFile) => {
 
 async function getAll() {
   const res = await axios.get("/api/Interesado")
-
   return res.data
 }
 
 const getById = async (id) =>
     await axios.get(`/api/Interesado/${id}`)
 
-const updateInteresado = async (nombre, apellido, email, fotoPerfil) => {
+const updateInteresado = async (nombre, apellido, email) => {
   const response = await axios.put(`/api/Interesado`, {
-          nombre,
-          apellido,
-          email,
-          fotoPerfil,
-      }, await sesionService.getConfig())
-      return response.data;
+        nombre,
+        apellido,
+        email,
+    }, await sesionService.getConfig())
+  return response.data;
 };
     
 

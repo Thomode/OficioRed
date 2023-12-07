@@ -28,15 +28,15 @@ public class AdminController: ControllerBase
 
             foreach (var usuario in usuarios)
             {
-                if (usuario.IdRol == 2)
+                if (usuario.IdRol == 1)
                 {
                     cantidadAdmin++;
                 }
-                else if (usuario.IdRol == 3)
+                else if (usuario.IdRol == 2)
                 {
                     cantidadProfesional++;
                 }
-                else if (usuario.IdRol == 4)
+                else if (usuario.IdRol == 3)
                 {
                     cantidadInteresado++;
                 }

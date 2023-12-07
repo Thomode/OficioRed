@@ -55,7 +55,7 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
   };
 
   const actualizarUsuario = async (id, user, passwordUser, idRol) => {
-    const roles = ["Interesado", "Profesional"];
+    const roles = ["Admin", "Interesado", "Profesional"];
     const us = await usuarioService.get(Number(id));
     const passwordActual = us.data.password;
 
@@ -66,6 +66,7 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
         <input class="swal2-input" placeholder="Contraseña" hidden=true type="password" value="${passwordActual}" readonly>
         <select id="rolUsuario" class="swal2-input swal2-select">
           ${roles
+            .filter(rol => idRol === 1 || rol !== "Admin")
             .map(
               (rol) =>
                 `<option value="${rol}" ${
@@ -86,9 +87,9 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
         const selectedRol = document.getElementById("rolUsuario").value;
         const nuevoIdRol =
           selectedRol === "Profesional"
-            ? 3
+            ? 2
             : selectedRol === "Interesado"
-            ? 4
+            ? 3
             : null;
 
         if (nuevoIdRol === null) {
@@ -103,9 +104,7 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
         try {
           console.log(id, userName, passwordActual, nuevoIdRol);
           await usuarioService.update(id, userName, passwordActual, nuevoIdRol);
-
           loadUsuarios();
-
           Swal.fire({
             position: "center",
             icon: "success",

@@ -4,11 +4,11 @@ import Typography from "@mui/material/Typography";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Button from "@mui/material/Button";
 
+import "./comment.css";
+
 const CommentForm = ({
   handleSubmit,
   submitLabel,
-  hasCancelButton = false,
-  handleCancel,
   initialText = "",
 }) => {
   const [text, setText] = useState(initialText);
@@ -21,7 +21,7 @@ const CommentForm = ({
   };
 
   return (
-    <Paper elevation={3} style={{ padding: "16px" }}>
+    <Paper className="escribirComment" elevation={3} style={{ padding: "16px" }}>
       <Typography variant="h6" gutterBottom>
         Escribir comentario
       </Typography>
@@ -49,30 +49,13 @@ const CommentForm = ({
           style={{
             fontSize: "16px",
             padding: "8px 16px",
-            background: "rgb(59, 130, 246)",
+            background: "#1b325f",
             borderRadius: "8px",
             color: "white",
           }}
         >
           {submitLabel}
         </Button>
-        {hasCancelButton && (
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleCancel}
-            style={{
-              fontSize: "16px",
-              padding: "8px 16px",
-              background: "rgb(59, 130, 246)",
-              borderRadius: "8px",
-              color: "white",
-              marginLeft: "10px",
-            }}
-          >
-            Cancelar
-          </Button>
-        )}
       </form>
     </Paper>
   );
