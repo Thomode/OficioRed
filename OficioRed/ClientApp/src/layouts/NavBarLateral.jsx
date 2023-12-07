@@ -15,6 +15,7 @@ import {
   ListItemText,
   MenuItem,
   Menu,
+  Tooltip,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -156,7 +157,6 @@ export function NavBarLateral({ children, type, logout }) {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -265,28 +265,32 @@ export function NavBarLateral({ children, type, logout }) {
               }}
             />
           </Link>
-          <div style={{ marginLeft: "auto" }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <img
-                src={fotoPerfil || imagendefault}
-                alt="Perfil"
-                style={{
-                  borderRadius: "50%",
-                  border: "0.5px solid black",
-                  width: "50px",
-                  height: "50px",
-                  objectFit: "cover",
-                }}
-              />
-            </IconButton>
+
+          <Box
+            sx={{
+              flexGrow: 0,
+              display: "flex",
+              alignItems: "center",
+              marginLeft: "auto",
+            }}
+          >
+            <Tooltip title="Abrir Menu">
+              <IconButton onClick={handleMenu} sx={{ p: 0 }}>
+                <img
+                  src={fotoPerfil || imagendefault}
+                  alt="Perfil"
+                  style={{
+                    borderRadius: "50%",
+                    border: "0.5px solid black",
+                    width: "50px",
+                    height: "50px",
+                    objectFit: "cover",
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
             <Menu
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorEl}
               anchorOrigin={{
@@ -301,10 +305,14 @@ export function NavBarLateral({ children, type, logout }) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleChange}>Mi Perfil</MenuItem>
-              <MenuItem onClick={handleChangeLogout}>Cerrar Sesión</MenuItem>
+              <MenuItem textAlign="center" onClick={handleChange}>
+                Mi Perfil
+              </MenuItem>
+              <MenuItem textAlign="center" onClick={handleChangeLogout}>
+                Cerrar Sesión
+              </MenuItem>
             </Menu>
-          </div>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
