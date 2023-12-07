@@ -56,7 +56,14 @@ namespace OficioRed.Controllers
             try
             {
                 var profesional = _profesionalService.Get(id);
-                return Ok(profesional);
+
+                var profesionalResDTO = new ProfesionalResDTO();
+
+                _mapper.Map(profesional, profesionalResDTO);
+
+                profesionalResDTO.rubros = _profesionalService.GetRubrosXProfesional(profesionalResDTO.IdProfesional);
+
+                return Ok(profesionalResDTO);
             }
             catch (Exception ex)
             {
