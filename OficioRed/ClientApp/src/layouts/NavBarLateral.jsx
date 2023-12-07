@@ -34,6 +34,8 @@ import imagendefault from "../assets/fotodefault.webp";
 import { usuarioService } from "../services/usuario.service";
 import { sesionService } from "../auth/sesion";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+
 
 const drawerWidth = 240;
 
@@ -109,40 +111,42 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export function NavBarLateral({ children, type, logout }) {
-  const routesForType = (type) => {
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const routesForType = (type) => {
     if (type === "Admin") {
       return [
         {
           text: "Panel de Admin.",
-          icon: <SupervisorAccountIcon sx={{ color: "#FFFFFF" }} />,
+          icon: <SupervisorAccountIcon sx={{ color: currentPath === "/admin/home" ? "#F26C4F" : "#FFFFFF" }} />,
           route: "/admin/home",
         },
         {
           text: "Admin. de Usuarios",
-          icon: <UserIcon sx={{ color: "#FFFFFF" }} />,
+          icon: <UserIcon sx={{ color: currentPath === "/admin/usuarios" ? "#F26C4F" : "#FFFFFF" }} />,
           route: "/admin/usuarios",
         },
         {
           text: "Admin. de Rubros",
-          icon: <WorkIcon sx={{ color: "#FFFFFF" }} />,
+          icon: <WorkIcon sx={{ color: currentPath === "/admin/rubros" ? "#F26C4F" : "#FFFFFF" }} />,
           route: "/admin/rubros",
         },
       ];
     } else {
       return [
         {
-          text: "Inicio",
-          icon: <HomeIcon sx={{ color: "#FFFFFF" }} />,
-          route: "/home",
+           text: "Inicio",
+           icon: <HomeIcon sx={{ color: currentPath === "/home" ? "#F26C4F" : "#FFFFFF" }} />,
+           route: "/home",
         },
         {
           text: "Profesionales",
-          icon: <SearchIcon sx={{ color: "#FFFFFF" }} />,
+          icon: <SearchIcon sx={{ color: currentPath === "/profesionales" ? "#F26C4F" : "#FFFFFF" }} />,
           route: "/profesionales",
         },
         {
           text: "Favoritos",
-          icon: <BookmarksOutlinedIcon sx={{ color: "#FFFFFF" }} />,
+          icon: <BookmarksOutlinedIcon sx={{ color: currentPath === "/favoritos" ? "#F26C4F" : "#FFFFFF" }} />,
           route: "/favoritos",
         },
       ];
@@ -328,36 +332,37 @@ export function NavBarLateral({ children, type, logout }) {
         <Divider />
         <List>
           {routesForType(type).map((item) => (
-            <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                onClick={() => navigate(item.route)}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                  "&:hover": {
-                    color: "#9cc4e4",
-                  },
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    color: "white",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
+              <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                      onClick={() => navigate(item.route)}
+                      sx={{
+                          minHeight: 48,
+                          justifyContent: open ? "initial" : "center",
+                          px: 2.5,
+                          "&:hover": {
+                              color: "#9cc4e4",
+                          },
+                      }}
+                  >
+                      <ListItemIcon
+                          sx={{
+                              minWidth: 0,
+                              mr: open ? 3 : "auto",
+                              justifyContent: "center",
+                          }}
+                      >
+                          {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                          primary={item.text}
+                          sx={{
+                              opacity: open ? 1 : 0,
+                              color: currentPath === item.route ? "#F26C4F" : "white",
+                          }}
+                      />
+                  </ListItemButton>
+              </ListItem>
+
           ))}
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
