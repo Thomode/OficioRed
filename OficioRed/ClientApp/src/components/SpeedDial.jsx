@@ -7,11 +7,13 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useParams, useNavigate } from "react-router-dom";
+import clipboardCopy from 'clipboard-copy';  
+import StarHalfIcon from '@mui/icons-material/StarHalf';
 
 const actions = [
-    { icon: <FileCopyIcon style={{ color: 'white' }} />, name: 'Copiar' },
+    { icon: <FileCopyIcon style={{ color: 'white' }} />, name: 'Copiar al portapapeles' },
+    { icon: <StarHalfIcon style={{ color: 'white' }} />, name: 'Valoraciones' },
     { icon: <FavoriteIcon style={{ color: 'white' }} />, name: 'Favoritos' },
     { icon: <CommentIcon style={{ color: 'white' }} />, name: 'Comentarios' },
 ];
@@ -21,9 +23,16 @@ export default function SpeedDialTooltipOpen() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
+    const { id } = useParams(); // Obtén el parámetro de la URL
 
-    const handleClickComments = (id) => {
+    const handleClickComments = () => {
         navigate(`/${id}/PerfilProfesional/Comentarios`);
+    };
+
+    const handleClickCopy = () => {
+        const url = `${window.location.origin}/${id}/PerfilProfesional`; // Construye la URL
+        clipboardCopy(url); // Copia la URL al portapapeles
+        handleClose();
     };
 
     const handleClick = () => {
@@ -36,9 +45,7 @@ export default function SpeedDialTooltipOpen() {
             <SpeedDial
                 ariaLabel="SpeedDial tooltip example"
                 sx={{ position: 'absolute', bottom: 16, right: 16 }}
-                icon={
-                    <SpeedDialIcon style={{ color: 'white' }} />
-                }
+                icon={<SpeedDialIcon style={{ color: 'white' }} />}
                 onClose={handleClose}
                 onOpen={handleOpen}
                 open={open}
@@ -47,12 +54,14 @@ export default function SpeedDialTooltipOpen() {
                     <SpeedDialAction
                         key={action.name}
                         icon={<Box sx={{ backgroundColor: '#1b325f', borderRadius: '50%', padding: '8px' }}>{action.icon}</Box>}
-                        tooltipTitle={<span style={{ color: '#1b325f' , fontWeight:'bold'}}>{action.name}</span>}
+                        tooltipTitle={<span style={{ color: '#1b325f', fontWeight: 'bold' }}>{action.name}</span>}
                         tooltipOpen
                         onClick={() => {
                             handleClose();
                             if (action.name === 'Comentarios') {
-                                handleClickComments(/* Aquí debes proporcionar el ID adecuado */);
+                                handleClickComments();
+                            } else if (action.name === 'Copiar al portapapeles') {
+                                handleClickCopy();
                             } else if (action.name === 'Volver') {
                                 handleClick();
                             }
