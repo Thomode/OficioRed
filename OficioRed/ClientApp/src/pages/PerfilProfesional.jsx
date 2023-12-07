@@ -9,8 +9,8 @@ import {
     CardActions,
     CardMedia,
     Box,
+    IconButton,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -23,7 +23,7 @@ import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
-import Rating from '@mui/material/Rating';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { profesionalService } from "../services/profesional.service";
 import SpeedDialTooltipOpen from "../components/SpeedDial";
 
@@ -43,7 +43,12 @@ const titleStyle2 = {
     padding: '0px',
 };
 
+
 const PerfilProfesional = () => {
+    const [favoritos, setFavoritos] = useState(() => {
+        const storedFavoritos = localStorage.getItem("favoritos");
+        return storedFavoritos ? JSON.parse(storedFavoritos) : [];
+    });
     const navigate = useNavigate();
     const location = useLocation();
     const [profesional, setProfesional] = useState({});
@@ -143,6 +148,21 @@ const PerfilProfesional = () => {
         }
     };
 
+    const handleAgregarFavorito = (profesional) => {
+        const isInFavoritos = favoritos.some(
+            (fav) => fav.idProfesional === profesional.idProfesional
+        );
+
+        const nuevosFavoritos = isInFavoritos
+            ? favoritos.filter(
+                (fav) => fav.idProfesional !== profesional.idProfesional
+            )
+            : [...favoritos, profesional];
+
+        setFavoritos(nuevosFavoritos);
+        localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
+    };
+
 
     return (
         <Box
@@ -229,6 +249,23 @@ const PerfilProfesional = () => {
                     >
                         Seguir buscando profesionales
                     </Button>
+                    <IconButton
+                        aria-label="Agregar a favoritos"
+                        onClick={() => handleAgregarFavorito(profesional)}
+                    >
+                        <FavoriteIcon
+                            color={
+                                favoritos.some(
+                                    (fav) => fav.idProfesional === profesional.idProfesional
+                                )
+                                    ? "error"
+                                    : "default"
+                            }
+                        />
+                        <Typography variant="h2" style={{ fontSize: 'small', marginLeft: '5px', fontWeight: 'bold'}}>
+                            Agregar favorito
+                        </Typography>
+                    </IconButton>
                 </Grid>
                 <Grid item xs={12} md={4} style={{ padding: 0 }}>
                     <CardContent>

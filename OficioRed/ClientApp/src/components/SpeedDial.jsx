@@ -14,8 +14,6 @@ import StarHalfIcon from '@mui/icons-material/StarHalf';
 const actions = [
     { icon: <FileCopyIcon style={{ color: 'white' }} />, name: 'Copiar al portapapeles' },
     { icon: <StarHalfIcon style={{ color: 'white' }} />, name: 'Valoraciones' },
-    { icon: <FavoriteIcon style={{ color: 'white' }} />, name: 'Favoritos' },
-    { icon: <CommentIcon style={{ color: 'white' }} />, name: 'Comentarios' },
 ];
 
 export default function SpeedDialTooltipOpen() {
@@ -58,12 +56,10 @@ export default function SpeedDialTooltipOpen() {
                         tooltipOpen
                         onClick={() => {
                             handleClose();
-                            if (action.name === 'Comentarios') {
+                            if (action.name === 'Valoraciones') {
                                 handleClickComments();
                             } else if (action.name === 'Copiar al portapapeles') {
                                 handleClickCopy();
-                            } else if (action.name === 'Volver') {
-                                handleClick();
                             }
                         }}
                     />
