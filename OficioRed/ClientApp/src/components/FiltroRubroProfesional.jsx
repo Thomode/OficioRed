@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Checkbox from "@mui/material/Checkbox";
-import axios from "axios";
+import { rubroService } from "../services/rubro.service";
+import {
+  Button,
+  Grid,
+  Checkbox,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 
 export const FiltroRubros = ({ rubros, setRubros }) => {
   const location = useLocation();
@@ -13,8 +19,8 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
 
   const getRubros = async (selectedId) => {
     try {
-      const res = await axios.get("/api/Rubro");
-      const rubrosLoad = res.data.map((rubro) => ({
+      const res = await rubroService.getAll();
+      const rubrosLoad = res.map((rubro) => ({
         idRubro: rubro.idRubro,
         nombre: rubro.nombre,
         seleccionado: selectedId ? rubro.idRubro === selectedId : true,
@@ -50,13 +56,13 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
     );
   };
 
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-    const allSelected = rubros.every((rubro) => rubro.seleccionado);
+  const handleSelectAllRubros = () => {
+    const newSelectAll = !selectAll;
+    setSelectAll(newSelectAll);
     setRubros((prevRubros) =>
       prevRubros.map((rubro) => ({
         ...rubro,
-        seleccionado: !allSelected,
+        seleccionado: newSelectAll,
       }))
     );
   };
@@ -67,37 +73,60 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
-      <FormControl style={{ width: "55vw", minWidth: "350px" }}>
-        <InputLabel id="rubros-label">Rubros</InputLabel>
-        <Select
-          labelId="rubros-label"
-          id="rubros"
-          label="Rubros"
-          multiple
-          value={rubros
-            .filter((rubro) => rubro.seleccionado)
-            .map((rubro) => rubro.idRubro)}
-          onChange={handleSelectChange}
-          renderValue={(selected) =>
-            rubros
-              .filter((rubro) => selected.includes(rubro.idRubro))
-              .map((rubro) => rubro.nombre)
-              .join(", ")
+    <Grid
+      container
+      spacing={2}
+      marginTop={"20px"}
+      alignItems="center"
+      justifyContent="left"
+    >
+      <Grid item xs={12} sm={8} md={8} lg={10}>
+        <FormControl>
+          <InputLabel id="rubros-label">Rubros</InputLabel>
+          <Select
+            fullWidth
+            style={{ width: "55vw", minWidth: "440px" }}
+            labelId="rubros-label"
+            id="rubros"
+            label="Rubros"
+            multiple
+            value={rubros
+              .filter((rubro) => rubro.seleccionado)
+              .map((rubro) => rubro.idRubro)}
+            onChange={handleSelectChange}
+            renderValue={(selected) =>
+              rubros
+                .filter((rubro) => selected.includes(rubro.idRubro))
+                .map((rubro) => rubro.nombre)
+                .join(", ")
+            }
+          >
+            {rubros.map((rubro) => (
+              <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
+                <Checkbox checked={rubro.seleccionado} />
+                {rubro.nombre}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={4} md={4} lg={2}>
+        <Button
+          onClick={handleSelectAllRubros}
+          variant="contained"
+          fullWidth
+          style={{
+            width: "100%",
+            backgroundColor: selectAll ? "#f44336" : "#4caf50",
+            color: "#fff",
+          }}
+          startIcon={
+            selectAll ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />
           }
         >
-          <MenuItem key="selectAll" value="selectAll" onClick={handleSelectAll}>
-            <Checkbox checked={selectAll} />
-            Seleccionar todos
-          </MenuItem>
-          {rubros.map((rubro) => (
-            <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
-              <Checkbox checked={rubro.seleccionado} />
-              {rubro.nombre}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+          {selectAll ? "Deseleccionar Todos" : "Seleccionar Todos"}
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
