@@ -10,12 +10,14 @@ import {
   Chip,
   Rating,
 } from "@mui/material";
+import AddCommentIcon from '@mui/icons-material/AddComment';
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import StarHalfIcon from '@mui/icons-material/StarHalf';
 import imagendefault from "../assets/fotodefault.webp";
 import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
@@ -585,6 +587,21 @@ const PerfilProfesional = () => {
           </Box>
           <Box>
             <Button
+                variant="text"
+                style={{
+                    color: "white",
+                    backgroundColor: "#1b325f",
+                    margin: "20px",
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                }}
+                size="small"
+                startIcon={<StarHalfIcon />}
+                onClick={() => crearComentario()}
+            >
+                Valorar
+            </Button>
+            <Button
               variant="text"
               style={{
                 color: "white",
@@ -594,7 +611,7 @@ const PerfilProfesional = () => {
                 fontSize: "15px",
               }}
               size="small"
-              startIcon={<CommentIcon />}
+              startIcon={<AddCommentIcon />}
               onClick={() => crearComentario()}
             >
               Comentar
@@ -609,10 +626,10 @@ const PerfilProfesional = () => {
                 fontSize: "15px",
               }}
               size="small"
-              startIcon={<FileCopyIcon />}
-              onClick={() => handleClickCopy()}
+              startIcon={<CommentIcon />}
+              onClick={() => handleClickComments()}
             >
-              Copiar link del profesional
+              Ver comentarios
             </Button>
           </Box>
         </Box>
