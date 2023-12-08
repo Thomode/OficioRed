@@ -67,4 +67,41 @@ public class ComentarioController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpPut]
+    public IActionResult Update(ComentarioUpdateDTO comentarioUpdateDTO)
+    {
+        try
+        {
+            _comentarioService.Update(comentarioUpdateDTO);
+
+            return Ok(
+                new {
+                message = "Comentario actualizado"
+            });
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpDelete("{idComentario}")]
+    public IActionResult Delete(int idComentario) {
+        try
+        {
+            _comentarioService.Delete(idComentario);
+
+            return Ok(new
+            {
+                message = "Comentario eliminado"
+            });
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
