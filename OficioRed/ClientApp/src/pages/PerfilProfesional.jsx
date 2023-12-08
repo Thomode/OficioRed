@@ -9,15 +9,17 @@ import {
   Box,
   Chip,
   Rating,
+  Modal,
 } from "@mui/material";
-import AddCommentIcon from '@mui/icons-material/AddComment';
+import AddCommentIcon from "@mui/icons-material/AddComment";
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import StarIcon from "@mui/icons-material/Star";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import StarHalfIcon from '@mui/icons-material/StarHalf';
+import StarHalfIcon from "@mui/icons-material/StarHalf";
 import imagendefault from "../assets/fotodefault.webp";
 import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
@@ -58,7 +60,41 @@ const PerfilProfesional = () => {
   const [telefono, setTelefono] = useState("");
   const { id } = useParams();
   const idActual = location.pathname.split("/")[1];
-  const [value, setValue] = useState(2);
+  const [value, setValue] = useState(0);
+
+  const [openRatingModal, setOpenRatingModal] = useState(false);
+
+  const handleOpenRatingModal = () => {
+    setOpenRatingModal(true);
+  };
+  const handleCloseRatingModal = async () => {
+    try {
+      setOpenRatingModal(false);
+      await comentarioService.createRating(id, value);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Valoración creada con éxito",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response.data,
+        confirmButtonColor: "#1b325f",
+      });
+    }
+  };
+
+  const valorar = async () => {
+    handleOpenRatingModal();
+  };
+
+  const handleRatingChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     axios
@@ -205,6 +241,7 @@ const PerfilProfesional = () => {
             icon: "error",
             title: "Error",
             text: error.response.data,
+            confirmButtonColor: "#1b325f",
           });
         }
       },
@@ -587,20 +624,59 @@ const PerfilProfesional = () => {
           </Box>
           <Box>
             <Button
-                variant="text"
-                style={{
-                    color: "white",
-                    backgroundColor: "#1b325f",
-                    margin: "20px",
-                    fontWeight: "bold",
-                    fontSize: "15px",
-                }}
-                size="small"
-                startIcon={<StarHalfIcon />}
-                onClick={() => crearComentario()}
+              variant="text"
+              style={{
+                color: "white",
+                backgroundColor: "#1b325f",
+                margin: "20px",
+                fontWeight: "bold",
+                fontSize: "15px",
+              }}
+              size="small"
+              startIcon={<StarHalfIcon />}
+              onClick={() => valorar()}
             >
-                Valorar
+              Valorar
             </Button>
+
+            <Modal open={openRatingModal} onClose={handleCloseRatingModal}>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "white",
+                  border: "2px solid #ccc",
+                  borderRadius: "10px",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                  maxWidth: 400,
+                  width: "80%",
+                  p: 4,
+                  textAlign: "center",
+                }}
+              >
+                <Typography variant="h4" gutterBottom>
+                  Valorar Profesional
+                </Typography>
+                <Box sx={{ mb: 2 }}>
+                  <Rating
+                    size="large"
+                    name="simple-controlled"
+                    value={value}
+                    onChange={handleRatingChange}
+                  />
+                </Box>
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: "#1b325f", color: "#fff" }}
+                  onClick={handleCloseRatingModal}
+                >
+                  Guardar
+                </Button>
+              </Box>
+            </Modal>
+
             <Button
               variant="text"
               style={{
