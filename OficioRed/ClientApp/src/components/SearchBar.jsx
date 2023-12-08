@@ -17,7 +17,7 @@ export const SearchBar = ({
   }, [resetSearch, setSearchValue]);
   return (
     <Grid container spacing={2} alignItems="center" justifyContent="left">
-      <Grid item  xs={12} sm={8} md={8} lg={10}>
+      <Grid item xs={12} sm={8} md={8} lg={10}>
         <TextField
           variant="outlined"
           placeholder="Buscar"
