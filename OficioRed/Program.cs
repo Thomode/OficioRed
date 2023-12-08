@@ -94,6 +94,7 @@ builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IComentarioService, ComentarioService>();
 builder.Services.AddScoped<IContactoService, ContactoService>();
+builder.Services.AddScoped<IFavoritoService, FavoritoService>();
 
 
 var app = builder.Build();
