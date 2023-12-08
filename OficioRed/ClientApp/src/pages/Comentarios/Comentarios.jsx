@@ -14,6 +14,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { comentarioService } from "../../services/comentario.service";
 import "./comentarios.css";
 import { Comentario } from "../../components/Comentarios/Comentario";
+import Swal from "sweetalert2";
 
 const styles = {
   container: {
@@ -57,6 +58,45 @@ export function Comentarios() {
   const handleVolver = async () => {
     navigate(-1);
   };
+
+  const crearComentario = async () => {
+    const commentText = commentTextareaRef.current.value;
+    await Swal.fire({
+      title: "Comentar",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      inputValue: commentText,
+      showCancelButton: true,
+      confirmButtonColor: "#1b325f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      showLoaderOnConfirm: true,
+      preConfirm: async (commentText) => {
+        try {
+          await await comentarioService.create(commentText, id);
+          
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Comentario creado con éxito",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response.data,
+          });
+        }
+      },
+    });
+  };
+
   const handleClick = async () => {
     try {
       const commentText = commentTextareaRef.current.value;
@@ -141,7 +181,7 @@ export function Comentarios() {
                   color: "white",
                   marginTop: "8px",
                 }}
-                onClick={() => handleClick()}
+                onClick={() => crearComentario()}
               >
                 Comentar
               </Button>
