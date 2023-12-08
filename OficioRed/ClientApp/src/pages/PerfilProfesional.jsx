@@ -24,8 +24,10 @@ import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { profesionalService } from "../services/profesional.service";
-import SpeedDialTooltipOpen from "../components/SpeedDial";
+import Rating from '@mui/material/Rating';
+import StarHalfIcon from '@mui/icons-material/StarHalf';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import clipboardCopy from 'clipboard-copy'; 
 
 const buttonStyle = {
     margin: "0 8px",
@@ -57,6 +59,7 @@ const PerfilProfesional = () => {
     const [telefono, setTelefono] = useState("");
     const { id } = useParams();
     const idActual = location.pathname.split('/')[1];
+    const [value, setValue] = React.useState(2);
 
     useEffect(() => {
         axios
@@ -163,6 +166,14 @@ const PerfilProfesional = () => {
         localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
     };
 
+    const handleClickComments = (id) => {
+        navigate(`/${id}/PerfilProfesional/Comentarios`);
+    };
+
+    const handleClickCopy = () => {
+        const url = `${window.location.origin}/${id}/PerfilProfesional`; 
+        clipboardCopy(url); 
+    };
 
     return (
         <Box
@@ -209,7 +220,7 @@ const PerfilProfesional = () => {
                     </Button>
                 </Box>
             </Grid>
-            <Grid container justifyContent="center" spacing={0} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "0px 0px 20px 20px" }}>
+            <Grid container justifyContent="center" spacing={0} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "0px 0px 0px 0px" }}>
                 <Grid item xs={12} md={4} style={{ padding: 10 }}>
                     <CardMedia
                         component="img"
@@ -234,38 +245,6 @@ const PerfilProfesional = () => {
                             {`${profesional.nombre} ${profesional.apellido}`}
                         </Typography>
                     </Box>
-                    <Button
-                        variant="text"
-                        style={{
-                            color: "white",
-                            backgroundColor: "#1b325f",
-                            margin: "20px",
-                            fontWeight: "bold",
-                            fontSize: '15px',
-                        }}
-                        size="small"
-                        startIcon={<SearchIcon />}
-                        onClick={() => handleClick()}
-                    >
-                        Seguir buscando profesionales
-                    </Button>
-                    <IconButton
-                        aria-label="Agregar a favoritos"
-                        onClick={() => handleAgregarFavorito(profesional)}
-                    >
-                        <FavoriteIcon
-                            color={
-                                favoritos.some(
-                                    (fav) => fav.idProfesional === profesional.idProfesional
-                                )
-                                    ? "error"
-                                    : "default"
-                            }
-                        />
-                        <Typography variant="h2" style={{ fontSize: 'small', marginLeft: '5px', fontWeight: 'bold'}}>
-                            Agregar favorito
-                        </Typography>
-                    </IconButton>
                 </Grid>
                 <Grid item xs={12} md={4} style={{ padding: 0 }}>
                     <CardContent>
@@ -402,9 +381,101 @@ const PerfilProfesional = () => {
                                 CONTACTAR
                             </Button>
                         </Box>
-                        <SpeedDialTooltipOpen></SpeedDialTooltipOpen>
+                        <Box color="#1b325f" p={2} borderRadius="0px 0px 20px 20px" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Typography variant="subtitle1" style={{ fontSize: "1.2rem", marginRight: "10px" }}>
+                                <strong>Valoración:</strong>
+                            </Typography>
+                            <Box>
+                                <Typography variant="subtitle1" style={{ fontSize: "2rem", flex: 1, color: "black" }}>
+                                    <strong>4.5 <Rating name="read-only" value={value} readOnly size="large" /></strong>
+                                    
+                                </Typography>
+                            </Box>
+                        </Box>
                     </CardContent>
                 </Grid>
+            </Grid>
+            <Grid xs={12} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "0px 0px 20px 20px", padding: "0px" }}>
+                <Box color="#1b325f" p={0} borderRadius="0px 0px 20px 20px" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box>
+                    <Button
+                    variant="text"
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                    size="small"
+                    startIcon={<SearchIcon />}
+                    onClick={() => handleClick()}
+                >
+                    Seguir buscando profesionales
+                </Button>
+                <Button
+                    aria-label="Agregar a favoritos"
+                    onClick={() => handleAgregarFavorito(profesional)}
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                >
+                     <FavoriteIcon
+                        style={{ fontSize: '20px' }}
+                        color={
+                        favoritos.some(
+                            (fav) => fav.idProfesional === profesional.idProfesional
+                        )
+                            ? "error"
+                            : "default"
+                        }
+                    />
+                            <Typography variant="h2" style={{ fontSize: 'small', fontWeight: 'bold' }}>
+                                {favoritos.some(
+                                    (fav) => fav.idProfesional === profesional.idProfesional
+                                )
+                                    ? "Sacar favorito"
+                                    : "Agregar favorito"}
+                            </Typography>
+                </Button>
+                </Box>
+                <Box>
+                <Button
+                    variant="text"
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                    size="small"
+                    startIcon={<StarHalfIcon />}
+                    onClick={() => handleClickComments()}
+                >
+                    Dejar valoración
+                </Button>
+                <Button
+                    variant="text"
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                    size="small"
+                    startIcon={<FileCopyIcon />}
+                    onClick={() => handleClickCopy()}
+                >
+                    Copiar link del profesional
+                    </Button>
+                    </Box>
+                </Box>
             </Grid>
         </Box>
     );
