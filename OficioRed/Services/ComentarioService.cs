@@ -44,22 +44,15 @@ public class ComentarioService : IComentarioService
         comentario.IdUsuario = sesion.Id;
         comentario.Fhalta = DateTime.Now;
 
-        _mapper.Map(comentarioDTO, comentario);
-
-        Console.WriteLine("Comentario");
-        Console.WriteLine(comentario.IdUsuario);
-        Console.WriteLine(comentario.IdProfesional);
-        Console.WriteLine(comentario.Comentario1);
-
-        _context.Comentarios.Add(comentario);
-        _context.SaveChanges();
+        _mapper.Map(comentarioDTO, comentario);      
 
         using (var transaction = _context.Database.BeginTransaction())
         {
             try
             {
                 // Realiza tus operaciones de base de datos aquí
-                
+                _context.Comentarios.Add(comentario);
+                _context.SaveChanges();
 
                 // Si todo va bien, haz un commit
                 transaction.Commit();
