@@ -166,7 +166,7 @@ const PerfilProfesional = () => {
         localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
     };
 
-    const handleClickComments = (id) => {
+    const handleClickComments = () => {
         navigate(`/${id}/PerfilProfesional/Comentarios`);
     };
 

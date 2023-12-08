@@ -1,9 +1,36 @@
 import { Box, Button, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import './comentarios.css';
 import { Comentario } from '../../components/Comentarios/Comentario';
 import CommentForm from '../Comments/CommentForm';
+import { Grid } from "@mui/material";
+import { Paper } from "@mui/material";
+import { TextareaAutosize } from "@mui/material";
+import { useState } from "react";
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
+import * as React from 'react';
+import { comentarioService } from '../../services/comentario.service';
+
+const styles = {
+    container: {
+        padding: '16px',
+        marginBottom: '16px', 
+    },
+    stars: {
+        marginBottom: '16px',
+    },
+    textarea: {
+        width: '100%',
+        height: '80px',
+        marginBottom: '8px',
+        marginTop: '8px',
+        border: '1px solid rgb(107, 114, 12)',
+        padding: '8px',
+        resize: 'none',
+    },
+};
 
 const titleStyle2 = {
   fontSize: "60px",
@@ -20,13 +47,26 @@ const titleStyle2 = {
 };
 
 export function Comentarios() {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(-1);
-  };
 
+    const navigate = useNavigate();
+    const [value, setValue] = React.useState(2);
+    const { id } = useParams();
+    const commentTextareaRef = React.useRef();
+
+    const handleVolver = async () => { navigate(-1); }
+    const handleClick = async () => {
+        try {
+            const commentText = commentTextareaRef.current.value;
+
+            await comentarioService.create(commentText, id);
+            await comentarioService.createRating(id, value);
+        } catch (error) {
+
+            console.error("Error en handleClick:", error);
+        }
+    };
   return (
-    <main className="mainCard">
+      <main className="mainCard">
       <Box
         display="flex"
         justifyContent="flex-start"
@@ -43,7 +83,7 @@ export function Comentarios() {
           }}
           size="large"
           startIcon={<ArrowBackIcon />}
-          onClick={() => handleClick()}
+          onClick={() => handleVolver()}
         >
           Volver
         </Button>
@@ -53,9 +93,43 @@ export function Comentarios() {
       </Box>
 
       <div className="commentContainer">
-        <CommentForm
-          submitLabel="Comentar"
-        />
+              <Grid>
+                  <Paper className="escribirComment" elevation={3} style={styles.container}>
+                      <Box style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+                          <Rating
+                              size="large"
+                              name="simple-controlled"
+                              value={value}
+                              onChange={(event, newValue) => {
+                                  setValue(newValue);
+                              }}
+                              icon={<StarIcon fontSize="large" />}
+                          />
+                      </Box>
+                      <TextareaAutosize
+                          ref={commentTextareaRef}
+                          placeholder="Cuentanos tu experiencia..."
+                          style={styles.textarea}
+                      />
+                      <Box style={{ display: "flex", alignItems: "center", flexDirection: "row-reverse" }}>
+                          <Button
+                              variant="contained"
+                              color="primary"
+                              style={{
+                                  fontSize: "16px",
+                                  padding: "8px 16px",
+                                  background: "#1b325f",
+                                  borderRadius: "8px",
+                                  color: "white",
+                                  marginTop: "8px",
+                              }}
+                              onClick={() => handleClick()}
+                          >
+                              Comentar
+                          </Button>
+                      </Box>
+                  </Paper>
+              </Grid>
         <br />
         <Comentario
           imgUser={'josuejouvin'}
@@ -69,7 +143,7 @@ export function Comentarios() {
           imgUser={'youTube'}
           comentario={'Lorem ipsum, dolor sit amet consectetur adipisicing elit Quaerat ad quos porro vitae id exercitationem doloribus quisquam ut optio deleniti facere, odio quasi eos iure rerum asperiores cupiditate obcaecati voluptatum.'}
         />
-      </div>
+          </div>         
     </main>
   )
 }
