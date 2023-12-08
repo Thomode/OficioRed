@@ -1,20 +1,20 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  Grid,
-  Paper,
-  TextareaAutosize,
-  Rating,
-  Box,
-  Button,
-  Typography,
+    Grid,
+    Paper,
+    CardMedia,
+    Rating,
+    Box,
+    Button,
+    Typography,
 } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { comentarioService } from "../../services/comentario.service";
+import { profesionalService } from "../../services/profesional.service"; 
 import "./comentarios.css";
 import { Comentario } from "../../components/Comentarios/Comentario";
-import Swal from "sweetalert2";
+import imagenFondo from "../../assets/fondo.jpg";
 
 const styles = {
   container: {
@@ -50,164 +50,120 @@ const titleStyle2 = {
 };
 
 export function Comentarios() {
-  const navigate = useNavigate();
-  const [value, setValue] = useState(0);
-  const { id } = useParams();
-  const commentTextareaRef = useRef();
+    const navigate = useNavigate();
+    const [value, setValue] = useState(0);
+    const { id } = useParams();
+    const [profesional, setProfesional] = useState(null);
+    const [comentarios, setComentarios] = useState(null);
 
-  const handleVolver = async () => {
-    navigate(-1);
-  };
+    const handleVolver = async () => {
+        navigate(-1);
+    };
 
-  const crearComentario = async () => {
-    const commentText = commentTextareaRef.current.value;
-    await Swal.fire({
-      title: "Comentar",
-      input: "text",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      inputValue: commentText,
-      showCancelButton: true,
-      confirmButtonColor: "#1b325f",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Guardar",
-      cancelButtonText: "Cancelar",
-      reverseButtons: true,
-      showLoaderOnConfirm: true,
-      preConfirm: async (commentText) => {
-        try {
-          await await comentarioService.create(commentText, id);
-          
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Comentario creado con éxito",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: error.response.data,
-          });
-        }
-      },
-    });
-  };
+    useEffect(() => {
+        // Obtener datos del profesional por su ID
+        const fetchData = async () => {
+            try {
+                const response = await profesionalService.getById(id);
+                const response1 = await comentarioService.get(id)
+                setProfesional(response.data);
+                setComentarios(response1.data);
+                console.log(response1.data)
+            } catch (error) {
+                console.error("Error al obtener datos", error);
+            }
+        };
 
-  const handleClick = async () => {
-    try {
-      const commentText = commentTextareaRef.current.value;
+        fetchData();
+    }, [id]);
 
-      await comentarioService.create(commentText, id);
-      //await comentarioService.createRating(id, value);
-    } catch (error) {
-      console.error("Error en handleClick:", error);
-    }
-  };
-  return (
-    <main className="mainCard">
-      <Box
-        display="flex"
-        justifyContent="flex-start"
-        alignItems="center"
-        mb={2}
-      >
-        <Button
-          variant="text"
-          style={{
-            color: "white",
-            marginRight: "8px",
-            fontWeight: "bold",
-            backgroundColor: "#1b325f",
-          }}
-          size="large"
-          startIcon={<ArrowBackIcon />}
-          onClick={() => handleVolver()}
+    const handleClick = () => {
+        navigate(-1);
+    };
+
+    return (
+        <Box
+            minHeight="100vh"
+            p={5}
+            style={{
+                backgroundImage: `url(${imagenFondo})`,
+                backgroundSize: "cover",
+                backgroundAttachment: "fixed",
+                position: "relative",
+            }}
         >
-          Volver
-        </Button>
-        <Typography variant="h2" sx={titleStyle2}>
-          Comentarios
-        </Typography>
-      </Box>
+            <Grid container spacing={2} justify="center">
+                <Grid item xs={12}>
+                    <Button
+                        variant="text"
+                        style={{
+                            color: "white",
+                            backgroundColor: "#1b325f",
+                            margin: "20px",
+                            fontWeight: "bold",
+                            fontSize: "15px",
+                        }}
+                        size="small"
+                        startIcon={<ArrowBackIcon />}
+                        onClick={() => handleClick()}
+                    >
+                        Volver
+                    </Button>
+                </Grid>
 
-      <div className="commentContainer">
-        <Grid>
-          <Paper
-            className="escribirComment"
-            elevation={3}
-            style={styles.container}
-          >
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <Rating
-                size="large"
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                icon={<StarIcon fontSize="large" />}
-              />
-            </Box>
-            <TextareaAutosize
-              ref={commentTextareaRef}
-              placeholder="Cuentanos tu experiencia..."
-              style={styles.textarea}
-            />
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row-reverse",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                style={{
-                  fontSize: "16px",
-                  padding: "8px 16px",
-                  background: "#1b325f",
-                  borderRadius: "8px",
-                  color: "white",
-                  marginTop: "8px",
-                }}
-                onClick={() => crearComentario()}
-              >
-                Comentar
-              </Button>
-            </Box>
-          </Paper>
-        </Grid>
+                {profesional && (
+                    <Grid item xs={12} md={4} style={{ padding: 10 }}>
+                        <CardMedia
+                            component="img"
+                            alt="profesional"
+                            height="560"
+                            image={profesional.fotoPerfil}
+                            style={{
+                                border: "2px solid #1b325f",
+                                borderRadius: "20px 20px 0 0",
+                            }}
+                        />
+                        <Box
+                            color="white"
+                            bgcolor="#1b325f"
+                            p={2}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            borderRadius="0px 0px 20px 20px"
+                        >
+                            <Typography
+                                variant="h4"
+                                style={{ textAlign: "center", fontSize: "2.5rem" }}
+                            >
+                                {`${profesional.nombre} ${profesional.apellido}`}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                )}
 
-        <Comentario
-          imgUser={"josuejouvin"}
-          comentario={
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit Quaerat ad quos porro vitae id exercitationem doloribus quisquam ut optio deleniti facere, odio quasi eos iure rerum asperiores cupiditate obcaecati voluptatum."
-          }
-        />
-        <Comentario
-          imgUser={"hola"}
-          comentario={
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit Quaerat ad quos porro vitae id exercitationem doloribus quisquam ut optio deleniti facere, odio quasi eos iure rerum asperiores cupiditate obcaecati voluptatum."
-          }
-        />
-        <Comentario
-          imgUser={"youTube"}
-          comentario={
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit Quaerat ad quos porro vitae id exercitationem doloribus quisquam ut optio deleniti facere, odio quasi eos iure rerum asperiores cupiditate obcaecati voluptatum."
-          }
-        />
-      </div>
-    </main>
-  );
+                <Grid item xs={12} sm={6} md={8}>
+                    <Box
+                        style={{
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                            padding: "10px",
+                            borderRadius: "8px",
+                            width: "100%",
+                            height: "630px", // Establecer la altura fija igual a la altura de CardMedia
+                            overflowY: "auto", // Habilitar la barra de desplazamiento vertical
+                        }}
+                    >
+                        {comentarios &&
+                            comentarios.map((comentario) => (
+                                <Comentario
+                                    key={comentario.id}
+                                    idUser={comentario.idUsuario}
+                                    comentario={comentario.comentario1}
+                                />
+                            ))}
+                    </Box>
+                </Grid>
+            </Grid>
+        </Box>
+    );
 }
