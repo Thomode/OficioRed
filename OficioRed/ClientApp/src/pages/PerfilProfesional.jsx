@@ -9,8 +9,8 @@ import {
     CardActions,
     CardMedia,
     Box,
+    IconButton,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -23,9 +23,11 @@ import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from '@mui/material/Rating';
-import { profesionalService } from "../services/profesional.service";
-import SpeedDialTooltipOpen from "../components/SpeedDial";
+import StarHalfIcon from '@mui/icons-material/StarHalf';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import clipboardCopy from 'clipboard-copy'; 
 
 const buttonStyle = {
     margin: "0 8px",
@@ -43,7 +45,12 @@ const titleStyle2 = {
     padding: '0px',
 };
 
+
 const PerfilProfesional = () => {
+    const [favoritos, setFavoritos] = useState(() => {
+        const storedFavoritos = localStorage.getItem("favoritos");
+        return storedFavoritos ? JSON.parse(storedFavoritos) : [];
+    });
     const navigate = useNavigate();
     const location = useLocation();
     const [profesional, setProfesional] = useState({});
@@ -51,8 +58,8 @@ const PerfilProfesional = () => {
     const [instagram, setInstagram] = useState("");
     const [telefono, setTelefono] = useState("");
     const { id } = useParams();
-    const [rubros, setRubros] = useState([]);
     const idActual = location.pathname.split('/')[1];
+    const [value, setValue] = React.useState(2);
 
     useEffect(() => {
         axios
@@ -76,16 +83,6 @@ const PerfilProfesional = () => {
             })
             .catch((error) => {
                 console.error("Error fetching data", error);
-            });
-        profesionalService.getAll()
-            .then((profesionales) => {
-                const profesionalActual = profesionales.find((prof) => prof.idProfesional === parseInt(id, 10));
-                if (profesionalActual) {
-                    setRubros(profesionalActual.rubros || []);
-                }
-            })
-            .catch((error) => {
-                console.error("Error fetching profesionales data", error);
             });
     }, [id]);
 
@@ -154,6 +151,29 @@ const PerfilProfesional = () => {
         }
     };
 
+    const handleAgregarFavorito = (profesional) => {
+        const isInFavoritos = favoritos.some(
+            (fav) => fav.idProfesional === profesional.idProfesional
+        );
+
+        const nuevosFavoritos = isInFavoritos
+            ? favoritos.filter(
+                (fav) => fav.idProfesional !== profesional.idProfesional
+            )
+            : [...favoritos, profesional];
+
+        setFavoritos(nuevosFavoritos);
+        localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
+    };
+
+    const handleClickComments = (id) => {
+        navigate(`/${id}/PerfilProfesional/Comentarios`);
+    };
+
+    const handleClickCopy = () => {
+        const url = `${window.location.origin}/${id}/PerfilProfesional`; 
+        clipboardCopy(url); 
+    };
 
     return (
         <Box
@@ -179,6 +199,7 @@ const PerfilProfesional = () => {
                         startIcon={<ArrowBackIcon />}
                         onClick={() => handleClickAntes()}
                     >
+                    Anterior
                     </Button>
                     <Typography variant="h2" sx={titleStyle2}>
                         Detalle de Perfil
@@ -191,13 +212,15 @@ const PerfilProfesional = () => {
                             fontWeight: "bold",
                         }}
                         fontSize="large"
-                        startIcon={<ArrowForwardIcon />}
+                        endIcon={<ArrowForwardIcon />}
                         onClick={() => handleClickSiguiente()}
                     >
+                    Siguiente
+                     
                     </Button>
                 </Box>
             </Grid>
-            <Grid container justifyContent="center" spacing={0} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "0px 0px 20px 20px" }}>
+            <Grid container justifyContent="center" spacing={0} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "0px 0px 0px 0px" }}>
                 <Grid item xs={12} md={4} style={{ padding: 10 }}>
                     <CardMedia
                         component="img"
@@ -222,21 +245,6 @@ const PerfilProfesional = () => {
                             {`${profesional.nombre} ${profesional.apellido}`}
                         </Typography>
                     </Box>
-                    <Button
-                        variant="text"
-                        style={{
-                            color: "white",
-                            backgroundColor: "#1b325f",
-                            margin: "20px",
-                            fontWeight: "bold",
-                            fontSize: '15px',
-                        }}
-                        size="small"
-                        startIcon={<SearchIcon />}
-                        onClick={() => handleClick()}
-                    >
-                        Seguir buscando profesionales
-                    </Button>
                 </Grid>
                 <Grid item xs={12} md={4} style={{ padding: 0 }}>
                     <CardContent>
@@ -266,8 +274,8 @@ const PerfilProfesional = () => {
                         >
                             <Typography variant="subtitle1" style={{ fontSize: "1.2rem" }}>
                                 <strong>Rubros: </strong>
-                                {rubros &&
-                                    rubros.map((rubro, index) => (
+                                {profesional.rubros &&
+                                    profesional.rubros.map((rubro, index) => (
                                         <Chip
                                             key={index}
                                             variant="elevated"
@@ -373,9 +381,101 @@ const PerfilProfesional = () => {
                                 CONTACTAR
                             </Button>
                         </Box>
-                        <SpeedDialTooltipOpen></SpeedDialTooltipOpen>
+                        <Box color="#1b325f" p={2} borderRadius="0px 0px 20px 20px" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Typography variant="subtitle1" style={{ fontSize: "1.2rem", marginRight: "10px" }}>
+                                <strong>Valoración:</strong>
+                            </Typography>
+                            <Box>
+                                <Typography variant="subtitle1" style={{ fontSize: "2rem", flex: 1, color: "black" }}>
+                                    <strong>4.5 <Rating name="read-only" value={value} readOnly size="large" /></strong>
+                                    
+                                </Typography>
+                            </Box>
+                        </Box>
                     </CardContent>
                 </Grid>
+            </Grid>
+            <Grid xs={12} sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)", borderRadius: "0px 0px 20px 20px", padding: "0px" }}>
+                <Box color="#1b325f" p={0} borderRadius="0px 0px 20px 20px" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box>
+                    <Button
+                    variant="text"
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                    size="small"
+                    startIcon={<SearchIcon />}
+                    onClick={() => handleClick()}
+                >
+                    Seguir buscando profesionales
+                </Button>
+                <Button
+                    aria-label="Agregar a favoritos"
+                    onClick={() => handleAgregarFavorito(profesional)}
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                >
+                     <FavoriteIcon
+                        style={{ fontSize: '20px' }}
+                        color={
+                        favoritos.some(
+                            (fav) => fav.idProfesional === profesional.idProfesional
+                        )
+                            ? "error"
+                            : "default"
+                        }
+                    />
+                            <Typography variant="h2" style={{ fontSize: 'small', fontWeight: 'bold' }}>
+                                {favoritos.some(
+                                    (fav) => fav.idProfesional === profesional.idProfesional
+                                )
+                                    ? "Sacar favorito"
+                                    : "Agregar favorito"}
+                            </Typography>
+                </Button>
+                </Box>
+                <Box>
+                <Button
+                    variant="text"
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                    size="small"
+                    startIcon={<StarHalfIcon />}
+                    onClick={() => handleClickComments()}
+                >
+                    Dejar valoración
+                </Button>
+                <Button
+                    variant="text"
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "20px",
+                        fontWeight: "bold",
+                        fontSize: '15px',
+                    }}
+                    size="small"
+                    startIcon={<FileCopyIcon />}
+                    onClick={() => handleClickCopy()}
+                >
+                    Copiar link del profesional
+                    </Button>
+                    </Box>
+                </Box>
             </Grid>
         </Box>
     );
