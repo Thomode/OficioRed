@@ -7,8 +7,26 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 
-export function Comentario({ idUser, comentario }) {
+export function Comentario({ idUser, comentario, fecha }) {
+
     const [usuarioInfo, setUsuarioInfo] = useState(null);
+    const idUsuarioSesion = usuarioService.getId(); 
+
+    function formatearFecha(fechaString) {
+        // Crear un objeto Date a partir de la cadena de fecha
+        const fecha = new Date(fechaString);
+
+        // Obtener los componentes de la fecha
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JavaScript van de 0 a 11
+        const anio = fecha.getFullYear();
+
+        // Crear la cadena de fecha formateada
+        const fechaFormateada = `${dia}/${mes}/${anio}`;
+
+        return fechaFormateada;
+    }
+
 
     const infoPerfil = async (idUser) => {
         try {
@@ -84,11 +102,14 @@ export function Comentario({ idUser, comentario }) {
     const timeUserStyles = {
         color: "#757575",
         marginBottom: "8px",
+        marginLeft: "8px",
     };
 
     const parrafoStyles = {
         fontSize: "14px",
     };
+
+    const esUsuarioActual = idUsuarioSesion && idUsuarioSesion === idUser;
 
     return (
         <div style={cardStyles}>
@@ -101,11 +122,18 @@ export function Comentario({ idUser, comentario }) {
                     />
                     <div>
                         <span style={userNameStyles}>{`${usuarioInfo.nombre} ${usuarioInfo.apellido}`}</span>
-                        <span style={timeUserStyles}>hace 2 minutos</span>
+                        <span style={timeUserStyles}>{formatearFecha(fecha)}</span>
                     </div>
                 </div>
             )}
             <p style={parrafoStyles}>{comentario}</p>
+
+            {esUsuarioActual && (
+                <div>
+                    <EditIcon style={{ cursor: "pointer", marginRight: "8px" }} />
+                    <DeleteIcon style={{ cursor: "pointer" }} />
+                </div>
+            )}
         </div>
     );
 }

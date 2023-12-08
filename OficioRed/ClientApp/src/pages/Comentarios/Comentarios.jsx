@@ -159,6 +159,7 @@ export function Comentarios() {
                                     key={comentario.id}
                                     idUser={comentario.idUsuario}
                                     comentario={comentario.comentario1}
+                                    fecha={comentario.fhalta}
                                 />
                             ))}
                     </Box>
