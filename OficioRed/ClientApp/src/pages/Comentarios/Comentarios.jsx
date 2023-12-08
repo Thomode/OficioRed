@@ -43,7 +43,6 @@ const titleStyle2 = {
   WebkitTextStroke: "2px white",
   MozTextStroke: "2px white",
   marginBottom: "0px",
-  backgroundColor: "rgba(255, 255, 255, 0.6)",
   padding: "10px",
   borderRadius: "10px",
   margin: "5px",
@@ -93,24 +92,56 @@ export function Comentarios() {
             }}
         >
             <Grid container spacing={2} justify="center">
-                <Grid item xs={12}>
-                    <Button
-                        variant="text"
+                <Grid
+                    xs={12}
+                    sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.6)",
+                        borderRadius: "20px 20px 0px 0px",
+                        padding: "5px",
+                    }}
+                >
+                    <Box
                         style={{
-                            color: "white",
-                            backgroundColor: "#1b325f",
-                            margin: "20px",
-                            fontWeight: "bold",
-                            fontSize: "15px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
                         }}
-                        size="small"
-                        startIcon={<ArrowBackIcon />}
-                        onClick={() => handleClick()}
+                    ></Box>
+                    <Box
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}
                     >
-                        Volver
-                    </Button>
+                        <Button
+                            variant="text"
+                            style={{
+                                color: "white",
+                                backgroundColor: "#1b325f",
+                                margin: "20px",
+                                fontWeight: "bold",
+                            }}
+                            fontSize="large"
+                            startIcon={<ArrowBackIcon />}
+                            onClick={() => handleClick()}
+                        >
+                            Volver
+                        </Button>
+                        <Typography variant="h2" sx={titleStyle2}>
+                            Comentarios
+                        </Typography>
+                    </Box>
                 </Grid>
-
+                <Grid
+                    container
+                    justifyContent="center"
+                    spacing={0}
+                    sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.6)",
+                        borderRadius: "0px 0px 20px 20px",
+                    }}
+                >
                 {profesional && (
                     <Grid item xs={12} md={4} style={{ padding: 10 }}>
                         <CardMedia
@@ -149,8 +180,8 @@ export function Comentarios() {
                             padding: "10px",
                             borderRadius: "8px",
                             width: "100%",
-                            height: "630px", // Establecer la altura fija igual a la altura de CardMedia
-                            overflowY: "auto", // Habilitar la barra de desplazamiento vertical
+                            height: "650px", 
+                            overflowY: "auto", 
                         }}
                     >
                         {comentarios &&
@@ -163,6 +194,7 @@ export function Comentarios() {
                                 />
                             ))}
                     </Box>
+                    </Grid>
                 </Grid>
             </Grid>
         </Box>
