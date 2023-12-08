@@ -14,6 +14,7 @@ const create = async (comentario1, idProfesional) => {
         comentario1,
         idProfesional,
     }, await sesionService.getConfig())
+    console.log(response.data);
     return response.data;
 } 
 

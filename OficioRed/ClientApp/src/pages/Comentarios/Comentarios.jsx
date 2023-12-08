@@ -148,7 +148,7 @@ export function Comentarios() {
             </Box>
           </Paper>
         </Grid>
-        <br />
+
         <Comentario
           imgUser={"josuejouvin"}
           comentario={
