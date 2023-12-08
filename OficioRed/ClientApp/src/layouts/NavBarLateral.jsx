@@ -340,7 +340,7 @@ export function NavBarLateral({ children, type, logout }) {
                           justifyContent: open ? "initial" : "center",
                           px: 2.5,
                           "&:hover": {
-                              color: "#9cc4e4",
+                              color: "#F26C4F",
                           },
                       }}
                   >
@@ -372,7 +372,7 @@ export function NavBarLateral({ children, type, logout }) {
                 justifyContent: open ? "initial" : "center",
                 px: 2.5,
                 "&:hover": {
-                  color: "#9cc4e4",
+                color: "#F26C4F",
                 },
               }}
             >
