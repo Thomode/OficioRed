@@ -23,6 +23,7 @@ const createRating = async (idProfesional, puntuacion) => {
         idProfesional,
         puntuacion,
     }, await sesionService.getConfig())
+    console.log(response.data);
     return response.data;
 } 
 
