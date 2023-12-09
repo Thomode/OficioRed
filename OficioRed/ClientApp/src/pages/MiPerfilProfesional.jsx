@@ -66,12 +66,13 @@ export const MiPerfilProfesional = () => {
         const userId = usuarioService.getId();
         const userData = await usuarioService.get(userId);
         const idUser = userData.data.idUsuario;
-        const [profesionalData, contactoData] = await Promise.all([
-          profesionalService.getAll().then((res) =>
-            res.find((profesional) => profesional.idUsuario === idUser)
-          ),
-          contactoService.getById(idUser),
-        ]);
+        const profesionalData = await profesionalService
+            .getAll()
+            .then((res) => res.find((profesional) => profesional.idUsuario === idUser)
+          );
+          const contactoData = await contactoService.getById(
+              profesionalData.idContacto
+          );
         setValue("nombre", profesionalData.nombre);
         setValue("apellido", profesionalData.apellido);
         setValue("email", profesionalData.email);
