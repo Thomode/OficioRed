@@ -202,71 +202,82 @@ export function Comentarios() {
           )}
 
          <Grid item xs={12} sm={6} md={8}>
-                      <Box
-                          style={{
-                              backgroundColor: "rgba(255, 255, 255, 0.8)",
-                              padding: "20px",
-                              borderRadius: "8px",
-                              width: "100%",
-                              height: "650px",
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "stretch",
-                          }}
+            <Box
+                style={{
+                    padding: "50px",
+                    borderRadius: "8px",
+                    width: "100%",
+                    height: "700px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                }}
                       >
-                          {/* Nuevo input para comentarios */}
-                          <TextField
-                              label="Nuevo comentario"
-                              multiline
-                              rows={4}
-                              fullWidth
-                              value={newComment}
-                              onChange={(e) => setNewComment(e.target.value)}
-                              variant="outlined"
-                              style={{ marginBottom: "16px" }}
-                          />
+                <Box
+                    style={{
+                        backgroundColor: "white",
+                        padding: "20px",
+                        margin: "5px",
+                        borderRadius: "8px",
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "stretch",
+                    }}
+                >
+                {/* Nuevo input para comentarios */}
+                <TextField
+                    label="Nuevo comentario"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    variant="outlined"
+                    style={{ margin: "5px" }}
+                />
 
-                          {/* Nuevo botón para crear comentario */}
-                          <Button
-                              variant="text"
-                              style={{
-                                  color: "white",
-                                  backgroundColor: "#1b325f",
-                                  margin: "20px",
-                                  fontWeight: "bold",
-                                  fontSize: "15px",
-                              }}
-                              size="small"
-                              startIcon={<AddCommentIcon />}
-                              onClick={crearComentario}
-                          >
-                              Comentar
-                          </Button>
-                          <Box
-                              style={{
-                                  padding: "20px",
-                                  borderRadius: "8px",
-                                  width: "100%",
-                                  height: "650px",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  overflowY: "auto",
-                                  alignItems: "stretch",
-                              }}
-                          >
-                          {/* Lista de comentarios existentes */}
-                          {comentarios &&
-                              comentarios.map((comentario) => (
-                                  <Comentario
-                                      key={comentario.idComentario}
-                                      idComentario={comentario.idComentario}
-                                      idUser={comentario.idUsuario}
-                                      comentario={comentario.comentario1}
-                                      fecha={comentario.fhalta}
-                                  />
-                              ))}
-                          </Box>
-                      </Box>
+                {/* Nuevo botón para crear comentario */}
+                <Button
+                    variant="text"
+                    style={{
+                        color: "white",
+                        backgroundColor: "#1b325f",
+                        margin: "5px",
+                        fontWeight: "bold",
+                        fontSize: "15px",
+                    }}
+                    size="small"
+                    startIcon={<AddCommentIcon />}
+                    onClick={crearComentario}
+                >
+                    Comentar
+                </Button>
+                </Box>
+                <Box
+                    style={{
+                        margin:"5px",
+                        borderRadius: "8px",
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        overflowY: "auto",
+                        alignItems: "stretch",
+                    }}
+                >
+                {/* Lista de comentarios existentes */}
+                {comentarios &&
+                    comentarios.map((comentario) => (
+                        <Comentario
+                            key={comentario.idComentario}
+                            idComentario={comentario.idComentario}
+                            idUser={comentario.idUsuario}
+                            comentario={comentario.comentario1}
+                            fecha={comentario.fhalta}
+                        />
+                    ))}
+                </Box>
+            </Box>
           </Grid>
         </Grid>
       </Grid>
