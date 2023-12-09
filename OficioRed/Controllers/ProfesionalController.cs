@@ -95,7 +95,6 @@ namespace OficioRed.Controllers
             try
             {
                 // Llama a la función AsociarRubro en el servicio Profesional
-
                 _profesionalService.AsociarRubro(idRubro);
                 
                 return Ok("Rubro asociado al profesional exitosamente.");
@@ -106,6 +105,21 @@ namespace OficioRed.Controllers
             }
         }
 
+        [HttpDelete("desasociar-rubro/{idRubro}")]
+        public IActionResult DesasociarRubroAProfesional(int idRubro)
+        {
+            try
+            {
+                // Llama a la función AsociarRubro en el servicio Profesional
+                _profesionalService.DesasociarRubro(idRubro);
+
+                return Ok("Rubro desasociado al profesional exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPut]
         public IActionResult Update(ProfesionalUpdateDTO profesionalUpdateDTO)
@@ -143,62 +157,6 @@ namespace OficioRed.Controllers
             }
         }
 
-        //Rating
-        [HttpGet("{idProfesional}/ratings")]
-        public IActionResult GetRatingsForProfesional(int idProfesional)
-        {
-            try
-            {
-                var ratings = _ratingService.GetRatingsForProfesional(idProfesional);
-                return Ok(ratings);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("{idProfesional}/average-rating")]
-        public IActionResult GetAverageRatingForProfesional(int idProfesional)
-        {
-            try
-            {
-                var averageRating = _ratingService.GetAverageRatingForProfesional(idProfesional);
-                return Ok(averageRating);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("{idProfesional}/rate")]
-        public IActionResult CreateRatingForProfesional(int idProfesional, RatingDTO ratingDTO)
-        {
-            try
-            {
-                _ratingService.CreateRating(ratingDTO);
-                return Ok(new { message = "Calificación creada" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut("{idProfesional}/ratings/{idRating}")]
-        public IActionResult UpdateRatingForProfesional(int idProfesional, int idRating, RatingDTO updatedRatingDTO)
-        {
-            try
-            {
-                _ratingService.UpdateRating(idRating, updatedRatingDTO);
-                return Ok(new { message = "Calificación actualizada" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
         [HttpGet("{idProfesional}/rubros")]
         public IActionResult GetRubrosXProfesional(int idProfesional)

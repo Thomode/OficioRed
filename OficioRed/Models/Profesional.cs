@@ -29,13 +29,17 @@ public partial class Profesional
 
     public string Email { get; set; } = null!;
 
+    public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
+
+    public virtual ICollection<Favorito> Favoritos { get; set; } = new List<Favorito>();
+
     public virtual Contacto? IdContactoNavigation { get; set; }
 
     public virtual Direccion? IdDireccionNavigation { get; set; }
 
-    public virtual Rating? IdRatingNavigation { get; set; }
-
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
+
+    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
     public virtual ICollection<RubroXprofesional> RubroXprofesionals { get; set; } = new List<RubroXprofesional>();
 }

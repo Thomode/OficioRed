@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OficioRed.Context;
 using OficioRed.Dtos;
-using OficioRed.Models;
 using OficioRed.Services;
 using Org.BouncyCastle.Bcpg;
 

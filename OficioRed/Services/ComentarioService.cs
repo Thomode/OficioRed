@@ -10,7 +10,7 @@ namespace OficioRed.Services;
 public interface IComentarioService
 {
     void Create(ComentarioDTO comentarioDTO);
-    List<Comentario> GetAllByIdProfesional(int IdProfesional);
+    List<ComentarioResDTO> GetAllByIdProfesional(int IdProfesional);
     List<Comentario> GetAll();
     void Update(ComentarioUpdateDTO comentarioUpdateDTO);
     void Delete(int idComentario);
@@ -32,6 +32,11 @@ public class ComentarioService : IComentarioService
     public void Create(ComentarioDTO comentarioDTO)
     {
         var sesion = _accesoService.GetCurrentUsuario();
+
+        if (sesion == null)
+        {
+            throw new AppException("El Usuario no esta logeado");
+        }
 
         var profesional = _context.Profesionals.Find(comentarioDTO.IdProfesional);
         
@@ -117,13 +122,59 @@ public class ComentarioService : IComentarioService
         return _context.Comentarios.Where(e => !e.Fhbaja.HasValue).ToList();
     }
 
-    public List<Comentario> GetAllByIdProfesional(int IdProfesional)
+    public List<ComentarioResDTO> GetAllByIdProfesional(int IdProfesional)
     {
-        return _context.Comentarios
+        var comentarios = _context.Comentarios
             .Where(e => e.IdProfesional == IdProfesional && !e.Fhbaja.HasValue)
             .Include(e => e.IdUsuarioNavigation)
-            .Include(e => e.IdProfesionalNavigation)
             .ToList();
+
+        var comentarioResDTOs = new List<ComentarioResDTO>();
+
+        foreach(var comentario in comentarios)
+        {
+            var nombre = "";
+            var apellido = "";
+            var fotoPerfil = "";
+
+            if(comentario.IdUsuarioNavigation.IdRol == 2)
+            {
+                var profesional = _context.Profesionals.FirstOrDefault(e => e.IdUsuario == comentario.IdUsuario);
+
+                if(profesional != null)
+                {
+                    nombre = profesional.Nombre;
+                    apellido = profesional.Apellido;
+                    fotoPerfil = profesional.FotoPerfil;
+                }
+            }
+            else if(comentario.IdUsuarioNavigation.IdRol == 3)
+            {
+                var interesado = _context.Interesados.FirstOrDefault(e => e.IdUsuario == comentario.IdUsuario);
+
+                if(interesado != null)
+                {
+                    nombre = interesado.Nombre; 
+                    apellido = interesado.Apellido; 
+                    fotoPerfil = interesado.FotoPerfil;
+                }
+            }
+
+            comentarioResDTOs.Add(new ComentarioResDTO()
+            {
+                IdComentario = comentario.IdComentario,
+                IdProfesional = comentario.IdProfesional,
+                IdUsuario = comentario.IdUsuario,
+                Comentario1 = comentario.Comentario1,
+                Fhalta = comentario.Fhalta,
+                Nombre = nombre,
+                Apellido = apellido,
+                FotoPerfil = fotoPerfil,
+
+            });
+        }
+
+        return comentarioResDTOs;
     }
 
     public void Update(ComentarioUpdateDTO comentarioUpdateDTO)

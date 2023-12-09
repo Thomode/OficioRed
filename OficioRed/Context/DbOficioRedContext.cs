@@ -28,11 +28,11 @@ public partial class DbOficioRedContext : DbContext
 
     public virtual DbSet<Localidad> Localidads { get; set; }
 
-    public virtual DbSet<Pais> Pais { get; set; }
+    public virtual DbSet<Pais> Paises { get; set; }
 
     public virtual DbSet<Profesional> Profesionals { get; set; }
 
-    public virtual DbSet<Provincia> Provincia { get; set; }
+    public virtual DbSet<Provincia> Provincias { get; set; }
 
     public virtual DbSet<Rating> Ratings { get; set; }
 
@@ -49,7 +49,7 @@ public partial class DbOficioRedContext : DbContext
         modelBuilder.Entity<Comentario>(entity =>
         {
             entity.HasKey(e => e.IdComentario).HasName("Comentario_PK");
-            
+
             entity.ToTable("Comentario");
 
             entity.Property(e => e.Comentario1)
@@ -62,14 +62,13 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.Fhbaja)
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
-            entity.Property(e => e.IdComentario).ValueGeneratedOnAdd();
 
-            entity.HasOne(d => d.IdProfesionalNavigation).WithMany()
+            entity.HasOne(d => d.IdProfesionalNavigation).WithMany(p => p.Comentarios)
                 .HasForeignKey(d => d.IdProfesional)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Comentario_Profesional_FK");
 
-            entity.HasOne(d => d.IdUsuarioNavigation).WithMany()
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Comentarios)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Comentario_Usuario_FK");
@@ -150,14 +149,13 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.Fhbaja)
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
-            entity.Property(e => e.IdFavorito).ValueGeneratedOnAdd();
 
-            entity.HasOne(d => d.IdProfesionalNavigation).WithMany()
+            entity.HasOne(d => d.IdProfesionalNavigation).WithMany(p => p.Favoritos)
                 .HasForeignKey(d => d.IdProfesional)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Favorito_Profesional_FK");
 
-            entity.HasOne(d => d.IdUsuarioNavigation).WithMany()
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Favoritos)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Favorito_Usuario_FK");
@@ -268,10 +266,6 @@ public partial class DbOficioRedContext : DbContext
                 .HasForeignKey(d => d.IdDireccion)
                 .HasConstraintName("FK_Profesional_Direccion");
 
-            entity.HasOne(d => d.IdRatingNavigation).WithMany(p => p.Profesionals)
-                .HasForeignKey(d => d.IdRating)
-                .HasConstraintName("Profesional_FK");
-
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Profesionals)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -304,6 +298,16 @@ public partial class DbOficioRedContext : DbContext
             entity.Property(e => e.Fhbaja)
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
+
+            entity.HasOne(d => d.IdProfesionalNavigation).WithMany(p => p.Ratings)
+                .HasForeignKey(d => d.IdProfesional)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Rating_Profesional_FK");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Ratings)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Rating_Usuario_FK");
         });
 
         modelBuilder.Entity<Rol>(entity =>
@@ -377,14 +381,23 @@ public partial class DbOficioRedContext : DbContext
 
             entity.HasIndex(e => e.IdRol, "IX_Usuario_IdRol");
 
+            entity.Property(e => e.Email)
+                .HasMaxLength(300)
+                .IsUnicode(false);
             entity.Property(e => e.Fhalta)
                 .HasColumnType("datetime")
                 .HasColumnName("FHAlta");
             entity.Property(e => e.Fhbaja)
                 .HasColumnType("datetime")
                 .HasColumnName("FHBaja");
+            entity.Property(e => e.Fhtoken)
+                .HasColumnType("datetime")
+                .HasColumnName("FHToken");
             entity.Property(e => e.Password)
                 .HasMaxLength(150)
+                .IsUnicode(false);
+            entity.Property(e => e.Token)
+                .HasMaxLength(300)
                 .IsUnicode(false);
             entity.Property(e => e.User)
                 .HasMaxLength(150)

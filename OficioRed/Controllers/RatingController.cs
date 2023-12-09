@@ -13,12 +13,13 @@ public class RatingController : ControllerBase
         _ratingService = ratingService;
     }
 
+
     [HttpPost]
-    public IActionResult CreateRating(RatingDTO ratingDTO)
+    public IActionResult AgregarRating(RatingDTO ratingDTO)
     {
         try
         {
-            _ratingService.CreateRating(ratingDTO);
+            _ratingService.AgregarRating(ratingDTO);
             return Ok(new { message = "Calificación creada" });
         }
         catch (Exception ex)
@@ -26,6 +27,7 @@ public class RatingController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
 
     [HttpGet("{idProfesional}/ratings")]
     public IActionResult GetRatingsForProfesional(int idProfesional)
@@ -41,6 +43,7 @@ public class RatingController : ControllerBase
         }
     }
 
+
     [HttpGet("{idProfesional}/average-rating")]
     public IActionResult GetAverageRatingForProfesional(int idProfesional)
     {
@@ -55,17 +58,4 @@ public class RatingController : ControllerBase
         }
     }
 
-    [HttpPut("{idProfesional}/ratings/{idRating}")]
-    public IActionResult UpdateRatingForProfesional(int idProfesional, int idRating, RatingDTO updatedRatingDTO)
-    {
-        try
-        {
-            _ratingService.UpdateRating(idRating, updatedRatingDTO);
-            return Ok(new { message = "Calificación actualizada" });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
 }

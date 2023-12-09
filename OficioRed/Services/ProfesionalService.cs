@@ -16,6 +16,7 @@ namespace OficioRed.Services
         void Update(ProfesionalUpdateDTO profesionalUpdateDTO);
         void Delete(int id);
         void AsociarRubro(int rubroId);
+        void DesasociarRubro(int rubroId);
         List<Rubro> GetRubrosXProfesional(int idProfesional);
         Task<Profesional> SubirFotoPerfil(Stream archivo, string nombreFoto);
     }
@@ -110,19 +111,30 @@ namespace OficioRed.Services
                 throw new KeyNotFoundException("Profesional no encontrado");
             }
 
-            var rubro = _context.Rubros.Find(rubroId); // Asegúrate de tener una tabla 'Rubros' en tu base de datos
+            // Asegúrate de tener una tabla 'Rubros' en tu base de datos
+            var rubro = _context.Rubros.Find(rubroId);
 
             if (rubro == null)
             {
                 throw new KeyNotFoundException("Rubro no encontrado");
             }
 
-            // Realizar las validaciones o lógica adicional si es necesario
-            var rubroXProfesional = new RubroXprofesional();
+            //Buscar si el rubro esta asociado al profesional
+            var rubroXProfesional = _context.RubroXprofesionals
+                .FirstOrDefault(e => e.IdProfesional == profesional.IdProfesional && e.IdRubro == rubro.IdRubro && !e.Fhbaja.HasValue);
 
-            rubroXProfesional.IdProfesional = profesional.IdProfesional;
-            rubroXProfesional.IdRubro = rubro.IdRubro;
-            rubroXProfesional.Fhalta = DateTime.Now;
+            if (rubroXProfesional != null)
+            {
+                throw new KeyNotFoundException("Rubro ya asociado al profesional");
+            }
+
+
+            // Realizar las validaciones o lógica adicional si es necesario
+            var rubroXProfesionalNuevo = new RubroXprofesional();
+
+            rubroXProfesionalNuevo.IdProfesional = profesional.IdProfesional;
+            rubroXProfesionalNuevo.IdRubro = rubro.IdRubro;
+            rubroXProfesionalNuevo.Fhalta = DateTime.Now;
             
 
             using (var transaction = _context.Database.BeginTransaction())
@@ -130,7 +142,55 @@ namespace OficioRed.Services
                 try
                 {
                     // Realiza tus operaciones de base de datos aquí
-                    _context.RubroXprofesionals.Add(rubroXProfesional);      
+                    _context.RubroXprofesionals.Add(rubroXProfesionalNuevo);      
+                    _context.SaveChanges();
+
+                    // Si todo va bien, haz un commit
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    // Si ocurre un error, realiza un rollback
+                    transaction.Rollback();
+                    throw new Exception("Error al asociar el rubro al profesional.", ex);
+                }
+            }
+        }
+
+        public void DesasociarRubro(int rubroId)
+        {
+            var profesional = getProfesionalSesion();
+
+            if (profesional == null)
+            {
+                throw new KeyNotFoundException("Profesional no encontrado");
+            }
+
+            // Asegúrate de tener una tabla 'Rubros' en tu base de datos
+            var rubro = _context.Rubros.Find(rubroId); 
+
+            if (rubro == null)
+            {
+                throw new KeyNotFoundException("Rubro no encontrado");
+            }
+
+            //Buscar si el rubro esta asociado al profesional
+            var rubroXProfesional = _context.RubroXprofesionals
+                .FirstOrDefault(e => e.IdProfesional == profesional.IdProfesional && e.IdRubro == rubro.IdRubro && !e.Fhbaja.HasValue);
+
+            if (rubroXProfesional == null)
+            {
+                throw new KeyNotFoundException("Rubro no asociado al profesional");
+            }
+
+            rubroXProfesional.Fhbaja = DateTime.Now;
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Realiza tus operaciones de base de datos aquí
+                    _context.RubroXprofesionals.Update(rubroXProfesional);
                     _context.SaveChanges();
 
                     // Si todo va bien, haz un commit
