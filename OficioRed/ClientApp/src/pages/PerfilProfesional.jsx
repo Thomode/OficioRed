@@ -666,8 +666,29 @@ const PerfilProfesional = () => {
                   />
                 </Box>
                 <Button
-                  variant="contained"
-                  style={{ backgroundColor: "#1b325f", color: "#fff" }}
+                  variant="text"
+                  style={{
+                    color: "white",
+                    backgroundColor: "#d33",
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                    margin: "2px",
+                  }}
+                  size="small"
+                  onClick={() => setOpenRatingModal(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="text"
+                  style={{
+                    color: "white",
+                    backgroundColor: "#1b325f",
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                    margin: "2px",
+                  }}
+                  size="small"
                   onClick={handleCloseRatingModal}
                 >
                   Guardar
@@ -685,25 +706,10 @@ const PerfilProfesional = () => {
                 fontSize: "15px",
               }}
               size="small"
-              startIcon={<AddCommentIcon />}
-              onClick={() => crearComentario()}
-            >
-              Comentar
-            </Button>
-            <Button
-              variant="text"
-              style={{
-                color: "white",
-                backgroundColor: "#1b325f",
-                margin: "20px",
-                fontWeight: "bold",
-                fontSize: "15px",
-              }}
-              size="small"
               startIcon={<CommentIcon />}
               onClick={() => handleClickComments()}
             >
-              Ver comentarios
+              Comentarios
             </Button>
           </Box>
         </Box>

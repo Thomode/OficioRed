@@ -8,7 +8,13 @@ import Swal from "sweetalert2";
 import { profesionalService } from "../../services/profesional.service";
 import { interesadoService } from "../../services/interesado.service";
 
-export function Comentario({ idComentario, idUser, comentario, fecha, onUpdate }) {
+export function Comentario({
+  idComentario,
+  idUser,
+  comentario,
+  fecha,
+  onUpdate,
+}) {
   const [usuarioInfo, setUsuarioInfo] = useState(null);
   const idUsuarioSesion = usuarioService.getId();
 
@@ -121,51 +127,51 @@ export function Comentario({ idComentario, idUser, comentario, fecha, onUpdate }
   };
   const esUsuarioActual = idUsuarioSesion && idUsuarioSesion === idUser;
 
-    const handleClickEdit = async (comentario, idComentario) => {
-        try {
-            const nuevoComentario = await Swal.fire({
-                title: "Editar Comentario",
-                input: "text",
-                inputAttributes: {
-                    autocapitalize: "off",
-                },
-                inputValue: comentario,
-                showCancelButton: true,
-                confirmButtonColor: "#1b325f",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Guardar",
-                cancelButtonText: "Cancelar",
-                showLoaderOnConfirm: true,
-                reverseButtons: true,
-                preConfirm: async (nuevoComentario) => {
-                    try {
-                        await comentarioService.update(idComentario, nuevoComentario);
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: "Comentario actualizado con éxito",
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                        onUpdate();
-                    } catch (error) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: error.message || "Error desconocido",
-                            confirmButtonColor: "#1b325f",
-                        });
-                    }
-                },
+  const handleClickEdit = async (comentario, idComentario) => {
+    try {
+      const nuevoComentario = await Swal.fire({
+        title: "Editar Comentario",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        inputValue: comentario,
+        showCancelButton: true,
+        confirmButtonColor: "#1b325f",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Guardar",
+        cancelButtonText: "Cancelar",
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: async (nuevoComentario) => {
+          try {
+            await comentarioService.update(idComentario, nuevoComentario);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Comentario actualizado con éxito",
+              showConfirmButton: false,
+              timer: 1500,
             });
+            onUpdate();
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: error.message || "Error desconocido",
+              confirmButtonColor: "#1b325f",
+            });
+          }
+        },
+      });
 
-            if (nuevoComentario && nuevoComentario.data) {
-                console.log(nuevoComentario.data);
-            }
-        } catch (error) {
-            console.error("Error en handleClickEdit:", error);
-        }
-    };
+      if (nuevoComentario && nuevoComentario.data) {
+        console.log(nuevoComentario.data);
+      }
+    } catch (error) {
+      console.error("Error en handleClickEdit:", error);
+    }
+  };
 
   const handleClickDelete = (comentario, id) => {
     Swal.fire({
@@ -183,60 +189,61 @@ export function Comentario({ idComentario, idUser, comentario, fecha, onUpdate }
       }
     });
   };
-    const eliminarComentario = async (id) => {
-        try {
-            await comentarioService.deleteComentario(id);
-            await Swal.fire({
-                title: "Eliminado!",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 2000,
-            });
-            onUpdate();
-        } catch (error) {
-            console.error("Error al eliminar el comentario:", error);
-            Swal.fire({
-                title: "Error",
-                text: error.response ? error.response.data : "No se pudo eliminar el comentario",
-                icon: "error",
-                confirmButtonColor: "#1b325f",
-            });
-        }
-    };
+  const eliminarComentario = async (id) => {
+    try {
+      await comentarioService.deleteComentario(id);
+      await Swal.fire({
+        title: "Eliminado!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      onUpdate();
+    } catch (error) {
+      console.error("Error al eliminar el comentario:", error);
+      Swal.fire({
+        title: "Error",
+        text: error.response
+          ? error.response.data
+          : "No se pudo eliminar el comentario",
+        icon: "error",
+        confirmButtonColor: "#1b325f",
+      });
+    }
+  };
 
-    return (
-        <>
-            {usuarioInfo && (
-                <div style={cardStyles}>
-                    <div style={userInfoStyles}>
-                        <img
-                            src={usuarioInfo.fotoUsuario}
-                            alt={`Foto de usuario ${idUser}`}
-                            style={userImageStyles}
-                        />
-                        <div>
-                            <span
-                                style={userNameStyles}
-                            >{`${usuarioInfo.nombre} ${usuarioInfo.apellido}`}</span>
-                            <span style={timeUserStyles}>{formatearFecha(fecha)}</span>
-                        </div>
-                    </div>
-                    <p style={parrafoStyles}>{comentario}</p>
-                    {esUsuarioActual && (
-                        <div>
-                            <EditIcon
-                                style={{ cursor: "pointer", marginRight: "8px" }}
-                                onClick={() => handleClickEdit(comentario, idComentario)}
-                            />
-                            <DeleteIcon
-                                style={{ cursor: "pointer" }}
-                                onClick={() => handleClickDelete(comentario, idComentario)}
-                            />
-                        </div>
-                    )}
-                </div>
-            )}
-        </>
-    );
-
+  return (
+    <>
+      {usuarioInfo && (
+        <div style={cardStyles}>
+          <div style={userInfoStyles}>
+            <img
+              src={usuarioInfo.fotoUsuario}
+              alt={`Foto de usuario ${idUser}`}
+              style={userImageStyles}
+            />
+            <div>
+              <span
+                style={userNameStyles}
+              >{`${usuarioInfo.nombre} ${usuarioInfo.apellido}`}</span>
+              <span style={timeUserStyles}>{formatearFecha(fecha)}</span>
+            </div>
+          </div>
+          <p style={parrafoStyles}>{comentario}</p>
+          {esUsuarioActual && (
+            <div>
+              <EditIcon
+                style={{ cursor: "pointer", marginRight: "8px" }}
+                onClick={() => handleClickEdit(comentario, idComentario)}
+              />
+              <DeleteIcon
+                style={{ cursor: "pointer" }}
+                onClick={() => handleClickDelete(comentario, idComentario)}
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  );
 }

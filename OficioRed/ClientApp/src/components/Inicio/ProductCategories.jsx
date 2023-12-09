@@ -62,8 +62,8 @@ const ImageIconButton = styled(ButtonBase)(({ theme }) => ({
 const images = [
   {
     url: ImagenPintor,
-    id: 1,
-    title: "Pintura",
+    id: 10,
+    title: "Pinturería",
     width: "30%",
   },
   {
