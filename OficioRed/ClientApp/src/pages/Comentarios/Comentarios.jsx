@@ -107,180 +107,194 @@ export function Comentarios() {
     };
 
 
-  return (
-    <Box
-      minHeight="100vh"
-      p={5}
-      style={{
-        backgroundImage: `url(${imagenFondo})`,
-        backgroundSize: "cover",
-        backgroundAttachment: "fixed",
-        position: "relative",
-      }}
-    >
-      <Grid container spacing={2} justify="center">
-        <Grid
-          xs={12}
-          sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.6)",
-            borderRadius: "20px 20px 0px 0px",
-            padding: "5px",
-          }}
-        >
-          <Box
+    return (
+        <Box
+            minHeight="100vh"
+            p={5}
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+                backgroundImage: `url(${imagenFondo})`,
+                backgroundSize: "cover",
+                backgroundAttachment: "fixed",
+                position: "relative",
             }}
-          ></Box>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Button
-              variant="text"
-              style={{
-                color: "white",
-                backgroundColor: "#1b325f",
-                margin: "20px",
-                fontWeight: "bold",
-              }}
-              fontSize="large"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => handleClick()}
-            >
-              Volver
-            </Button>
-            <Typography variant="h2" sx={titleStyle2}>
-              Comentarios
-            </Typography>
-            <div></div>
-          </Box>
-        </Grid>
-        <Grid
-          container
-          justifyContent="center"
-          spacing={0}
-          sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.6)",
-            borderRadius: "0px 0px 20px 20px",
-          }}
         >
-          {profesional && (
-            <Grid item xs={12} md={4} style={{ padding: 10 }}>
-              <CardMedia
-                component="img"
-                alt="profesional"
-                height="560"
-                image={profesional.fotoPerfil}
-                style={{
-                  border: "2px solid #1b325f",
-                  borderRadius: "20px 20px 0 0",
-                }}
-              />
-              <Box
-                color="white"
-                bgcolor="#1b325f"
-                p={2}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                borderRadius="0px 0px 20px 20px"
-              >
-                <Typography
-                  variant="h4"
-                  style={{ textAlign: "center", fontSize: "2.5rem" }}
+            <Grid container spacing={2} justify="center">
+                <Grid
+                    xs={12}
+                    sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.6)",
+                        borderRadius: "20px 20px 0px 0px",
+                        padding: "5px",
+                    }}
                 >
-                  {`${profesional.nombre} ${profesional.apellido}`}
-                </Typography>
-              </Box>
+                    <Box
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}
+                    ></Box>
+                    <Box
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Button
+                            variant="text"
+                            style={{
+                                color: "white",
+                                backgroundColor: "#1b325f",
+                                margin: "20px",
+                                fontWeight: "bold",
+                            }}
+                            fontSize="large"
+                            startIcon={<ArrowBackIcon />}
+                            onClick={() => handleClick()}
+                        >
+                            Volver
+                        </Button>
+                        <Typography variant="h2" sx={titleStyle2}>
+                            Comentarios
+                        </Typography>
+                        <div></div>
+                    </Box>
+                </Grid>
+                <Grid
+                    container
+                    justifyContent="center"
+                    spacing={0}
+                    sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.6)",
+                        borderRadius: "0px 0px 20px 20px",
+                    }}
+                >
+                    {profesional && (
+                        <Grid item xs={12} md={4} style={{ padding: 10 }}>
+                            <CardMedia
+                                component="img"
+                                alt="profesional"
+                                height="560"
+                                image={profesional.fotoPerfil}
+                                style={{
+                                    border: "2px solid #1b325f",
+                                    borderRadius: "20px 20px 0 0",
+                                }}
+                            />
+                            <Box
+                                color="white"
+                                bgcolor="#1b325f"
+                                p={2}
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                borderRadius="0px 0px 20px 20px"
+                            >
+                                <Typography
+                                    variant="h4"
+                                    style={{ textAlign: "center", fontSize: "2.5rem" }}
+                                >
+                                    {`${profesional.nombre} ${profesional.apellido}`}
+                                </Typography>
+                            </Box>
+                        </Grid>
+                    )}
+
+                    <Grid item xs={12} sm={6} md={8}>
+                        <Box
+                            style={{
+                                padding: "50px",
+                                borderRadius: "8px",
+                                width: "100%",
+                                height: "700px",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "stretch",
+                            }}
+                        >
+                            <Box
+                                style={{
+                                    backgroundColor: "white",
+                                    padding: "20px",
+                                    margin: "5px",
+                                    borderRadius: "8px",
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "stretch",
+                                }}
+                            >
+                                <TextField
+                                    label="Nuevo comentario"
+                                    multiline
+                                    rows={4}
+                                    fullWidth
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
+                                    variant="outlined"
+                                    style={{ margin: "5px" }}
+                                />
+
+                                <Box style={{ display: "flex", justifyContent: "flex-end", margin: "5px" }}>
+                                    <Button
+                                        variant="text"
+                                        style={{
+                                            color: "white",
+                                            backgroundColor: "#d33",
+                                            fontWeight: "bold",
+                                            fontSize: "15px",
+                                            margin: "2px"
+                                        }}
+                                        size="small"
+                                        onClick={() => setNewComment("")}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                    <Button
+                                        variant="text"
+                                        style={{
+                                            color: "white",
+                                            backgroundColor: "#1b325f",
+                                            fontWeight: "bold",
+                                            fontSize: "15px",
+                                            margin: "2px"
+                                        }}
+                                        size="small"
+                                        startIcon={<AddCommentIcon />}
+                                        onClick={crearComentario}
+                                    >
+                                        Comentar
+                                    </Button>
+                                </Box>
+                            </Box>
+                            <Box
+                                style={{
+                                    margin: "5px",
+                                    borderRadius: "8px",
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    overflowY: "auto",
+                                    alignItems: "stretch",
+                                }}
+                            >
+
+                                {comentarios &&
+                                    comentarios.map((comentario) => (
+                                        <Comentario
+                                            key={comentario.idComentario}
+                                            idComentario={comentario.idComentario}
+                                            idUser={comentario.idUsuario}
+                                            comentario={comentario.comentario1}
+                                            fecha={comentario.fhalta}
+                                        />
+                                    ))}
+                            </Box>
+                        </Box>
+                    </Grid>
+                </Grid>
             </Grid>
-          )}
-
-         <Grid item xs={12} sm={6} md={8}>
-            <Box
-                style={{
-                    padding: "50px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "700px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "stretch",
-                }}
-                      >
-                <Box
-                    style={{
-                        backgroundColor: "white",
-                        padding: "20px",
-                        margin: "5px",
-                        borderRadius: "8px",
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "stretch",
-                    }}
-                >
-                {/* Nuevo input para comentarios */}
-                <TextField
-                    label="Nuevo comentario"
-                    multiline
-                    rows={4}
-                    fullWidth
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    variant="outlined"
-                    style={{ margin: "5px" }}
-                />
-
-                {/* Nuevo botón para crear comentario */}
-                <Button
-                    variant="text"
-                    style={{
-                        color: "white",
-                        backgroundColor: "#1b325f",
-                        margin: "5px",
-                        fontWeight: "bold",
-                        fontSize: "15px",
-                    }}
-                    size="small"
-                    startIcon={<AddCommentIcon />}
-                    onClick={crearComentario}
-                >
-                    Comentar
-                </Button>
-                </Box>
-                <Box
-                    style={{
-                        margin:"5px",
-                        borderRadius: "8px",
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        overflowY: "auto",
-                        alignItems: "stretch",
-                    }}
-                >
-                {/* Lista de comentarios existentes */}
-                {comentarios &&
-                    comentarios.map((comentario) => (
-                        <Comentario
-                            key={comentario.idComentario}
-                            idComentario={comentario.idComentario}
-                            idUser={comentario.idUsuario}
-                            comentario={comentario.comentario1}
-                            fecha={comentario.fhalta}
-                        />
-                    ))}
-                </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Box>
-  );
+        </Box>
+    );
 }
