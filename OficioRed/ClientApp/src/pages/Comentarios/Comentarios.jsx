@@ -1,13 +1,14 @@
 import { useRef, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  Grid,
-  Paper,
-  CardMedia,
-  Rating,
-  Box,
-  Button,
-  Typography,
+    Grid,
+    Paper,
+    CardMedia,
+    Rating,
+    Box,
+    Button,
+    Typography,
+    TextField, 
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { comentarioService } from "../../services/comentario.service";
@@ -56,67 +57,53 @@ export function Comentarios() {
   const { id } = useParams();
   const [profesional, setProfesional] = useState(null);
   const [comentarios, setComentarios] = useState(null);
+  const [newComment, setNewComment] = useState("");
 
-  const handleVolver = async () => {
-    navigate(-1);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await profesionalService.getById(id);
-        const response1 = await comentarioService.get(id);
-        setProfesional(response.data);
-        setComentarios(response1.data);
-        console.log(response1.data);
-      } catch (error) {
-        console.error("Error al obtener datos", error);
-      }
+    const handleVolver = async () => {
+        navigate(-1);
     };
 
-    fetchData();
-  }, [id]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await profesionalService.getById(id);
+                const response1 = await comentarioService.get(id);
+                setProfesional(response.data);
+                setComentarios(response1.data);
+            } catch (error) {
+                console.error("Error al obtener datos", error);
+            }
+        };
 
-  const handleClick = () => {
-    navigate(-1);
-  };
+        fetchData();
+    }, [id]);
 
-    const crearComentario = async (comment) => {
-        await Swal.fire({
-            title: "Comentar",
-            input: "text",
-            inputAttributes: {
-                autocapitalize: "off",
-            },
-            inputValue: comment,
-            showCancelButton: true,
-            confirmButtonColor: "#1b325f",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Guardar",
-            cancelButtonText: "Cancelar",
-            reverseButtons: true,
-            showLoaderOnConfirm: true,
-            preConfirm: async (commentText) => {
-                try {
-                    await await comentarioService.create(commentText, id);
+    const handleClick = () => {
+        navigate(-1);
+    };
 
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Comentario creado",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                } catch (error) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: error.response.data,
-                        confirmButtonColor: "#1b325f",
-                    });
-                }
-            },
-        });
+    const crearComentario = async () => {
+        try {
+            await comentarioService.create(newComment, id);
+
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Comentario creado",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+
+            const response = await comentarioService.get(id);
+            setComentarios(response.data);
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.response.data,
+                confirmButtonColor: "#1b325f",
+            });
+        }
     };
 
 
@@ -171,21 +158,7 @@ export function Comentarios() {
             <Typography variant="h2" sx={titleStyle2}>
               Comentarios
             </Typography>
-            <Button
-                variant="text"
-                style={{
-                    color: "white",
-                    backgroundColor: "#1b325f",
-                    margin: "20px",
-                    fontWeight: "bold",
-                    fontSize: "15px",
-                }}
-                size="small"
-                startIcon={<AddCommentIcon />}
-                onClick={() => crearComentario()}
-            >
-                Comentar
-            </Button>
+            <div></div>
           </Box>
         </Grid>
         <Grid
@@ -228,28 +201,72 @@ export function Comentarios() {
             </Grid>
           )}
 
-          <Grid item xs={12} sm={6} md={8}>
-            <Box
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.8)",
-                padding: "10px",
-                borderRadius: "8px",
-                width: "100%",
-                height: "650px",
-                overflowY: "auto",
-              }}
-            >
-              {comentarios &&
-                comentarios.map((comentario) => (
-                  <Comentario
-                    key={comentario.idComentario}
-                    idComentario={comentario.idComentario}
-                    idUser={comentario.idUsuario}
-                    comentario={comentario.comentario1}
-                    fecha={comentario.fhalta}
-                  />
-                ))}
-            </Box>
+         <Grid item xs={12} sm={6} md={8}>
+                      <Box
+                          style={{
+                              backgroundColor: "rgba(255, 255, 255, 0.8)",
+                              padding: "20px",
+                              borderRadius: "8px",
+                              width: "100%",
+                              height: "650px",
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "stretch",
+                          }}
+                      >
+                          {/* Nuevo input para comentarios */}
+                          <TextField
+                              label="Nuevo comentario"
+                              multiline
+                              rows={4}
+                              fullWidth
+                              value={newComment}
+                              onChange={(e) => setNewComment(e.target.value)}
+                              variant="outlined"
+                              style={{ marginBottom: "16px" }}
+                          />
+
+                          {/* Nuevo botón para crear comentario */}
+                          <Button
+                              variant="text"
+                              style={{
+                                  color: "white",
+                                  backgroundColor: "#1b325f",
+                                  margin: "20px",
+                                  fontWeight: "bold",
+                                  fontSize: "15px",
+                              }}
+                              size="small"
+                              startIcon={<AddCommentIcon />}
+                              onClick={crearComentario}
+                          >
+                              Comentar
+                          </Button>
+                          <Box
+                              style={{
+                                  padding: "20px",
+                                  borderRadius: "8px",
+                                  width: "100%",
+                                  height: "650px",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  overflowY: "auto",
+                                  alignItems: "stretch",
+                              }}
+                          >
+                          {/* Lista de comentarios existentes */}
+                          {comentarios &&
+                              comentarios.map((comentario) => (
+                                  <Comentario
+                                      key={comentario.idComentario}
+                                      idComentario={comentario.idComentario}
+                                      idUser={comentario.idUsuario}
+                                      comentario={comentario.comentario1}
+                                      fecha={comentario.fhalta}
+                                  />
+                              ))}
+                          </Box>
+                      </Box>
           </Grid>
         </Grid>
       </Grid>
