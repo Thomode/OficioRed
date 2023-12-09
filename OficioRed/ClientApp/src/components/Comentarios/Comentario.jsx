@@ -121,43 +121,51 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
   };
   const esUsuarioActual = idUsuarioSesion && idUsuarioSesion === idUser;
 
-  const handleClickEdit = async (comentariom) => {
-    await Swal.fire({
-      title: "Editar Comentario",
-      input: "text",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      inputValue: comentario,
-      showCancelButton: true,
-      confirmButtonColor: "#1b325f",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Guardar",
-      cancelButtonText: "Cancelar",
-      showLoaderOnConfirm: true,
-      reverseButtons: true,
-      preConfirm: async (nuevoComentario) => {
+    const handleClickEdit = async (comentario, idComentario) => {
         try {
-          await comentarioService.update(idComentario, nuevoComentario);
+            const nuevoComentario = await Swal.fire({
+                title: "Editar Comentario",
+                input: "text",
+                inputAttributes: {
+                    autocapitalize: "off",
+                },
+                inputValue: comentario,
+                showCancelButton: true,
+                confirmButtonColor: "#1b325f",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Guardar",
+                cancelButtonText: "Cancelar",
+                showLoaderOnConfirm: true,
+                reverseButtons: true,
+                preConfirm: async (nuevoComentario) => {
+                    try {
+                        await comentarioService.update(idComentario, nuevoComentario);
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Comentario actualizado con éxito",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    } catch (error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: error.message || "Error desconocido",
+                            confirmButtonColor: "#1b325f",
+                        });
+                    }
+                },
+            });
 
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Comentario actualizado con éxito",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+            // Verifica la respuesta antes de intentar acceder a nuevoComentario.data
+            if (nuevoComentario && nuevoComentario.data) {
+                console.log(nuevoComentario.data);
+            }
         } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: error.response.data,
-            confirmButtonColor: "#1b325f",
-          });
+            console.error("Error en handleClickEdit:", error);
         }
-      },
-    });
-  };
+    };
 
   const handleClickDelete = (comentario, id) => {
     Swal.fire({
@@ -215,10 +223,10 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
       <p style={parrafoStyles}>{comentario}</p>
       {esUsuarioActual && (
         <div>
-          <EditIcon
+        <EditIcon
             style={{ cursor: "pointer", marginRight: "8px" }}
-            onClick={() => handleClickEdit()}
-          />
+            onClick={() => handleClickEdit(comentario, idComentario )} 
+        />
           <DeleteIcon
             style={{ cursor: "pointer" }}
             onClick={() => handleClickDelete(comentario, idComentario)}

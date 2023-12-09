@@ -30,9 +30,24 @@ const createRating = async (idProfesional, puntuacion) => {
 const deleteComentario = async (id) =>
     await axios.delete(`/api/Comentario/${id}`, await sesionService.getConfig())
 
-const update = async (id, comentario) =>
-    await axios.put(`/api/Comentario/${id}`, { comentario }, await sesionService.getConfig())
+const update = async (idComentario, nuevoComentario) => {
+    try {
+        const response = await axios.put(`/api/Comentario`, {
+            idComentario,
+            comentario1: nuevoComentario,
+        }, await sesionService.getConfig());
 
+        if (response && response.data) {
+            console.log(response.data);
+            return response.data;
+        } else {
+            throw new Error("La respuesta o los datos son undefined");
+        }
+    } catch (error) {
+        console.error("Error en la actualización del comentario:", error);
+        throw error;
+    }
+}
 export const comentarioService = {
     get,
     getAll,
