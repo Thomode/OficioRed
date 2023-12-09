@@ -175,26 +175,25 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
       }
     });
   };
-
-  const eliminarComentario = async (id) => {
-    try {
-      await comentarioService.deleteComentario(id);
-
-      await Swal.fire({
-        title: "Eliminado!",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text: "No se pudo eliminar el comentario",
-        icon: "error",
-        confirmButtonColor: "#1b325f",
-      });
-    }
-  };
+    const eliminarComentario = async (id) => {
+        try {
+            await comentarioService.deleteComentario(id);
+            await Swal.fire({
+                title: "Eliminado!",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        } catch (error) {
+            console.error("Error al eliminar el comentario:", error);
+            Swal.fire({
+                title: "Error",
+                text: error.response ? error.response.data : "No se pudo eliminar el comentario",
+                icon: "error",
+                confirmButtonColor: "#1b325f",
+            });
+        }
+    };
 
   return (
     <div style={cardStyles}>

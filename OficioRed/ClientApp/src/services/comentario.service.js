@@ -28,10 +28,10 @@ const createRating = async (idProfesional, puntuacion) => {
 } 
 
 const deleteComentario = async (id) =>
-    await axios.delete(`/api/Comentario/${id}`)
+    await axios.delete(`/api/Comentario/${id}`, await sesionService.getConfig())
 
 const update = async (id, comentario) =>
-    await axios.put(`/api/Comentario/${id}`, {comentario})
+    await axios.put(`/api/Comentario/${id}`, { comentario }, await sesionService.getConfig())
 
 export const comentarioService = {
     get,
