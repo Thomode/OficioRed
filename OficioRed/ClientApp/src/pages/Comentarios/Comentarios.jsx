@@ -53,7 +53,6 @@ const titleStyle2 = {
 
 export function Comentarios() {
   const navigate = useNavigate();
-  const [value, setValue] = useState(0);
   const { id } = useParams();
   const [profesional, setProfesional] = useState(null);
   const [comentarios, setComentarios] = useState(null);
@@ -95,6 +94,7 @@ export function Comentarios() {
       const response = await comentarioService.get(id);
       setComentarios(response.data);
       setComentariosActualizados(true);
+      setNewComment("");
     } catch (error) {
       Swal.fire({
         icon: "error",
