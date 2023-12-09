@@ -158,7 +158,6 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
                 },
             });
 
-            // Verifica la respuesta antes de intentar acceder a nuevoComentario.data
             if (nuevoComentario && nuevoComentario.data) {
                 console.log(nuevoComentario.data);
             }
@@ -203,36 +202,39 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
         }
     };
 
-  return (
-    <div style={cardStyles}>
-      {usuarioInfo && (
-        <div style={userInfoStyles}>
-          <img
-            src={usuarioInfo.fotoUsuario}
-            alt={`Foto de usuario ${idUser}`}
-            style={userImageStyles}
-          />
-          <div>
-            <span
-              style={userNameStyles}
-            >{`${usuarioInfo.nombre} ${usuarioInfo.apellido}`}</span>
-            <span style={timeUserStyles}>{formatearFecha(fecha)}</span>
-          </div>
-        </div>
-      )}
-      <p style={parrafoStyles}>{comentario}</p>
-      {esUsuarioActual && (
-        <div>
-        <EditIcon
-            style={{ cursor: "pointer", marginRight: "8px" }}
-            onClick={() => handleClickEdit(comentario, idComentario )} 
-        />
-          <DeleteIcon
-            style={{ cursor: "pointer" }}
-            onClick={() => handleClickDelete(comentario, idComentario)}
-          />
-        </div>
-      )}
-    </div>
-  );
+    return (
+        <>
+            {usuarioInfo && (
+                <div style={cardStyles}>
+                    <div style={userInfoStyles}>
+                        <img
+                            src={usuarioInfo.fotoUsuario}
+                            alt={`Foto de usuario ${idUser}`}
+                            style={userImageStyles}
+                        />
+                        <div>
+                            <span
+                                style={userNameStyles}
+                            >{`${usuarioInfo.nombre} ${usuarioInfo.apellido}`}</span>
+                            <span style={timeUserStyles}>{formatearFecha(fecha)}</span>
+                        </div>
+                    </div>
+                    <p style={parrafoStyles}>{comentario}</p>
+                    {esUsuarioActual && (
+                        <div>
+                            <EditIcon
+                                style={{ cursor: "pointer", marginRight: "8px" }}
+                                onClick={() => handleClickEdit(comentario, idComentario)}
+                            />
+                            <DeleteIcon
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleClickDelete(comentario, idComentario)}
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
+        </>
+    );
+
 }
