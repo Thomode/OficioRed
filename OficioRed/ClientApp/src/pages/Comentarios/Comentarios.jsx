@@ -205,6 +205,7 @@ export function Comentarios() {
                         <Box
                             style={{
                                 padding: "50px",
+                                paddingTop:"0px",
                                 borderRadius: "8px",
                                 width: "100%",
                                 height: "700px",
