@@ -1,10 +1,8 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Grid,
-  Paper,
   CardMedia,
-  Rating,
   Box,
   Button,
   Typography,
@@ -18,25 +16,6 @@ import { Comentario } from "../../components/Comentarios/Comentario";
 import imagenFondo from "../../assets/fondo.jpg";
 import Swal from "sweetalert2";
 import AddCommentIcon from "@mui/icons-material/AddComment";
-
-const styles = {
-  container: {
-    padding: "16px",
-    marginBottom: "16px",
-  },
-  stars: {
-    marginBottom: "16px",
-  },
-  textarea: {
-    width: "100%",
-    height: "80px",
-    marginBottom: "8px",
-    marginTop: "8px",
-    border: "1px solid rgb(107, 114, 12)",
-    padding: "8px",
-    resize: "none",
-  },
-};
 
 const titleStyle2 = {
   fontSize: "45px",
