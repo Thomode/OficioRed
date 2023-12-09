@@ -5,6 +5,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { comentarioService } from "../../services/comentario.service";
 import { usuarioService } from "../../services/usuario.service";
 import Swal from "sweetalert2";
+import { profesionalService } from "../../services/profesional.service";
+import { interesadoService } from "../../services/interesado.service";
 
 export function Comentario({ idComentario, idUser, comentario, fecha }) {
   const [usuarioInfo, setUsuarioInfo] = useState(null);
@@ -18,28 +20,48 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
     const fechaFormateada = `${dia}/${mes}/${anio}`;
     return fechaFormateada;
   }
-
   const infoPerfil = async (idUser) => {
+    const response = await usuarioService.get(idUser);
+    let fotoUsuario = null;
+    let nombre = "";
+    let apellido = "";
+
     try {
-      const response = await usuarioService.get(idUser);
-      let fotoUsuario = null;
-      let nombre = "";
-      let apellido = "";
-
+      let profesionalId = null;
+      let interesadoId = null;
       if (response.data.idRol === 2) {
-        const profesionalResponse = await axios.get(
-          `/api/Profesional/${idUser}`
-        );
-        fotoUsuario = profesionalResponse.data.fotoPerfil;
-        nombre = profesionalResponse.data.nombre;
-        apellido = profesionalResponse.data.apellido;
+        const profesionales = await profesionalService.getAll();
+        for (const profesional of profesionales) {
+          if (profesional.idUsuario === response.data.idUsuario) {
+            profesionalId = profesional.idProfesional;
+            break;
+          }
+        }
+        if (profesionalId) {
+          const profesionalResponse = await profesionalService.getById(
+            profesionalId
+          );
+          fotoUsuario = profesionalResponse.data.fotoPerfil;
+          nombre = profesionalResponse.data.nombre;
+          apellido = profesionalResponse.data.apellido;
+        }
       } else if (response.data.idRol === 3) {
-        const interesadoResponse = await axios.get(`/api/Interesado/${idUser}`);
-        fotoUsuario = interesadoResponse.data.fotoPerfil;
-        nombre = interesadoResponse.data.nombre;
-        apellido = interesadoResponse.data.apellido;
+        const interesados = await interesadoService.getAll();
+        for (const interesado of interesados) {
+          if (interesado.idUsuario === response.data.idUsuario) {
+            interesadoId = interesado.idInteresado;
+            break;
+          }
+        }
+        if (interesadoId) {
+          const interesadoResponse = await interesadoService.getById(
+            interesadoId
+          );
+          fotoUsuario = interesadoResponse.data.fotoPerfil;
+          nombre = interesadoResponse.data.nombre;
+          apellido = interesadoResponse.data.apellido;
+        }
       }
-
       return { fotoUsuario, nombre, apellido };
     } catch (error) {
       console.error("Error al obtener los datos:", error);
@@ -83,6 +105,7 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
     height: "40px",
     borderRadius: "50%",
     marginRight: "8px",
+    objectFit: "cover",
   };
   const userNameStyles = {
     fontSize: "16px",
@@ -157,7 +180,7 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
     try {
       await comentarioService.deleteComentario(id);
 
-      Swal.fire({
+      await Swal.fire({
         title: "Eliminado!",
         icon: "success",
         showConfirmButton: false,
@@ -166,7 +189,7 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
     } catch (error) {
       Swal.fire({
         title: "Error",
-        text: "No se pudo eliminar el rubro",
+        text: "No se pudo eliminar el comentario",
         icon: "error",
         confirmButtonColor: "#1b325f",
       });
@@ -191,7 +214,6 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
         </div>
       )}
       <p style={parrafoStyles}>{comentario}</p>
-
       {esUsuarioActual && (
         <div>
           <EditIcon

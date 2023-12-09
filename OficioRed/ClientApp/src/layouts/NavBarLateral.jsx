@@ -216,9 +216,7 @@ export function NavBarLateral({ children, type, logout }) {
           }
         }
         if (profesionalId) {
-          const profesionalResponse = await profesionalService.getById(
-            profesionalId
-          );
+          const profesionalResponse = await profesionalService.getById(profesionalId);
           fotoUsuario = profesionalResponse.data.fotoPerfil;
         }
       } else if (response.data.idRol === 3) {
