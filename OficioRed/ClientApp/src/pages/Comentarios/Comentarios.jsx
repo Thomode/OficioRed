@@ -15,6 +15,8 @@ import { profesionalService } from "../../services/profesional.service";
 import "./comentarios.css";
 import { Comentario } from "../../components/Comentarios/Comentario";
 import imagenFondo from "../../assets/fondo.jpg";
+import Swal from "sweetalert2";
+import AddCommentIcon from "@mui/icons-material/AddComment";
 
 const styles = {
   container: {
@@ -79,6 +81,45 @@ export function Comentarios() {
     navigate(-1);
   };
 
+    const crearComentario = async (comment) => {
+        await Swal.fire({
+            title: "Comentar",
+            input: "text",
+            inputAttributes: {
+                autocapitalize: "off",
+            },
+            inputValue: comment,
+            showCancelButton: true,
+            confirmButtonColor: "#1b325f",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Guardar",
+            cancelButtonText: "Cancelar",
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: async (commentText) => {
+                try {
+                    await await comentarioService.create(commentText, id);
+
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Comentario creado",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                } catch (error) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: error.response.data,
+                        confirmButtonColor: "#1b325f",
+                    });
+                }
+            },
+        });
+    };
+
+
   return (
     <Box
       minHeight="100vh"
@@ -130,7 +171,21 @@ export function Comentarios() {
             <Typography variant="h2" sx={titleStyle2}>
               Comentarios
             </Typography>
-            <div></div>
+            <Button
+                variant="text"
+                style={{
+                    color: "white",
+                    backgroundColor: "#1b325f",
+                    margin: "20px",
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                }}
+                size="small"
+                startIcon={<AddCommentIcon />}
+                onClick={() => crearComentario()}
+            >
+                Comentar
+            </Button>
           </Box>
         </Grid>
         <Grid
