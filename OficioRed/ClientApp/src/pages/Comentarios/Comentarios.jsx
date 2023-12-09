@@ -58,10 +58,9 @@ export function Comentarios() {
   const [profesional, setProfesional] = useState(null);
   const [comentarios, setComentarios] = useState(null);
   const [newComment, setNewComment] = useState("");
+  const [comentariosActualizados, setComentariosActualizados] = useState(false);
 
-    const handleVolver = async () => {
-        navigate(-1);
-    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,13 +69,14 @@ export function Comentarios() {
                 const response1 = await comentarioService.get(id);
                 setProfesional(response.data);
                 setComentarios(response1.data);
+                setComentariosActualizados(false);
             } catch (error) {
                 console.error("Error al obtener datos", error);
             }
         };
 
         fetchData();
-    }, [id]);
+    }, [id, comentariosActualizados]);
 
     const handleClick = () => {
         navigate(-1);
@@ -96,6 +96,7 @@ export function Comentarios() {
 
             const response = await comentarioService.get(id);
             setComentarios(response.data);
+            setComentariosActualizados(true);
         } catch (error) {
             Swal.fire({
                 icon: "error",
@@ -289,6 +290,7 @@ export function Comentarios() {
                                             idUser={comentario.idUsuario}
                                             comentario={comentario.comentario1}
                                             fecha={comentario.fhalta}
+                                            onUpdate={() => setComentariosActualizados(true)}
                                         />
                                     ))}
                             </Box>

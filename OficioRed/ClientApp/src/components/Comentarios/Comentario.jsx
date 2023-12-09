@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { profesionalService } from "../../services/profesional.service";
 import { interesadoService } from "../../services/interesado.service";
 
-export function Comentario({ idComentario, idUser, comentario, fecha }) {
+export function Comentario({ idComentario, idUser, comentario, fecha, onUpdate }) {
   const [usuarioInfo, setUsuarioInfo] = useState(null);
   const idUsuarioSesion = usuarioService.getId();
 
@@ -147,6 +147,7 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
                             showConfirmButton: false,
                             timer: 1500,
                         });
+                        onUpdate();
                     } catch (error) {
                         Swal.fire({
                             icon: "error",
@@ -191,6 +192,7 @@ export function Comentario({ idComentario, idUser, comentario, fecha }) {
                 showConfirmButton: false,
                 timer: 2000,
             });
+            onUpdate();
         } catch (error) {
             console.error("Error al eliminar el comentario:", error);
             Swal.fire({
