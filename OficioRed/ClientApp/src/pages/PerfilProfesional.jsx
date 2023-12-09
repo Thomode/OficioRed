@@ -16,8 +16,6 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import StarIcon from "@mui/icons-material/Star";
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import imagendefault from "../assets/fotodefault.webp";
