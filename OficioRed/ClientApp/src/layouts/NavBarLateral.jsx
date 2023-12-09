@@ -33,8 +33,9 @@ import logoOficio from "../assets/logo-oficiored.png";
 import imagendefault from "../assets/fotodefault.webp";
 import { usuarioService } from "../services/usuario.service";
 import { sesionService } from "../auth/sesion";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { profesionalService } from "../services/profesional.service";
+import { interesadoService } from "../services/interesado.service";
 
 const drawerWidth = 240;
 
@@ -204,35 +205,33 @@ export function NavBarLateral({ children, type, logout }) {
 
     try {
       const response = await usuarioService.get(Number(id));
-
       let profesionalId = null;
       let interesadoId = null;
-
       if (response.data.idRol === 2) {
-        const profesionales = await axios.get("/api/Profesional");
-        for (const profesional of profesionales.data) {
+        const profesionales = await profesionalService.getAll();
+        for (const profesional of profesionales) {
           if (profesional.idUsuario === id) {
             profesionalId = profesional.idProfesional;
             break;
           }
         }
         if (profesionalId) {
-          const profesionalResponse = await axios.get(
-            `/api/Profesional/${profesionalId}`
+          const profesionalResponse = await profesionalService.getById(
+            profesionalId
           );
           fotoUsuario = profesionalResponse.data.fotoPerfil;
         }
       } else if (response.data.idRol === 3) {
-        const interesados = await axios.get("/api/Interesado");
-        for (const interesado of interesados.data) {
+        const interesados = await interesadoService.getAll();
+        for (const interesado of interesados) {
           if (interesado.idUsuario === id) {
             interesadoId = interesado.idInteresado;
             break;
           }
         }
         if (interesadoId) {
-          const interesadoResponse = await axios.get(
-            `/api/Interesado/${interesadoId}`
+          const interesadoResponse = await interesadoService.getById(
+            interesadoId
           );
           fotoUsuario = interesadoResponse.data.fotoPerfil;
         }
