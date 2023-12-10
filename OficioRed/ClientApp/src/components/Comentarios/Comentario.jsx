@@ -1,21 +1,19 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { comentarioService } from "../../services/comentario.service";
 import { usuarioService } from "../../services/usuario.service";
 import Swal from "sweetalert2";
-import { profesionalService } from "../../services/profesional.service";
-import { interesadoService } from "../../services/interesado.service";
 
 export function Comentario({
   idComentario,
   idUser,
   comentario,
   fecha,
+  nombre,
+  apellido,
+  fotoPerfil,
   onUpdate,
 }) {
-  const [usuarioInfo, setUsuarioInfo] = useState(null);
   const idUsuarioSesion = usuarioService.getId();
 
   function formatearFecha(fechaString) {
@@ -26,69 +24,7 @@ export function Comentario({
     const fechaFormateada = `${dia}/${mes}/${anio}`;
     return fechaFormateada;
   }
-  const infoPerfil = async (idUser) => {
-    const response = await usuarioService.get(idUser);
-    let fotoUsuario = null;
-    let nombre = "";
-    let apellido = "";
-
-    try {
-      let profesionalId = null;
-      let interesadoId = null;
-      if (response.data.idRol === 2) {
-        const profesionales = await profesionalService.getAll();
-        for (const profesional of profesionales) {
-          if (profesional.idUsuario === response.data.idUsuario) {
-            profesionalId = profesional.idProfesional;
-            break;
-          }
-        }
-        if (profesionalId) {
-          const profesionalResponse = await profesionalService.getById(
-            profesionalId
-          );
-          fotoUsuario = profesionalResponse.data.fotoPerfil;
-          nombre = profesionalResponse.data.nombre;
-          apellido = profesionalResponse.data.apellido;
-        }
-      } else if (response.data.idRol === 3) {
-        const interesados = await interesadoService.getAll();
-        for (const interesado of interesados) {
-          if (interesado.idUsuario === response.data.idUsuario) {
-            interesadoId = interesado.idInteresado;
-            break;
-          }
-        }
-        if (interesadoId) {
-          const interesadoResponse = await interesadoService.getById(
-            interesadoId
-          );
-          fotoUsuario = interesadoResponse.data.fotoPerfil;
-          nombre = interesadoResponse.data.nombre;
-          apellido = interesadoResponse.data.apellido;
-        }
-      }
-      return { fotoUsuario, nombre, apellido };
-    } catch (error) {
-      console.error("Error al obtener los datos:", error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const infoUsuario = await infoPerfil(idUser);
-        if (infoUsuario) {
-          setUsuarioInfo(infoUsuario);
-        }
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    };
-
-    fetchUserInfo();
-  }, [idUser]);
+  
 
   const cardStyles = {
     display: "flex",
@@ -214,18 +150,17 @@ export function Comentario({
 
   return (
     <>
-      {usuarioInfo && (
         <div style={cardStyles}>
           <div style={userInfoStyles}>
             <img
-              src={usuarioInfo.fotoUsuario}
-              alt={`Foto de usuario ${idUser}`}
+              src={fotoPerfil}
+              alt={`Foto de usuario ${fotoPerfil}`}
               style={userImageStyles}
             />
             <div>
               <span
                 style={userNameStyles}
-              >{`${usuarioInfo.nombre} ${usuarioInfo.apellido}`}</span>
+              >{`${nombre} ${apellido}`}</span>
               <span style={timeUserStyles}>{formatearFecha(fecha)}</span>
             </div>
           </div>
@@ -243,7 +178,6 @@ export function Comentario({
             </div>
           )}
         </div>
-      )}
     </>
   );
 }

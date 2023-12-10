@@ -91,7 +91,6 @@ export function Comentarios() {
       style={{
         backgroundImage: `url(${imagenFondo})`,
         backgroundSize: "cover",
-        backgroundAttachment: "fixed",
         position: "relative",
       }}
     >
@@ -263,17 +262,25 @@ export function Comentarios() {
                   alignItems: "stretch",
                 }}
               >
-                {comentarios &&
-                  comentarios.map((comentario) => (
+            {comentarios && comentarios.length > 0 ? (
+                comentarios.map((comentario) => (
                     <Comentario
-                      key={comentario.idComentario}
-                      idComentario={comentario.idComentario}
-                      idUser={comentario.idUsuario}
-                      comentario={comentario.comentario1}
-                      fecha={comentario.fhalta}
-                      onUpdate={() => setComentariosActualizados(true)}
+                        key={comentario.idComentario}
+                        idComentario={comentario.idComentario}
+                        idUser={comentario.idUsuario}
+                        comentario={comentario.comentario1}
+                        fecha={comentario.fhalta}
+                        nombre={comentario.nombre}
+                        apellido={comentario.apellido}
+                        fotoPerfil={comentario.fotoPerfil}
+                        onUpdate={() => setComentariosActualizados(true)}
                     />
-                  ))}
+                ))
+            ) : (
+                <Typography variant="body1" style={{ margin: "10px", textAlign: "center", fontWeight: "Bold"}}>
+                    No hay comentarios sobre este profesional.
+                </Typography>
+            )}
               </Box>
             </Box>
           </Grid>
