@@ -103,27 +103,29 @@ export function ProfesionalPage() {
         minHeight: "100vh",
       }}
     >
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        bgcolor="rgba(255, 255, 255, 0.6)"
-        p={2}
-        mt={0}
-        borderBottom="2px solid #1b325f"
-        borderRadius="0px 0px 50px 50px"
-      >
-        <Grid item xs={12}>
-          <SearchBar
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            loading={loading}
-            handleSearch={handleSearch}
-            resetSearch={resetSearch}
-          />
-          <FiltroRubros rubros={rubros} setRubros={setRubros} />
-        </Grid>
-      </Box>
+      <Grid xs={12}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bgcolor="rgba(255, 255, 255, 0.6)"
+          p={2}
+          mt={0}
+          borderBottom="2px solid #1b325f"
+          borderRadius="0px 0px 50px 50px"
+        >
+          <Grid item xs={10}>
+            <SearchBar
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              loading={loading}
+              handleSearch={handleSearch}
+              resetSearch={resetSearch}
+            />
+            <FiltroRubros rubros={rubros} setRubros={setRubros} />
+          </Grid>
+        </Box>
+      </Grid>
       <Grid
         container
         justifyContent="center"

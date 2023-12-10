@@ -83,7 +83,7 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
       <Grid item xs={12} sm={8} md={8} lg={10}>
         <FormControl fullWidth>
           <InputLabel id="rubros-label">Rubros</InputLabel>
-          <div style={{ width: "62vw", minWidth: "440px" }}>
+          <div style={{ width: "65vw", minWidth: "440px" }}>
             <Select
               fullWidth
               style={{ width: "100%" }}

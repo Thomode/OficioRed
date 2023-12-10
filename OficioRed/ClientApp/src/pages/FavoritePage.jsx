@@ -189,7 +189,7 @@ export function FavoritePage() {
         minHeight: "100vh",
       }}
     >
-      <Grid item xs={12}>
+      <Grid xs={12}>
         <Typography variant="h2" sx={titleStyle2}>
           Favoritos
         </Typography>
@@ -203,7 +203,7 @@ export function FavoritePage() {
           borderBottom="2px solid #1b325f"
           borderRadius="0px 0px 50px 50px"
         >
-          <Grid item xs={12}>
+          <Grid item xs={10}>
             <SearchBar
               searchValue={searchValue}
               setSearchValue={setSearchValue}
