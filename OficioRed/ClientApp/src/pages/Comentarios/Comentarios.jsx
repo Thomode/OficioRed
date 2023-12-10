@@ -189,68 +189,70 @@ export function Comentarios() {
                 flexDirection: "column",
                 alignItems: "stretch",
               }}
-            >
-              <Box
-                style={{
-                  backgroundColor: "white",
-                  padding: "20px",
-                  margin: "5px",
-                  borderRadius: "8px",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "stretch",
-                }}
-              >
-                <TextField
-                  label="Nuevo comentario"
-                  multiline
-                  rows={4}
-                  fullWidth
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  variant="outlined"
-                  style={{ margin: "5px" }}
-                />
+                      >
+                          {profesional && comentarios !== null && (
+                              <Box
+                                  style={{
+                                      backgroundColor: "white",
+                                      padding: "20px",
+                                      margin: "5px",
+                                      borderRadius: "8px",
+                                      width: "100%",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      alignItems: "stretch",
+                                  }}
+                              >
+                                  <TextField
+                                      label="Nuevo comentario"
+                                      multiline
+                                      rows={4}
+                                      fullWidth
+                                      value={newComment}
+                                      onChange={(e) => setNewComment(e.target.value)}
+                                      variant="outlined"
+                                      style={{ margin: "5px" }}
+                                  />
 
-                <Box
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    margin: "5px",
-                  }}
-                >
-                  <Button
-                    variant="text"
-                    style={{
-                      color: "white",
-                      backgroundColor: "#d33",
-                      fontWeight: "bold",
-                      fontSize: "15px",
-                      margin: "2px",
-                    }}
-                    size="small"
-                    onClick={() => setNewComment("")}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    variant="text"
-                    style={{
-                      color: "white",
-                      backgroundColor: "#1b325f",
-                      fontWeight: "bold",
-                      fontSize: "15px",
-                      margin: "2px",
-                    }}
-                    size="small"
-                    startIcon={<AddCommentIcon />}
-                    onClick={crearComentario}
-                  >
-                    Comentar
-                  </Button>
-                </Box>
-              </Box>
+                                  <Box
+                                      style={{
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                          margin: "5px",
+                                      }}
+                                  >
+                                      <Button
+                                          variant="text"
+                                          style={{
+                                              color: "white",
+                                              backgroundColor: "#d33",
+                                              fontWeight: "bold",
+                                              fontSize: "15px",
+                                              margin: "2px",
+                                          }}
+                                          size="small"
+                                          onClick={() => setNewComment("")}
+                                      >
+                                          Cancelar
+                                      </Button>
+                                      <Button
+                                          variant="text"
+                                          style={{
+                                              color: "white",
+                                              backgroundColor: "#1b325f",
+                                              fontWeight: "bold",
+                                              fontSize: "15px",
+                                              margin: "2px",
+                                          }}
+                                          size="small"
+                                          startIcon={<AddCommentIcon />}
+                                          onClick={crearComentario}
+                                      >
+                                          Comentar
+                                      </Button>
+                                  </Box>
+                              </Box>
+                          )}
               <Box
                 style={{
                   margin: "5px",
