@@ -513,6 +513,7 @@ const PerfilProfesional = () => {
                     <Rating
                       name="read-only"
                       value={promedioValoracion}
+                      precision={0.5}
                       readOnly
                       size="large"
                     />

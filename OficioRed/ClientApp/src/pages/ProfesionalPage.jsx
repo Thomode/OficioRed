@@ -23,7 +23,7 @@ export function ProfesionalPage() {
     setResetSearch(false);
     loadProfesionales();
   };
-  
+
   const handleSearch = async () => {
     setLoading(true);
     setTimeout(() => {

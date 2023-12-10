@@ -76,38 +76,41 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
     <Grid
       container
       spacing={2}
-      marginTop={"20px"}
+      marginTop={"10px"}
       alignItems="center"
-      justifyContent="left"
+      justifyContent="center"
     >
       <Grid item xs={12} sm={8} md={8} lg={10}>
-        <FormControl>
+        <FormControl fullWidth>
           <InputLabel id="rubros-label">Rubros</InputLabel>
-          <Select
-            fullWidth
-            style={{ width: "55vw", minWidth: "440px" }}
-            labelId="rubros-label"
-            id="rubros"
-            label="Rubros"
-            multiple
-            value={rubros
-              .filter((rubro) => rubro.seleccionado)
-              .map((rubro) => rubro.idRubro)}
-            onChange={handleSelectChange}
-            renderValue={(selected) =>
-              rubros
-                .filter((rubro) => selected.includes(rubro.idRubro))
-                .map((rubro) => rubro.nombre)
-                .join(", ")
-            }
-          >
-            {rubros.map((rubro) => (
-              <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
-                <Checkbox checked={rubro.seleccionado} />
-                {rubro.nombre}
-              </MenuItem>
-            ))}
-          </Select>
+          <div style={{ width: "62vw", minWidth: "440px" }}>
+            <Select
+              fullWidth
+              style={{ width: "100%" }}
+              labelId="rubros-label"
+              id="rubros"
+              label="Rubros"
+              multiple
+              value={rubros
+                .filter((rubro) => rubro.seleccionado)
+                .map((rubro) => rubro.idRubro)}
+              onChange={handleSelectChange}
+              renderValue={(selected) =>
+                rubros
+                  .filter((rubro) => selected.includes(rubro.idRubro))
+                  .map((rubro) => rubro.nombre)
+                  .join(", ")
+              }
+            >
+              {rubros.map((rubro) => (
+                <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
+                  <Checkbox checked={rubro.seleccionado} />
+                  {rubro.nombre}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>{" "}
+          {/* Cierre del div agregado */}
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={4} md={4} lg={2}>

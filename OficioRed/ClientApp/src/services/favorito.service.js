@@ -1,11 +1,11 @@
 import axios from "axios";
 import { sesionService } from "../auth/sesion";
 
-async function get() {
-    const res = await axios.get("/api/Favorito")
+const get = async () => {
+    const res = await axios.get("/api/Favorito", await sesionService.getConfig())
+    console.log(res.data);
     return res.data
 }
-
 
 const createFavorito = async (idProfesional) => {
     const response = await axios.post(`/api/Favorito`, {
@@ -17,7 +17,6 @@ const createFavorito = async (idProfesional) => {
 
 const deleteFavorito = async (id) =>
     await axios.delete(`/api/Favorito/${id}`, await sesionService.getConfig())
-
 
 export const favoritoService = {
     get,
