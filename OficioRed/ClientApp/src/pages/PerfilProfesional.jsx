@@ -11,7 +11,6 @@ import {
   Rating,
   Modal,
 } from "@mui/material";
-import AddCommentIcon from "@mui/icons-material/AddComment";
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -23,11 +22,10 @@ import imagenFondo from "../assets/fondo.jpg";
 import fotofb from "../assets/facebook.png";
 import fotoig from "../assets/instagram.png";
 import whatsapp from "../assets/whatsapp.png";
-import clipboardCopy from "clipboard-copy";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { comentarioService } from "../services/comentario.service";
 import { contactoService } from "../services/contacto.service";
+import { profesionalService } from "../services/profesional.service";
 
 const buttonStyle = {
   margin: "0 8px",
@@ -58,7 +56,8 @@ const PerfilProfesional = () => {
   const [telefono, setTelefono] = useState("");
   const { id } = useParams();
   const idActual = location.pathname.split("/")[1];
-  const [value, setValue] = useState(0);
+  const [puntuacion, setPuntuacion] = useState(0);
+  const [promedioValoracion, setPromedioValoracion] = useState(0);
 
   const [openRatingModal, setOpenRatingModal] = useState(false);
 
@@ -68,7 +67,9 @@ const PerfilProfesional = () => {
   const handleCloseRatingModal = async () => {
     try {
       setOpenRatingModal(false);
-      await comentarioService.createRating(id, value);
+      await profesionalService.registerRating(id, puntuacion);
+      actualizarValoracion();
+      setPuntuacion(0);
       Swal.fire({
         position: "center",
         icon: "success",
@@ -91,8 +92,20 @@ const PerfilProfesional = () => {
   };
 
   const handleRatingChange = (event, newValue) => {
-    setValue(newValue);
+    setPuntuacion(newValue);
   };
+
+  const actualizarValoracion = async () => {
+    try {
+      const promedio = await profesionalService.getPromedioRating(id);
+      setPromedioValoracion(promedio.data);
+    } catch (error) {
+      console.error("Error al obtener promedio", error);
+    }
+  };
+  useEffect(() => {
+    actualizarValoracion();
+  }, [id]);
 
   useEffect(() => {
     axios
@@ -201,49 +214,6 @@ const PerfilProfesional = () => {
 
   const handleClickComments = () => {
     navigate(`/${id}/PerfilProfesional/Comentarios`);
-  };
-
-  const handleClickCopy = () => {
-    const url = `${window.location.origin}/${id}/PerfilProfesional`;
-    clipboardCopy(url);
-  };
-
-  const crearComentario = async (comment) => {
-    await Swal.fire({
-      title: "Comentar",
-      input: "text",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      inputValue: comment,
-      showCancelButton: true,
-      confirmButtonColor: "#1b325f",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Guardar",
-      cancelButtonText: "Cancelar",
-      reverseButtons: true,
-      showLoaderOnConfirm: true,
-      preConfirm: async (commentText) => {
-        try {
-          await await comentarioService.create(commentText, id);
-
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Comentario creado con éxito",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: error.response.data,
-            confirmButtonColor: "#1b325f",
-          });
-        }
-      },
-    });
   };
 
   return (
@@ -539,10 +509,10 @@ const PerfilProfesional = () => {
                   style={{ fontSize: "2rem", flex: 1, color: "black" }}
                 >
                   <strong>
-                    4.5{" "}
+                    {promedioValoracion}{" "}
                     <Rating
                       name="read-only"
-                      value={value}
+                      value={promedioValoracion}
                       readOnly
                       size="large"
                     />
@@ -661,7 +631,7 @@ const PerfilProfesional = () => {
                   <Rating
                     size="large"
                     name="simple-controlled"
-                    value={value}
+                    value={puntuacion}
                     onChange={handleRatingChange}
                   />
                 </Box>

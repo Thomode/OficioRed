@@ -69,6 +69,24 @@ const asociarRubro = async (idRubro) => {
   return res
 }
 
+const getRatings = async (idProfesional) => {
+  const res = await axios.get(`/api/Rating/${idProfesional}/ratings`)
+  return res
+}
+
+const getPromedioRating = async (idProfesional) => {
+  const res = await axios.get(`/api/Rating/${idProfesional}/average-rating`)
+  return res
+}
+
+const registerRating = async (idProfesional, puntuacion) => {
+  const res = await axios.post('/api/Rating', {
+    idProfesional: idProfesional,
+    puntuacion: puntuacion,
+  }, await sesionService.getConfig())
+  return res
+}
+
 export const profesionalService = {
   getAll,
   getById,
@@ -77,4 +95,7 @@ export const profesionalService = {
   asociarRubro,
   registerContacto,
   updateProfesional,
+  getRatings,
+  getPromedioRating,
+  registerRating
 }
