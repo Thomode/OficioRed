@@ -73,11 +73,7 @@ export const MiPerfilProfesional = () => {
         const userId = usuarioService.getId();
         const userData = await usuarioService.get(userId);
         const idUser = userData.data.idUsuario;
-        const profesionalData = await profesionalService
-          .getAll()
-          .then((res) =>
-            res.find((profesional) => profesional.idUsuario === idUser)
-          );
+        const profesionalData = await profesionalService.getByIdUsuario(idUser);
         const contactoData = await contactoService.getById(
           profesionalData.idContacto
         );

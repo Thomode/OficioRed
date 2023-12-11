@@ -41,6 +41,10 @@ async function getAll() {
 
 const getById = async (id) =>
     await axios.get(`/api/Interesado/${id}`)
+async function getByIdUsuario(idUsuario) {
+    const res = await axios.get(`/api/Interesado/usuario/${idUsuario}`)
+    return res.data
+}
 
 const updateInteresado = async (nombre, apellido, email) => {
   const response = await axios.put(`/api/Interesado`, {
@@ -57,5 +61,7 @@ export const interesadoService = {
   imageUpload,
   getAll,
   getById,
+  getByIdUsuario,
   updateInteresado,
+
 };

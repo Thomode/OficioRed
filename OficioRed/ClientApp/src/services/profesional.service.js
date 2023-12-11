@@ -22,8 +22,15 @@ async function getAll() {
     return res.data
 }
 
+async function getByIdUsuario(idUsuario) {
+    const res = await axios.get(`/api/Profesional/usuario/${idUsuario}`)
+    return res.data
+}
+
 const getById = async (id) =>
     await axios.get(`/api/Profesional/${id}`)
+
+
 
 const updateProfesional = async (nombre, apellido, email, descripcion) => {
   const response = await axios.put(`/api/Profesional/`, {
@@ -113,6 +120,7 @@ const desasociarRubrosProfesional = async (idProfesional) => {
 export const profesionalService = {
   getAll,
   getById,
+  getByIdUsuario,
   registerProfesional,
   imageUpload,
   asociarRubro,

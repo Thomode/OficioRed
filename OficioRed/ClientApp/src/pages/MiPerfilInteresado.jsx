@@ -62,11 +62,7 @@ export const MiPerfilInteresado = () => {
         const userId = usuarioService.getId();
         const userData = await usuarioService.get(userId);
         const idUser = userData.data.idUsuario;
-        const interesadoData = await interesadoService
-          .getAll()
-          .then((res) =>
-            res.find((interesado) => interesado.idUsuario === idUser)
-          );
+        const interesadoData = await interesadoService.getByIdUsuario(idUser);
         setValue("nombre", interesadoData.nombre);
         setValue("apellido", interesadoData.apellido);
         setValue("email", interesadoData.email);

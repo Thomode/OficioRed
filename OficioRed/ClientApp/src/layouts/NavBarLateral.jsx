@@ -199,47 +199,25 @@ export function NavBarLateral({ children, type, logout }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const infoPerfil = async () => {
-    const id = usuarioService.getId();
-    let fotoUsuario = null;
+    const infoPerfil = async () => {
+        const id = usuarioService.getId();
+        let fotoUsuario = null;
 
-    try {
-      const response = await usuarioService.get(Number(id));
-      let profesionalId = null;
-      let interesadoId = null;
-      if (response.data.idRol === 2) {
-        const profesionales = await profesionalService.getAll();
-        for (const profesional of profesionales) {
-          if (profesional.idUsuario === id) {
-            profesionalId = profesional.idProfesional;
-            break;
-          }
+        try {
+            const response = await usuarioService.get(Number(id));
+            if (response.data.idRol === 2) {
+                const profesionales = await profesionalService.getByIdUsuario(id);
+                fotoUsuario = profesionales.fotoPerfil;
+            } else if (response.data.idRol === 3) {
+                const interesados = await interesadoService.getByIdUsuario(id);
+                fotoUsuario = interesados.fotoPerfil;
+            }
+            return fotoUsuario;
+        } catch (error) {
+            console.error("Error al obtener los datos:", error);
+            return null;
         }
-        if (profesionalId) {
-          const profesionalResponse = await profesionalService.getById(profesionalId);
-          fotoUsuario = profesionalResponse.data.fotoPerfil;
-        }
-      } else if (response.data.idRol === 3) {
-        const interesados = await interesadoService.getAll();
-        for (const interesado of interesados) {
-          if (interesado.idUsuario === id) {
-            interesadoId = interesado.idInteresado;
-            break;
-          }
-        }
-        if (interesadoId) {
-          const interesadoResponse = await interesadoService.getById(
-            interesadoId
-          );
-          fotoUsuario = interesadoResponse.data.fotoPerfil;
-        }
-      }
-      return fotoUsuario;
-    } catch (error) {
-      console.error("Error al obtener los datos:", error);
-      return null;
-    }
-  };
+    };
 
   const [fotoPerfil, setFotoPerfil] = useState("");
 
