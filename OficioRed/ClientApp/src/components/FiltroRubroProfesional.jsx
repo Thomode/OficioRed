@@ -109,8 +109,7 @@ export const FiltroRubros = ({ rubros, setRubros }) => {
                 </MenuItem>
               ))}
             </Select>
-          </div>{" "}
-          {/* Cierre del div agregado */}
+          </div>
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={4} md={4} lg={2}>

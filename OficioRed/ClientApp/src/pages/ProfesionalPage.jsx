@@ -14,6 +14,18 @@ import { SearchBar } from "../components/SearchBar";
 import Swal from "sweetalert2";
 import { CardProfesional } from "../components/ProfesionalesBusqueda/Card";
 
+const titleStyle2 = {
+  fontSize: "70px",
+  fontWeight: "bold",
+  color: "#1b325f",
+  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+  WebkitTextStroke: "2px white",
+  MozTextStroke: "2px white",
+  marginBottom: "0px",
+  backgroundColor: "rgba(255, 255, 255, 0.6)",
+  padding: "10px",
+};
+
 export function ProfesionalPage() {
   const [loading, setLoading] = useState(false);
   const [rubros, setRubros] = useState([]);
@@ -103,6 +115,9 @@ export function ProfesionalPage() {
         minHeight: "100vh",
       }}
     >
+      <Typography variant="h2" sx={titleStyle2}>
+        Profesionales
+      </Typography>
       <Grid xs={12}>
         <Box
           display="flex"

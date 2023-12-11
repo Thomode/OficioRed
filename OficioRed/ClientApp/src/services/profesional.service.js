@@ -64,7 +64,6 @@ const imageUpload = async (selectedFile) => {
 }
 
 const asociarRubro = async (idRubro) => {
-  console.log(idRubro)
   const res = await axios.post(`/api/Profesional/asociar-rubro/${idRubro}`, {}, await sesionService.getConfig())
   return res
 }
@@ -87,15 +86,42 @@ const registerRating = async (idProfesional, puntuacion) => {
   return res
 }
 
+const obtenerRubrosProfesional = async (idProfesional) => {
+  const res = await axios.get(`/api/Profesional/${idProfesional}/rubros`, await sesionService.getConfig())
+  return res
+}
+
+const desasociarRubro = async (idRubro) => {
+  const res = await axios.delete(`/api/Profesional/desasociar-rubro/${idRubro}`, await sesionService.getConfig())
+  return res
+}
+
+const desasociarRubrosProfesional = async (idProfesional) => {
+  try {
+    const response = await obtenerRubrosProfesional(idProfesional);
+    const rubrosProfesional = response.data;
+    for (const rubro of rubrosProfesional) {
+      await desasociarRubro(rubro.idRubro);
+      console.log(`Rubro desasociado: ${rubro.nombre}`);
+    }
+    console.log("Todos los rubros desasociados exitosamente");
+  } catch (error) {
+    console.error("Error al desasociar rubros:", error);
+  }
+};
+
 export const profesionalService = {
   getAll,
   getById,
   registerProfesional,
   imageUpload,
   asociarRubro,
+  desasociarRubro,
   registerContacto,
   updateProfesional,
   getRatings,
   getPromedioRating,
-  registerRating
+  registerRating,
+  obtenerRubrosProfesional,
+  desasociarRubrosProfesional
 }

@@ -9,10 +9,18 @@ import { usuarioService } from "../services/usuario.service";
 import { profesionalService } from "../services/profesional.service";
 import { contactoService } from "../services/contacto.service";
 
-import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { FiltroRubros } from "../components/FiltroRubroProfMiPerfil";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -30,13 +38,12 @@ const backgroundStyle = {
 
 export const MiPerfilProfesional = () => {
   const [profesional, setProfesional] = useState({});
+  const [rubros, setRubros] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -67,15 +74,18 @@ export const MiPerfilProfesional = () => {
         const userData = await usuarioService.get(userId);
         const idUser = userData.data.idUsuario;
         const profesionalData = await profesionalService
-            .getAll()
-            .then((res) => res.find((profesional) => profesional.idUsuario === idUser)
+          .getAll()
+          .then((res) =>
+            res.find((profesional) => profesional.idUsuario === idUser)
           );
-          const contactoData = await contactoService.getById(
-              profesionalData.idContacto
-          );
+        const contactoData = await contactoService.getById(
+          profesionalData.idContacto
+        );
+        setProfesional(profesionalData);
         setValue("nombre", profesionalData.nombre);
         setValue("apellido", profesionalData.apellido);
         setValue("email", profesionalData.email);
+
         setValue("descripcion", profesionalData.descripcion);
         setValue("user", userData.data.user);
         setValue("fotoPerfil", profesionalData.fotoPerfil);
@@ -98,6 +108,11 @@ export const MiPerfilProfesional = () => {
       setTimeout(() => {
         setLoading(false);
       }, 1500);
+
+      await profesionalService.desasociarRubrosProfesional(
+        profesional.idProfesional
+      );
+
       if (selectedFile) {
         await profesionalService.imageUpload(selectedFile);
       }
@@ -114,6 +129,12 @@ export const MiPerfilProfesional = () => {
         data.instagram,
         data.facebook
       );
+
+      rubros.forEach(async (rubro) => {
+        if (rubro.seleccionado) {
+          const res3 = await profesionalService.asociarRubro(rubro.idRubro);
+        }
+      });
 
       navigate("/home");
 
@@ -367,6 +388,36 @@ export const MiPerfilProfesional = () => {
                     variant="outlined"
                     {...register("facebook")}
                     InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    minHeight="50px"
+                  >
+                    {profesional.rubros &&
+                      profesional.rubros.map((rubro, index) => (
+                        <Chip
+                          key={index}
+                          variant="elevated"
+                          label={`${rubro.nombre} `}
+                          style={{
+                            backgroundColor: "#1b325f",
+                            color: "white",
+                            margin: "2px",
+                          }}
+                        />
+                      ))}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <FiltroRubros
+                    fullWidth
+                    label="Rubros"
+                    profesional={profesional}
+                    rubros={rubros}
+                    setRubros={setRubros}
                   />
                 </Grid>
                 <Grid item xs={12}>
