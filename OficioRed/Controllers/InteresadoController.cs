@@ -46,6 +46,21 @@ public class InteresadoController : ControllerBase
         }
     }
 
+    [HttpGet("usuario/{idUsuario}")]
+    public IActionResult GetById(int idUsuario)
+    {
+        try
+        {
+            var interesado = _interesadoService.Get(idUsuario);
+
+            return Ok(interesado);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
     [HttpPost]
     public IActionResult Create(InteresadoDTO interesadoDTO)
     {

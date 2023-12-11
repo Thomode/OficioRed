@@ -24,6 +24,6 @@ public class ProfesionalResDTO
 
     public string Email { get; set; } = null!;
 
-    public List<Rubro>? rubros {  get; set; }
+    public List<Rubro>? Rubros {  get; set; }
 
 }

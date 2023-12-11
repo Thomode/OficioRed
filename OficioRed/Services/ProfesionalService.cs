@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OficioRed.Context;
 using OficioRed.Dtos;
 using OficioRed.Helpers;
@@ -10,8 +11,9 @@ namespace OficioRed.Services
 {
     public interface IProfesionalService
     {
-        List<Profesional> GetAll();
+        List<ProfesionalResDTO> GetAll();
         Profesional Get(int id);
+        Profesional GetByIdUsuario(int idUsuario);
         void Create(ProfesionalDTO profesionalDTO);
         void Update(ProfesionalUpdateDTO profesionalUpdateDTO);
         void Delete(int id);
@@ -19,6 +21,7 @@ namespace OficioRed.Services
         void DesasociarRubro(int rubroId);
         List<Rubro> GetRubrosXProfesional(int idProfesional);
         Task<Profesional> SubirFotoPerfil(Stream archivo, string nombreFoto);
+        List<RubroXprofesional> GetRubros();
     }
 
     public class ProfesionalService : IProfesionalService
@@ -34,9 +37,46 @@ namespace OficioRed.Services
             _accesoService = accesoServicio;
         }
 
-        public List<Profesional> GetAll()
+        public List<ProfesionalResDTO> GetAll()
         {
-            return _context.Profesionals.Where(e => !e.Fhbaja.HasValue).ToList();
+            var profesionales = _context.Profesionals
+                .Where(e => !e.Fhbaja.HasValue)
+                .Include(p => p.RubroXprofesionals)
+                .AsNoTracking()
+                .ToList();
+
+
+            var rubros = _context.Rubros.Where(e => !e.Fhbaja.HasValue).ToList();
+
+            var profesionalesResDTO = profesionales.Select(profesional =>
+                new ProfesionalResDTO
+                {
+                    IdProfesional = profesional.IdProfesional,
+                    Nombre = profesional.Nombre,
+                    Apellido = profesional.Apellido,
+                    FotoPerfil = profesional.FotoPerfil,
+                    Email = profesional.Email,
+                    Descripcion = profesional.Descripcion,
+                    IdContacto = profesional.IdContacto,
+                    IdDireccion = profesional.IdDireccion,
+                    IdUsuario = profesional.IdUsuario,
+                    IdRating = profesional.IdRating,
+                    Rubros = profesional.RubroXprofesionals
+                                .Where(rp => !rp.Fhbaja.HasValue)
+                                .Select(rp => getRubroDelListado(rp.IdRubro, rubros))
+                                .Where(r => r != null)
+                                .ToList()
+                      
+
+                }).ToList();
+
+            return profesionalesResDTO;
+        }
+
+        private Rubro getRubroDelListado(int idRubro, List<Rubro> rubros)
+        {
+            return rubros.FirstOrDefault(e => e.IdRubro == idRubro);
+       
         }
 
 
@@ -326,10 +366,31 @@ namespace OficioRed.Services
         {
             var rubros = _context.RubroXprofesionals
                 .Where(rp => rp.IdProfesional == idProfesional && !rp.Fhbaja.HasValue)
-                .Select(rp => rp.IdRubroNavigation)  
+                .Select(rp => rp.IdRubroNavigation)
+                .Where(e => !e.Fhbaja.HasValue)
                 .ToList();
 
-            return rubros.Where(e => !e.Fhbaja.HasValue).ToList();
+            return rubros;
+        }
+
+        public List<RubroXprofesional> GetRubros()
+        {
+            return _context.RubroXprofesionals
+                .Where(e => !e.Fhbaja.HasValue)
+                .Include(e => e.IdRubroNavigation)
+                .ToList();
+        }
+
+        public Profesional GetByIdUsuario(int idUsuario)
+        {
+            var profesional = _context.Profesionals.FirstOrDefault(e => e.IdUsuario == idUsuario && !e.Fhbaja.HasValue);
+
+            if (profesional == null)
+            {
+                throw new KeyNotFoundException("Profesional no encontrado");
+            }
+
+            return profesional;
         }
     }
 }

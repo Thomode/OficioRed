@@ -31,16 +31,7 @@ namespace OficioRed.Controllers
         {
             try
             {
-                var profesionales = _profesionalService.GetAll();
-
-                var profesionalesResDTO = new List<ProfesionalResDTO>();
-
-                _mapper.Map(profesionales, profesionalesResDTO);
-
-                foreach(var p  in profesionalesResDTO)
-                {
-                    p.rubros = _profesionalService.GetRubrosXProfesional(p.IdProfesional);
-                }
+                var profesionalesResDTO = _profesionalService.GetAll();
 
                 return Ok(profesionalesResDTO);
             }
@@ -61,7 +52,7 @@ namespace OficioRed.Controllers
 
                 _mapper.Map(profesional, profesionalResDTO);
 
-                profesionalResDTO.rubros = _profesionalService.GetRubrosXProfesional(profesionalResDTO.IdProfesional);
+                profesionalResDTO.Rubros = _profesionalService.GetRubrosXProfesional(profesionalResDTO.IdProfesional);
 
                 return Ok(profesionalResDTO);
             }
@@ -70,6 +61,29 @@ namespace OficioRed.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("usuario/{idUsuario}")]
+        public IActionResult GetByIdUsuario(int idUsuario)
+        {
+            try
+            {
+                var profesional = _profesionalService.GetByIdUsuario(idUsuario);
+
+                var profesionalResDTO = new ProfesionalResDTO();
+
+                _mapper.Map(profesional, profesionalResDTO);
+
+                profesionalResDTO.Rubros = _profesionalService.GetRubrosXProfesional(profesionalResDTO.IdProfesional);
+
+                return Ok(profesionalResDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
         [HttpPost]
         public IActionResult Create(ProfesionalDTO profesionalDTO)
@@ -192,6 +206,20 @@ namespace OficioRed.Controllers
             {
                 return BadRequest(ex.Message);
             }        
+        }
+
+        [HttpGet("rubros")]
+        public IActionResult GetRubros()
+        {
+            try
+            {
+                var rubros = _profesionalService.GetRubros();
+                return Ok(rubros);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

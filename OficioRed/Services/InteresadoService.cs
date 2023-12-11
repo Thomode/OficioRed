@@ -10,6 +10,7 @@ public interface IInteresadoService
 {
     List<Interesado> GetAll();
     Interesado Get(int id);
+    Interesado GetByIdUsuario(int idUsuario);
     void Create(InteresadoDTO interesadoDTO);
     void Update(InteresadoUpdateDTO interesadoUpdateDTO);
     void Delete(int id);
@@ -208,6 +209,18 @@ public class InteresadoService : IInteresadoService
 
             }
         }
+        return interesado;
+    }
+
+    public Interesado GetByIdUsuario(int idUsuario)
+    {
+        var interesado = _context.Interesados.FirstOrDefault(e => e.IdUsuario == idUsuario && !e.Fhbaja.HasValue);
+
+        if(interesado == null)
+        {
+            throw new KeyNotFoundException("Interesado no encontrado");
+        }
+
         return interesado;
     }
 }
