@@ -338,7 +338,9 @@ export function FavoritePage() {
               padding: "10px",
             }}
           >
-            Por favor, seleccione algún rubro
+            {favoritos.length === 0
+              ? "No hay profesionales favoritos"
+              : "Por favor, seleccione algún rubro"}
           </Typography>
         )}
       </Grid>
