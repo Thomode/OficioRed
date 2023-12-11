@@ -12,17 +12,16 @@ import {
   Chip,
   Box,
   CircularProgress,
+  Container,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import imagendefault from "../assets/fotodefault.webp";
 import imagenFondo from "../assets/fondo.jpg";
 import imagenwsp from "../assets/whatsapp.png";
 import { contactoService } from "../services/contacto.service";
-import { profesionalService } from "../services/profesional.service";
 import { SearchBar } from "../components/SearchBar";
 import { FiltroRubros } from "../components/FiltroRubroProfesional";
 import Swal from "sweetalert2";
-import { CardProfesional } from "../components/ProfesionalesBusqueda/Card";
 
 const cardStyle = {
   maxWidth: "345px",
@@ -60,7 +59,6 @@ const titleStyle2 = {
 export function FavoritePage() {
   const navigate = useNavigate();
   const [favoritos, setFavoritos] = useState([]);
-
   const [loading, setLoading] = useState(false);
   const [rubros, setRubros] = useState([]);
   const [resetSearch, setResetSearch] = useState(false);
@@ -181,8 +179,7 @@ export function FavoritePage() {
   };
 
   return (
-    <Grid
-      container
+    <Container
       style={{
         backgroundImage: `url(${imagenFondo})`,
         backgroundSize: "cover",
@@ -344,6 +341,6 @@ export function FavoritePage() {
           </Typography>
         )}
       </Grid>
-    </Grid>
+    </Container>
   );
 }
