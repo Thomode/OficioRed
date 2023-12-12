@@ -30,8 +30,6 @@ async function getByIdUsuario(idUsuario) {
 const getById = async (id) =>
     await axios.get(`/api/Profesional/${id}`)
 
-
-
 const updateProfesional = async (nombre, apellido, email, descripcion) => {
   const response = await axios.put(`/api/Profesional/`, {
           nombre,

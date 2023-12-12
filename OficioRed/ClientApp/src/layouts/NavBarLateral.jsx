@@ -199,25 +199,25 @@ export function NavBarLateral({ children, type, logout }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-    const infoPerfil = async () => {
-        const id = usuarioService.getId();
-        let fotoUsuario = null;
+  const infoPerfil = async () => {
+    const id = usuarioService.getId();
+    let fotoUsuario = null;
 
-        try {
-            const response = await usuarioService.get(Number(id));
-            if (response.data.idRol === 2) {
-                const profesionales = await profesionalService.getByIdUsuario(id);
-                fotoUsuario = profesionales.fotoPerfil;
-            } else if (response.data.idRol === 3) {
-                const interesados = await interesadoService.getByIdUsuario(id);
-                fotoUsuario = interesados.fotoPerfil;
-            }
-            return fotoUsuario;
-        } catch (error) {
-            console.error("Error al obtener los datos:", error);
-            return null;
-        }
-    };
+    try {
+      const response = await usuarioService.get(Number(id));
+      if (response.data.idRol === 2) {
+        const profesionales = await profesionalService.getByIdUsuario(id);
+        fotoUsuario = profesionales.fotoPerfil;
+      } else if (response.data.idRol === 3) {
+        const interesados = await interesadoService.getByIdUsuario(id);
+        fotoUsuario = interesados.fotoPerfil;
+      }
+      return fotoUsuario;
+    } catch (error) {
+      console.error("Error al obtener los datos:", error);
+      return null;
+    }
+  };
 
   const [fotoPerfil, setFotoPerfil] = useState("");
 

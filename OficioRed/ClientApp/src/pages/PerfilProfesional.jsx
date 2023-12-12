@@ -509,7 +509,7 @@ const PerfilProfesional = () => {
                   style={{ fontSize: "2rem", flex: 1, color: "black" }}
                 >
                   <strong>
-                    {promedioValoracion}{" "}
+                    {promedioValoracion.toFixed(1)}{" "}
                     <Rating
                       name="read-only"
                       value={promedioValoracion}

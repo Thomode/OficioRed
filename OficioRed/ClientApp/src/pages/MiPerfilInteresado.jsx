@@ -6,7 +6,15 @@ import { usuarioService } from "../services/usuario.service";
 import { useSnackbar } from "notistack";
 import backgroundImage from "../assets/armarios-formas-geometricas.jpg";
 import imagenDefault from "../assets/profile.png";
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -29,6 +37,7 @@ export const MiPerfilInteresado = () => {
   const [image, setImage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
@@ -62,12 +71,20 @@ export const MiPerfilInteresado = () => {
         const userId = usuarioService.getId();
         const userData = await usuarioService.get(userId);
         const idUser = userData.data.idUsuario;
-        const interesadoData = await interesadoService.getByIdUsuario(idUser);
+        const interesadoData = await interesadoService
+          .getAll()
+          .then((res) =>
+            res.find((interesado) => interesado.idUsuario === idUser)
+          );
+        console.log("interesadoData", interesadoData);
         setValue("nombre", interesadoData.nombre);
         setValue("apellido", interesadoData.apellido);
         setValue("email", interesadoData.email);
         setValue("fotoPerfil", interesadoData.fotoPerfil);
         setImage(interesadoData.fotoPerfil);
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 100);
       } catch (error) {
         console.log("Error al obtener los datos", error);
       }
@@ -122,200 +139,206 @@ export const MiPerfilInteresado = () => {
         justifyContent: "center",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          placeItems: "center",
-          height: "100%",
-        }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Paper
-            elevation={3}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              placeItems: "center",
-              padding: "20px",
-              borderRadius: "20px",
-              width: "auto",
-              margin: "20px",
-            }}
-          >
-            <Button
-              style={{
-                color: "white",
-                fontWeight: "bold",
-                backgroundColor: "#1b325f",
-              }}
-              size="large"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => handleClick()}
-            >
-              Volver
-            </Button>
-
-            <Typography
-              style={{
-                fontSize: "2.3rem",
-                fontWeight: "bold",
-                color: "#1B325F",
-                marginBottom: "20px",
-              }}
-            >
-              Editar Mi Perfil
-            </Typography>
-            <div
+      {showLoading && (
+        <CircularProgress style={{ position: "absolute", top: "50%" }} />
+      )}
+      {!showLoading && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            placeItems: "center",
+            height: "100%",
+          }}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Paper
+              elevation={3}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 placeItems: "center",
-                gap: "15px",
-                minWidth: "200px",
+                padding: "20px",
+                borderRadius: "20px",
+                width: "auto",
+                margin: "20px",
               }}
             >
-              <Grid container spacing={2} style={{ maxWidth: "450px" }}>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    placeItems: "center",
-                  }}
-                >
-                  {image ? (
-                    <img
-                      src={image}
-                      alt="Vista previa de la imagen"
-                      style={imageStyle}
-                    />
-                  ) : (
-                    <img
-                      src={imagenDefault}
-                      alt="Imagen por defecto"
-                      style={imageStyle}
-                    />
-                  )}
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    variant="outlined"
-                    component="label"
-                    fullWidth
+              <Button
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  backgroundColor: "#1b325f",
+                }}
+                size="large"
+                startIcon={<ArrowBackIcon />}
+                onClick={() => handleClick()}
+              >
+                Volver
+              </Button>
+
+              <Typography
+                style={{
+                  fontSize: "2.3rem",
+                  fontWeight: "bold",
+                  color: "#1B325F",
+                  marginBottom: "20px",
+                }}
+              >
+                Editar Mi Perfil
+              </Typography>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  placeItems: "center",
+                  gap: "15px",
+                  minWidth: "200px",
+                }}
+              >
+                <Grid container spacing={2} style={{ maxWidth: "450px" }}>
+                  <Grid
+                    item
+                    xs={12}
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "100%",
+                      placeItems: "center",
                     }}
                   >
-                    Cambiar Foto de Perfil
-                    <input
-                      type="file"
-                      style={{ display: "none", color: "black" }}
-                      onChange={fileSelectedHandler}
+                    {image ? (
+                      <img
+                        src={image}
+                        alt="Vista previa de la imagen"
+                        style={imageStyle}
+                      />
+                    ) : (
+                      <img
+                        src={imagenDefault}
+                        alt="Imagen por defecto"
+                        style={imageStyle}
+                      />
+                    )}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      variant="outlined"
+                      component="label"
+                      fullWidth
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "100%",
+                      }}
+                    >
+                      Cambiar Foto de Perfil
+                      <input
+                        type="file"
+                        style={{ display: "none", color: "black" }}
+                        onChange={fileSelectedHandler}
+                      />
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      required
+                      name="nombre"
+                      label="Nombre"
+                      variant="outlined"
+                      {...register("nombre", {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 20,
+                        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                      })}
+                      error={!!errors.nombre}
+                      helperText={
+                        errors.nombre?.type === "required"
+                          ? "Campo obligatorio"
+                          : errors.nombre?.type === "minLength"
+                          ? "Mínimo 2 caracteres"
+                          : errors.nombre?.type === "maxLength"
+                          ? "Máximo 20 caracteres"
+                          : errors.apellido?.type === "pattern"
+                          ? "Solo se permiten letras y espacios"
+                          : ""
+                      }
+                      InputLabelProps={{ shrink: true }}
                     />
-                  </Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    required
-                    name="nombre"
-                    label="Nombre"
-                    variant="outlined"
-                    {...register("nombre", {
-                      required: true,
-                      minLength: 2,
-                      maxLength: 20,
-                      pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
-                    })}
-                    error={!!errors.nombre}
-                    helperText={
-                      errors.nombre?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.nombre?.type === "minLength"
-                        ? "Mínimo 2 caracteres"
-                        : errors.nombre?.type === "maxLength"
-                        ? "Máximo 20 caracteres"
-                        : errors.apellido?.type === "pattern"
-                        ? "Solo se permiten letras y espacios"
-                        : ""
-                    }
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    required
-                    name="apellido"
-                    label="Apellido"
-                    variant="outlined"
-                    {...register("apellido", {
-                      required: true,
-                      minLength: 2,
-                      maxLength: 15,
-                      pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
-                    })}
-                    error={!!errors.apellido}
-                    helperText={
-                      errors.apellido?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.apellido?.type === "minLength"
-                        ? "Mínimo 2 caracteres"
-                        : errors.apellido?.type === "maxLength"
-                        ? "Máximo 15 caracteres"
-                        : errors.apellido?.type === "pattern"
-                        ? "Solo se permiten letras y espacios"
-                        : ""
-                    }
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    required
-                    name="email"
-                    label="Email"
-                    variant="outlined"
-                    placeholder="example@email.com"
-                    {...register("email", {
-                      required: true,
-                      pattern: /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    })}
-                    error={!!errors.email}
-                    helperText={
-                      errors.email?.type === "required"
-                        ? "Campo obligatorio"
-                        : errors.email?.type === "pattern"
-                        ? "Coloque un email válido"
-                        : ""
-                    }
-                    InputLabelProps={{ shrink: true }}
-                  />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      required
+                      name="apellido"
+                      label="Apellido"
+                      variant="outlined"
+                      {...register("apellido", {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 15,
+                        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/,
+                      })}
+                      error={!!errors.apellido}
+                      helperText={
+                        errors.apellido?.type === "required"
+                          ? "Campo obligatorio"
+                          : errors.apellido?.type === "minLength"
+                          ? "Mínimo 2 caracteres"
+                          : errors.apellido?.type === "maxLength"
+                          ? "Máximo 15 caracteres"
+                          : errors.apellido?.type === "pattern"
+                          ? "Solo se permiten letras y espacios"
+                          : ""
+                      }
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      required
+                      name="email"
+                      label="Email"
+                      variant="outlined"
+                      placeholder="example@email.com"
+                      {...register("email", {
+                        required: true,
+                        pattern:
+                          /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      })}
+                      error={!!errors.email}
+                      helperText={
+                        errors.email?.type === "required"
+                          ? "Campo obligatorio"
+                          : errors.email?.type === "pattern"
+                          ? "Coloque un email válido"
+                          : ""
+                      }
+                      InputLabelProps={{ shrink: true }}
+                    />
 
-                  <LoadingButton
-                    fullWidth
-                    type="submit"
-                    loading={loading}
-                    loadingPosition="start"
-                    startIcon={<HowToRegOutlinedIcon />}
-                    variant="contained"
-                    style={{ marginTop: "15px" }}
-                  >
-                    GUARDAR CAMBIOS
-                  </LoadingButton>
+                    <LoadingButton
+                      fullWidth
+                      type="submit"
+                      loading={loading}
+                      loadingPosition="start"
+                      startIcon={<HowToRegOutlinedIcon />}
+                      variant="contained"
+                      style={{ marginTop: "15px" }}
+                    >
+                      GUARDAR CAMBIOS
+                    </LoadingButton>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </div>
-          </Paper>
-        </form>
-      </div>
+              </div>
+            </Paper>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
