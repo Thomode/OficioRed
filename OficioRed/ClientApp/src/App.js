@@ -19,7 +19,6 @@ import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx';
 import { InteresadoSignUp } from './pages/InteresadoSignUp.jsx';
 import { FavoritePage } from './pages/FavoritePage';
 import HomeAdmin from "./pages/Private/HomeAdmin";
-//import Comments from './pages/Comments/Comments.jsx';
 import { Comentarios } from './pages/Comentarios/Comentarios.jsx';
 import Swal from "sweetalert2";
 import "./index.css";
