@@ -51,7 +51,7 @@ public class InteresadoController : ControllerBase
     {
         try
         {
-            var interesado = _interesadoService.Get(idUsuario);
+            var interesado = _interesadoService.GetByIdUsuario(idUsuario);
 
             return Ok(interesado);
         }
