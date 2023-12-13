@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 import { usuarioService } from "../../services/usuario.service";
 import imagenFondo from "../../assets/armarios-formas-geometricas.jpg";
 
-function HomeAdmin() {
+export function HomeAdmin() {
   const [dashboardData, setDashboardData] = useState({
     totalUsuario: 0,
     cantidadAdmin: 0,
@@ -164,7 +164,10 @@ function HomeAdmin() {
           </Card>
         </Grid>
         <Grid
-          item xs={12} sm={8} md={6}
+          item
+          xs={12}
+          sm={8}
+          md={6}
           sx={{ display: "flex", justifyContent: "center" }}
         >
           <Card sx={{ ...cardStyle, width: "100%" }}>
@@ -182,5 +185,3 @@ function HomeAdmin() {
     </Container>
   );
 }
-
-export default HomeAdmin;

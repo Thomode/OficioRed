@@ -43,7 +43,7 @@ const titleStyle2 = {
   padding: "0px",
 };
 
-const PerfilProfesional = () => {
+export function PerfilProfesional() {
   const [favoritos, setFavoritos] = useState(() => {
     const storedFavoritos = localStorage.getItem("favoritos");
     return storedFavoritos ? JSON.parse(storedFavoritos) : [];
@@ -58,7 +58,6 @@ const PerfilProfesional = () => {
   const idActual = location.pathname.split("/")[1];
   const [puntuacion, setPuntuacion] = useState(0);
   const [promedioValoracion, setPromedioValoracion] = useState(0);
-
   const [openRatingModal, setOpenRatingModal] = useState(false);
 
   const handleOpenRatingModal = () => {
@@ -329,7 +328,10 @@ const PerfilProfesional = () => {
               </Typography>
             </Box>
             <Box color="#1b325f" p={2} borderRadius="0px 0px 20px 20px">
-              <Typography variant="subtitle1" style={{ fontSize: "1.2rem" }}>
+              <Typography
+                variant="subtitle1"
+                style={{ fontSize: "1.2rem", textAlign: "justify" }}
+              >
                 <strong>Descripcion: </strong> {profesional.descripcion}
               </Typography>
             </Box>
@@ -687,6 +689,4 @@ const PerfilProfesional = () => {
       </Grid>
     </Box>
   );
-};
-
-export default PerfilProfesional;
+}

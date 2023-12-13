@@ -70,7 +70,9 @@ export function ProductValues() {
                 variant="h5"
                 sx={{ textAlign: "center", fontStyle: "italic" }}
               >
-                {"Conectar personas interesadas y profesionales, permitiendo que ambos puedan contactarse de manera ágil"}
+                {
+                  "Conectar personas interesadas y profesionales, permitiendo que ambos puedan contactarse de manera ágil"
+                }
                 {" y efectiva según lo que necesiten."}
               </Typography>
             </Box>
@@ -98,7 +100,9 @@ export function ProductValues() {
                 variant="h5"
                 sx={{ textAlign: "center", fontStyle: "italic" }}
               >
-                {"Promover la profesionalización, ya que permite visualizar las capacidades y formación de otros profesionales."}
+                {
+                  "Promover la profesionalización, ya que permite visualizar las capacidades y formación de otros profesionales."
+                }
               </Typography>
             </Box>
           </Grid>
@@ -125,7 +129,9 @@ export function ProductValues() {
                 variant="h5"
                 sx={{ textAlign: "center", fontStyle: "italic" }}
               >
-                {"Compartir las experiencias individuales de cada usuario en relación con el servicio proporcionado por un profesional en particular."}
+                {
+                  "Compartir las experiencias individuales de cada usuario en relación con el servicio proporcionado por un profesional en particular."
+                }
               </Typography>
             </Box>
           </Grid>

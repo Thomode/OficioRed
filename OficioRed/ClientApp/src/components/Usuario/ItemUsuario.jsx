@@ -1,4 +1,3 @@
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TableRow, TableCell, IconButton } from "@mui/material";
 import Swal from "sweetalert2";
@@ -54,74 +53,7 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
     }
   };
 
-  const actualizarUsuario = async (id, user, passwordUser, idRol) => {
-    const roles = ["Admin", "Interesado", "Profesional"];
-    const us = await usuarioService.get(Number(id));
-    const passwordActual = us.data.password;
-
-    await Swal.fire({
-      title: "Editar Usuario",
-      html: `
-        <input id="user" class="swal2-input" placeholder="Nombre de Usuario" value="${user}">
-        <input class="swal2-input" placeholder="Contraseña" hidden=true type="password" value="${passwordActual}" readonly>
-        <select id="rolUsuario" class="swal2-input swal2-select">
-          ${roles
-            .filter(rol => idRol === 1 || rol !== "Admin")
-            .map(
-              (rol) =>
-                `<option value="${rol}" ${
-                  rol === getRolName(idRol) ? "selected" : ""
-                }>${rol}</option>`
-            )
-            .join("")}
-        </select>`,
-      showCancelButton: true,
-      confirmButtonColor: "#1b325f",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Guardar",
-      cancelButtonText: "Cancelar",
-      reverseButtons: true,
-      showLoaderOnConfirm: true,
-      preConfirm: async () => {
-        const userName = document.getElementById("user").value;
-        const selectedRol = document.getElementById("rolUsuario").value;
-        const nuevoIdRol =
-          selectedRol === "Profesional"
-            ? 2
-            : selectedRol === "Interesado"
-            ? 3
-            : null;
-
-        if (nuevoIdRol === null) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Usuario no válido",
-          });
-          return;
-        }
-
-        try {
-          console.log(id, userName, passwordActual, nuevoIdRol);
-          await usuarioService.update(id, userName, passwordActual, nuevoIdRol);
-          loadUsuarios();
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Usuario actualizado con éxito",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: error.response.data,
-          });
-        }
-      },
-    });
-  };
+  
 
   return (
     <TableRow
@@ -136,22 +68,6 @@ export function ItemUsuario({ usuario, loadUsuarios, index }) {
       </TableCell>
       <TableCell align="right">{getRolName(usuario.idRol)}</TableCell>
       <TableCell align="right">{usuario.fhAlta}</TableCell>
-      <TableCell align="right">
-        <IconButton
-          color="primary"
-          size="large"
-          onClick={() =>
-            actualizarUsuario(
-              usuario.idUsuario,
-              usuario.user,
-              usuario.password,
-              usuario.idRol
-            )
-          }
-        >
-          <EditIcon></EditIcon>
-        </IconButton>
-      </TableCell>
       <TableCell align="right">
         <IconButton
           color="warning"

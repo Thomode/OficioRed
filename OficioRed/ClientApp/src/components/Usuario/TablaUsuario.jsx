@@ -1,4 +1,3 @@
-import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -21,9 +20,6 @@ export function TablaUsuario({ usuarios, loadUsuarios }) {
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
               Fecha de Alta
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Editar
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
               Eliminar

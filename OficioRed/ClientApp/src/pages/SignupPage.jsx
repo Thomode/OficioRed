@@ -253,14 +253,15 @@ export const SignupPage = ({ setAcceso }) => {
                 }
               />
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
+                <InputLabel id="idRol">
                   Selecciona el Tipo de Usuario
                 </InputLabel>
                 <Select
                   fullWidth
                   label="Selecciona el Tipo de Usuario"
                   name="idRol"
-                  value={selectedRolId || ''}
+                  id="idRol"
+                  value={selectedRolId || ""}
                   {...register("idRol", {
                     required: true,
                   })}
@@ -289,8 +290,9 @@ export const SignupPage = ({ setAcceso }) => {
                     de datos como foto, número de teléfono, email, redes
                     sociales, descripción, rubros de servicios a los que se
                     dedica,etc. Dicha información va a ser visible para el resto
-                    de las personas, quiénes podrán contactarte. A su vez, usted
-                    será capaz de ver al resto de profesionales.
+                    de las personas, quienes podrán contactarlo. A su vez, será
+                    capaz de ver al resto de profesionales, como así también
+                    poder contactarlos y consumir sus servicios.
                   </Typography>
                 )}
                 {selectedRolId === 3 && (
