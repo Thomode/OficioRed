@@ -284,6 +284,7 @@ export const SignupPage = ({ setAcceso }) => {
                       fontStyle: "italic",
                       fontWeight: "bold",
                       color: "#1b325f",
+                      textAlign: "justify",
                     }}
                   >
                     Como profesional usted tendrá que cargar una mayor cantidad
@@ -292,7 +293,7 @@ export const SignupPage = ({ setAcceso }) => {
                     dedica,etc. Dicha información va a ser visible para el resto
                     de las personas, quienes podrán contactarlo. A su vez, será
                     capaz de ver al resto de profesionales, como así también
-                    poder contactarlos y consumir sus servicios.
+                    poder contactarlos, consumir sus servicios y valorarlos.
                   </Typography>
                 )}
                 {selectedRolId === 3 && (
@@ -301,12 +302,14 @@ export const SignupPage = ({ setAcceso }) => {
                       fontStyle: "italic",
                       fontWeight: "bold",
                       color: "#1b325f",
+                      textAlign: "justify",
                     }}
                   >
                     Como interesado usted únicamente deberá ingresar nombre,
                     apellido, email y una foto. Será capaz de ver a todos los
-                    profesionales cargados en el sistema y realizar una búsqueda
-                    de acuerdo a sus necesidades.
+                    profesionales cargados en el sistema, realizar una búsqueda
+                    de acuerdo a sus necesidades, poder contactarlos, consumir
+                    sus servicios y valorarlos.
                   </Typography>
                 )}
               </Box>
