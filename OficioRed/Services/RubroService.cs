@@ -92,7 +92,7 @@ public class RubroService : IRubroService
 
     public List<Rubro> GetAll()
     {
-        return _context.Rubros.Where(e => !e.Fhbaja.HasValue).ToList();
+        return _context.Rubros.Where(e => !e.Fhbaja.HasValue).OrderBy(e => e.Nombre).ToList();
     }
 
     public void Update(int id, RubroDTO oficioDTO)
