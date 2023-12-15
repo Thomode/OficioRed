@@ -167,13 +167,13 @@ export const SignupPage = ({ setAcceso }) => {
                   minLength: 2,
                   maxLength: 15,
                 })}
-                error={!!errors.usuario}
+                error={!!errors.user}
                 helperText={
-                  errors.usuario?.type === "required"
+                  errors.user?.type === "required"
                     ? "Campo obligatorio"
-                    : errors.usuario?.type === "minLength"
+                    : errors.user?.type === "minLength"
                     ? "Mínimo 2 caracteres"
-                    : errors.usuario?.type === "maxLength"
+                    : errors.user?.type === "maxLength"
                     ? "Máximo 15 caracteres"
                     : ""
                 }

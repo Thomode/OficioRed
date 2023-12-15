@@ -207,7 +207,7 @@ export const LoginPage = ({ setAcceso }) => {
               >
                 INICIAR SESIÓN
               </LoadingButton>
-              <Button href="#">¿Olvidaste tu contraseña?</Button>
+             
               <LoadingButton
                 href="/signup"
                 loading={loadingSignUp}
