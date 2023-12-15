@@ -64,5 +64,4 @@ export const interesadoService = {
   getById,
   getByIdUsuario,
   updateInteresado,
-
 };

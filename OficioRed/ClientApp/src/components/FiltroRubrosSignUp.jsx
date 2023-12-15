@@ -7,8 +7,7 @@ import Checkbox from "@mui/material/Checkbox";
 import axios from "axios";
 
 export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
-  const [selectAll, setSelectAll] = useState(false);
-
+ 
   const getRubros = async () => {
     try {
       const res = await axios.get("/api/Rubro");
@@ -35,25 +34,12 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
 
   const handleSelectChange = (event) => {
     const selectedRubros = event.target.value;
-    setSelectAll(selectedRubros.includes("selectAll"));
 
     setRubros((prevRubros) =>
       prevRubros.map((rubro) => ({
         ...rubro,
         seleccionado:
-          selectedRubros.includes("selectAll") ||
           selectedRubros.includes(rubro.idRubro),
-      }))
-    );
-  };
-
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-    const allSelected = rubros.every((rubro) => rubro.seleccionado);
-    setRubros((prevRubros) =>
-      prevRubros.map((rubro) => ({
-        ...rubro,
-        seleccionado: !allSelected,
       }))
     );
   };
@@ -78,10 +64,6 @@ export const FiltroRubros = ({ rubros, setRubros, seleccionado }) => {
               .join(", ")
           }
         >
-          <MenuItem key="selectAll" value="selectAll" onClick={handleSelectAll}>
-            <Checkbox checked={selectAll} />
-            Seleccionar todos
-          </MenuItem>
           {rubros.map((rubro) => (
             <MenuItem key={rubro.idRubro} value={rubro.idRubro}>
               <Checkbox checked={rubro.seleccionado} />
