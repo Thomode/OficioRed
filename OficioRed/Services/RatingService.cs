@@ -41,6 +41,11 @@ public class RatingService : IRatingService
             throw new Exception("El profesional al que se califica no existe.");
         }
 
+        if(profesional.IdUsuario == sesion.Id)
+        {
+            throw new Exception("El profesional no se puede autocalificar");
+        }
+
         var ratingEncontrado = _context.Ratings.FirstOrDefault(e => e.IdUsuario == sesion.Id && e.IdProfesional == ratingDTO.IdProfesional);
 
         using (var transaction = _context.Database.BeginTransaction())

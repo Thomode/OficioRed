@@ -35,6 +35,11 @@ public class FavoritoService : IFavoritoService
             throw new AppException("Profesional no registrado");
         }
 
+        if (profesional.IdUsuario == sesion.Id)
+        {
+            throw new Exception("El profesional no se puede guardar como favorito");
+        }
+
         var favorito = new Favorito();
         favorito.IdUsuario = sesion.Id;
         favorito.Fhalta = DateTime.Now;

@@ -45,6 +45,11 @@ public class ComentarioService : IComentarioService
             throw new AppException("Profesional no registrado");
         }
 
+        if (profesional.IdUsuario == sesion.Id)
+        {
+            throw new Exception("El profesional no se puede autocomentar");
+        }
+
         var comentario = new Comentario();
         comentario.IdUsuario = sesion.Id;
         comentario.Fhalta = DateTime.Now;
