@@ -12,7 +12,6 @@ import { MiPerfilProfesional } from "./pages/MiPerfilProfesional.jsx";
 import { MiPerfilInteresado } from "./pages/MiPerfilInteresado.jsx";
 import { MiPerfilAdmin } from "./pages/MiPerfilAdmin.jsx";
 import { PerfilProfesional } from "./pages/PerfilProfesional";
-import UsuarioForm from "./components/Usuario/UsuarioForm";
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
 import { ProfesionalSignUp } from './pages/ProfesionalSignUp.jsx';
@@ -22,6 +21,9 @@ import { HomeAdmin } from "./pages/Private/HomeAdmin";
 import { Comentarios } from './pages/Comentarios/Comentarios.jsx';
 import Swal from "sweetalert2";
 import "./index.css";
+import { UsuarioNuevo } from './components/Usuario/UsuarioNuevo.jsx';
+import { UsuarioNuevoInt } from './components/Usuario/UsuarioNuevoInt.jsx';
+import { UsuarioNuevoProf } from './components/Usuario/UsuarioNuevoProf.jsx';
 
 const theme = createTheme();
 
@@ -35,8 +37,16 @@ const adminRoutes = [
         element: <UsuarioAdminPage />
     },
     {
-        path: '/admin/usuariosForm',
-        element: <UsuarioForm />
+        path: '/admin/usuarios/crear',
+        element: <UsuarioNuevo />
+    },
+    {
+        path: '/admin/usuarios/crearInteresado',
+        element: <UsuarioNuevoInt />
+    },
+    {
+        path: '/admin/usuarios/crearProfesional',
+        element: <UsuarioNuevoProf />
     },
     {
         path: '/admin/rubros',
@@ -81,13 +91,6 @@ const clientRoutes = [
         path: '/:id/miPerfilInteresado',
         element: <MiPerfilInteresado />
     },
-    /*{
-        path: '/:id/PerfilProfesional/Comentarios',
-        element: <Comments
-        commentsUrl="http://localhost:3004/comments"
-        currentUserId="1"
-      />
-    },*/
     {
         path: '/:id/PerfilProfesional/Comentarios',
         element: <Comentarios />
