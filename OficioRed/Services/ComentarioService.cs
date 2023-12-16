@@ -47,7 +47,7 @@ public class ComentarioService : IComentarioService
 
         if (profesional.IdUsuario == sesion.Id)
         {
-            throw new Exception("El profesional no se puede autocomentar");
+            throw new Exception("No puede comentarse a sí mismo");
         }
 
         var comentario = new Comentario();

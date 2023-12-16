@@ -26,6 +26,8 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { contactoService } from "../services/contacto.service";
 import { profesionalService } from "../services/profesional.service";
+import { favoritoService } from "../services/favorito.service";
+import { useSnackbar } from "notistack";
 
 const buttonStyle = {
   margin: "0 8px",
@@ -44,10 +46,7 @@ const titleStyle2 = {
 };
 
 export function PerfilProfesional() {
-  const [favoritos, setFavoritos] = useState(() => {
-    const storedFavoritos = localStorage.getItem("favoritos");
-    return storedFavoritos ? JSON.parse(storedFavoritos) : [];
-  });
+  const [favoritos, setFavoritos] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const [profesional, setProfesional] = useState({});
@@ -59,6 +58,7 @@ export function PerfilProfesional() {
   const [puntuacion, setPuntuacion] = useState(0);
   const [promedioValoracion, setPromedioValoracion] = useState(0);
   const [openRatingModal, setOpenRatingModal] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleOpenRatingModal = () => {
     setOpenRatingModal(true);
@@ -131,23 +131,33 @@ export function PerfilProfesional() {
       });
   }, [id]);
 
+  useEffect(() => {
+    const obtenerFavoritos = async () => {
+      try {
+        const favoritosData = await favoritoService.get();
+        setFavoritos(favoritosData);
+      } catch (error) {
+        console.error("Error obteniendo favoritos:", error);
+      }
+    };
+
+    obtenerFavoritos();
+  }, []);
+
   const handleClick = () => {
     const nuevaUrl = `/profesionales`;
     navigate(nuevaUrl);
   };
-
   const handleClickAntes = () => {
     const nuevoId = Math.max(idActual - 1, 1);
     const nuevaUrl = `/${nuevoId}/PerfilProfesional`;
     navigate(nuevaUrl);
   };
-
   const handleClickSiguiente = () => {
     const nuevoId = parseInt(idActual, 10) + 1;
     const nuevaUrl = `/${nuevoId}/PerfilProfesional`;
     navigate(nuevaUrl);
   };
-
   const handleClickFb = async (idContacto) => {
     try {
       const res = await contactoService.getById(idContacto);
@@ -163,7 +173,6 @@ export function PerfilProfesional() {
       console.error("Error al obtener el contacto:", error);
     }
   };
-
   const handleClickIg = async (idContacto) => {
     try {
       const res = await contactoService.getById(idContacto);
@@ -179,7 +188,6 @@ export function PerfilProfesional() {
       console.error("Error al obtener el contacto:", error);
     }
   };
-
   const handleClickWpp = async (idContacto) => {
     try {
       const res = await contactoService.getById(idContacto);
@@ -195,24 +203,55 @@ export function PerfilProfesional() {
       console.error("Error al obtener el contacto:", error);
     }
   };
-
-  const handleAgregarFavorito = (profesional) => {
-    const isInFavoritos = favoritos.some(
-      (fav) => fav.idProfesional === profesional.idProfesional
-    );
-
-    const nuevosFavoritos = isInFavoritos
-      ? favoritos.filter(
-          (fav) => fav.idProfesional !== profesional.idProfesional
-        )
-      : [...favoritos, profesional];
-
-    setFavoritos(nuevosFavoritos);
-    localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
-  };
-
   const handleClickComments = () => {
     navigate(`/${id}/PerfilProfesional/Comentarios`);
+  };
+  const handleAgregarFavorito = async (profesional) => {
+    try {
+      const favoritosData = await favoritoService.get();
+      setFavoritos(favoritosData);
+
+      const idProfesional = profesional.idProfesional;
+
+      const isProfesionalEnFavoritos = favoritos.some(
+        (fav) => fav.idProfesional === idProfesional
+      );
+
+      if (isProfesionalEnFavoritos) {
+        await favoritoService.deleteFavorito(
+          favoritos.find((fav) => fav.idProfesional === idProfesional)
+            .idFavorito
+        );
+        enqueueSnackbar("Eliminado de Favoritos exitosamente", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          autoHideDuration: 2000,
+        });
+      } else {
+        await favoritoService.createFavorito(idProfesional);
+        enqueueSnackbar("Agregado a Favoritos exitosamente", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          autoHideDuration: 2000,
+        });
+      }
+
+      const favoritosActualizados = await favoritoService.get();
+      setFavoritos(favoritosActualizados);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response.data,
+        confirmButtonColor: "#1b325f",
+      });
+    }
   };
 
   return (
@@ -561,7 +600,6 @@ export function PerfilProfesional() {
               Seguir buscando profesionales
             </Button>
             <Button
-              aria-label="Agregar a favoritos"
               onClick={() => handleAgregarFavorito(profesional)}
               style={{
                 color: "white",
@@ -571,28 +609,38 @@ export function PerfilProfesional() {
                 fontSize: "15px",
               }}
             >
-              <FavoriteIcon
-                style={{ fontSize: "20px" }}
-                color={
-                  favoritos.some(
-                    (fav) => fav.idProfesional === profesional.idProfesional
-                  )
-                    ? "error"
-                    : "default"
-                }
-              />
-              <Typography
-                variant="h2"
-                style={{ fontSize: "small", fontWeight: "bold" }}
-              >
-                {favoritos.some(
-                  (fav) => fav.idProfesional === profesional.idProfesional
-                )
-                  ? "Sacar favorito"
-                  : "Agregar favorito"}
-              </Typography>
+              {favoritos.some(
+                (fav) => fav.idProfesional === profesional.idProfesional
+              ) ? (
+                <>
+                  <FavoriteIcon
+                    style={{ fontSize: "20px", marginRight: "5px" }}
+                    color="error"
+                  />
+                  <Typography
+                    variant="h2"
+                    style={{ fontSize: "small", fontWeight: "bold" }}
+                  >
+                    Eliminar de favoritos
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <FavoriteIcon
+                    style={{ fontSize: "20px", marginRight: "5px" }}
+                    color="default"
+                  />
+                  <Typography
+                    variant="h2"
+                    style={{ fontSize: "small", fontWeight: "bold" }}
+                  >
+                    Agregar a favoritos
+                  </Typography>
+                </>
+              )}
             </Button>
           </Box>
+
           <Box>
             <Button
               variant="text"

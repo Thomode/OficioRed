@@ -37,7 +37,7 @@ public class FavoritoService : IFavoritoService
 
         if (profesional.IdUsuario == sesion.Id)
         {
-            throw new Exception("El profesional no se puede guardar como favorito");
+            throw new Exception("No puede agregarse a sí mismo como favorito");
         }
 
         var favorito = new Favorito();

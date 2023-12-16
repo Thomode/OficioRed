@@ -43,7 +43,7 @@ public class RatingService : IRatingService
 
         if(profesional.IdUsuario == sesion.Id)
         {
-            throw new Exception("El profesional no se puede autocalificar");
+            throw new Exception("No puede valorarse a sí mismo");
         }
 
         var ratingEncontrado = _context.Ratings.FirstOrDefault(e => e.IdUsuario == sesion.Id && e.IdProfesional == ratingDTO.IdProfesional);

@@ -1,5 +1,5 @@
 ﻿import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { contactoService } from "../../services/contacto.service";
 import {
   Card,
@@ -15,6 +15,9 @@ import {
 import imagendefault from "../../assets/fotodefault.webp";
 import imagenwsp from "../../assets/whatsapp.png";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { favoritoService } from "../../services/favorito.service";
+import { useSnackbar } from "notistack";
+import Swal from "sweetalert2";
 
 const cardStyle = {
   maxWidth: "345px",
@@ -36,12 +39,22 @@ const buttonStyle = {
   posittion: "bottom",
 };
 
-export function CardProfesional({ profesionales }) {
+export function CardProfesional({ profesionales, loadProfesionales }) {
   const navigate = useNavigate();
-  const [favoritos, setFavoritos] = useState(() => {
-    const storedFavoritos = localStorage.getItem("favoritos");
-    return storedFavoritos ? JSON.parse(storedFavoritos) : [];
-  });
+  const [favoritos, setFavoritos] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+  async function loadFavoritos() {
+    try {
+      const favoritosData = await favoritoService.get();
+      setFavoritos(favoritosData);
+    } catch (error) {
+      console.error("Error obteniendo la lista de favoritos:", error);
+    }
+  }
+
+  useEffect(() => {
+    loadFavoritos();
+  }, []);
 
   const handleLeerMasClick = (id) => {
     navigate(`/${id}/PerfilProfesional`);
@@ -61,19 +74,51 @@ export function CardProfesional({ profesionales }) {
     }
   };
 
-  const handleAgregarFavorito = (profesional) => {
-    const isInFavoritos = favoritos.some(
-      (fav) => fav.idProfesional === profesional.idProfesional
-    );
+  const handleAgregarFavorito = async (profesional) => {
+    try {
+      const idProfesional = profesional.idProfesional;
 
-    const nuevosFavoritos = isInFavoritos
-      ? favoritos.filter(
-          (fav) => fav.idProfesional !== profesional.idProfesional
-        )
-      : [...favoritos, profesional];
+      const updatedFavoritos = favoritos.map((fav) =>
+        fav.idProfesional === idProfesional
+          ? { ...fav, isAddingOrRemoving: true }
+          : fav
+      );
 
-    setFavoritos(nuevosFavoritos);
-    localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
+      if (updatedFavoritos.some((fav) => fav.idProfesional === idProfesional)) {
+        await favoritoService.deleteFavorito(
+          favoritos.find((fav) => fav.idProfesional === idProfesional)
+            .idFavorito
+        );
+        enqueueSnackbar("Eliminado de Favoritos exitosamente", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          autoHideDuration: 2000,
+        });
+      } else {
+        await favoritoService.createFavorito(idProfesional);
+        enqueueSnackbar("Agregado a Favoritos exitosamente", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          autoHideDuration: 2000,
+        });
+      }
+
+      loadFavoritos();
+      loadProfesionales();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response.data,
+        confirmButtonColor: "#1b325f",
+      });
+    }
   };
 
   return (

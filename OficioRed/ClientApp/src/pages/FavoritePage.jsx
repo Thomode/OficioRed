@@ -1,48 +1,18 @@
 ﻿import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Button,
   Typography,
-  IconButton,
   Grid,
-  Chip,
   Box,
   CircularProgress,
   Container,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import imagendefault from "../assets/fotodefault.webp";
 import imagenFondo from "../assets/fondo.jpg";
-import imagenwsp from "../assets/whatsapp.png";
-import { contactoService } from "../services/contacto.service";
 import { SearchBar } from "../components/SearchBar";
 import { FiltroRubros } from "../components/FiltroRubroProfesional";
 import Swal from "sweetalert2";
-
-const cardStyle = {
-  maxWidth: "345px",
-  minHeight: "480px",
-  borderRadius: 10,
-  backgroundColor: "rgba(255, 255, 255, 0.6)",
-  overflow: "hidden",
-  transition: "transform 0.3s ease-in-out",
-  margin: "20px",
-  marginBottom: "20px",
-  border: "2px solid #1b325f",
-  "&:hover": {
-    transform: "scale(1.05)",
-    border: "",
-  },
-};
-
-const buttonStyle = {
-  margin: "0 8px",
-  posittion: "bottom",
-};
+import { favoritoService } from "../services/favorito.service";
+import { profesionalService } from "../services/profesional.service";
+import { CardProfesional } from "../components/ProfesionalesBusqueda/Card";
 
 const titleStyle2 = {
   fontSize: "70px",
@@ -57,7 +27,6 @@ const titleStyle2 = {
 };
 
 export function FavoritePage() {
-  const navigate = useNavigate();
   const [favoritos, setFavoritos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [rubros, setRubros] = useState([]);
@@ -104,15 +73,28 @@ export function FavoritePage() {
     }
     setProfesionalesFiltrados(filteredProfesionales);
   };
+
   async function loadProfesionales() {
-    const storedFavoritos = localStorage.getItem("favoritos");
-    if (storedFavoritos) {
-      const favoritosData = JSON.parse(storedFavoritos);
-      setProfesionales(favoritosData);
-      setProfesionalesFiltrados(favoritosData);
-    } else {
-      setProfesionales([]);
-      setProfesionalesFiltrados([]);
+    try {
+      const favoritosData = await favoritoService.get();
+
+      if (favoritosData.length > 0) {
+        const profesionalesData = await Promise.all(
+          favoritosData.map(async (favorito) => {
+            const profesionalData = await profesionalService.getById(
+              favorito.idProfesional
+            );
+            return profesionalData.data;
+          })
+        );
+        setProfesionales(profesionalesData);
+        setProfesionalesFiltrados(profesionalesData);
+      } else {
+        setProfesionales([]);
+        setProfesionalesFiltrados([]);
+      }
+    } catch (error) {
+      console.error("Error al cargar los profesionales:", error);
     }
   }
 
@@ -121,62 +103,20 @@ export function FavoritePage() {
   }, []);
 
   useEffect(() => {
-    const rubrosSeleccionados = rubros
-      .filter((r) => r.seleccionado)
-      .map((r) => r.idRubro);
-    const profFiltrados = profesionales.filter((p) =>
-      p.rubros.some((r) => rubrosSeleccionados.includes(r.idRubro))
-    );
-    setProfesionalesFiltrados(profFiltrados);
-  }, [rubros, profesionales]);
+    if (profesionales && profesionales.length > 0) {
+      const rubrosSeleccionados = rubros
+        .filter((r) => r.seleccionado)
+        .map((r) => r.idRubro);
 
-  useEffect(() => {
-    const storedFavoritos = localStorage.getItem("favoritos");
-    if (storedFavoritos) {
-      setFavoritos(JSON.parse(storedFavoritos));
-    }
-  }, []);
-
-  const handleLeerMasClick = (id) => {
-    navigate(`/${id}/PerfilProfesional`);
-  };
-
-  const handleContactar = async (idContacto) => {
-    try {
-      const res = await contactoService.getById(idContacto);
-      console.log(res.data);
-
-      if (res.data.telefono) {
-        const url = `https://wa.me/+549${res.data.telefono}`;
-        window.open(url, "_blank");
-      } else {
-        console.error(
-          "El numero de telefono no esta definido en el objeto de contacto."
-        );
-      }
-    } catch (error) {
-      console.error("Error al obtener el contacto:", error);
-    }
-  };
-
-  const handleAgregarFavorito = (profesional) => {
-    setFavoritos((prevFavoritos) => {
-      const isInFavoritos = prevFavoritos.some(
-        (fav) => fav.idProfesional === profesional.idProfesional
+      const profFiltrados = profesionales.filter(
+        (p) =>
+          p.rubros &&
+          p.rubros.some((r) => rubrosSeleccionados.includes(r.idRubro))
       );
-      let nuevosFavoritos;
-      if (!isInFavoritos) {
-        nuevosFavoritos = [...prevFavoritos, profesional];
-      } else {
-        nuevosFavoritos = prevFavoritos.filter(
-          (fav) => fav.idProfesional !== profesional.idProfesional
-        );
-      }
-      localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
-      setProfesionalesFiltrados(nuevosFavoritos);
-      return nuevosFavoritos;
-    });
-  };
+
+      setProfesionalesFiltrados(profFiltrados);
+    }
+  }, [rubros, profesionales]);
 
   return (
     <Container
@@ -219,107 +159,32 @@ export function FavoritePage() {
         spacing={2}
         mt={2}
       >
-        {favoritos.length > 0 && rubros.some((rubro) => rubro.seleccionado) ? (
-          profesionalesFiltrados.length > 0 ? (
-            profesionalesFiltrados.map((profesional, index) => (
-              <Grid item key={index} sm={6} md={4} lg={4}>
-                <Card sx={cardStyle}>
-                  <CardMedia
-                    component="img"
-                    alt="profesional"
-                    height="240px"
-                    src={
-                      profesional.fotoPerfil
-                        ? profesional.fotoPerfil
-                        : imagendefault
-                    }
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {`${profesional.nombre} ${profesional.apellido}`}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      minHeight="100px"
-                    >
-                      {profesional.rubros &&
-                        profesional.rubros.map((rubro, index) => (
-                          <Chip
-                            key={index}
-                            variant="elevated"
-                            label={`${rubro.nombre} `}
-                            style={{
-                              backgroundColor: "#1b325f",
-                              color: "white",
-                              margin: "2px",
-                            }}
-                          />
-                        ))}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Grid container alignItems="center" spacing={1}>
-                      <Grid item>
-                        <Button
-                          variant="contained"
-                          position="bottom"
-                          size="small"
-                          style={{ backgroundColor: "#2E8B57", color: "white" }}
-                          sx={buttonStyle}
-                          startIcon={
-                            <img
-                              src={imagenwsp}
-                              alt="WhatsApp"
-                              style={{ height: "20px", marginRight: "5px" }}
-                            />
-                          }
-                          onClick={() =>
-                            handleContactar(profesional.idContacto)
-                          }
-                        >
-                          CONTACTAR
-                        </Button>
-                      </Grid>
-                      <Grid item>
-                        <Button
-                          variant="contained"
-                          size="small"
-                          style={{ backgroundColor: "#f26c4f", color: "white" }}
-                          sx={buttonStyle}
-                          onClick={() =>
-                            handleLeerMasClick(profesional.idProfesional)
-                          }
-                        >
-                          Leer más
-                        </Button>
-                      </Grid>
-                      <Grid item>
-                        <IconButton
-                          aria-label="Agregar a favoritos"
-                          onClick={() => handleAgregarFavorito(profesional)}
-                        >
-                          <FavoriteIcon
-                            color={
-                              favoritos.some(
-                                (fav) =>
-                                  fav.idProfesional ===
-                                  profesional.idProfesional
-                              )
-                                ? "error"
-                                : "default"
-                            }
-                          />
-                        </IconButton>
-                      </Grid>
-                    </Grid>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <CircularProgress style={{ position: "absolute", top: "50%" }} />
-          )
+        {rubros.some((rubro) => rubro.seleccionado) ? (
+          <>
+            {profesionalesFiltrados.length > 0 ? (
+              <CardProfesional
+                profesionales={profesionalesFiltrados}
+                loadProfesionales={loadProfesionales}
+              />
+            ) : (
+              <Typography
+                variant="h6"
+                align="center"
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  fontWeight: "bold",
+                  fontSize: "24px",
+                  color: "white",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  borderRadius: "10px",
+                  padding: "10px",
+                }}
+              >
+                No hay profesionales favoritos
+              </Typography>
+            )}
+          </>
         ) : (
           <Typography
             variant="h6"
@@ -335,9 +200,7 @@ export function FavoritePage() {
               padding: "10px",
             }}
           >
-            {favoritos.length === 0
-              ? "No hay profesionales favoritos"
-              : "Por favor, seleccione algún rubro"}
+            Por favor, seleccione algún rubro
           </Typography>
         )}
       </Grid>
