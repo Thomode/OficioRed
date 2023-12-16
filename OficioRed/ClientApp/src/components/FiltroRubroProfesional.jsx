@@ -15,7 +15,7 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 
 export const FiltroRubros = ({ rubros, setRubros }) => {
   const location = useLocation();
-  const [selectAll, setSelectAll] = useState(false);
+  const [selectAll, setSelectAll] = useState(true);
 
   const getRubros = async (selectedId) => {
     try {

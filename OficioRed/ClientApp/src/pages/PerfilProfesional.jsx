@@ -149,7 +149,7 @@ export function PerfilProfesional() {
     navigate(nuevaUrl);
   };
   const handleClickAntes = () => {
-    const nuevoId = Math.max(idActual - 1, 1);
+    const nuevoId = Math.max(idActual - 1, 24);
     const nuevaUrl = `/${nuevoId}/PerfilProfesional`;
     navigate(nuevaUrl);
   };
