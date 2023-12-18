@@ -1,11 +1,5 @@
 ﻿import { useState, useEffect } from "react";
-import {
-  Typography,
-  Grid,
-  Box,
-  CircularProgress,
-  Container,
-} from "@mui/material";
+import { Typography, Grid, Box, Container } from "@mui/material";
 import imagenFondo from "../assets/fondo.jpg";
 import { SearchBar } from "../components/SearchBar";
 import { FiltroRubros } from "../components/FiltroRubroProfesional";
@@ -27,7 +21,6 @@ const titleStyle2 = {
 };
 
 export function FavoritePage() {
-  const [favoritos, setFavoritos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [rubros, setRubros] = useState([]);
   const [resetSearch, setResetSearch] = useState(false);
@@ -46,7 +39,7 @@ export function FavoritePage() {
       setLoading(false);
     }, 1500);
 
-    const filteredProfesionales = favoritos.filter((profesional) => {
+    const filteredProfesionales = profesionales.filter((profesional) => {
       const nombreEnMinusculas = profesional.nombre.toLowerCase();
       const apellidoEnMinusculas = profesional.apellido.toLowerCase();
       const searchValueEnMinusculas = searchValue.toLowerCase();
