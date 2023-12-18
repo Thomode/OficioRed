@@ -9,6 +9,7 @@ import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { FiltroRubros } from "../FiltroRubrosSignUp";
 import { profesionalService } from "../../services/profesional.service";
+import { useNavigate } from "react-router-dom";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -30,6 +31,7 @@ export const UsuarioNuevoProf = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -59,6 +61,7 @@ export const UsuarioNuevoProf = () => {
     console.log(data);
 
     try {
+      /*
       const res = await profesionalService.registerProfesional(
         data.nombre,
         data.apellido,
@@ -78,7 +81,8 @@ export const UsuarioNuevoProf = () => {
           const res3 = await profesionalService.asociarRubro(rubro.idRubro);
         }
       });
-
+      */
+      navigate("/admin/usuarios");
       enqueueSnackbar("Registro exitoso", {
         variant: "success",
         anchorOrigin: {

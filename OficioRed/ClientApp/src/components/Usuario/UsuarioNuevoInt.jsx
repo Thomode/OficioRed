@@ -8,6 +8,7 @@ import { interesadoService } from "../../services/interesado.service";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { useNavigate } from "react-router-dom";
 
 const imageStyle = {
   borderRadius: "50%",
@@ -22,6 +23,7 @@ export const UsuarioNuevoInt = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -57,13 +59,15 @@ export const UsuarioNuevoInt = () => {
     console.log(data);
 
     try {
+      /*
       const res = await interesadoService.registerInteresado(
         data.nombre,
         data.apellido,
         data.email
       );
       const res2 = await interesadoService.imageUpload(selectedFile);
-
+      */
+      navigate("/admin/usuarios");
       enqueueSnackbar("Registro exitoso", {
         variant: "success",
         anchorOrigin: {
