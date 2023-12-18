@@ -83,7 +83,7 @@ export const ProfesionalSignUp = () => {
       });
 
       navigate("/home");
-      enqueueSnackbar("Registro exitoso", {
+      enqueueSnackbar("¡Bienvenido a OficioRed!", {
         variant: "success",
         anchorOrigin: {
           vertical: "bottom",

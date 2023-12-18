@@ -68,7 +68,7 @@ export const InteresadoSignUp = () => {
       const res2 = await interesadoService.imageUpload(selectedFile);
 
       navigate("/home");
-      enqueueSnackbar("Registro exitoso", {
+      enqueueSnackbar("¡Bienvenido a OficioRed!", {
         variant: "success",
         anchorOrigin: {
           vertical: "bottom",
