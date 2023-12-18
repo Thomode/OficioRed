@@ -215,7 +215,7 @@ export const SignupPage = ({ setAcceso }) => {
                     : errors.password?.type === "maxLength"
                     ? "Máximo 15 caracteres"
                     : errors.password?.type === "pattern"
-                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula, un número y un caracter especial"
+                    ? "Debe contener entre 4 y 15 caracteres y al menos una letra mayúscula, una minúscula y un número"
                     : ""
                 }
               />
@@ -290,7 +290,7 @@ export const SignupPage = ({ setAcceso }) => {
                     Como profesional usted tendrá que cargar una mayor cantidad
                     de datos como foto, número de teléfono, email, redes
                     sociales, descripción, rubros de servicios a los que se
-                    dedica,etc. Dicha información va a ser visible para el resto
+                    dedica, etc. Dicha información va a ser visible para el resto
                     de las personas, quienes podrán contactarlo. A su vez, será
                     capaz de ver al resto de profesionales, como así también
                     poder contactarlos, consumir sus servicios y valorarlos.

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-oficiored.png";
 import {
   Box,
+  Button,
   FormControl,
   IconButton,
   InputAdornment,
@@ -22,6 +23,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useSnackbar } from "notistack";
 import { accesoService } from "../../services/acceso.service";
 import { rolService } from "../../services/rol.service";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const backgroundStyle = {
   backgroundImage: `url(${backgroundImage})`,
@@ -99,6 +101,10 @@ export const UsuarioNuevo = ({ setAcceso }) => {
     }
   };
 
+  const handleClick = () => {
+    navigate(-1);
+  };
+
   return (
     <div style={backgroundStyle}>
       <div
@@ -121,6 +127,20 @@ export const UsuarioNuevo = ({ setAcceso }) => {
               borderRadius: "20px",
             }}
           >
+            <Button
+              variant="text"
+              style={{
+                color: "white",
+                backgroundColor: "#1b325f",
+                margin: "20px",
+                fontWeight: "bold",
+              }}
+              fontSize="large"
+              startIcon={<ArrowBackIcon />}
+              onClick={() => handleClick()}
+            >
+              Volver
+            </Button>
             <img src={logo} width={250} alt="logo-app" />
             <Typography
               style={{

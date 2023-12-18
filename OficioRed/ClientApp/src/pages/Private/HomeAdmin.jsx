@@ -32,10 +32,29 @@ export function HomeAdmin() {
 
   const chartOptions = {
     labels: ["Administradores", "Profesionales", "Interesados"],
+    series: [
+      dashboardData.cantidadAdmin,
+      dashboardData.cantidadProfesional,
+      dashboardData.cantidadInteresado,
+    ],
     colors: ["#1b325f", "#3a89c9", "#f26c4f"],
     legend: {
       show: true,
       position: "bottom",
+      fontSize: "16px",
+      offsetY: 0,
+      offsetX: 0,
+    },
+    title: {
+      text: "Usuarios",
+      align: "center",
+      offsetX: 0,
+      offsetY: 0,
+      style: {
+        fontSize: "24px",
+        fontWeight: "bold",
+        color: "#1b325f",
+      },
     },
   };
 
@@ -58,7 +77,6 @@ export function HomeAdmin() {
     width: "370px",
     margin: "20px",
   };
-
   const titleStyle = {
     fontSize: "1.5rem",
     marginBottom: "10px",
@@ -66,7 +84,6 @@ export function HomeAdmin() {
     marginTop: "10px",
     color: "#1b325f",
   };
-
   const titleStyle2 = {
     fontSize: "70px",
     fontWeight: "bold",
@@ -76,13 +93,11 @@ export function HomeAdmin() {
     MozTextStroke: "2px white",
     marginLeft: "20px",
   };
-
   const numberStyle = {
     fontSize: "3.5rem",
     fontWeight: "bold",
     color: "#1b325f",
   };
-
   const cardContentStyle = {
     display: "flex",
     flexDirection: "column",
@@ -171,14 +186,12 @@ export function HomeAdmin() {
           sx={{ display: "flex", justifyContent: "center" }}
         >
           <Card sx={{ ...cardStyle, width: "100%" }}>
-            <CardContent sx={cardContentStyle}>
-              <Chart
-                options={chartOptions}
-                series={chartData.series}
-                type="donut"
-                height={300}
-              />
-            </CardContent>
+            <Chart
+              options={chartOptions}
+              series={chartData.series}
+              type="donut"
+              height={300}
+            />
           </Card>
         </Grid>
       </Grid>
